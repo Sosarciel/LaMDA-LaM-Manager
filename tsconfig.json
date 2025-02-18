@@ -9,12 +9,17 @@
         "outDir": "./dist",
         "rootDir": "./src",
         "declaration": true,
+        "skipLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "TextCompletion"    : ["./src/TextCompletion"],
-			"@/src/*"           : ["./src/*"],
-			"@/*"               : ["./*"],
-			"@"                 : ["./src/index"]
+            "Constant"                : ["./src/Constant"],
+            "APITool"                 : ["./src/APITool"],
+            "TextCompletion"          : ["./src/TextCompletion"],
+            "@/RequestFormatAdapter/*": ["./src/RequestFormatAdapter/*"],
+            "@/TextCompletion/*"      : ["./src/TextCompletion/*"],
+			"@/src/*"                 : ["./src/*"],
+			"@/*"                     : ["./*"],
+			"@"                       : ["./src/index"]
         }
     },
     "include": ["./src/**/*.ts", "./src/**/*.js", "./jest/**/*.ts"],

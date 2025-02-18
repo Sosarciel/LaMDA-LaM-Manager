@@ -1,7 +1,7 @@
 import { AwaitInited, ivk, NeedInit, UtilCodec, UtilFunc } from "@zwa73/utils";
 import { Tokenizer } from "@anush008/tokenizers";
 import path from 'pathe';
-import { ROOT_PATH } from "Constant";
+import { DATA_PATH } from "Constant";
 import fs from 'fs';
 
 type TokensizerInterface = {
@@ -40,7 +40,7 @@ class Deepseek implements TokensizerInterface, NeedInit{
     }>;
     constructor(){
         this.inited = ivk(async ()=>{
-            const fp = path.join(ROOT_PATH,'data','tokensizer','deepseek_tokenizer.json');
+            const fp = path.join(DATA_PATH,'tokensizer','deepseek_tokenizer.json');
             const cfg = await fs.promises.readFile(fp,'utf-8');
             return {
                 tokenizer:Tokenizer.fromString(cfg)

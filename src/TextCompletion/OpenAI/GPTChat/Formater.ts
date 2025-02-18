@@ -1,10 +1,10 @@
-import { AnyTextCompletionRespFormat, DefChatLaMResult } from '../../TextCompletionInterface';
+import { AnyTextCompletionRespFormat, DefChatLaMResult } from '@/TextCompletion/TextCompletionInterface';
 import { PromiseRetryResult, SLogger } from "@zwa73/utils";
 import { OpenAIChatModel } from "./GPTChatInterface";
-import { OpenAIChatAPIEntry, OpenAIChatAPIResp, formatOpenAIChatApiReq, transOpenAIChatApiReq } from "../../../APITool";
-import { ChatTaskOption, LaMChatMessages } from '../../ChatTaskInterface';
-import { IChatFormater } from '../../ChatFormatAdapter';
-import { getTokensizer, TokensizerType } from '@/src/LaMAdapter/Tokensize';
+import { OpenAIChatAPIEntry, OpenAIChatAPIResp, formatOpenAIChatApiReq, transOpenAIChatApiReq } from "APITool";
+import { ChatTaskOption, LaMChatMessages } from '@/TextCompletion/ChatTaskInterface';
+import { IChatFormater } from '@/TextCompletion/ChatFormatAdapter';
+import { getTokensizer, TokensizerType } from '@/src/Tokensize';
 import { AnyOpenAIChatApiRespFormat } from '../Resp';
 
 /**turbo模型配置 */

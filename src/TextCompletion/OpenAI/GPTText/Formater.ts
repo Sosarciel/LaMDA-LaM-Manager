@@ -1,10 +1,11 @@
 import { PromiseRetryResult, SLogger } from "@zwa73/utils";
 import { OpenAITextModel } from "./GPTTextInterface";
-import { formatOpenAITextAPITextApiReq, OpenAITextAPITextAPIResp, transOpenAITextAPITextApiReq } from "../../../APITool";
-import { AnyTextCompletionRespFormat, ChatTaskOption, DefChatLaMResult, LaMChatMessages } from "../..";
-import { getTokensizer, TokensizerType } from "@/src/LaMAdapter/Tokensize";
-import { IChatFormater } from "../../ChatFormatAdapter";
+import { formatOpenAITextAPITextApiReq, OpenAITextAPITextAPIResp, transOpenAITextAPITextApiReq } from "APITool";
+import { ChatTaskOption, LaMChatMessages } from "@/TextCompletion/ChatTaskInterface";
+import { getTokensizer, TokensizerType } from "@/src/Tokensize";
+import { IChatFormater } from "@/TextCompletion/ChatFormatAdapter";
 import { AnyOpenAITextApiRespFormat } from "../Resp";
+import { AnyTextCompletionRespFormat, DefChatLaMResult } from "@/TextCompletion/TextCompletionInterface";
 
 /**turbo模型配置 */
 export type OpenAITextOption = {

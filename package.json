@@ -1,16 +1,28 @@
 {
-  "name": "lam-adapter",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "@anush008/tokenizers": "^0.0.0",
-    "@zwa73/service-manager": "^1.0.13",
-    "@zwa73/utils": "^1.0.199"
-  }
+	"name": "@sosraciel-lamda/lam-adapter",
+	"version": "1.0.3",
+	"main": "index.js",
+	"scripts": {
+		"build": "powershell scripts/build",
+		"compile": "powershell scripts/compile",
+		"watch": "powershell scripts/watch",
+		"build-schema": "powershell scripts/build-schema",
+		"init": "deepkit-type-install",
+		"expand-macro": "powershell scripts/expand-macro"
+	},
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"@anush008/tokenizers": "^0.0.0",
+		"@sosraciel-lamda/creds-adapter": "^1.0.6",
+		"@zwa73/service-manager": "^1.0.13",
+		"@zwa73/utils": "^1.0.199"
+	},
+	"files": [
+		"dist",
+		"data",
+		"index.js",
+		"index.d.ts"
+	]
 }

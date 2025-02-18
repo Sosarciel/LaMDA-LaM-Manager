@@ -1,5 +1,5 @@
 import { assertType } from '@zwa73/utils';
-import { TextCompleteionModelData } from '../../TextCompletionDrive';
+import { TextCompleteionModelData } from '@/TextCompletion/TextCompletionDrive';
 
 const OpenAIChatModelDataBase = {
     /**此模型api的标准路径 */

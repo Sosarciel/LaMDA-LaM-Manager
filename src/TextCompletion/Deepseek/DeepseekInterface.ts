@@ -1,5 +1,4 @@
-import { DeepseekChatModel } from "./Chat/DeepseekChatInterface";
-import { DeepseekChatOption } from "./Chat";
+import { DeepseekChatOption,DeepseekChatModel } from "./Chat";
 
 
 export type AnyDeepseekModel = DeepseekChatModel;

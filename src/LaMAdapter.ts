@@ -1,10 +1,8 @@
-import { None, SLogger } from "@zwa73/utils";
+import { None, SLogger, throwError } from "@zwa73/utils";
 import { ServiceConfig, ServiceCtorTable2FullCfgTable, ServiceManager, ServiceManagerMainCfg } from "@zwa73/service-manager";
 import path from 'pathe';
 import { LaMInterface } from "./LaMInterface";
-import { TestModule } from "./TextCompletion/TestModule";
-import { TextCompleteionModel } from "./TextCompletion/TextCompletionDrive";
-import { DeepseekChat, DEF_CHAT_OPT, DefChatLaMResult, Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini, LaMChatMessages, PartialChatOption, TextCompletionResult } from "./TextCompletion";
+import { TextCompleteionModel,TestModule,DeepseekChat, DEF_CHAT_OPT, DefChatLaMResult, Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini, LaMChatMessages, PartialChatOption, TextCompletionResult } from "./TextCompletion";
 
 
 
@@ -31,9 +29,8 @@ export type LaMAdapterJsonTable = ServiceManagerMainCfg&{
 class _LaMAdapter extends ServiceManager<
     LaMInterface,
     CtorTable>{
-    constructor(){
-        const configPath = path.join(process.cwd(), "data", "LaMAdapter.json");
-        super(configPath,CtorTable);
+    constructor(tablePath:string){
+        super(tablePath,CtorTable);
     }
     /**模型路由
      * @async
@@ -94,7 +91,17 @@ class _LaMAdapter extends ServiceManager<
     }
 }
 
-const LaMAdapter = new _LaMAdapter();
-type LaMAdapter = _LaMAdapter;
-export {LaMAdapter};
-export default LaMAdapter;
+/**语言模型管理器 需先调用init */
+export type LaMAdapter = _LaMAdapter&{init:(tablePath: string)=>void};
+export const LaMAdapter = new Proxy({} as {ins?:_LaMAdapter}, {
+    get(target, prop, receiver) {
+        if (prop === 'init') {
+            return (tablePath: string) => {
+                if (target.ins==null)
+                    target.ins = new _LaMAdapter(tablePath);
+            };
+        }
+        if (target.ins==null) throwError("CredsAdapter 未初始化", 'error');
+        return Reflect.get(target.ins, prop, receiver);
+    }
+}) as any as LaMAdapter;

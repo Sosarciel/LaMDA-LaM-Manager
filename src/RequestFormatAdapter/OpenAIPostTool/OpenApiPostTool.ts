@@ -1,10 +1,10 @@
 import { SLogger, UtilCom, UtilFunc} from '@zwa73/utils';
 import createHttpsProxyAgent, {HttpsProxyAgent} from 'https-proxy-agent';
 import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
-import { APIPriceResp, CredsAdapter } from 'CredsAdapter';
 import { verifyResp } from './UtilFunction';
-import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '../RequestFormatInterface';
-import { AnyOpenAIApiRespFormat } from '@/src/TextCompletion';
+import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/RequestFormatAdapter/RequestFormatInterface';
+import { AnyOpenAIApiRespFormat } from 'TextCompletion';
+import { APIPriceResp, CredsAdapter } from '@sosraciel-lamda/creds-adapter';
 
 
 /**适用与 openai 鉴权方式的post工具 */
@@ -29,7 +29,7 @@ class _OpenApiPostTool implements IRequestFormater {
         let postJson = opt.postJson;
 
         postJson = accountData.instance.procOption
-            ? await accountData.instance.procOption(postJson)
+            ? await accountData.instance.procOption(postJson) as any
             : postJson;
 
         //组装opt

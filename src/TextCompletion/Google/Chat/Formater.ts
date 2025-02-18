@@ -1,10 +1,9 @@
-import { AnyGoogleChatApiRespFormat, AnyTextCompletionRespFormat, DefChatLaMResult } from '../../TextCompletionInterface';
+import { AnyGoogleChatApiRespFormat, AnyTextCompletionRespFormat, DefChatLaMResult } from '@/TextCompletion/TextCompletionInterface';
 import { PromiseRetryResult, SLogger } from "@zwa73/utils";
-import { transOpenAIChatApiReq } from "../../../APITool";
-import { ChatTaskOption, LaMChatMessages } from '../../ChatTaskInterface';
-import { IChatFormater } from '../../ChatFormatAdapter';
-import { getTokensizer, TokensizerType } from '@/src/LaMAdapter/Tokensize';
-import { formatGoogleChatApiReq, GoogleChatAPIEntry, GoogleChatAPIResp, transGoogleChatApiReq } from '@/src/LaMAdapter/APITool/GoogleChatAPI';
+import { ChatTaskOption, LaMChatMessages } from '@/TextCompletion/ChatTaskInterface';
+import { IChatFormater } from '@/TextCompletion/ChatFormatAdapter';
+import { getTokensizer, TokensizerType } from '@/src/Tokensize';
+import { formatGoogleChatApiReq, GoogleChatAPIEntry, GoogleChatAPIResp, transGoogleChatApiReq,transOpenAIChatApiReq } from 'APITool';
 
 
 export type GoogleChatOption={

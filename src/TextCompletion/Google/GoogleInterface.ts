@@ -1,5 +1,4 @@
-import { GoogleChatOption } from "./Chat/Formater";
-import { GoogleChatModel } from "./Chat/GeminiInterface";
+import { GoogleChatModel,GoogleChatOption } from "./Chat";
 
 
 

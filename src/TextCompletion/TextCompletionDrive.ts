@@ -1,12 +1,11 @@
-import { APIPrice, CredsAdapter, CredsType } from "CredsAdapter";
-import { LaMInterface } from "../LaMInterface";
+import { APIPrice, CredsAdapter, CredsType } from "@sosraciel-lamda/creds-adapter";
+import { LaMInterface } from "@/src/LaMInterface";
 import { ChatFormaterTable, ChatFormaterType, IChatFormater } from "./ChatFormatAdapter";
-import { getTokensizer, TokensizerType } from "../Tokensize";
+import { getTokensizer, TokensizerType } from "@/src/Tokensize";
 import { ChatTaskOption, LaMChatMessages } from "./ChatTaskInterface";
 import { DefChatLaMResult } from "./TextCompletionInterface";
 import { None, SLogger, UtilFunc } from "@zwa73/utils";
-import { RequestFormaterTable, RequestFormaterType } from "../RequestFormatAdapter";
-import { IRequestFormater } from "../RequestFormatAdapter/RequestFormatInterface";
+import { IRequestFormater, RequestFormaterTable, RequestFormaterType } from "@/src/RequestFormatAdapter";
 
 
 

@@ -1,5 +1,5 @@
+import { CredsData } from "@sosraciel-lamda/creds-adapter";
 import { Failed, PromiseStatus, Success } from "@zwa73/utils";
-import { CredsData } from "CredsAdapter";
 /**验证回复可用性并处理错误
  * @async
  * @param rawResp      - 未做处理的回复

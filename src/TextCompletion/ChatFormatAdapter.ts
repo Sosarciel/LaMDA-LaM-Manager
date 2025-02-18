@@ -1,7 +1,7 @@
 import { MPromise, PromiseRetryResult } from "@zwa73/utils";
 import { ChatTaskOption, LaMChatMessages } from "./ChatTaskInterface";
 import { AnyTextCompletionOption, AnyTextCompletionRespFormat, TextCompletionResult } from "./TextCompletionInterface";
-import { TokensizerType } from "../Tokensize";
+import { TokensizerType } from "@/src/Tokensize";
 import { DeepseekChatFormater } from "./Deepseek";
 import { OpenAIChatFormater, OpenAITextFormater } from "./OpenAI";
 import { GoogleChatFormater } from "./Google";

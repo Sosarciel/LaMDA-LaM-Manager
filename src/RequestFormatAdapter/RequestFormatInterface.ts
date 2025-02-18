@@ -1,8 +1,10 @@
-import { APIPrice, CredsData } from "CredsAdapter";
-import { AnyLaMOption } from "../LaMInterface";
+import { AnyLaMOption } from "@/src/LaMInterface";
 import { assertType, PartialOption,PromiseRetryResult, SLogger } from "@zwa73/utils";
-import { AnyTextCompletionRespFormat } from "../TextCompletion";
-import { TextCompleteionModelData } from "../TextCompletion/TextCompletionDrive";
+
+
+
+import { AnyTextCompletionRespFormat,TextCompleteionModelData } from "TextCompletion";
+import { CredsData } from "@sosraciel-lamda/creds-adapter";
 
 
 //超时限制 ms 至少为 10000
