@@ -1,4 +1,4 @@
-import { AnyOpenAITextApiRespFormat, ITextCompletionResp, LaMChatMessages, MessageType } from "../TextCompletion";
+import { AnyOpenAITextApiRespFormat, ITextCompletionResp, LaMChatMessages, MessageType } from "TextCompletion";
 
 
 /**转换一个 OpenAI传统API 模型所用的messageEntry

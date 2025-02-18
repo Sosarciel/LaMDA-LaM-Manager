@@ -1,4 +1,4 @@
-import { AnyOpenAIChatApiRespFormat, ITextCompletionResp, LaMChatMessages, MessageType } from "../TextCompletion";
+import { AnyOpenAIChatApiRespFormat, ITextCompletionResp, LaMChatMessages, MessageType } from "TextCompletion";
 
 
 

@@ -7,5 +7,10 @@
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@anush008/tokenizers": "^0.0.0",
+    "@zwa73/service-manager": "^1.0.13",
+    "@zwa73/utils": "^1.0.199"
+  }
 }

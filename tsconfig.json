@@ -11,6 +11,7 @@
         "declaration": true,
         "baseUrl": ".",
         "paths": {
+            "TextCompletion"    : ["./src/TextCompletion"],
 			"@/src/*"           : ["./src/*"],
 			"@/*"               : ["./*"],
 			"@"                 : ["./src/index"]

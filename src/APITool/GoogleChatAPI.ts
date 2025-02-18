@@ -1,4 +1,4 @@
-import { AnyGoogleChatApiRespFormat, ITextCompletionResp, LaMChatMessages, MessageType } from "../TextCompletion";
+import { AnyGoogleChatApiRespFormat, ITextCompletionResp, LaMChatMessages, MessageType } from "TextCompletion";
 
 
 

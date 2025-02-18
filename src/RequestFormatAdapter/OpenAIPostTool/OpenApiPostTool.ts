@@ -4,7 +4,7 @@ import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
 import { APIPriceResp, CredsAdapter } from 'CredsAdapter';
 import { verifyResp } from './UtilFunction';
 import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '../RequestFormatInterface';
-import { AnyOpenAIApiRespFormat } from '../../TextCompletion';
+import { AnyOpenAIApiRespFormat } from '@/src/TextCompletion';
 
 
 /**适用与 openai 鉴权方式的post工具 */

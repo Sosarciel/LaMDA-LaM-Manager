@@ -1,7 +1,6 @@
 import { None, SLogger } from "@zwa73/utils";
 import { ServiceConfig, ServiceCtorTable2FullCfgTable, ServiceManager, ServiceManagerMainCfg } from "@zwa73/service-manager";
 import path from 'pathe';
-import { CredsAdapter } from "CredsAdapter";
 import { LaMInterface } from "./LaMInterface";
 import { TestModule } from "./TextCompletion/TestModule";
 import { TextCompleteionModel } from "./TextCompletion/TextCompletionDrive";
@@ -23,7 +22,7 @@ const CtorTable = {
 };
 type CtorTable = typeof CtorTable;
 
-type LaMAdapterJsonTable = ServiceManagerMainCfg&{
+export type LaMAdapterJsonTable = ServiceManagerMainCfg&{
     instance_table:{
         [key:string]:ServiceCtorTable2FullCfgTable<CtorTable,ServiceConfig>
     }
@@ -92,15 +91,6 @@ class _LaMAdapter extends ServiceManager<
             return undefined;
         }
         return res;
-    }
-
-    /**保存LaMAdapter
-     * 保存APIKey路由数据
-     * @async
-     */
-    async save():Promise<void>{
-        await CredsAdapter.save();
-        SLogger.info("LaMAdapter.save 完成保存");
     }
 }
 
