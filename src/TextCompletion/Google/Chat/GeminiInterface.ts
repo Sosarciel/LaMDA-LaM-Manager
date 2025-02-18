@@ -3,7 +3,7 @@ import { TextCompleteionModelData } from '@/TextCompletion/TextCompletionDrive';
 
 const DeepseekChatModelDataBase = {
     /**此模型api的标准路径 */
-    endpoint:'/v1beta',
+    endpoint:'/v1beta/models',
     chat_formater:'google_chat',
     tokensizer:'cl100k_base',
     request_formater:'gemini',
@@ -37,5 +37,19 @@ export const Gemini15Pro = {
 export type Gemini15Pro = typeof Gemini15Pro;
 assertType<TextCompleteionModelData>(Gemini15Pro);
 
-export type GoogleChatModelData = Gemini2Flash|Gemini15Pro;
+export const Gemini20Pro = {
+    ...DeepseekChatModelDataBase,
+    id:'gemini-2.0-pro-exp-02-05',
+    alias:'Gemini20Pro',
+    price:{
+        promptPrice:0,
+        completionPrice:0,
+    },
+    valid_account:['Google'],
+} as const;
+
+export type Gemini20Pro = typeof Gemini20Pro;
+assertType<TextCompleteionModelData>(Gemini20Pro);
+
+export type GoogleChatModelData = Gemini2Flash|Gemini15Pro|Gemini20Pro;
 export type GoogleChatModel = GoogleChatModelData['id'];

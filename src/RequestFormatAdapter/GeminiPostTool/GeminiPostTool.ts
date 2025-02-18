@@ -31,7 +31,7 @@ class _GeminiPostTool implements IRequestFormater {
             ? await accountData.instance.procOption(postJson) as any
             : postJson;
 
-        const postPath = `${modelData.endpoint}/models/${modelData.id}:generateContent?key=${accountData.instance.getKey()}`;
+        const postPath = `${modelData.endpoint}/${modelData.id}:generateContent?key=${accountData.instance.getKey()}`;
 
         //组装opt
         const options = {

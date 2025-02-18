@@ -19,7 +19,7 @@
 						"instance_table": {
 							"type": "object",
 							"additionalProperties": {
-								"$ref": "#/definitions/ServiceCtorTable2FullCfgTable<{GPT35Chat:(d:{})=>Promise<TextCompleteionModel>;GPT35Text:(d:{})=>Promise<TextCompleteionModel>;GPT4:(d:{})=>Promise<TextCompleteionModel>;GPT4O:(d:{})=>Promise<TextCompleteionModel>;GPT4OMini:(d:{})=>Promise<TextCompleteionModel>;GPT4Chat:(d:{})=>Promise<TextCompleteionModel>;DeepseekChat:(d:{})=>Promise<TextCompleteionModel>;Gemini2Flash:(d:{})=>Promise<TextCompleteionModel>;Gemini15Pro:(d:{})=>Promise<TextCompleteionModel>;Test:(d:{})=>Promise<TestModule>;},ServiceConfig>"
+								"$ref": "#/definitions/ServiceCtorTable2FullCfgTable<{GPT35Chat:(d:{})=>Promise<TextCompleteionModel>;GPT35Text:(d:{})=>Promise<TextCompleteionModel>;GPT4:(d:{})=>Promise<TextCompleteionModel>;GPT4O:(d:{})=>Promise<TextCompleteionModel>;GPT4OMini:(d:{})=>Promise<TextCompleteionModel>;GPT4Chat:(d:{})=>Promise<TextCompleteionModel>;DeepseekChat:(d:{})=>Promise<TextCompleteionModel>;Gemini2Flash:(d:{})=>Promise<TextCompleteionModel>;Gemini15Pro:(d:{})=>Promise<TextCompleteionModel>;Gemini20Pro:(d:{})=>Promise<TextCompleteionModel>;Test:(d:{})=>Promise<TestModule>;},ServiceConfig>"
 							}
 						}
 					},
@@ -29,7 +29,7 @@
 				}
 			]
 		},
-		"ServiceCtorTable2FullCfgTable<{GPT35Chat:(d:{})=>Promise<TextCompleteionModel>;GPT35Text:(d:{})=>Promise<TextCompleteionModel>;GPT4:(d:{})=>Promise<TextCompleteionModel>;GPT4O:(d:{})=>Promise<TextCompleteionModel>;GPT4OMini:(d:{})=>Promise<TextCompleteionModel>;GPT4Chat:(d:{})=>Promise<TextCompleteionModel>;DeepseekChat:(d:{})=>Promise<TextCompleteionModel>;Gemini2Flash:(d:{})=>Promise<TextCompleteionModel>;Gemini15Pro:(d:{})=>Promise<TextCompleteionModel>;Test:(d:{})=>Promise<TestModule>;},ServiceConfig>": {
+		"ServiceCtorTable2FullCfgTable<{GPT35Chat:(d:{})=>Promise<TextCompleteionModel>;GPT35Text:(d:{})=>Promise<TextCompleteionModel>;GPT4:(d:{})=>Promise<TextCompleteionModel>;GPT4O:(d:{})=>Promise<TextCompleteionModel>;GPT4OMini:(d:{})=>Promise<TextCompleteionModel>;GPT4Chat:(d:{})=>Promise<TextCompleteionModel>;DeepseekChat:(d:{})=>Promise<TextCompleteionModel>;Gemini2Flash:(d:{})=>Promise<TextCompleteionModel>;Gemini15Pro:(d:{})=>Promise<TextCompleteionModel>;Gemini20Pro:(d:{})=>Promise<TextCompleteionModel>;Test:(d:{})=>Promise<TestModule>;},ServiceConfig>": {
 			"description": "将 类型:工厂函数 映射 转换为完整配置文件",
 			"anyOf": [
 				{
@@ -451,6 +451,48 @@
 							]
 						}
 					]
+				},
+				{
+					"allOf": [
+						{
+							"description": "服务基础配置文件",
+							"type": "object",
+							"properties": {
+								"name": {
+									"description": "服务实例名",
+									"type": "string"
+								},
+								"rollback": {
+									"description": "此服务若失败则尝试回退的实例名",
+									"type": "string"
+								},
+								"resource_usage": {
+									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
+									"type": "number"
+								}
+							},
+							"required": [
+								"name"
+							]
+						},
+						{
+							"type": "object",
+							"properties": {
+								"type": {
+									"$ref": "#/definitions/P_10",
+									"description": "服务类型"
+								},
+								"data": {
+									"$ref": "#/definitions/Opt",
+									"description": "此实例的初始化数据"
+								}
+							},
+							"required": [
+								"data",
+								"type"
+							]
+						}
+					]
 				}
 			]
 		},
@@ -495,9 +537,13 @@
 		},
 		"P_8": {
 			"type": "string",
-			"const": "GPT35Text"
+			"const": "Gemini20Pro"
 		},
 		"P_9": {
+			"type": "string",
+			"const": "GPT35Text"
+		},
+		"P_10": {
 			"type": "string",
 			"const": "Test"
 		}
