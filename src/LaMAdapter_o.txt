@@ -1,0 +1,242 @@
+
+import {DefLaMResp,ILaMResp,ILaMInterface, LaMChatMessages, ChatOption} from './LaMInterface';
+import { GPT35Chat, GPT35TurboText, GPT4 } from './OpenAI';
+import  path from 'pathe';
+import {JObject,PartialOption,SLogger, UtilFT, assertType, matchProc, throwError} from '@zwa73/utils';
+import { LaMAdapterJsonTable, LaMType } from './LaMAdapter.schema';
+import { CredsAdapter } from 'CredsAdapter';
+import { TestModule } from './TestModule';
+import { GPT4Chat } from './OpenAI/GPTChat/GPT4Chat';
+import { GPT4O } from './OpenAI/GPTChat/GPT4O';
+
+
+
+
+//#region 缺省option参数
+/**默认的聊天设置 */
+const DEF_CHAT_OPT = {
+    max_tokens       : 16  ,
+    temperature      : 1   ,
+    top_p            : 1   ,
+    stop             : null,
+    presence_penalty : 0   ,
+    frequency_penalty: 0   ,
+    logit_bias       : null,
+    n                : 1   ,
+    preferred_account: [] as [],
+} as const;
+assertType<Partial<ChatOption>>(DEF_CHAT_OPT);
+/**默认设置为可选项的聊天设置 */
+export type PartialChatOption = PartialOption<ChatOption,typeof DEF_CHAT_OPT>;
+//#endregion
+
+/**模型通讯客户端 */
+class LaMAdapter{
+    //#region 构造函数
+    /**运行静态初始化函数 */
+    private static readonly Singleton = LaMAdapter.init();
+    private constructor(){}
+    /**静态异步构造函数
+     * 返回 LaMAdapter 实例
+     * @async
+     * @returns LaMAdapter实例
+     */
+    private static async create():Promise<LaMAdapter>{
+        return new LaMAdapter();
+    }
+    /**静态初始化函数 */
+    private static async init():Promise<LaMAdapter>{
+        const singleton = await LaMAdapter.create();
+        //获取配置表
+        const configPath = path.join(process.cwd(), "data", "LaMAdapter.json");
+        const configTable = await UtilFT.loadJSONFile(configPath) as any as LaMAdapterJsonTable;
+        const promiseList:Array<Promise<void>>= [];
+        for(const key in configTable){
+            const config = configTable[key];
+            const promise = singleton.startLaM(config.lam_type,config.init_option,config.instance_name);
+            promiseList.push(promise);
+        }
+        //等到全部完成初始化
+        await Promise.all(promiseList);
+        return singleton;
+    }
+    /**异步构造函数
+     * 返回 LaMAdapter 单例,不存在则创建
+     * @async
+     * @returns LaMAdapter单例
+     */
+    static async getSingleton():Promise<LaMAdapter>{
+        return await LaMAdapter.Singleton;
+    }
+    //#endregion
+
+    /**有效的模型名称 */
+    static readonly LAM_TYPE = LaMType;
+
+    //表驱动
+    private lamInstancePool    :Record<string,ILaMInterface>={};
+
+    /**启动模型
+     * @param modelType    - 模型名
+     * @param instanceName - 实例名
+     * @return 是否成功启动
+     */
+    async startLaM(modelType:LaMType,initOption:JObject,instanceName:string='default'):Promise<void>{
+        const lamInstance = await matchProc(modelType,{
+            "GPT35Chat":async ()=> GPT35Chat.create(),
+            "GPT35Text":async ()=> GPT35TurboText.create(),
+            "GPT4"     :async ()=> GPT4.create(),
+            "GPT4O"    :async ()=> GPT4O.create(),
+            "Test"     :async ()=> new TestModule(),
+            "GPT4Chat" :async ()=> GPT4Chat.create(),
+        });
+        if(lamInstance!=null){
+            //尝试关闭旧的实例
+            await this.kill(instanceName);
+            //将实例置入
+            this.putInstance(instanceName,lamInstance);
+        }
+    }
+
+    /**置入某个实例
+     * @param instanceName - 实例名
+     * @param lam   - 实例
+     */
+    private putInstance(instanceName:string,lam:ILaMInterface):void{
+        this.lamInstancePool[instanceName]=lam;
+    }
+    /**获取某个实例
+     * @param instanceName - 实例名
+     * @returns tts接口实例
+     */
+    private getInstance(instanceName:string):ILaMInterface|null{
+        return this.lamInstancePool[instanceName];
+    }
+    /**包含某个实例
+     * @param instanceName - 实例名
+     * @returns 实例是否存在
+     */
+    hasInstance(instanceName:string):boolean{
+        return this.lamInstancePool[instanceName]!=null;
+    }
+    /**结束某个实例 并在线程池中移除
+     * @async
+     * @param instanceName         - 实例名 默认为 default
+     */
+    async kill(instanceName:string):Promise<void>{
+        const lam = this.lamInstancePool[instanceName];
+        if(lam!=null){
+            await lam.kill();
+            delete this.lamInstancePool[instanceName];
+        }
+    }
+
+    /**模型路由
+     * @async
+     * @param instanceName - 目标实例名
+     * @returns 结果
+     */
+    async chat(instanceName:string,option:PartialChatOption):Promise<ILaMResp>{
+        const opt = Object.assign({},DEF_CHAT_OPT,option);
+        //可能需要等待selectLaM完成执行
+
+        if(opt.target.length<=0){
+            SLogger.warn("LaMAdapter.generateText 错误 target不应为空");
+            return new DefLaMResp();
+        }
+
+        //路由模型
+        const model = this.getInstance(instanceName);
+        if(model==null || !this.hasInstance(instanceName)){
+            SLogger.warn(`LaMAdapter.generateText 错误 instanceName:${instanceName} 不存在`);
+            return new DefLaMResp();
+        }
+        return await model.chat(opt);
+    }
+
+    /**计算token数量
+     * @async
+     * @param instanceName - 目标实例名
+     * @param messageList - 待计算的通用消息表
+     * @returns token数 null为计算错误
+     */
+    async calcToken(instanceName:string,messageList:LaMChatMessages):Promise<number|null>{
+        let model = this.getInstance(instanceName);
+        if(model==null || !this.hasInstance(instanceName)){
+            SLogger.warn("LaMAdapter.calcToken 错误 instanceName:"+instanceName+" 不存在");
+            return null;
+        }
+        return await model.calcToken(messageList);
+    }
+    /**计算token数量 错误时抛异
+     * @async
+     * @param instanceName - 目标实例名
+     * @param messageList - 待计算的通用消息表
+     * @returns token数 计算错误时抛异
+     */
+    async calcTokenOrThrow(instanceName:string,messageList:LaMChatMessages):Promise<number>{
+        let out = await this.calcToken(instanceName,messageList);
+        if(out==null)
+            throwError("LaMAdapter.calcTokenOrThrow 错误 calcToken 返回 null");
+        return out;
+    }
+    /**token编码
+     * @async
+     * @param instanceName - 目标实例名
+     * @param str - 待编码的字符串
+     * @returns token数组 null为计算错误
+     */
+    async encodeToken(instanceName:string,str:string):Promise<Uint32Array|null>{
+        let model = this.getInstance(instanceName);
+        if(model==null || !this.hasInstance(instanceName)){
+            SLogger.warn("LaMAdapter.encodeToken 错误 instanceName:"+instanceName+" 不存在");
+            return null;
+        }
+        return await model.encodeToken(str);
+    }
+    /**token编码 错误时抛异
+     * @async
+     * @param instanceName - 目标实例名
+     * @param str - 待编码的字符串
+     * @returns token数组 计算错误时抛异
+     */
+    async encodeTokenOrThrow(instanceName:string,str:string):Promise<Uint32Array>{
+        let out = await this.encodeToken(instanceName,str);
+        if(out==null)
+            throwError("LaMAdapter.encodeTokenOrThrow 错误 encodeToken 返回 null");
+        return out;
+    }
+    /**token解码
+     * @async
+     * @param instanceName - 目标实例名
+     * @param arr - 待解码的token数组
+     * @returns 解码的字符串 null为计算错误
+     */
+    async decodeToken(instanceName:string,arr:Uint32Array):Promise<string|null>{
+        let model = this.getInstance(instanceName);
+        if(model==null || !this.hasInstance(instanceName)){
+            SLogger.warn("LaMAdapter.calcToken 错误 instanceName:"+instanceName+" 不存在");
+            return null;
+        }
+        return await model.decodeToken(arr);
+    }
+
+    /**保存LaMAdapter
+     * 保存APIKey路由数据
+     * @async
+     */
+    async save():Promise<void>{
+        await (await CredsAdapter.getSingleton()).save();
+        SLogger.info("LaMAdapter.save 完成保存");
+    }
+}
+
+
+
+
+
+
+
+
+export {LaMAdapter};
+export default LaMAdapter;
