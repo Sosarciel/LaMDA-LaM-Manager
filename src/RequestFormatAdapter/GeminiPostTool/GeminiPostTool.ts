@@ -65,7 +65,7 @@ class _GeminiPostTool implements IRequestFormater {
             return undefined;
         }
         if(respStat===false){
-            SLogger.warn(`GeminiPostTool.postLaM 错误 不成功的状态码 respObj: ${UtilFunc.stringifyJToken(respData??{},{compress:true,space:2})}`);
+            SLogger.warn(`GeminiPostTool.postLaM 错误 不成功的状态码`);
             return undefined;
         }
 
