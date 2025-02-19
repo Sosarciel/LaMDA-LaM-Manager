@@ -60,12 +60,12 @@ class _OpenApiPostTool implements IRequestFormater {
         //post错误
         const respcode = respData?.statusCode ?? 0;
         const respStat = (respcode>=200 && respcode<300) ? true : false;
-        if(respStat===false){
-            SLogger.warn(`OpenAILaMClient.postLaM 错误 不成功的状态码 respObj: ${UtilFunc.stringifyJToken(respData??{},{compress:true,space:2})}`);
+        if(respObj==undefined){
+            SLogger.warn(`OpenApiPostTool.postLaM 错误 未能接收resp`);
             return undefined;
         }
-        if(respObj==undefined){
-            SLogger.warn(`OpenAILaMClient.postLaM 错误 未能接收resp respObj: ${UtilFunc.stringifyJToken(respData??{},{compress:true,space:2})}`);
+        if(respStat===false){
+            SLogger.warn(`OpenApiPostTool.postLaM 错误 不成功的状态码 respObj: ${UtilFunc.stringifyJToken(respData??{},{compress:true,space:2})}`);
             return undefined;
         }
 
