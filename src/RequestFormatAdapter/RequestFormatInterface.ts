@@ -11,7 +11,7 @@ import { CredsData } from "@sosraciel-lamda/creds-adapter";
 //30000
 const POST_TIME_LIMIT = 3_600_000;
 const REPEAT_TIME_LIMIT = 300_000;
-const REPEAT_COUNT = 6;
+const REPEAT_COUNT = 3;
 SLogger.info(`OpenAILaMClient postAsync 超时:${POST_TIME_LIMIT} ms`);
 SLogger.info(`OpenAILaMClient postAsyncRepeat 超时:${REPEAT_TIME_LIMIT} ms`);
 SLogger.info(`OpenAILaMClient postAsyncRepeat 重试:${REPEAT_COUNT} 次`);
