@@ -96,7 +96,7 @@ export class GoogleChatAPIResp implements ITextCompletionResp{
         const sList:string[] = [];
         const choices =  this.resp.candidates;
         for(const choice of choices){
-            if(choice.content.parts[0].text)
+            if (choice?.content?.parts?.[0].text)
                 sList.push(choice.content.parts[0].text);
         }
         return sList;

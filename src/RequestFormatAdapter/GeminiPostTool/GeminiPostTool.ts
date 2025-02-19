@@ -1,4 +1,4 @@
-import { SLogger, UtilCom, UtilFunc } from '@zwa73/utils';
+import { JObject, JToken, SLogger, UtilCom, UtilFunc } from '@zwa73/utils';
 import createHttpsProxyAgent, {HttpsProxyAgent} from 'https-proxy-agent';
 import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
@@ -52,8 +52,8 @@ class _GeminiPostTool implements IRequestFormater {
         const tool = postOpt.protocol == 'http'
             ? UtilCom.http()
             : UtilCom.https();
-        const respData = await tool.postJson()
-            .once({...options,timeout:timeLimit},postJson);
+        const respData = (await tool.postJson()
+            .once({...options,timeout:timeLimit},postJson));
 
         const respObj = respData?.data as AnyGoogleApiRespFormat|undefined;
 
@@ -61,11 +61,11 @@ class _GeminiPostTool implements IRequestFormater {
         const respcode = respData?.statusCode ?? 0;
         const respStat = (respcode>=200 && respcode<300) ? true : false;
         if(respStat===false){
-            SLogger.warn(`OpenAILaMClient.postLaM 错误 不成功的状态码 respObj: ${UtilFunc.stringifyJToken(respData,{compress:true,space:2})}`);
+            SLogger.warn(`OpenAILaMClient.postLaM 错误 不成功的状态码 respObj: ${UtilFunc.stringifyJToken(respData??{},{compress:true,space:2})}`);
             return undefined;
         }
         if(respObj==undefined){
-            SLogger.warn(`OpenAILaMClient.postLaM 错误 未能接收resp respObj: ${UtilFunc.stringifyJToken(respData,{compress:true,space:2})}`);
+            SLogger.warn(`OpenAILaMClient.postLaM 错误 未能接收resp respObj: ${UtilFunc.stringifyJToken(respData??{},{compress:true,space:2})}`);
             return undefined;
         }
 

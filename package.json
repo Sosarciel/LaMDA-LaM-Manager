@@ -1,6 +1,6 @@
 {
 	"name": "@sosraciel-lamda/lam-adapter",
-	"version": "1.0.11",
+	"version": "1.0.13",
 	"main": "index.js",
 	"scripts": {
 		"build": "powershell scripts/build",
@@ -17,7 +17,7 @@
 		"@anush008/tokenizers": "^0.0.0",
 		"@sosraciel-lamda/creds-adapter": "^1.0.6",
 		"@zwa73/service-manager": "^1.0.13",
-		"@zwa73/utils": "^1.0.199"
+		"@zwa73/utils": "^1.0.200"
 	},
 	"files": [
 		"dist",
