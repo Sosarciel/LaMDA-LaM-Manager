@@ -41,11 +41,12 @@ export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{
      * @param content   - 内容
      * @returns 添加后的数组长度
      */
-    pushCharMessage(name:string,content:string):number{
+    pushCharMessage(name:string,content:string,id?:string):number{
         return this.push({
             type:MessageType.CHAT,
             name,
             content,
+            id
         });
     }
     /**在头部添加一条角色entry
@@ -53,11 +54,12 @@ export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{
      * @param content   - 内容
      * @returns 添加后的数组长度
      */
-    unshiftCharMessage(name:string,content:string):number{
+    unshiftCharMessage(name:string,content:string,id?:string):number{
         return this.unshift({
             type:MessageType.CHAT,
             name,
             content,
+            id
         });
     }
     /**添加一条旁白entry
@@ -119,6 +121,8 @@ export type CharMessageEntry={
     name:string;
     /**消息内容 */
     content:string;
+    /**消息id */
+    id?:string;
 }
 /**旁白消息对象 */
 export type SystemMessageEntry={
