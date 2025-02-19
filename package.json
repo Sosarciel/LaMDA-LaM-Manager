@@ -17,7 +17,7 @@
 		"@anush008/tokenizers": "^0.0.0",
 		"@sosraciel-lamda/creds-adapter": "^1.0.6",
 		"@zwa73/service-manager": "^1.0.13",
-		"@zwa73/utils": "^1.0.200"
+		"@zwa73/utils": "^1.0.202"
 	},
 	"files": [
 		"dist",
