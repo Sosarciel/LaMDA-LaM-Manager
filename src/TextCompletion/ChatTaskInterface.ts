@@ -1,4 +1,4 @@
-import { assertType, LogLevel, PartialOption } from "@zwa73/utils";
+import { AnyString, assertType, LogLevel, PartialOption } from "@zwa73/utils";
 import { TextCompletionOptions } from "./TextCompletionInterface";
 import { CredsType } from "@sosraciel-lamda/creds-adapter";
 
@@ -39,9 +39,10 @@ export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{
     /**添加一条角色entry
      * @param name      - 名称
      * @param content   - 内容
+     * @param id        - 消息id 'null'代表未记录的临时消息
      * @returns 添加后的数组长度
      */
-    pushCharMessage(name:string,content:string,id?:string):number{
+    pushCharMessage(name:string,content:string,id:'null'|AnyString):number{
         return this.push({
             type:MessageType.CHAT,
             name,
@@ -52,9 +53,10 @@ export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{
     /**在头部添加一条角色entry
      * @param name      - 名称
      * @param content   - 内容
+     * @param id        - 消息id 'null'代表未记录的临时消息
      * @returns 添加后的数组长度
      */
-    unshiftCharMessage(name:string,content:string,id?:string):number{
+    unshiftCharMessage(name:string,content:string,id:'null'|AnyString):number{
         return this.unshift({
             type:MessageType.CHAT,
             name,
@@ -121,8 +123,8 @@ export type CharMessageEntry={
     name:string;
     /**消息内容 */
     content:string;
-    /**消息id */
-    id?:string;
+    /**消息id 'null'代表未记录的临时消息*/
+    id:'null'|AnyString;
 }
 /**旁白消息对象 */
 export type SystemMessageEntry={
