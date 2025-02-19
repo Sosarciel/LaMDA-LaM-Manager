@@ -39,10 +39,10 @@ export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{
     /**添加一条角色entry
      * @param name      - 名称
      * @param content   - 内容
-     * @param id        - 消息id 'null'代表未记录的临时消息
+     * @param id        - 消息id 未定义代表未记录的临时消息或系统消息
      * @returns 添加后的数组长度
      */
-    pushCharMessage(name:string,content:string,id:'null'|AnyString):number{
+    pushCharMessage(name:string,content:string,id:undefined|string):number{
         return this.push({
             type:MessageType.CHAT,
             name,
@@ -53,10 +53,10 @@ export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{
     /**在头部添加一条角色entry
      * @param name      - 名称
      * @param content   - 内容
-     * @param id        - 消息id 'null'代表未记录的临时消息
+     * @param id        - 消息id 未定义代表未记录的临时消息或系统消息
      * @returns 添加后的数组长度
      */
-    unshiftCharMessage(name:string,content:string,id:'null'|AnyString):number{
+    unshiftCharMessage(name:string,content:string,id:undefined|string):number{
         return this.unshift({
             type:MessageType.CHAT,
             name,
@@ -123,8 +123,8 @@ export type CharMessageEntry={
     name:string;
     /**消息内容 */
     content:string;
-    /**消息id 'null'代表未记录的临时消息*/
-    id:'null'|AnyString;
+    /**消息id 未定义代表未记录的临时消息或系统消息*/
+    id?:string;
 }
 /**旁白消息对象 */
 export type SystemMessageEntry={
