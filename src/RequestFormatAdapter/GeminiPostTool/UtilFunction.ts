@@ -1,5 +1,6 @@
 import { CredsData } from "@sosraciel-lamda/creds-adapter";
-import { Failed, PromiseStatus, Success } from "@zwa73/utils";
+import { Failed, PromiseStatus, SLogger, Success, Terminated } from "@zwa73/utils";
+import { AnyGoogleErrorRespFormat } from "TextCompletion";
 /**验证回复可用性并处理错误
  * @async
  * @param rawResp      - 未做处理的回复
@@ -14,5 +15,28 @@ export const verifyResp = async <T>(
 
     const error = (rawResp as any).error;
     if (error == null) return Success;
-    return Failed;
+
+    SLogger.warn(`verifyResp 开始处理错误:\n${JSON.stringify(rawResp)}`);
+    return checkError(error, accountData);
+};
+
+
+/**验证回复可用性并处理错误
+ * @async
+ * @param rawResp      - 未做处理的回复
+ * @param apiKeyName - 本次回复的APIkey
+ * @returns 可用性
+ */
+export const checkError = async (
+    error: AnyGoogleErrorRespFormat['error'],
+    accountData: CredsData
+): Promise<PromiseStatus> => {
+    switch (error.code) {
+        case 429:
+            SLogger.warn("达到限额");
+            return Terminated;
+        default:
+            SLogger.error("未定义的错误类型");
+            return Terminated;
+    }
 };

@@ -2,7 +2,7 @@ import { SLogger, UtilFunc } from "@zwa73/utils";
 import { getTokensizer } from "@/src/Tokensize";
 import { ChatTaskOption, LaMChatMessages, MessageType } from "./ChatTaskInterface";
 import { LaMInterface } from "@/src/LaMInterface";
-import { AnyOpenAITextApiRespFormat } from "./OpenAI/Resp";
+import { AnyOpenAITextRespFormat } from "./OpenAI/Resp";
 import { OpenAITextAPITextAPIResp } from "APITool";
 
 
@@ -13,7 +13,7 @@ import { OpenAITextAPITextAPIResp } from "APITool";
 export class TestModule implements LaMInterface{
     async chat(options:ChatTaskOption){
         SLogger.http(options);
-        const resp:AnyOpenAITextApiRespFormat = {
+        const resp:AnyOpenAITextRespFormat = {
             "choices": [{
                 "finish_reason": "stop",
                 "index": 0,

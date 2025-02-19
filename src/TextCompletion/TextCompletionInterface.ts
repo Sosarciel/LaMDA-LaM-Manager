@@ -1,8 +1,8 @@
 import { PromiseRetryResult } from "@zwa73/utils";
 import { AnyOpenaiModel, AnyOpenaiOption } from "./OpenAI";
 import { AnyDeepseekModel, AnyDeepseekOption } from "./Deepseek";
-import { AnyOpenAIChatApiRespFormat as AnyOpenAIChatRespFormat, AnyOpenAITextApiRespFormat as AnyOpenAITextRespFormat } from "./OpenAI/Resp";
-import { AnyDeepseekChatRespFormat as AnyDeepseekChatRespFormat } from "./Deepseek/Resp";
+import { AnyOpenAIChatRespFormat, AnyOpenAITextRespFormat as AnyOpenAITextRespFormat } from "./OpenAI/Resp";
+import { AnyDeepseekChatRespFormat } from "./Deepseek/Resp";
 import { AnyGoogleModel, AnyGoogleOption } from "./Google/GoogleInterface";
 import { AnyGoogleChatRespFormat } from "./Google";
 

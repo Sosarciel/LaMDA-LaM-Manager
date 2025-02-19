@@ -5,7 +5,7 @@ import { OpenAIChatAPIEntry, OpenAIChatAPIResp, formatOpenAIChatApiReq, transOpe
 import { ChatTaskOption, LaMChatMessages } from '@/TextCompletion/ChatTaskInterface';
 import { IChatFormater } from '@/TextCompletion/ChatFormatAdapter';
 import { getTokensizer, TokensizerType } from '@/src/Tokensize';
-import { AnyOpenAIChatApiRespFormat } from '../Resp';
+import { AnyOpenAIChatRespFormat } from '../Resp';
 
 /**turbo模型配置 */
 export type OpenAIChatOption={
@@ -61,11 +61,11 @@ class _OpenAIChatFormater implements IChatFormater{
     formatResp(resp:PromiseRetryResult<AnyTextCompletionRespFormat | undefined> | undefined){
         if(resp==null) return DefChatLaMResult;
         return {
-            completed:resp.completed ? new OpenAIChatAPIResp(resp.completed as AnyOpenAIChatApiRespFormat) : undefined,
+            completed:resp.completed ? new OpenAIChatAPIResp(resp.completed as AnyOpenAIChatRespFormat) : undefined,
             pending:resp.pending.map(async p=>{
                 const res = await p;
                 if(p==null) return undefined;
-                return new OpenAIChatAPIResp(res as AnyOpenAIChatApiRespFormat);
+                return new OpenAIChatAPIResp(res as AnyOpenAIChatRespFormat);
             })
         };
     };

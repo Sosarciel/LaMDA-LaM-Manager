@@ -167,7 +167,7 @@ type ContentFilter = ErrorRespFormat&{
 }
 
 /**所有错误格式的合集 */
-export type AnyOpenAIErrorsFormat = OverloadedError|OverloadedError2|RateLimitError1|QuotaError|
+export type AnyOpenAIErrorFormat = OverloadedError|OverloadedError2|RateLimitError1|QuotaError|
 InvalidKeyError|AuthSubrequestError|OtherError1|OtherError2|AccessTerminatedError|
 AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|NewApiErr|ContentFilter;
 
@@ -216,7 +216,7 @@ type ChatChoiceFormat={
     "index":number
 }
 /**所有聊天API的回复格式 */
-export type AnyOpenAIChatApiRespFormat=ChatRespFormat;
+export type AnyOpenAIChatRespFormat=ChatRespFormat;
 
 /**所有文本API的回复格式 */
-export type AnyOpenAITextApiRespFormat=TextRespFormat;
+export type AnyOpenAITextRespFormat=TextRespFormat;

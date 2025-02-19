@@ -4,7 +4,7 @@ import { formatOpenAITextAPITextApiReq, OpenAITextAPITextAPIResp, transOpenAITex
 import { ChatTaskOption, LaMChatMessages } from "@/TextCompletion/ChatTaskInterface";
 import { getTokensizer, TokensizerType } from "@/src/Tokensize";
 import { IChatFormater } from "@/TextCompletion/ChatFormatAdapter";
-import { AnyOpenAITextApiRespFormat } from "../Resp";
+import { AnyOpenAITextRespFormat } from "../Resp";
 import { AnyTextCompletionRespFormat, DefChatLaMResult } from "@/TextCompletion/TextCompletionInterface";
 
 /**turbo模型配置 */
@@ -57,11 +57,11 @@ class _OpenAITextFormater implements IChatFormater{
     formatResp(resp:PromiseRetryResult<AnyTextCompletionRespFormat | undefined> | undefined){
         if(resp==null) return DefChatLaMResult;
         return {
-            completed:resp.completed ? new OpenAITextAPITextAPIResp(resp.completed as AnyOpenAITextApiRespFormat) : undefined,
+            completed:resp.completed ? new OpenAITextAPITextAPIResp(resp.completed as AnyOpenAITextRespFormat) : undefined,
             pending:resp.pending.map(async p=>{
                 const res = await p;
                 if(p==null) return undefined;
-                return new OpenAITextAPITextAPIResp(res as AnyOpenAITextApiRespFormat);
+                return new OpenAITextAPITextAPIResp(res as AnyOpenAITextRespFormat);
             })
         };
     }

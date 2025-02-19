@@ -36,6 +36,21 @@ const resap = {
     modelVersion: "gemini-1.5-flash",
 };
 
+
+
+
+
+type Quoya = {
+    error: {
+        code: 429;
+        message: "Resource has been exhausted (e.g. check quota).";
+        status: "RESOURCE_EXHAUSTED";
+    };
+};
+
+export type AnyGoogleErrorRespFormat = Quoya;
+
+
 type Candidate = {
     content: {
         parts: [{text: string,},],
@@ -67,5 +82,6 @@ type GoogleChatRespFormat = {
     usageMetadata:UsageMetadata,
     modelVersion:string,
 }
+
 
 export type AnyGoogleChatRespFormat = GoogleChatRespFormat;
