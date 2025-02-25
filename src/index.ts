@@ -1,3 +1,3 @@
 export * from './TextCompletion';
-export * from './LaMAdapter';
+export * from './LaMManager';
 export * from './LaMInterface';

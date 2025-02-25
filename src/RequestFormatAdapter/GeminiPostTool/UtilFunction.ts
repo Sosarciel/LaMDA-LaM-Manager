@@ -1,4 +1,4 @@
-import { CredsData } from "@sosraciel-lamda/creds-adapter";
+import { CredsData } from "@sosraciel-lamda/creds-manager";
 import { Failed, PromiseStatus, SLogger, Success, Terminated } from "@zwa73/utils";
 import { AnyGoogleErrorRespFormat } from "TextCompletion";
 /**验证回复可用性并处理错误

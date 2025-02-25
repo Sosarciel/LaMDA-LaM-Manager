@@ -4,7 +4,7 @@ import { assertType, PartialOption,PromiseRetryResult, SLogger } from "@zwa73/ut
 
 
 import { AnyTextCompletionRespFormat,TextCompleteionModelData } from "TextCompletion";
-import { CredsData } from "@sosraciel-lamda/creds-adapter";
+import { CredsData } from "@sosraciel-lamda/creds-manager";
 
 
 //超时限制 ms 至少为 10000

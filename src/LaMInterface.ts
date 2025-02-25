@@ -3,7 +3,7 @@ import { AnyTextCompletionModel, AnyTextCompletionOption, TextCompletionResult, 
 
 
 /**语言模型接口
- * 实现接口以供 LaMAdapter 统一调用
+ * 实现接口以供 LaMManager 统一调用
  */
 export type LaMInterface = ServiceInterface<{
     /**计算token数量

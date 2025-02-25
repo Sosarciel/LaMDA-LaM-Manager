@@ -20,13 +20,13 @@ const CtorTable = {
 };
 type CtorTable = typeof CtorTable;
 
-export type LaMAdapterJsonTable = ServiceManagerMainCfg&{
+export type LaMManagerJsonTable = ServiceManagerMainCfg&{
     instance_table:{
         [key:string]:ServiceCtorTable2FullCfgTable<CtorTable,ServiceConfig>
     }
 }
 
-class _LaMAdapter extends ServiceManager<
+class _LaMManager extends ServiceManager<
     LaMInterface,
     CtorTable>{
     constructor(tablePath:string){
@@ -42,7 +42,7 @@ class _LaMAdapter extends ServiceManager<
         const fopt = Object.assign({},DEF_CHAT_OPT,opt);
         const resp = await this.invoke(instanceName,'chat',fopt);
         if(resp===None){
-            SLogger.warn(`LaMAdapter.chat 错误 instanceName:${instanceName} 不存在`);
+            SLogger.warn(`LaMManager.chat 错误 instanceName:${instanceName} 不存在`);
             return DefChatLaMResult;
         }
         return resp;
@@ -56,7 +56,7 @@ class _LaMAdapter extends ServiceManager<
     async calcToken(instanceName:string,messageList:LaMChatMessages):Promise<number|undefined>{
         const res = await this.invoke(instanceName,'calcToken',messageList);
         if(res==None){
-            SLogger.warn(`LaMAdapter.calcToken 错误 instanceName:${instanceName} 不存在`);
+            SLogger.warn(`LaMManager.calcToken 错误 instanceName:${instanceName} 不存在`);
             return undefined;
         }
         return res;
@@ -70,7 +70,7 @@ class _LaMAdapter extends ServiceManager<
     async encodeToken(instanceName:string,str:string):Promise<number[]|undefined>{
         const res = await this.invoke(instanceName,'encodeToken',str);
         if(res===None){
-            SLogger.warn(`LaMAdapter.encodeToken 错误 instanceName:${instanceName} 不存在`);
+            SLogger.warn(`LaMManager.encodeToken 错误 instanceName:${instanceName} 不存在`);
             return undefined;
         }
         return res;
@@ -84,7 +84,7 @@ class _LaMAdapter extends ServiceManager<
     async decodeToken(instanceName:string,arr:number[]):Promise<string|undefined>{
         const res = await this.invoke(instanceName,'decodeToken',arr);
         if(res===None){
-            SLogger.warn(`LaMAdapter.calcToken 错误 instanceName:${instanceName} 不存在`);
+            SLogger.warn(`LaMManager.calcToken 错误 instanceName:${instanceName} 不存在`);
             return undefined;
         }
         return res;
@@ -92,16 +92,16 @@ class _LaMAdapter extends ServiceManager<
 }
 
 /**语言模型管理器 需先调用init */
-export type LaMAdapter = _LaMAdapter&{init:(tablePath: string)=>void};
-export const LaMAdapter = new Proxy({} as {ins?:_LaMAdapter}, {
+export type LaMManager = _LaMManager&{init:(tablePath: string)=>void};
+export const LaMManager = new Proxy({} as {ins?:_LaMManager}, {
     get(target, prop, receiver) {
         if (prop === 'init') {
             return (tablePath: string) => {
                 if (target.ins==null)
-                    target.ins = new _LaMAdapter(tablePath);
+                    target.ins = new _LaMManager(tablePath);
             };
         }
-        if (target.ins==null) throwError("CredsAdapter 未初始化", 'error');
+        if (target.ins==null) throwError("LaMManager 未初始化", 'error');
         return Reflect.get(target.ins, prop, receiver);
     }
-}) as any as LaMAdapter;
+}) as any as LaMManager;

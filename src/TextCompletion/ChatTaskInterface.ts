@@ -1,6 +1,6 @@
 import { AnyString, assertType, LogLevel, PartialOption } from "@zwa73/utils";
 import { TextCompletionOptions } from "./TextCompletionInterface";
-import { CredsType } from "@sosraciel-lamda/creds-adapter";
+import { CredsType } from "@sosraciel-lamda/creds-manager";
 
 //#region 缺省option参数
 

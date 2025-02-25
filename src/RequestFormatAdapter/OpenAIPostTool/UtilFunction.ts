@@ -1,6 +1,6 @@
 import { Failed, PromiseStatus, SLogger, Success, Terminated } from "@zwa73/utils";
 import { AnyOpenAIErrorFormat } from "@/TextCompletion/OpenAI/Resp";
-import { CredsData } from "@sosraciel-lamda/creds-adapter";
+import { CredsData } from "@sosraciel-lamda/creds-manager";
 
 /**验证回复可用性并处理错误
  * @async

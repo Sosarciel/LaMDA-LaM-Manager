@@ -4,7 +4,7 @@ import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
 import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/RequestFormatAdapter/RequestFormatInterface';
 import { AnyGoogleApiRespFormat, AnyTextCompletionRespFormat } from 'TextCompletion';
-import { APIPriceResp, CredsAdapter } from '@sosraciel-lamda/creds-adapter';
+import { APIPriceResp, CredsManager } from '@sosraciel-lamda/creds-manager';
 
 /**适用与 openai 鉴权方式的post工具 */
 class _GeminiPostTool implements IRequestFormater {
@@ -80,9 +80,9 @@ class _GeminiPostTool implements IRequestFormater {
                 prompt_tokens    :usageObj.promptTokenCount??0,
             };
             //增加token数据
-            await CredsAdapter.calcPrice(accountData,modelData.price,usageResp);
+            await CredsManager.calcPrice(accountData,modelData.price,usageResp);
             //打印理论的当前使用量
-            await CredsAdapter.currUsedUSD(accountData);
+            await CredsManager.currUsedUSD(accountData);
         }else SLogger.error(`OpenAILaMClient.postLaM 警告 无法计费 未找到 usage, respObj:\n${respObj}`);
 
         return respObj;

@@ -1,4 +1,4 @@
-import { APIPrice, CredsAdapter, CredsType } from "@sosraciel-lamda/creds-adapter";
+import { APIPrice, CredsManager, CredsType } from "@sosraciel-lamda/creds-manager";
 import { LaMInterface } from "@/src/LaMInterface";
 import { ChatFormaterTable, ChatFormaterType, IChatFormater } from "./ChatFormatAdapter";
 import { getTokensizer, TokensizerType } from "@/src/Tokensize";
@@ -32,7 +32,7 @@ export class TextCompleteionModel implements LaMInterface{
     }
     async chat(opt: ChatTaskOption) {
         //路由api key 获取有效keyname
-        const accountData = await CredsAdapter.getAvailableAccount(
+        const accountData = await CredsManager.getAvailableAccount(
             ...opt.preferred_account,...this.data.valid_account);
         if(accountData==None){
             SLogger.warn(`DeepseekChat.chat 错误 无有效账号`);
