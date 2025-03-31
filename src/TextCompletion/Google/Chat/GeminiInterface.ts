@@ -51,5 +51,19 @@ export const Gemini20Pro = {
 export type Gemini20Pro = typeof Gemini20Pro;
 assertType<TextCompleteionModelData>(Gemini20Pro);
 
+export const Gemini25Pro = {
+    ...DeepseekChatModelDataBase,
+    id:'gemini-2.5-pro-exp-03-25',
+    alias:'Gemini25Pro',
+    price:{
+        promptPrice:0,
+        completionPrice:0,
+    },
+    valid_account:['Google'],
+} as const;
+
+export type Gemini25Pro = typeof Gemini25Pro;
+assertType<TextCompleteionModelData>(Gemini25Pro);
+
 export type GoogleChatModelData = Gemini2Flash|Gemini15Pro|Gemini20Pro;
 export type GoogleChatModel = GoogleChatModelData['id'];
