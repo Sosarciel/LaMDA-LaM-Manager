@@ -1,5 +1,5 @@
 import { None, SLogger, throwError } from "@zwa73/utils";
-import { ServiceConfig, ServiceManager, ServiceManagerSchema } from "@zwa73/service-manager";
+import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig, ServiceManagerSchema } from "@zwa73/service-manager";
 import { LaMInterface } from "./LaMInterface";
 import { TextCompleteionModel,TestModule,DeepseekChat, DEF_CHAT_OPT, DefChatLaMResult, Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini, LaMChatMessages, PartialChatOption, TextCompletionResult, Gemini20Pro, Gemini25Pro } from "./TextCompletion";
 
@@ -21,7 +21,11 @@ const CtorTable = {
 };
 type CtorTable = typeof CtorTable;
 
-export type LaMManagerJsonTable = ServiceManagerSchema<ServiceConfig<CtorTable>>;
+export type LaMManagerJsonTable = ServiceManagerBaseConfig & {
+    instance_table: {
+        [key: string]: ServiceConfig<CtorTable>;
+    };
+};
 
 class _LaMManager{
     readonly sm;
