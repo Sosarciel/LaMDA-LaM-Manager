@@ -1,5 +1,5 @@
 import { None, SLogger, throwError } from "@zwa73/utils";
-import { ServiceConfig, ServiceCtorTable2FullCfgTable, ServiceManager, ServiceManagerMainCfg } from "@zwa73/service-manager";
+import { ServiceConfig, ServiceManager, ServiceManagerSchema } from "@zwa73/service-manager";
 import { LaMInterface } from "./LaMInterface";
 import { TextCompleteionModel,TestModule,DeepseekChat, DEF_CHAT_OPT, DefChatLaMResult, Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini, LaMChatMessages, PartialChatOption, TextCompletionResult, Gemini20Pro, Gemini25Pro } from "./TextCompletion";
 
@@ -21,17 +21,15 @@ const CtorTable = {
 };
 type CtorTable = typeof CtorTable;
 
-export type LaMManagerJsonTable = ServiceManagerMainCfg&{
-    instance_table:{
-        [key:string]:ServiceCtorTable2FullCfgTable<CtorTable,ServiceConfig>
-    }
-}
+export type LaMManagerJsonTable = ServiceManagerSchema<ServiceConfig<CtorTable>>;
 
-class _LaMManager extends ServiceManager<
-    LaMInterface,
-    CtorTable>{
+class _LaMManager{
+    readonly sm;
     constructor(tablePath:string){
-        super(tablePath,CtorTable);
+        this.sm = ServiceManager.from<CtorTable,LaMInterface>({
+            cfgPath:tablePath,
+            ctorTable:CtorTable
+        });
     }
     /**模型路由
      * @async
@@ -41,7 +39,7 @@ class _LaMManager extends ServiceManager<
      */
     async chat(instanceName:string,opt:PartialChatOption):Promise<TextCompletionResult>{
         const fopt = Object.assign({},DEF_CHAT_OPT,opt);
-        const resp = await this.invoke(instanceName,'chat',fopt);
+        const resp = await this.sm.invoke(instanceName,'chat',fopt);
         if(resp===None){
             SLogger.warn(`LaMManager.chat 错误 instanceName:${instanceName} 不存在`);
             return DefChatLaMResult;
@@ -55,7 +53,7 @@ class _LaMManager extends ServiceManager<
      * @returns token数 null为计算错误
      */
     async calcToken(instanceName:string,messageList:LaMChatMessages):Promise<number|undefined>{
-        const res = await this.invoke(instanceName,'calcToken',messageList);
+        const res = await this.sm.invoke(instanceName,'calcToken',messageList);
         if(res==None){
             SLogger.warn(`LaMManager.calcToken 错误 instanceName:${instanceName} 不存在`);
             return undefined;
@@ -69,7 +67,7 @@ class _LaMManager extends ServiceManager<
      * @returns token数组 null为计算错误
      */
     async encodeToken(instanceName:string,str:string):Promise<number[]|undefined>{
-        const res = await this.invoke(instanceName,'encodeToken',str);
+        const res = await this.sm.invoke(instanceName,'encodeToken',str);
         if(res===None){
             SLogger.warn(`LaMManager.encodeToken 错误 instanceName:${instanceName} 不存在`);
             return undefined;
@@ -83,7 +81,7 @@ class _LaMManager extends ServiceManager<
      * @returns 解码的字符串 null为计算错误
      */
     async decodeToken(instanceName:string,arr:number[]):Promise<string|undefined>{
-        const res = await this.invoke(instanceName,'decodeToken',arr);
+        const res = await this.sm.invoke(instanceName,'decodeToken',arr);
         if(res===None){
             SLogger.warn(`LaMManager.calcToken 错误 instanceName:${instanceName} 不存在`);
             return undefined;
