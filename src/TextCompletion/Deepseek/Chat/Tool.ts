@@ -19,7 +19,7 @@ enum DeepseekChatAPIRole{
 /**清除特殊的对话续写格式 */
 function formatMessage(message?:string):string|undefined{
     if(!message) return undefined;
-    const match = message.match(/^.+?:(.+)$/)
+    const match = message.match(/^.+?:([\s\S]+)$/);
     return match ? match[1] : message;
 }
 
