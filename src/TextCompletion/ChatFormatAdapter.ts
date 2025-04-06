@@ -2,9 +2,9 @@ import { MPromise, PromiseRetryResult } from "@zwa73/utils";
 import { ChatTaskOption, LaMChatMessages } from "./ChatTaskInterface";
 import { AnyTextCompletionOption, AnyTextCompletionRespFormat, TextCompletionResult } from "./TextCompletionInterface";
 import { TokensizerType } from "@/src/Tokensize";
-import { DeepseekChatFormater } from "./Deepseek";
+import { DeepseekChatChatTaskFormater } from "./Deepseek";
 import { OpenAIChatFormater, OpenAITextFormater } from "./OpenAI";
-import { GoogleChatFormater } from "./Google";
+import { GoogleChatChatTaskFormater } from "./Google";
 
 export type IChatFormater = {
     /**检查配置是否有效, 斌返回用于post的JObject */
@@ -16,9 +16,9 @@ export type IChatFormater = {
 }
 
 export const ChatFormaterTable = {
-    deepseek_chat:DeepseekChatFormater,
+    deepseek_chat:DeepseekChatChatTaskFormater,
     openai_chat:OpenAIChatFormater,
     openai_text:OpenAITextFormater,
-    google_chat:GoogleChatFormater
+    google_chat:GoogleChatChatTaskFormater
 };
 export type ChatFormaterType = keyof typeof ChatFormaterTable;

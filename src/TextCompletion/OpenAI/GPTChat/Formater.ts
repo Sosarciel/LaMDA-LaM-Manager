@@ -1,11 +1,10 @@
 import { AnyTextCompletionRespFormat, DefChatLaMResult } from '@/TextCompletion/TextCompletionInterface';
 import { PromiseRetryResult, SLogger } from "@zwa73/utils";
 import { OpenAIChatModel } from "./GPTChatInterface";
-import { OpenAIChatAPIEntry, OpenAIChatAPIResp, formatOpenAIChatApiReq, transOpenAIChatApiReq } from "APITool";
 import { ChatTaskOption, LaMChatMessages } from '@/TextCompletion/ChatTaskInterface';
 import { IChatFormater } from '@/TextCompletion/ChatFormatAdapter';
 import { getTokensizer, TokensizerType } from '@/src/Tokensize';
-import { AnyOpenAIChatRespFormat } from '../Resp';
+import { OpenAIChatAPIEntry, OpenAIChatChatTaskTool } from './Tool';
 
 /**turbo模型配置 */
 export type OpenAIChatOption={
@@ -21,7 +20,7 @@ export type OpenAIChatOption={
     n: number;
 }
 
-class _OpenAIChatFormater implements IChatFormater{
+export const OpenAIChatFormater:IChatFormater={
     formatOption(opt:ChatTaskOption,model:string):OpenAIChatOption|undefined{
         //验证参数
         if(opt.messages==null){
@@ -33,8 +32,8 @@ class _OpenAIChatFormater implements IChatFormater{
             return;
         }
 
-        let turboMessahge = transOpenAIChatApiReq(opt.target,opt.messages);
-        turboMessahge = formatOpenAIChatApiReq(opt.target,turboMessahge);
+        let turboMessahge = OpenAIChatChatTaskTool.transReq(opt.target,opt.messages);
+        turboMessahge = OpenAIChatChatTaskTool.formatReq(opt.target,turboMessahge);
 
         return {
             model             : model as OpenAIChatModel,//模型id
@@ -52,23 +51,22 @@ class _OpenAIChatFormater implements IChatFormater{
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
-    }
+    },
     async calcToken(message: LaMChatMessages, tokensizerType: TokensizerType) {
-        const turboMessage = transOpenAIChatApiReq('unknown',message);
+        const turboMessage = OpenAIChatChatTaskTool.transReq('unknown',message);
         const tokenizer = getTokensizer(tokensizerType);
         return (await tokenizer.encode(JSON.stringify(turboMessage))).length;
-    }
+    },
     formatResp(resp:PromiseRetryResult<AnyTextCompletionRespFormat | undefined> | undefined){
         if(resp==null) return DefChatLaMResult;
         return {
-            completed:resp.completed ? new OpenAIChatAPIResp(resp.completed as AnyOpenAIChatRespFormat) : undefined,
+            completed:resp.completed ? OpenAIChatChatTaskTool.formatResp(resp.completed) : undefined,
             pending:resp.pending.map(async p=>{
                 const res = await p;
-                if(p==null) return undefined;
-                return new OpenAIChatAPIResp(res as AnyOpenAIChatRespFormat);
+                if(res==null) return undefined;
+                return OpenAIChatChatTaskTool.formatResp(res);
             })
         };
-    };
+    },
 }
 
-export const OpenAIChatFormater = new _OpenAIChatFormater();

@@ -1,16 +1,16 @@
 import { PromiseRetryResult, SLogger } from "@zwa73/utils";
 import { DeepseekChatModel } from "./DeepseekChatInterface";
-import { AnyOpenAIChatApiRespFormat, AnyTextCompletionRespFormat, DefChatLaMResult } from "@/TextCompletion/TextCompletionInterface";
-import { OpenAIChatAPIEntry, OpenAIChatAPIResp, formatOpenAIChatApiReq, transOpenAIChatApiReq } from "APITool";
+import { AnyTextCompletionRespFormat, DefChatLaMResult } from "@/TextCompletion/TextCompletionInterface";
 import { ChatTaskOption, LaMChatMessages } from '@/TextCompletion/ChatTaskInterface';
 import { IChatFormater } from "@/TextCompletion/ChatFormatAdapter";
 import { getTokensizer, TokensizerType } from "@/src/Tokensize";
+import { DeepseekChatAPIEntry, DeepseekChatChatTaskTool } from "./Tool";
 
 
 /**Deepseek模型配置 */
 export type DeepseekChatOption={
     model: DeepseekChatModel;
-    messages: OpenAIChatAPIEntry[];
+    messages: DeepseekChatAPIEntry[];
     max_tokens: number;
     temperature: number;
     top_p: number;
@@ -19,7 +19,7 @@ export type DeepseekChatOption={
     frequency_penalty: number;
 }
 
-class _DeepseekChatFormater implements IChatFormater{
+export const DeepseekChatChatTaskFormater:IChatFormater = {
     formatOption(opt:ChatTaskOption,model:string):DeepseekChatOption|undefined{
         //验证参数
         if(opt.messages==null){
@@ -31,8 +31,8 @@ class _DeepseekChatFormater implements IChatFormater{
             return;
         }
 
-        let msg = transOpenAIChatApiReq(opt.target,opt.messages);
-        msg = formatOpenAIChatApiReq(opt.target,msg);
+        let msg = DeepseekChatChatTaskTool.transReq(opt.target,opt.messages);
+        msg = DeepseekChatChatTaskTool.formatReq(opt.target,msg);
 
 
         return {
@@ -48,22 +48,21 @@ class _DeepseekChatFormater implements IChatFormater{
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
-    }
+    },
     formatResp(resp:PromiseRetryResult<AnyTextCompletionRespFormat | undefined> | undefined){
         if(resp==null) return DefChatLaMResult;
         return {
-            completed:resp.completed ? new OpenAIChatAPIResp(resp.completed as AnyOpenAIChatApiRespFormat) : undefined,
+            completed:resp.completed ? DeepseekChatChatTaskTool.formatResp(resp.completed) : undefined,
             pending:resp.pending.map(async p=>{
                 const res = await p;
-                if(p==null) return undefined;
-                return new OpenAIChatAPIResp(res as AnyOpenAIChatApiRespFormat);
+                if(res==null) return undefined;
+                return DeepseekChatChatTaskTool.formatResp(res);
             })
         };
-    };
+    },
     async calcToken(message: LaMChatMessages, tokensizerType: TokensizerType) {
-        const turboMessage = transOpenAIChatApiReq('unknown',message);
+        const turboMessage = DeepseekChatChatTaskTool.transReq('unknown',message);
         const tokenizer = getTokensizer(tokensizerType);
         return (await tokenizer.encode(JSON.stringify(turboMessage))).length;
     }
 }
-export const DeepseekChatFormater = new _DeepseekChatFormater();

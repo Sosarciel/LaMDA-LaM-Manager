@@ -1,10 +1,9 @@
 import { PromiseRetryResult, SLogger } from "@zwa73/utils";
 import { OpenAITextModel } from "./GPTTextInterface";
-import { formatOpenAITextAPITextApiReq, OpenAITextAPITextAPIResp, transOpenAITextAPITextApiReq } from "APITool";
+import { OpenAITextChatTaskTool } from "./Tool";
 import { ChatTaskOption, LaMChatMessages } from "@/TextCompletion/ChatTaskInterface";
 import { getTokensizer, TokensizerType } from "@/src/Tokensize";
 import { IChatFormater } from "@/TextCompletion/ChatFormatAdapter";
-import { AnyOpenAITextRespFormat } from "../Resp";
 import { AnyTextCompletionRespFormat, DefChatLaMResult } from "@/TextCompletion/TextCompletionInterface";
 
 /**turbo模型配置 */
@@ -21,7 +20,7 @@ export type OpenAITextOption = {
     n: number;
 };
 
-class _OpenAITextFormater implements IChatFormater{
+export const OpenAITextFormater:IChatFormater={
     formatOption(opt:ChatTaskOption,model:string):OpenAITextOption|undefined{
         //验证参数
         if(opt.messages==null){
@@ -33,8 +32,8 @@ class _OpenAITextFormater implements IChatFormater{
             return;
         }
         //转换文本
-        let turboMessahge = transOpenAITextAPITextApiReq(opt.messages);
-        turboMessahge = formatOpenAITextAPITextApiReq(opt.target,turboMessahge);
+        let turboMessahge = OpenAITextChatTaskTool.transReq(opt.target,opt.messages);
+        turboMessahge = OpenAITextChatTaskTool.formatReq(opt.target,turboMessahge);
 
 
         return {
@@ -53,23 +52,21 @@ class _OpenAITextFormater implements IChatFormater{
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
-    }
+    },
     formatResp(resp:PromiseRetryResult<AnyTextCompletionRespFormat | undefined> | undefined){
         if(resp==null) return DefChatLaMResult;
         return {
-            completed:resp.completed ? new OpenAITextAPITextAPIResp(resp.completed as AnyOpenAITextRespFormat) : undefined,
+            completed:resp.completed ? OpenAITextChatTaskTool.formatResp(resp.completed) : undefined,
             pending:resp.pending.map(async p=>{
                 const res = await p;
-                if(p==null) return undefined;
-                return new OpenAITextAPITextAPIResp(res as AnyOpenAITextRespFormat);
+                if(res==null) return undefined;
+                return OpenAITextChatTaskTool.formatResp(res);
             })
         };
-    }
+    },
     async calcToken(message: LaMChatMessages, tokensizerType: TokensizerType) {
-        const turboMessage = transOpenAITextAPITextApiReq(message);
+        const turboMessage = OpenAITextChatTaskTool.transReq('unknow',message);
         const tokenizer = getTokensizer(tokensizerType);
         return (await tokenizer.encode(turboMessage)).length;
-    }
-}
-
-export const OpenAITextFormater = new _OpenAITextFormater();
+    },
+};

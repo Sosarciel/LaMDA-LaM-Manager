@@ -1,5 +1,5 @@
 import { AnyString, assertType, LogLevel, PartialOption } from "@zwa73/utils";
-import { TextCompletionOptions } from "./TextCompletionInterface";
+import { AnyOpenAIChatApiRespFormat, AnyTextCompletionRespFormat, ITextCompletionResp, TextCompletionOptions } from "./TextCompletionInterface";
 import { CredsType } from "@sosraciel-lamda/creds-manager";
 
 //#region 缺省option参数
@@ -140,4 +140,20 @@ export enum MessageType{
     CHAT="chat",
     /**旁白/描述 */
     DESC="desc",
+}
+
+export type ChatTaskTool<ModelMessageData> = {
+    /**转换一个模型所用的messageEntry
+     * @param chatTarget      - 聊天目标名
+     * @param messageList     - 待转换的通用消息列表
+     */
+    transReq(chatTarget:string,messageList:LaMChatMessages): ModelMessageData;
+    /**给聊天信息加上询问格式, 让模型稳定输出
+     * @param chatTarget - 聊天目标
+     * @param chatList   - 待格式化的聊天信息
+     * @returns 完成格式化 可以进行post的聊天信息
+     */
+    formatReq(chatTarget:string,chatList:ModelMessageData):ModelMessageData;
+    /**回复包装 */
+    formatResp(resp:AnyTextCompletionRespFormat):ITextCompletionResp;
 }

@@ -1,9 +1,9 @@
-import { AnyGoogleChatApiRespFormat, AnyTextCompletionRespFormat, DefChatLaMResult } from '@/TextCompletion/TextCompletionInterface';
+import { AnyTextCompletionRespFormat, DefChatLaMResult } from '@/TextCompletion/TextCompletionInterface';
 import { PromiseRetryResult, SLogger } from "@zwa73/utils";
 import { ChatTaskOption, LaMChatMessages } from '@/TextCompletion/ChatTaskInterface';
 import { IChatFormater } from '@/TextCompletion/ChatFormatAdapter';
 import { getTokensizer, TokensizerType } from '@/src/Tokensize';
-import { formatGoogleChatApiReq, GoogleChatAPIEntry, GoogleChatAPIResp, transGoogleChatApiReq,transOpenAIChatApiReq } from 'APITool';
+import { GoogleChatAPIEntry, GoogleChatChatTaskTool} from './Tool';
 
 
 export type GoogleChatOption={
@@ -18,7 +18,7 @@ export type GoogleChatOption={
     }
 }
 
-class _GoogleChatFormater implements IChatFormater{
+export const GoogleChatChatTaskFormater:IChatFormater = {
     formatOption(opt:ChatTaskOption,model:string):GoogleChatOption|undefined{
         //验证参数
         if(opt.messages==null){
@@ -30,8 +30,8 @@ class _GoogleChatFormater implements IChatFormater{
             return;
         }
 
-        let turboMessahge = transGoogleChatApiReq(opt.target,opt.messages);
-        turboMessahge = formatGoogleChatApiReq(opt.target,turboMessahge);
+        let turboMessahge = GoogleChatChatTaskTool.transReq(opt.target,opt.messages);
+        turboMessahge = GoogleChatChatTaskTool.formatReq(opt.target,turboMessahge);
 
         return {
             system_instruction:{parts:{text:turboMessahge.define}},
@@ -43,23 +43,21 @@ class _GoogleChatFormater implements IChatFormater{
                 topP:opt.top_p??undefined,
             }
         };
-    }
+    },
     async calcToken(message: LaMChatMessages, tokensizerType: TokensizerType) {
-        const turboMessage = transOpenAIChatApiReq('unknown',message);
+        const turboMessage = GoogleChatChatTaskTool.transReq('unknown',message);
         const tokenizer = getTokensizer(tokensizerType);
         return (await tokenizer.encode(JSON.stringify(turboMessage))).length;
-    }
+    },
     formatResp(resp:PromiseRetryResult<AnyTextCompletionRespFormat | undefined> | undefined){
         if(resp==null) return DefChatLaMResult;
         return {
-            completed:resp.completed ? new GoogleChatAPIResp(resp.completed as AnyGoogleChatApiRespFormat) : undefined,
+            completed:resp.completed ? GoogleChatChatTaskTool.formatResp(resp.completed) : undefined,
             pending:resp.pending.map(async p=>{
                 const res = await p;
-                if(p==null) return undefined;
-                return new GoogleChatAPIResp(res as AnyGoogleChatApiRespFormat);
+                if(res==null) return undefined;
+                return GoogleChatChatTaskTool.formatResp(res);
             })
         };
-    };
-}
-
-export const GoogleChatFormater = new _GoogleChatFormater();
+    }
+};

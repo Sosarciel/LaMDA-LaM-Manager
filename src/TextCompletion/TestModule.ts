@@ -3,10 +3,7 @@ import { getTokensizer } from "@/src/Tokensize";
 import { ChatTaskOption, LaMChatMessages, MessageType } from "./ChatTaskInterface";
 import { LaMInterface } from "@/src/LaMInterface";
 import { AnyOpenAITextRespFormat } from "./OpenAI/Resp";
-import { OpenAITextAPITextAPIResp } from "APITool";
-
-
-
+import { OpenAITextChatTaskTool } from "./OpenAI/GPTText/Tool";
 
 
 /**测试模型 */
@@ -27,7 +24,7 @@ export class TestModule implements LaMInterface{
             "usage": {"completion_tokens":4248,"prompt_tokens":1849,"total_tokens":6097}
         };
         const result = {
-            completed:new OpenAITextAPITextAPIResp(resp),
+            completed:OpenAITextChatTaskTool.formatResp(resp),
             pending:[]
         };
         return result;//DefChatLaMResult;

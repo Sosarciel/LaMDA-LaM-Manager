@@ -55,18 +55,22 @@ export const DefChatLaMResult:TextCompletionResult = {completed:undefined,pendin
 /**文本完成通用结果 */
 export type TextCompletionResult = PromiseRetryResult<ITextCompletionResp>;
 
-
+/**任何文本完成模型 */
 export type AnyTextCompletionModel   = AnyOpenaiModel|AnyDeepseekModel|AnyGoogleModel;
+/**任何文本完成模型的配置 */
 export type AnyTextCompletionOption = AnyDeepseekOption|AnyOpenaiOption|AnyGoogleOption;
 
+/**任何 OpenAI Chat API 接口的回复格式 */
 export type AnyOpenAIChatApiRespFormat  = AnyOpenAIChatRespFormat|AnyDeepseekChatRespFormat;
+/**任何 OpenAI Text API 接口的回复格式 */
 export type AnyOpenAITextApiRespFormat  = AnyOpenAITextRespFormat;
-
+/**任何 OpenAI API 接口的回复格式 */
 export type AnyOpenAIApiRespFormat = AnyOpenAIChatApiRespFormat|AnyOpenAITextApiRespFormat;
-
+/**任何 Google Chat API 接口的回复格式 */
 export type AnyGoogleChatApiRespFormat  = AnyGoogleChatRespFormat;
+/**任何 Google API 接口的回复格式 */
 export type AnyGoogleApiRespFormat = AnyGoogleChatApiRespFormat;
-
+/**任何 文本完成 API 接口的回复格式 */
 export type AnyTextCompletionRespFormat = AnyOpenAIChatApiRespFormat|AnyOpenAITextApiRespFormat|AnyGoogleChatApiRespFormat;
 
 
