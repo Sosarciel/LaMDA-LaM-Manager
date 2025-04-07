@@ -28,32 +28,21 @@ export type TextCompletionOptions={
 }
 
 /**文本完成通用回复 */
-export interface ITextCompletionResp{
-    /**获得选项列表
-     * @returns 选项列表
-     */
-    getChoiceList():string[];
-    /**获得目标选项
-     * @param index - 目标下标
-     * @returns 目标选项
-     */
-    getChoice(index:number):string|null;
-    /**设置目标选项
-     * @param index     - 目标下标
-     * @param content   - 目标内容
-     */
-    setChoice(index:number,content:string):void;
-    /**是否有效
-     * @returns 是否有效
-     */
-    isVaild():boolean;
+export type TextCompletionResp = {
+    /**选项 */
+    choices:{
+        /**文本内容 */
+        content:string;
+    }[];
+    /**是否有效 */
+    vaild: boolean;
 }
 
 /**空结果 */
 export const DefChatLaMResult:TextCompletionResult = {completed:undefined,pending:[]};
 
 /**文本完成通用结果 */
-export type TextCompletionResult = PromiseRetryResult<ITextCompletionResp>;
+export type TextCompletionResult = PromiseRetryResult<TextCompletionResp>;
 
 /**任何文本完成模型 */
 export type AnyTextCompletionModel   = AnyOpenaiModel|AnyDeepseekModel|AnyGoogleModel;

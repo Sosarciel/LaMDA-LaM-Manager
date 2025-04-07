@@ -1,5 +1,5 @@
 import { ChatTaskTool, MessageType } from "@/TextCompletion/ChatTaskInterface";
-import { AnyGoogleChatApiRespFormat, ITextCompletionResp } from "@/TextCompletion/TextCompletionInterface";
+import { AnyGoogleChatApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
 
 
 
@@ -18,48 +18,13 @@ type GoogleChatApiData = {
     define :string;
 }
 
-/**GoogleChatAPI 格式的响应处理
- * @class
- * @param resp - gpt系列模型的响应
- */
-class GoogleChatAPIResp implements ITextCompletionResp{
-    constructor(resp:AnyGoogleChatApiRespFormat){
-        this.resp = resp;
-    }
-    private resp : AnyGoogleChatApiRespFormat;
-    isVaild(){
-        return this.getChoiceList().length>=1;
-    }
-    getChoiceList ():string[]{
-        const sList:string[] = [];
-        const choices =  this.resp.candidates;
-        for(const choice of choices){
-            if (choice?.content?.parts?.[0].text)
-                sList.push(choice.content.parts[0].text);
-        }
-        return sList;
-    }
-    getChoice (index:number):string|null{
-        const choices =  this.resp.candidates;
-        if(index>=choices.length || index<0)
-            return null;
-        return choices[index].content.parts[0].text ?? null;
-    }
-    setChoice (index:number,msg:string):void{
-        const choices =  this.resp.candidates;
-        if(index>=choices.length || index<0)
-            return;
-        choices[index].content.parts[0].text = msg;
-    }
-}
-
 
 export const GoogleChatChatTaskTool:ChatTaskTool<GoogleChatApiData> = {
     transReq(chatTarget,messageList){
         let desc = "";
         let inDesc = true;
         const narr:GoogleChatAPIEntry[] = [];
-    
+
         //处理主消息列表
         for(const item of messageList){
             if(item.type==MessageType.DESC){
@@ -107,5 +72,15 @@ export const GoogleChatChatTaskTool:ChatTaskTool<GoogleChatApiData> = {
         });
         return chatList;
     },
-    formatResp:(resp)=>new GoogleChatAPIResp(resp as AnyGoogleChatApiRespFormat),
+    formatResp:(resp)=>{
+        const fxresp = resp as AnyGoogleChatApiRespFormat;
+        const choices = fxresp.candidates
+            .filter(choice => choice?.content?.parts?.[0]?.text != undefined)
+            .map(choice => ({ content: choice.content.parts[0].text }));
+
+        return {
+            choices,
+            vaild: choices.length > 0,
+        };
+    }
 }

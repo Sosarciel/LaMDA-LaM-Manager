@@ -1,4 +1,4 @@
-import { AnyOpenAIChatApiRespFormat, ITextCompletionResp } from "@/TextCompletion/TextCompletionInterface";
+import { AnyOpenAIChatApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
 import { ChatTaskTool, MessageType } from "@/TextCompletion/ChatTaskInterface";
 
 
@@ -8,46 +8,12 @@ export type OpenAIChatAPIEntry={
     content:string;
 }
 
-enum OpenAIChatAPIRole{
-    User="user",
-    Assistant="assistant",
-    System="system",
-}
-
-/**OpenAIChatAPI格式的响应处理
- * @class
- * @param resp - gpt系列模型的响应
- */
-class OpenAIChatAPIResp implements ITextCompletionResp{
-    constructor(resp:AnyOpenAIChatApiRespFormat){
-        this.resp = resp;
-    }
-    private resp : AnyOpenAIChatApiRespFormat;
-    isVaild(){
-        return this.getChoiceList().length>=1;
-    }
-    getChoiceList ():string[]{
-        const sList:string[] = [];
-        const choices =  this.resp.choices;
-        for(const choice of choices){
-            if(choice.message.content)
-                sList.push(choice.message.content);
-        }
-        return sList;
-    }
-    getChoice (index:number):string|null{
-        const choices =  this.resp.choices;
-        if(index>=choices.length || index<0)
-            return null;
-        return choices[index].message.content ?? null;
-    }
-    setChoice (index:number,msg:string):void{
-        const choices =  this.resp.choices;
-        if(index>=choices.length || index<0)
-            return;
-        choices[index].message.content = msg;
-    }
-}
+export const OpenAIChatAPIRole = {
+    User:"user",
+    Assistant:"assistant",
+    System:"system",
+} as const;
+export type OpenAIChatAPIRole = typeof OpenAIChatAPIRole[keyof typeof OpenAIChatAPIRole];
 
 
 export const OpenAIChatChatTaskTool:ChatTaskTool<OpenAIChatAPIEntry[]> = {
@@ -93,5 +59,14 @@ export const OpenAIChatChatTaskTool:ChatTaskTool<OpenAIChatAPIEntry[]> = {
         });
         return chatList;
     },
-    formatResp:(resp)=> new OpenAIChatAPIResp(resp as AnyOpenAIChatApiRespFormat)
+    formatResp:(resp)=>{
+        const fxresp = resp as AnyOpenAIChatApiRespFormat;
+        const choices = fxresp.choices
+            .filter(choice => choice ?.message?.content!=undefined)
+            .map(choice => ({content:choice .message.content!}));
+        return {
+            choices,
+            vaild:choices.length>0
+        }
+    }
 }

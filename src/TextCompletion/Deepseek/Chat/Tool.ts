@@ -1,5 +1,5 @@
-import { OpenAIChatAPIEntry, OpenAIChatChatTaskTool } from "@/TextCompletion/OpenAI/GPTChat/Tool";
-import { AnyOpenAIChatApiRespFormat, ChatTaskTool, ITextCompletionResp, MessageType } from "TextCompletion";
+import { OpenAIChatAPIEntry, OpenAIChatAPIRole, OpenAIChatChatTaskTool } from "@/TextCompletion/OpenAI/GPTChat/Tool";
+import { ChatTaskTool, MessageType } from "TextCompletion";
 
 
 
@@ -11,11 +11,8 @@ export type DeepseekChatAPIEntry={
     prefix?:boolean;
 }
 
-enum DeepseekChatAPIRole{
-	User="user",
-	Assistant="assistant",
-	System="system",
-}
+const DeepseekChatAPIRole = OpenAIChatAPIRole;
+type DeepseekChatAPIRole = OpenAIChatAPIRole;
 
 /**清除特殊的对话续写格式
  * 暂时无效
@@ -26,43 +23,6 @@ function formatMessage(message?:string):string|undefined{
     return match ? match[1] : message;
 }
 
-/**DeepseekChatAPI格式的响应处理
- * @class
- * @param resp - gpt系列模型的响应
- */
-class DeepseekChatAPIResp implements ITextCompletionResp{
-    constructor(resp:AnyOpenAIChatApiRespFormat){
-        this.resp = resp;
-    }
-    private resp : AnyOpenAIChatApiRespFormat;
-
-
-    isVaild(){
-        return this.getChoiceList().length>=1;
-    }
-    getChoiceList ():string[]{
-        const sList:string[] = [];
-        const choices =  this.resp.choices;
-        for(const choice of choices){
-            const fmsg = (choice.message.content);
-            if(fmsg) sList.push(fmsg);
-        }
-        return sList;
-    }
-    getChoice (index:number):string|null{
-        const choices =  this.resp.choices;
-        if(index>=choices.length || index<0)
-            return null;
-        return (choices[index].message.content) ?? null;
-    }
-    setChoice (index:number,msg:string):void{
-        const choices =  this.resp.choices;
-        if(index>=choices.length || index<0)
-            return;
-        choices[index].message.content = msg;
-    }
-}
-
 /**传统OpenAI系统提示的Tool */
 export const DeepseekChatChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[]> = {
     transReq(chatTarget,messageList){
@@ -71,7 +31,7 @@ export const DeepseekChatChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[]> = {
     formatReq(chatTarget,chatList){
         return OpenAIChatChatTaskTool.formatReq(chatTarget,chatList as unknown as OpenAIChatAPIEntry[]) as unknown as DeepseekChatAPIEntry[];
     },
-    formatResp:(resp)=>new DeepseekChatAPIResp(resp as AnyOpenAIChatApiRespFormat),
+    formatResp:OpenAIChatChatTaskTool.formatResp,
 }
 
 /**使用前缀续写模式的Tool */
@@ -118,5 +78,5 @@ export const DeepseekChatBetaChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[]> =
         ];
         return out;
     },
-    formatResp:(resp)=>new DeepseekChatAPIResp(resp as AnyOpenAIChatApiRespFormat),
+    formatResp:OpenAIChatChatTaskTool.formatResp,
 }

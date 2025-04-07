@@ -1,5 +1,5 @@
-import { AnyString, assertType, LogLevel, PartialOption } from "@zwa73/utils";
-import { AnyOpenAIChatApiRespFormat, AnyTextCompletionRespFormat, ITextCompletionResp, TextCompletionOptions } from "./TextCompletionInterface";
+import { assertType, LogLevel, PartialOption } from "@zwa73/utils";
+import { AnyTextCompletionRespFormat, TextCompletionResp, TextCompletionOptions } from "./TextCompletionInterface";
 import { CredsType } from "@sosraciel-lamda/creds-manager";
 
 //#region 缺省option参数
@@ -155,5 +155,5 @@ export type ChatTaskTool<ModelMessageData> = {
      */
     formatReq(chatTarget:string,chatList:ModelMessageData):ModelMessageData;
     /**回复包装 */
-    formatResp(resp:AnyTextCompletionRespFormat):ITextCompletionResp;
+    formatResp(resp:AnyTextCompletionRespFormat):TextCompletionResp;
 }
