@@ -16,8 +16,9 @@
 	"dependencies": {
 		"@anush008/tokenizers": "^0.0.0",
 		"@sosraciel-lamda/creds-manager": "^1.0.8",
+		"@zwa73/js-utils": "^1.0.20",
 		"@zwa73/service-manager": "^1.0.17",
-		"@zwa73/utils": "^1.0.202"
+		"@zwa73/utils": "^1.0.214"
 	},
 	"files": [
 		"dist",
