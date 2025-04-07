@@ -11,6 +11,7 @@ const DeepseekChatModelDataBase = {
 
 export const DeepseekChat = {
     ...DeepseekChatModelDataBase,
+    chat_formater:'openai_chat',
     id:'deepseek-chat',
     alias:'DeepseekChat',
     price:{
@@ -22,6 +23,22 @@ export const DeepseekChat = {
 } as const;
 export type DeepseekChat = typeof DeepseekChat;
 assertType<TextCompleteionModelData>(DeepseekChat);
+
+
+export const DeepseekChatBeta = {
+    ...DeepseekChatModelDataBase,
+    chat_formater:'deepseek_chat',
+    id:'deepseek-chat',
+    alias:'DeepseekChat',
+    price:{
+        cacheHitPromptPrice:0.0005,
+        promptPrice:0.002,
+        completionPrice:0.008,
+    },
+    valid_account:['Deepseek'],
+} as const;
+export type DeepseekChatBeta = typeof DeepseekChatBeta;
+assertType<TextCompleteionModelData>(DeepseekChatBeta);
 
 export type DeepseekChatModelData = DeepseekChat;
 export type DeepseekChatModel = DeepseekChatModelData['id'];

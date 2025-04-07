@@ -1,23 +1,24 @@
 import { None, SLogger, throwError } from "@zwa73/utils";
 import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig, ServiceManagerSchema } from "@zwa73/service-manager";
 import { LaMInterface } from "./LaMInterface";
-import { TextCompleteionModel,TestModule,DeepseekChat, DEF_CHAT_OPT, DefChatLaMResult, Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini, LaMChatMessages, PartialChatOption, TextCompletionResult, Gemini20Pro, Gemini25Pro } from "./TextCompletion";
+import { TextCompleteionModel,TestModule,DeepseekChat, DEF_CHAT_OPT, DefChatLaMResult, Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini, LaMChatMessages, PartialChatOption, TextCompletionResult, Gemini20Pro, Gemini25Pro, DeepseekChatBeta } from "./TextCompletion";
 
 
 
 const CtorTable = {
-    GPT35Chat     : async (d:{})=> new TextCompleteionModel(GPT35Chat),
-    GPT35Text     : async (d:{})=> new TextCompleteionModel(GPT35Text),
-    GPT4          : async (d:{})=> new TextCompleteionModel(GPT4),
-    GPT4O         : async (d:{})=> new TextCompleteionModel(GPT4O),
-    GPT4OMini     : async (d:{})=> new TextCompleteionModel(GPT4OMini),
-    GPT4Chat      : async (d:{})=> new TextCompleteionModel(GPT4Chat),
-    DeepseekChat  : async (d:{})=> new TextCompleteionModel(DeepseekChat),
-    Gemini2Flash  : async (d:{})=> new TextCompleteionModel(Gemini2Flash),
-    Gemini15Pro   : async (d:{})=> new TextCompleteionModel(Gemini15Pro),
-    Gemini20Pro   : async (d:{})=> new TextCompleteionModel(Gemini20Pro),
-    Gemini25Pro   : async (d:{})=> new TextCompleteionModel(Gemini25Pro),
-    Test          : async (d:{})=> new TestModule(),
+    GPT35Chat           : async (d:{})=> new TextCompleteionModel(GPT35Chat),
+    GPT35Text           : async (d:{})=> new TextCompleteionModel(GPT35Text),
+    GPT4                : async (d:{})=> new TextCompleteionModel(GPT4),
+    GPT4O               : async (d:{})=> new TextCompleteionModel(GPT4O),
+    GPT4OMini           : async (d:{})=> new TextCompleteionModel(GPT4OMini),
+    GPT4Chat            : async (d:{})=> new TextCompleteionModel(GPT4Chat),
+    DeepseekChat        : async (d:{})=> new TextCompleteionModel(DeepseekChat),
+    DeepseekChatBeta    : async (d:{})=> new TextCompleteionModel(DeepseekChatBeta),
+    Gemini2Flash        : async (d:{})=> new TextCompleteionModel(Gemini2Flash),
+    Gemini15Pro         : async (d:{})=> new TextCompleteionModel(Gemini15Pro),
+    Gemini20Pro         : async (d:{})=> new TextCompleteionModel(Gemini20Pro),
+    Gemini25Pro         : async (d:{})=> new TextCompleteionModel(Gemini25Pro),
+    Test                : async (d:{})=> new TestModule(),
 };
 type CtorTable = typeof CtorTable;
 

@@ -2,7 +2,7 @@ import { MPromise, PromiseRetryResult } from "@zwa73/utils";
 import { ChatTaskOption, LaMChatMessages } from "./ChatTaskInterface";
 import { AnyTextCompletionOption, AnyTextCompletionRespFormat, TextCompletionResult } from "./TextCompletionInterface";
 import { TokensizerType } from "@/src/Tokensize";
-import { DeepseekChatChatTaskFormater } from "./Deepseek";
+import { DeepseekChatBetaChatTaskFormater, DeepseekChatChatTaskFormater } from "./Deepseek";
 import { OpenAIChatFormater, OpenAITextFormater } from "./OpenAI";
 import { GoogleChatChatTaskFormater } from "./Google";
 
@@ -17,6 +17,7 @@ export type IChatFormater = {
 
 export const ChatFormaterTable = {
     deepseek_chat:DeepseekChatChatTaskFormater,
+    deepseek_chat_beta:DeepseekChatBetaChatTaskFormater,
     openai_chat:OpenAIChatFormater,
     openai_text:OpenAITextFormater,
     google_chat:GoogleChatChatTaskFormater

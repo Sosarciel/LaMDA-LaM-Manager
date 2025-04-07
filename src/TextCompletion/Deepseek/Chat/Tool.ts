@@ -1,3 +1,4 @@
+import { OpenAIChatAPIEntry, OpenAIChatChatTaskTool } from "@/TextCompletion/OpenAI/GPTChat/Tool";
 import { AnyOpenAIChatApiRespFormat, ChatTaskTool, ITextCompletionResp, MessageType } from "TextCompletion";
 
 
@@ -60,7 +61,19 @@ class DeepseekChatAPIResp implements ITextCompletionResp{
     }
 }
 
+/**传统OpenAI系统提示的Tool */
 export const DeepseekChatChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[]> = {
+    transReq(chatTarget,messageList){
+        return OpenAIChatChatTaskTool.transReq(chatTarget,messageList) as unknown as DeepseekChatAPIEntry[];
+    },
+    formatReq(chatTarget,chatList){
+        return OpenAIChatChatTaskTool.formatReq(chatTarget,chatList as unknown as OpenAIChatAPIEntry[]) as unknown as DeepseekChatAPIEntry[];
+    },
+    formatResp:(resp)=>new DeepseekChatAPIResp(resp as AnyOpenAIChatApiRespFormat),
+}
+
+/**使用前缀续写模式的Tool */
+export const DeepseekChatBetaChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[]> = {
     transReq(chatTarget,messageList){
         const narr:DeepseekChatAPIEntry[] = [];
 
