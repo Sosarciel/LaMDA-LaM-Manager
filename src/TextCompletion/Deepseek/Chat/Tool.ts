@@ -17,7 +17,9 @@ enum DeepseekChatAPIRole{
 	System="system",
 }
 
-/**清除特殊的对话续写格式 */
+/**清除特殊的对话续写格式
+ * 暂时无效
+ */
 function formatMessage(message?:string):string|undefined{
     if(!message) return undefined;
     const match = message.match(/^.+?:([\s\S]+)$/);
@@ -42,7 +44,7 @@ class DeepseekChatAPIResp implements ITextCompletionResp{
         const sList:string[] = [];
         const choices =  this.resp.choices;
         for(const choice of choices){
-            const fmsg = formatMessage(choice.message.content);
+            const fmsg = (choice.message.content);
             if(fmsg) sList.push(fmsg);
         }
         return sList;
@@ -51,7 +53,7 @@ class DeepseekChatAPIResp implements ITextCompletionResp{
         const choices =  this.resp.choices;
         if(index>=choices.length || index<0)
             return null;
-        return formatMessage(choices[index].message.content) ?? null;
+        return (choices[index].message.content) ?? null;
     }
     setChoice (index:number,msg:string):void{
         const choices =  this.resp.choices;
