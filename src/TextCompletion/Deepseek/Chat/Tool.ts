@@ -85,20 +85,23 @@ export const DeepseekChatChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[]> = {
                 }
             }
         }
-    
+
         //处理临时提示
         if(messageList.getTemporaryPrompt().length>0)
             narr[narr.length-1].content += messageList.getTemporaryPrompt();
-    
+
         return narr;
     },
     formatReq(chatTarget,chatList){
-        const rest = chatList.slice(0,-1);
-        const last:DeepseekChatAPIEntry = {
-            ...chatList.at(-1)!,
-            prefix:true
-        }
-        return [...rest,last];
+        const out:DeepseekChatAPIEntry[] = [
+            ...chatList,
+            {
+                role:DeepseekChatAPIRole.Assistant,
+                content:chatTarget+":",
+                prefix:true
+            }
+        ];
+        return out;
     },
     formatResp:(resp)=>new DeepseekChatAPIResp(resp as AnyOpenAIChatApiRespFormat),
 }
