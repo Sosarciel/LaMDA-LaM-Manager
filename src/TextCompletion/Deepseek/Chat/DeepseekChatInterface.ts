@@ -3,15 +3,14 @@ import { TextCompleteionModelData } from '@/TextCompletion/TextCompletionDrive';
 
 const DeepseekChatModelDataBase = {
     /**此模型api的标准路径 */
-    endpoint:'/v1/chat/completions',
-    chat_formater:'deepseek_chat',
     tokensizer:'deepseek',
     request_formater:'openai',
 } as const;
 
 export const DeepseekChat = {
     ...DeepseekChatModelDataBase,
-    chat_formater:'openai_chat',
+    chat_formater:'deepseek_chat',
+    endpoint:'/v1/chat/completions',
     id:'deepseek-chat',
     alias:'DeepseekChat',
     price:{
@@ -27,7 +26,8 @@ assertType<TextCompleteionModelData>(DeepseekChat);
 
 export const DeepseekChatBeta = {
     ...DeepseekChatModelDataBase,
-    chat_formater:'deepseek_chat',
+    chat_formater:'deepseek_chat_beta',
+    endpoint:'/beta/v1/chat/completions',
     id:'deepseek-chat',
     alias:'DeepseekChat',
     price:{
