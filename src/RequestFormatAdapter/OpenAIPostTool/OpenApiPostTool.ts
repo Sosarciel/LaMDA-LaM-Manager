@@ -1,4 +1,4 @@
-import { SLogger, UtilCom, UtilFunc} from '@zwa73/utils';
+import { SLogger, UtilFunc, UtilHttp} from '@zwa73/utils';
 import createHttpsProxyAgent, {HttpsProxyAgent} from 'https-proxy-agent';
 import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
@@ -50,10 +50,11 @@ class _OpenApiPostTool implements IRequestFormater {
 
         //post
         const tool = postOpt.protocol == 'http'
-            ? UtilCom.http()
-            : UtilCom.https();
+            ? UtilHttp.http()
+            : UtilHttp.https();
         const respData = await tool.postJson()
-            .once({...options,timeout:timeLimit},postJson);
+            .finalize({...options,timeout:timeLimit})
+            .once(postJson);
 
         const respObj = respData?.data as AnyOpenAIApiRespFormat|undefined;
 

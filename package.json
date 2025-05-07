@@ -1,6 +1,6 @@
 {
 	"name": "@sosraciel-lamda/lam-manager",
-	"version": "1.0.31",
+	"version": "1.0.32",
 	"main": "index.js",
 	"scripts": {
 		"build": "powershell scripts/build",
@@ -16,9 +16,10 @@
 	"dependencies": {
 		"@anush008/tokenizers": "^0.0.0",
 		"@sosraciel-lamda/creds-manager": "^1.0.8",
-		"@zwa73/js-utils": "^1.0.20",
+		"@zwa73/js-utils": "^1.0.23",
+		"@zwa73/modular-mixer": "^1.0.4",
 		"@zwa73/service-manager": "^1.0.17",
-		"@zwa73/utils": "^1.0.214"
+		"@zwa73/utils": "^1.0.219"
 	},
 	"files": [
 		"dist",
