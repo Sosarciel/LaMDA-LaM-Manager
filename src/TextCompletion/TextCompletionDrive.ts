@@ -42,16 +42,20 @@ export class TextCompleteionModel implements LaMInterface{
 
         const chatOption = await this.chatFormater.formatOption(opt,this.data.id);
         if(chatOption===undefined) return DefChatLaMResult;
+        const fixedOption = accountData.instance.postOption.procOption
+            ? accountData.instance.postOption.procOption(chatOption)
+            : chatOption;
+        if(fixedOption===undefined) return DefChatLaMResult;
 
         opt.logLevel??='http';
         if(opt.logLevel!='none'){
-            SLogger.log(opt.logLevel,`参数: ${UtilFunc.stringifyJToken(chatOption,{compress:true,space:2})}`);
+            SLogger.log(opt.logLevel,`参数: ${UtilFunc.stringifyJToken(fixedOption,{compress:true,space:2})}`);
         }
 
         //重复请求
         const resp = await this.requestFormater.postLaMRepeat({
             accountData,
-            postJson:chatOption,
+            postJson:fixedOption,
             modelData:this.data,
         });
         return this.chatFormater.formatResp(resp);

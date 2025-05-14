@@ -18,6 +18,7 @@ SLogger.info(`OpenAILaMClient postAsyncRepeat 重试:${REPEAT_COUNT} 次`);
 
 
 
+/**请求格式化工具 */
 export type IRequestFormater = {
     /**向 openai模型 发送一个POST请求并接受数据
      * @async

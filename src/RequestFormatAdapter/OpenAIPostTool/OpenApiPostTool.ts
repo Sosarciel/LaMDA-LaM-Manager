@@ -26,9 +26,7 @@ class _OpenApiPostTool implements IRequestFormater {
         const opt = Object.assign({},DEF_POST_LAM_OPT,partialOpt);
         const {accountData,modelData,timeLimit} = opt;
         const postOpt = accountData.instance.postOption;
-        const postJson = postOpt.procOption
-            ? postOpt.procOption(opt.postJson)
-            : opt.postJson;
+        const postJson = opt.postJson;
 
         //组装opt
         const options = {

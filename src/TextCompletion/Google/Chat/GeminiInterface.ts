@@ -53,8 +53,8 @@ assertType<TextCompleteionModelData>(Gemini20Pro);
 
 export const Gemini25Pro = {
     ...DeepseekChatModelDataBase,
-    //id:'gemini-2.5-pro-exp-03-25',
-    id:'gemini-2.5-pro-preview-05-06',
+    id:'gemini-2.5-pro-exp-03-25',
+    //id:'gemini-2.5-pro-preview-05-06',
     alias:'Gemini25Pro',
     price:{
         promptPrice:0.00125,
@@ -68,8 +68,8 @@ assertType<TextCompleteionModelData>(Gemini25Pro);
 
 export const Gemini25ProCompat = {
     ...DeepseekChatModelDataBase,
-    //id:'gemini-2.5-pro-exp-03-25',
-    id:'gemini-2.5-pro-preview-05-06',
+    id:'gemini-2.5-pro-exp-03-25',
+    //id:'gemini-2.5-pro-preview-05-06',
     alias:'Gemini25ProCompat',
     price:{
         promptPrice:0.00125,
