@@ -1,7 +1,7 @@
 import { None, SLogger, throwError } from "@zwa73/utils";
 import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig, ServiceManagerSchema } from "@zwa73/service-manager";
 import { LaMInterface } from "./LaMInterface";
-import { TextCompleteionModel,TestModule,DeepseekChat, DEF_CHAT_OPT, DefChatLaMResult, Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini, LaMChatMessages, PartialChatOption, TextCompletionResult, Gemini20Pro, Gemini25Pro, DeepseekChatBeta } from "./TextCompletion";
+import { TextCompleteionModel,TestModule,DeepseekChat, DEF_CHAT_OPT, DefChatLaMResult, Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini, LaMChatMessages, PartialChatOption, TextCompletionResult, Gemini20Pro, Gemini25Pro, DeepseekChatBeta, Gemini25ProCompat } from "./TextCompletion";
 
 
 
@@ -18,6 +18,7 @@ const CtorTable = {
     Gemini15Pro         : async (d:{})=> new TextCompleteionModel(Gemini15Pro),
     Gemini20Pro         : async (d:{})=> new TextCompleteionModel(Gemini20Pro),
     Gemini25Pro         : async (d:{})=> new TextCompleteionModel(Gemini25Pro),
+    Gemini25ProCompat   : async (d:{})=> new TextCompleteionModel(Gemini25ProCompat),
     Test                : async (d:{})=> new TestModule(),
 };
 type CtorTable = typeof CtorTable;

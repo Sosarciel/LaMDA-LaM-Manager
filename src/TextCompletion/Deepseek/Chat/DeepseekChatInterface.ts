@@ -29,7 +29,7 @@ export const DeepseekChatBeta = {
     chat_formater:'deepseek_chat_beta',
     endpoint:'/beta/v1/chat/completions',
     id:'deepseek-chat',
-    alias:'DeepseekChat',
+    alias:'DeepseekChatBeta',
     price:{
         cacheHitPromptPrice:0.0005,
         promptPrice:0.002,

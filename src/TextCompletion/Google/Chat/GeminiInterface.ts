@@ -66,5 +66,23 @@ export const Gemini25Pro = {
 export type Gemini25Pro = typeof Gemini25Pro;
 assertType<TextCompleteionModelData>(Gemini25Pro);
 
-export type GoogleChatModelData = Gemini2Flash|Gemini15Pro|Gemini20Pro;
+export const Gemini25ProCompat = {
+    ...DeepseekChatModelDataBase,
+    //id:'gemini-2.5-pro-exp-03-25',
+    id:'gemini-2.5-pro-preview-05-06',
+    alias:'Gemini25ProCompat',
+    price:{
+        promptPrice:0.00125,
+        completionPrice:0.01,
+    },
+    valid_account:['Gptge'],
+    endpoint:'/v1/chat/completions',
+    chat_formater:'deepseek_chat',
+    request_formater:'openai',
+} as const;
+
+export type Gemini25ProCompat = typeof Gemini25ProCompat;
+assertType<TextCompleteionModelData>(Gemini25ProCompat);
+
+export type GoogleChatModelData = Gemini2Flash|Gemini15Pro|Gemini20Pro|Gemini25Pro|Gemini25ProCompat;
 export type GoogleChatModel = GoogleChatModelData['id'];
