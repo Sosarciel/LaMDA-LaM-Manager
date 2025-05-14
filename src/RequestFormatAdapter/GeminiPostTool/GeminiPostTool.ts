@@ -75,7 +75,7 @@ class _GeminiPostTool implements IRequestFormater {
         const usageObj = respObj.usageMetadata;
         if(usageObj!=null){
             const usageResp:APIPriceResp = {
-                completion_tokens:usageObj.candidatesTokenCount??0,
+                completion_tokens:usageObj.candidatesTokenCount??0+usageObj.thoughtsTokenCount??0,
                 prompt_tokens    :usageObj.promptTokenCount??0,
             };
             //增加token数据

@@ -75,6 +75,7 @@ type UsageMetadata = {
             tokenCount: 41,
         },
     ],
+    thoughtsTokenCount: number
 }
 
 type GoogleChatRespFormat = {

@@ -28,9 +28,12 @@ export const GoogleChatChatTaskTool:ChatTaskTool<GoogleChatApiData> = {
         //处理主消息列表
         for(const item of messageList){
             if(item.type==MessageType.DESC){
+                //头部说明直接合并
                 if(inDesc){
                     desc += `${item.content}\n`;
-                }else{
+                }
+                //其他作为用户输入
+                else{
                     narr.push({
                         role:GoogleChatAPIRole.User,
                         parts:[{text:item.content}]
