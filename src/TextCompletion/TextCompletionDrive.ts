@@ -45,7 +45,7 @@ export class TextCompleteionModel implements LaMInterface{
 
         opt.logLevel??='http';
         if(opt.logLevel!='none'){
-            SLogger.log(opt.logLevel,UtilFunc.stringifyJToken(chatOption,{compress:true,space:2}));
+            SLogger.log(opt.logLevel,`参数: ${UtilFunc.stringifyJToken(chatOption,{compress:true,space:2})}`);
         }
 
         //重复请求
