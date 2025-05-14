@@ -25,11 +25,9 @@ class _GeminiPostTool implements IRequestFormater {
         const opt = Object.assign({},DEF_POST_LAM_OPT,partialOpt);
         const {accountData,modelData,timeLimit} = opt;
         const postOpt = accountData.instance.postOption;
-        const postJson = opt.postJson;
-
-        //modelNameMap
-        if('model' in postJson && typeof postJson.model === 'string' && postOpt.modelNameMap!=null)
-            postJson.model = (postOpt.modelNameMap[postJson.model]??postJson.model) as any;
+        const postJson = postOpt.procOption
+            ? postOpt.procOption(opt.postJson)
+            : opt.postJson;
 
         const postPath = `${modelData.endpoint}/${modelData.id}:generateContent?key=${accountData.instance.getKey()}`;
 
