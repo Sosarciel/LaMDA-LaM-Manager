@@ -53,11 +53,12 @@ assertType<TextCompleteionModelData>(Gemini20Pro);
 
 export const Gemini25Pro = {
     ...DeepseekChatModelDataBase,
-    id:'gemini-2.5-pro-exp-03-25',
+    //id:'gemini-2.5-pro-exp-03-25',
+    id:'gemini-2.5-pro-preview-05-06',
     alias:'Gemini25Pro',
     price:{
-        promptPrice:0,
-        completionPrice:0,
+        promptPrice:0.00125,
+        completionPrice:0.01,
     },
     valid_account:['Google'],
 } as const;
