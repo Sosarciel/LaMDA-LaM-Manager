@@ -92,7 +92,8 @@ class _GeminiPostTool implements IRequestFormater {
     async postLaMRepeat(partialOpt:PartialPostLaMOption){
         //解构参数
         const opt = Object.assign({},DEF_POST_LAM_OPT,partialOpt);
-        const {accountData,repTimeLimit,repCount,repTimeDelay} = opt;
+        const retryOption = Object.assign({},DEF_POST_LAM_OPT.retryOption,partialOpt.retryOption);
+        const {accountData} = opt;
 
         const client = this;
         //重复post的处理函数
@@ -102,11 +103,7 @@ class _GeminiPostTool implements IRequestFormater {
             //处理反馈 可以视为同步
             return await verifyResp(obj, accountData);
         };
-        return await UtilFunc.retryPromise(procFn,verifyFn,{
-            count       :repCount,
-            tryInterval :repTimeLimit,
-            tryDelay    :repTimeDelay,
-        });
+        return await UtilFunc.retryPromise(procFn,verifyFn,retryOption);
     }
 }
 

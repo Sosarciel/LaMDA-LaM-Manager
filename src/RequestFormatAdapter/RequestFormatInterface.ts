@@ -1,5 +1,5 @@
 import { AnyLaMOption } from "@/src/LaMInterface";
-import { assertType, PartialOption,PromiseRetryResult, SLogger } from "@zwa73/utils";
+import { assertType, PartialOption,PromiseRetries,PromiseRetryResult, SLogger } from "@zwa73/utils";
 
 
 
@@ -47,22 +47,19 @@ export type PostLaMOption={
     accountData:CredsData;
     /**api价格 */
     modelData:TextCompleteionModelData;
-
     /**单个超时时间/毫秒 最小为10000毫秒 -1为不存在 */
     timeLimit:number;
-    /**n毫秒未接到请求时重复请求 最小为10毫秒 <10时为不存在 */
-    repTimeLimit:number;
-    /**最大重复次数 */
-    repCount:number;
-    /**每次重复时延迟x秒再开始重复 默认3 */
-    repTimeDelay:number;
+    /**重试选项 */
+    retryOption:PromiseRetries;
 }
 /**默认的聊天设置 */
 export const DEF_POST_LAM_OPT = {
     timeLimit:POST_TIME_LIMIT,
-    repTimeLimit:REPEAT_TIME_LIMIT,
-    repCount:REPEAT_COUNT,
-    repTimeDelay:3,
+    retryOption:{
+        count:REPEAT_COUNT,
+        tryInterval: REPEAT_TIME_LIMIT,
+        tryDelay: 3,
+    }
 } as const;
 assertType<Partial<PostLaMOption>>(DEF_POST_LAM_OPT);
 /**默认设置为可选项的聊天设置 */
