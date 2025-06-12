@@ -64,7 +64,7 @@ export type GoogleChatCompatOption=Partial<{
     stop: string[]|null;
     presence_penalty: number;
     frequency_penalty: number;
-    thiinking:{
+    thinking:{
         type: "enabled",
         budget_tokens: number,
     }
@@ -97,7 +97,7 @@ export const GoogleChatCompatChatTaskFormater:IChatFormater<GoogleChatCompatOpti
             stop              : opt.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
         };
         if(opt.think_budget!=null){
-            obj.thiinking = {
+            obj.thinking = {
                 type: "enabled",
                 budget_tokens: opt.think_budget
             };
