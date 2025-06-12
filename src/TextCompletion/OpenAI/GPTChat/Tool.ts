@@ -1,6 +1,5 @@
 import { AnyOpenAIChatApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
 import { ChatTaskTool, MessageType } from "@/TextCompletion/ChatTaskInterface";
-import { AnyOpenAIChatRespFormat } from "../Resp";
 
 
 /**用于Turbo模型的消息Entry */
@@ -17,7 +16,7 @@ export const OpenAIChatAPIRole = {
 export type OpenAIChatAPIRole = typeof OpenAIChatAPIRole[keyof typeof OpenAIChatAPIRole];
 
 
-export const OpenAIChatChatTaskTool:ChatTaskTool<OpenAIChatAPIEntry[],AnyOpenAIChatRespFormat> = {
+export const OpenAIChatChatTaskTool:ChatTaskTool<OpenAIChatAPIEntry[],AnyOpenAIChatApiRespFormat> = {
     transReq(chatTarget,messageList){
         const narr:OpenAIChatAPIEntry[] = [];
 

@@ -65,7 +65,7 @@ export class TextCompleteionModel implements LaMInterface{
             modelData:this.config,
             retryOption:accountData.instance.postOption.retryOption,
         });
-        return this.chatFormater.formatResp(resp);
+        return this.chatFormater.formatResult(resp);
     }
     getDefaultOption():TextCompletionOptions{
         return this.data.default_option??{};

@@ -3,7 +3,7 @@ import { OpenAIChatModel } from "./GPTChatInterface";
 import { ChatTaskOption } from '@/TextCompletion/ChatTaskInterface';
 import { IChatFormater } from '@/TextCompletion/ChatFormatAdapter';
 import { OpenAIChatAPIEntry, OpenAIChatChatTaskTool } from './Tool';
-import { AnyOpenAIApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
+import { AnyOpenAIChatApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
 import { commonFormatResp, stringifyCalcToken } from "@/TextCompletion/Utils";
 
 /**turbo模型配置 */
@@ -20,7 +20,7 @@ export type OpenAIChatOption=Partial<{
     n: number;
 }>;
 
-export const OpenAIChatFormater:IChatFormater<OpenAIChatOption,AnyOpenAIApiRespFormat>={
+export const OpenAIChatFormater:IChatFormater<OpenAIChatOption,AnyOpenAIChatApiRespFormat>={
     formatOption(opt:ChatTaskOption,model:string){
         //验证参数
         if(opt.messages==null){
@@ -52,7 +52,7 @@ export const OpenAIChatFormater:IChatFormater<OpenAIChatOption,AnyOpenAIApiRespF
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResp:commonFormatResp(OpenAIChatChatTaskTool),
+    formatResult:commonFormatResp(OpenAIChatChatTaskTool),
     calcToken:stringifyCalcToken(OpenAIChatChatTaskTool),
 }
 

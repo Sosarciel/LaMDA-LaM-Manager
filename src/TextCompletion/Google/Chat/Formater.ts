@@ -49,7 +49,7 @@ export const GoogleChatChatTaskFormater:IChatFormater<GoogleChatOption,AnyGoogle
         };
     },
     calcToken:stringifyCalcToken(GoogleChatChatTaskTool),
-    formatResp:commonFormatResp(GoogleChatChatTaskTool),
+    formatResult:commonFormatResp(GoogleChatChatTaskTool),
 };
 
 
@@ -104,6 +104,6 @@ export const GoogleChatCompatChatTaskFormater:IChatFormater<GoogleChatCompatOpti
         }
         return obj;
     },
-    formatResp:commonFormatResp(GoogleChatCompatChatTaskTool),
+    formatResult:commonFormatResp(GoogleChatCompatChatTaskTool),
     calcToken:stringifyCalcToken(GoogleChatCompatChatTaskTool),
 }

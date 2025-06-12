@@ -1,8 +1,7 @@
 import { ChatTaskTool, MessageType } from "@/TextCompletion/ChatTaskInterface";
-import { OpenAIChatAPIEntry, OpenAIChatAPIRole, OpenAIChatChatTaskTool } from "@/TextCompletion/OpenAI/GPTChat/Tool";
-import { AnyGoogleChatApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
+import { OpenAIChatAPIRole, OpenAIChatChatTaskTool } from "@/TextCompletion/OpenAI/GPTChat/Tool";
 import { AnyGoogleChatRespFormat } from "../Resp";
-import { AnyOpenAIChatRespFormat } from "@/TextCompletion/OpenAI/Resp";
+import { AnyOpenAIChatApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
 
 
 
@@ -98,7 +97,7 @@ export type GoogleChatCompatAPIEntry={
     content:string;
 }
 /**gptge兼容api的Tool */
-export const GoogleChatCompatChatTaskTool:ChatTaskTool<GoogleChatCompatAPIEntry[],AnyOpenAIChatRespFormat> = {
+export const GoogleChatCompatChatTaskTool:ChatTaskTool<GoogleChatCompatAPIEntry[],AnyOpenAIChatApiRespFormat> = {
     transReq(chatTarget,messageList){
         let desc = "";
         let inDesc = true;
@@ -148,8 +147,6 @@ export const GoogleChatCompatChatTaskTool:ChatTaskTool<GoogleChatCompatAPIEntry[
 
         return [{role:OpenAIChatAPIRole.System,content:desc.trim()},...narr];
     },
-    formatReq(chatTarget,chatList){
-        return OpenAIChatChatTaskTool.formatReq(chatTarget,chatList as unknown as OpenAIChatAPIEntry[]) as unknown as GoogleChatCompatAPIEntry[];
-    },
+    formatReq:OpenAIChatChatTaskTool.formatReq,
     formatResp:OpenAIChatChatTaskTool.formatResp,
 }

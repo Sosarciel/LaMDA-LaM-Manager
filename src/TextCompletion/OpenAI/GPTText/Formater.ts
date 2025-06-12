@@ -4,7 +4,7 @@ import { OpenAITextChatTaskTool } from "./Tool";
 import { ChatTaskOption } from "@/TextCompletion/ChatTaskInterface";
 import { IChatFormater } from "@/TextCompletion/ChatFormatAdapter";
 import { AnyOpenAITextRespFormat } from "../Resp";
-import { commonCalcToken, commonFormatResp, stringifyCalcToken } from "@/TextCompletion/Utils";
+import { commonCalcToken, commonFormatResp } from "@/TextCompletion/Utils";
 
 /**turbo模型配置 */
 export type OpenAITextOption = Partial<{
@@ -53,6 +53,6 @@ export const OpenAITextFormater:IChatFormater<OpenAITextOption,AnyOpenAITextResp
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResp:commonFormatResp(OpenAITextChatTaskTool),
+    formatResult:commonFormatResp(OpenAITextChatTaskTool),
     calcToken:commonCalcToken(OpenAITextChatTaskTool),
 };

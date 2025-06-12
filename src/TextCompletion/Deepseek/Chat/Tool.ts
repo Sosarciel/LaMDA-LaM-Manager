@@ -1,7 +1,5 @@
-import { OpenAIChatAPIEntry, OpenAIChatAPIRole, OpenAIChatChatTaskTool } from "@/TextCompletion/OpenAI/GPTChat/Tool";
+import { OpenAIChatAPIRole, OpenAIChatChatTaskTool } from "@/TextCompletion/OpenAI/GPTChat/Tool";
 import { AnyOpenAIApiRespFormat, ChatTaskTool, MessageType } from "TextCompletion";
-import { AnyDeepseekChatRespFormat } from "../Resp";
-import { AnyOpenAIChatRespFormat } from "@/TextCompletion/OpenAI/Resp";
 
 
 
@@ -27,9 +25,7 @@ function formatMessage(message?:string):string|undefined{
 
 /**传统OpenAI系统提示的Tool */
 export const DeepseekChatChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[],AnyOpenAIApiRespFormat> = {
-    transReq(chatTarget,messageList){
-        return OpenAIChatChatTaskTool.transReq(chatTarget,messageList) as unknown as DeepseekChatAPIEntry[];
-    },
+    transReq:OpenAIChatChatTaskTool.transReq,
     formatReq:OpenAIChatChatTaskTool.formatReq,
     formatResp:OpenAIChatChatTaskTool.formatResp,
 }
