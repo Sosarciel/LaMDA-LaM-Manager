@@ -1,25 +1,25 @@
 import { None, SLogger, throwError } from "@zwa73/utils";
-import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig, ServiceManagerSchema } from "@zwa73/service-manager";
+import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig } from "@zwa73/service-manager";
 import { LaMInterface } from "./LaMInterface";
-import { TextCompleteionModel,TestModule,DeepseekChat, DEF_CHAT_OPT, DefChatLaMResult, Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini, LaMChatMessages, PartialChatOption, TextCompletionResult, Gemini20Pro, Gemini25Pro, DeepseekChatBeta, Gemini25ProCompat } from "./TextCompletion";
+import { TextCompleteionModel,TestModule,DeepseekChat, DEF_CHAT_OPT, DefChatLaMResult, Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini, LaMChatMessages, PartialChatOption, TextCompletionResult, Gemini20Pro, Gemini25Pro, DeepseekChatBeta, Gemini25ProCompat, TextCompleteionModelData, TextCompletionOptions } from "./TextCompletion";
 
 
 
 const CtorTable = {
-    GPT35Chat           : async (d:{})=> new TextCompleteionModel(GPT35Chat),
-    GPT35Text           : async (d:{})=> new TextCompleteionModel(GPT35Text),
-    GPT4                : async (d:{})=> new TextCompleteionModel(GPT4),
-    GPT4O               : async (d:{})=> new TextCompleteionModel(GPT4O),
-    GPT4OMini           : async (d:{})=> new TextCompleteionModel(GPT4OMini),
-    GPT4Chat            : async (d:{})=> new TextCompleteionModel(GPT4Chat),
-    DeepseekChat        : async (d:{})=> new TextCompleteionModel(DeepseekChat),
-    DeepseekChatBeta    : async (d:{})=> new TextCompleteionModel(DeepseekChatBeta),
-    Gemini2Flash        : async (d:{})=> new TextCompleteionModel(Gemini2Flash),
-    Gemini15Pro         : async (d:{})=> new TextCompleteionModel(Gemini15Pro),
-    Gemini20Pro         : async (d:{})=> new TextCompleteionModel(Gemini20Pro),
-    Gemini25Pro         : async (d:{})=> new TextCompleteionModel(Gemini25Pro),
-    Gemini25ProCompat   : async (d:{})=> new TextCompleteionModel(Gemini25ProCompat),
-    Test                : async (d:{})=> new TestModule(),
+    GPT35Chat           : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,GPT35Chat),
+    GPT35Text           : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,GPT35Text),
+    GPT4                : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,GPT4),
+    GPT4O               : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,GPT4O),
+    GPT4OMini           : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,GPT4OMini),
+    GPT4Chat            : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,GPT4Chat),
+    DeepseekChat        : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,DeepseekChat),
+    DeepseekChatBeta    : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,DeepseekChatBeta),
+    Gemini2Flash        : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,Gemini2Flash),
+    Gemini15Pro         : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,Gemini15Pro),
+    Gemini20Pro         : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,Gemini20Pro),
+    Gemini25Pro         : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,Gemini25Pro),
+    Gemini25ProCompat   : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,Gemini25ProCompat),
+    Test                : async (d:TextCompleteionModelData)=> new TestModule(),
 };
 type CtorTable = typeof CtorTable;
 
@@ -90,6 +90,15 @@ class _LaMManager{
         const res = await this.sm.invoke(instanceName,'decodeToken',arr);
         if(res===None){
             SLogger.warn(`LaMManager.calcToken 错误 instanceName:${instanceName} 不存在`);
+            return undefined;
+        }
+        return res;
+    }
+    /**获取指定实例的默认选项 */
+    async getDefaultOption(instanceName:string):Promise<TextCompletionOptions|undefined>{
+        const res = await this.sm.invoke(instanceName,'getDefaultOption');
+        if(res===None){
+            SLogger.warn(`LaMManager.getDefaultOption 错误 instanceName:${instanceName} 不存在`);
             return undefined;
         }
         return res;

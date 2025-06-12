@@ -1,6 +1,6 @@
-import { GoogleChatModel,GoogleChatOption } from "./Chat";
+import { GoogleChatCompatOption, GoogleChatModel,GoogleChatOption } from "./Chat";
 
 
 
 export type AnyGoogleModel = GoogleChatModel;
-export type AnyGoogleOption = GoogleChatOption;
+export type AnyGoogleOption = GoogleChatOption|GoogleChatCompatOption;

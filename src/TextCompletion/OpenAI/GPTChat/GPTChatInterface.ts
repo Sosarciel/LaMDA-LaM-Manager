@@ -1,5 +1,5 @@
 import { assertType } from '@zwa73/utils';
-import { TextCompleteionModelData } from '@/TextCompletion/TextCompletionDrive';
+import { TextCompleteionModelConfig } from '@/TextCompletion/TextCompletionDrive';
 
 const OpenAIChatModelDataBase = {
     /**此模型api的标准路径 */
@@ -20,7 +20,7 @@ export const GPT4 = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT4 = typeof GPT4;
-assertType<TextCompleteionModelData>(GPT4);
+assertType<TextCompleteionModelConfig>(GPT4);
 
 export const GPT4Chat = {
     ...OpenAIChatModelDataBase,
@@ -33,7 +33,7 @@ export const GPT4Chat = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT4Chat = typeof GPT4Chat;
-assertType<TextCompleteionModelData>(GPT4Chat);
+assertType<TextCompleteionModelConfig>(GPT4Chat);
 
 export const GPT4O = {
     ...OpenAIChatModelDataBase,
@@ -46,7 +46,7 @@ export const GPT4O = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT4O = typeof GPT4O;
-assertType<TextCompleteionModelData>(GPT4O);
+assertType<TextCompleteionModelConfig>(GPT4O);
 
 export const GPT4OMini = {
     ...OpenAIChatModelDataBase,
@@ -59,7 +59,7 @@ export const GPT4OMini = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT4OMini = typeof GPT4OMini;
-assertType<TextCompleteionModelData>(GPT4OMini);
+assertType<TextCompleteionModelConfig>(GPT4OMini);
 
 export const GPT35Chat = {
     ...OpenAIChatModelDataBase,
@@ -72,7 +72,7 @@ export const GPT35Chat = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT35Chat = typeof GPT35Chat;
-assertType<TextCompleteionModelData>(GPT35Chat);
+assertType<TextCompleteionModelConfig>(GPT35Chat);
 
 export type OpenAIChatModelData =  GPT4 | GPT4Chat | GPT4O | GPT4OMini | GPT35Chat;
 export type OpenAIChatModel =  OpenAIChatModelData['id'];

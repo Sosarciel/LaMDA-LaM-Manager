@@ -1,5 +1,5 @@
 import { assertType } from '@zwa73/utils';
-import { TextCompleteionModelData } from '@/TextCompletion/TextCompletionDrive';
+import { TextCompleteionModelConfig } from '@/TextCompletion/TextCompletionDrive';
 
 const DeepseekChatModelDataBase = {
     /**此模型api的标准路径 */
@@ -21,7 +21,7 @@ export const Gemini2Flash = {
 } as const;
 
 export type Gemini2Flash = typeof Gemini2Flash;
-assertType<TextCompleteionModelData>(Gemini2Flash);
+assertType<TextCompleteionModelConfig>(Gemini2Flash);
 
 export const Gemini15Pro = {
     ...DeepseekChatModelDataBase,
@@ -35,7 +35,7 @@ export const Gemini15Pro = {
 } as const;
 
 export type Gemini15Pro = typeof Gemini15Pro;
-assertType<TextCompleteionModelData>(Gemini15Pro);
+assertType<TextCompleteionModelConfig>(Gemini15Pro);
 
 export const Gemini20Pro = {
     ...DeepseekChatModelDataBase,
@@ -49,7 +49,7 @@ export const Gemini20Pro = {
 } as const;
 
 export type Gemini20Pro = typeof Gemini20Pro;
-assertType<TextCompleteionModelData>(Gemini20Pro);
+assertType<TextCompleteionModelConfig>(Gemini20Pro);
 
 export const Gemini25Pro = {
     ...DeepseekChatModelDataBase,
@@ -64,7 +64,7 @@ export const Gemini25Pro = {
 } as const;
 
 export type Gemini25Pro = typeof Gemini25Pro;
-assertType<TextCompleteionModelData>(Gemini25Pro);
+assertType<TextCompleteionModelConfig>(Gemini25Pro);
 
 export const Gemini25ProCompat = {
     ...DeepseekChatModelDataBase,
@@ -77,12 +77,12 @@ export const Gemini25ProCompat = {
     },
     valid_account:['Gptge'],
     endpoint:'/v1/chat/completions',
-    chat_formater:'deepseek_chat',
+    chat_formater:'google_chat_compat',
     request_formater:'openai',
 } as const;
 
 export type Gemini25ProCompat = typeof Gemini25ProCompat;
-assertType<TextCompleteionModelData>(Gemini25ProCompat);
+assertType<TextCompleteionModelConfig>(Gemini25ProCompat);
 
 export type GoogleChatModelData = Gemini2Flash|Gemini15Pro|Gemini20Pro|Gemini25Pro|Gemini25ProCompat;
 export type GoogleChatModel = GoogleChatModelData['id'];

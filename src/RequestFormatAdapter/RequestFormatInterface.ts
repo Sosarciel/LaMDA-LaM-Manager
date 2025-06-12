@@ -3,7 +3,7 @@ import { assertType, PartialOption,PromiseRetries,PromiseRetryResult, SLogger } 
 
 
 
-import { AnyTextCompletionRespFormat,TextCompleteionModelData } from "TextCompletion";
+import { AnyTextCompletionRespFormat,TextCompleteionModelConfig } from "TextCompletion";
 import { CredsData } from "@sosraciel-lamda/creds-manager";
 
 
@@ -46,7 +46,7 @@ export type PostLaMOption={
     /**账户数据 */
     accountData:CredsData;
     /**api价格 */
-    modelData:TextCompleteionModelData;
+    modelData:TextCompleteionModelConfig;
     /**单个超时时间/毫秒 最小为10000毫秒 -1为不存在 */
     timeLimit:number;
     /**重试选项 */

@@ -144,7 +144,7 @@ export enum MessageType{
     DESC="desc",
 }
 
-export type ChatTaskTool<ModelMessageData> = {
+export type ChatTaskTool<ModelMessageData,RespFormat extends AnyTextCompletionRespFormat> = {
     /**转换一个模型所用的messageEntry
      * @param chatTarget      - 聊天目标名
      * @param messageList     - 待转换的通用消息列表
@@ -157,5 +157,5 @@ export type ChatTaskTool<ModelMessageData> = {
      */
     formatReq(chatTarget:string,chatList:ModelMessageData):ModelMessageData;
     /**回复包装 */
-    formatResp(resp:AnyTextCompletionRespFormat):TextCompletionResp;
+    formatResp(resp:RespFormat):TextCompletionResp;
 }

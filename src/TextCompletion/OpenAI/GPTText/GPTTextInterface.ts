@@ -1,5 +1,5 @@
 import { assertType } from "@zwa73/utils";
-import { TextCompleteionModelData } from "../../TextCompletionDrive";
+import { TextCompleteionModelConfig } from "@/TextCompletion/TextCompletionDrive";
 
 const OpenAITextModelDataBase = {
     endpoint:'/v1/completionss',
@@ -19,7 +19,7 @@ export const GPT35Text = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT35Text = typeof GPT35Text;
-assertType<TextCompleteionModelData>(GPT35Text);
+assertType<TextCompleteionModelConfig>(GPT35Text);
 
 export type OpenAITextModelData = GPT35Text;
 export type OpenAITextModel = OpenAITextModelData['id'];

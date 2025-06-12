@@ -3,44 +3,50 @@ import { LaMInterface } from "@/src/LaMInterface";
 import { ChatFormaterTable, ChatFormaterType, IChatFormater } from "./ChatFormatAdapter";
 import { getTokensizer, TokensizerType } from "@/src/Tokensize";
 import { ChatTaskOption, LaMChatMessages } from "./ChatTaskInterface";
-import { DefChatLaMResult } from "./TextCompletionInterface";
+import { DefChatLaMResult, TextCompletionOptions } from "./TextCompletionInterface";
 import { None, SLogger, UtilFunc } from "@zwa73/utils";
 import { IRequestFormater, RequestFormaterTable, RequestFormaterType } from "@/src/RequestFormatAdapter";
 
 
 
+
+export type TextCompleteionModelData = {
+    /**默认请求选项 */
+    default_option?: TextCompletionOptions;
+}
+
 /**文本完成模型驱动器 */
 export class TextCompleteionModel implements LaMInterface{
-    chatFormater:IChatFormater;
+    chatFormater:IChatFormater<any,any>;
     requestFormater:IRequestFormater;
-    constructor(private data:TextCompleteionModelData){
-        this.chatFormater = ChatFormaterTable[this.data.chat_formater];
-        this.requestFormater = RequestFormaterTable[this.data.request_formater];
+    constructor(private data:TextCompleteionModelData, private config:TextCompleteionModelConfig){
+        this.chatFormater = ChatFormaterTable[this.config.chat_formater];
+        this.requestFormater = RequestFormaterTable[this.config.request_formater];
     }
     isRuning(){return true;}
-    getData(){return {};}
+    getData(){return this.data;}
     async calcToken(message: LaMChatMessages) {
-        return this.chatFormater.calcToken(message,this.data.tokensizer);
+        return this.chatFormater.calcToken(message,this.config.tokensizer);
     }
     async decodeToken(arr: number[]) {
-        const tokenizer = getTokensizer(this.data.tokensizer);
+        const tokenizer = getTokensizer(this.config.tokensizer);
         return tokenizer.decode(arr);
     }
     async encodeToken(str: string) {
-        const tokenizer = getTokensizer(this.data.tokensizer);
+        const tokenizer = getTokensizer(this.config.tokensizer);
         return tokenizer.encode(str);
     }
     async chat(opt: ChatTaskOption) {
         //路由api key 获取有效keyname
         const accountData = await CredsManager.getAvailableAccount(
-            ...opt.preferred_account,...this.data.valid_account);
+            ...opt.preferred_account,...this.config.valid_account);
         if(accountData==None){
             SLogger.warn(`DeepseekChat.chat 错误 无有效账号`);
             return DefChatLaMResult;
         }
         SLogger.info(`当前 account_type: ${accountData.type} account_name: ${accountData.name}`);
 
-        const chatOption = await this.chatFormater.formatOption(opt,this.data.id);
+        const chatOption = await this.chatFormater.formatOption(opt,this.config.id);
         if(chatOption===undefined) return DefChatLaMResult;
         const fixedOption = accountData.instance.postOption.procOption
             ? accountData.instance.postOption.procOption(chatOption)
@@ -56,15 +62,18 @@ export class TextCompleteionModel implements LaMInterface{
         const resp = await this.requestFormater.postLaMRepeat({
             accountData,
             postJson:fixedOption,
-            modelData:this.data,
+            modelData:this.config,
             retryOption:accountData.instance.postOption.retryOption,
         });
         return this.chatFormater.formatResp(resp);
     }
+    getDefaultOption():TextCompletionOptions{
+        return this.data.default_option??{};
+    }
 }
 
-/**文本生成模型数据 */
-export type TextCompleteionModelData = {
+/**文本生成模型配置 */
+export type TextCompleteionModelConfig = {
     /**模型id */
     readonly id: string;
     /**模型别名 */

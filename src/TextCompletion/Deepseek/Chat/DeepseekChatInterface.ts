@@ -1,5 +1,5 @@
 import { assertType } from '@zwa73/utils';
-import { TextCompleteionModelData } from '@/TextCompletion/TextCompletionDrive';
+import { TextCompleteionModelConfig } from '@/TextCompletion/TextCompletionDrive';
 
 const DeepseekChatModelDataBase = {
     /**此模型api的标准路径 */
@@ -21,7 +21,7 @@ export const DeepseekChat = {
     valid_account:['Deepseek','SiliconFlow'],
 } as const;
 export type DeepseekChat = typeof DeepseekChat;
-assertType<TextCompleteionModelData>(DeepseekChat);
+assertType<TextCompleteionModelConfig>(DeepseekChat);
 
 
 export const DeepseekChatBeta = {
@@ -38,7 +38,7 @@ export const DeepseekChatBeta = {
     valid_account:['Deepseek'],
 } as const;
 export type DeepseekChatBeta = typeof DeepseekChatBeta;
-assertType<TextCompleteionModelData>(DeepseekChatBeta);
+assertType<TextCompleteionModelConfig>(DeepseekChatBeta);
 
 export type DeepseekChatModelData = DeepseekChat;
 export type DeepseekChatModel = DeepseekChatModelData['id'];

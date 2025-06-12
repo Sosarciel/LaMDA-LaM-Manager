@@ -1,10 +1,9 @@
-import { AnyTextCompletionRespFormat, DefChatLaMResult } from '@/TextCompletion/TextCompletionInterface';
-import { PromiseRetryResult, SLogger } from "@zwa73/utils";
+import { SLogger } from "@zwa73/utils";
 import { OpenAIChatModel } from "./GPTChatInterface";
-import { ChatTaskOption, LaMChatMessages } from '@/TextCompletion/ChatTaskInterface';
-import { IChatFormater } from '@/TextCompletion/ChatFormatAdapter';
-import { getTokensizer, TokensizerType } from '@/src/Tokensize';
+import { ChatTaskOption } from '@/TextCompletion/ChatTaskInterface';
+import { commonFormatResp, IChatFormater, stringifyCalcToken } from '@/TextCompletion/ChatFormatAdapter';
 import { OpenAIChatAPIEntry, OpenAIChatChatTaskTool } from './Tool';
+import { AnyOpenAIApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
 
 /**turbo模型配置 */
 export type OpenAIChatOption=Partial<{
@@ -20,8 +19,8 @@ export type OpenAIChatOption=Partial<{
     n: number;
 }>;
 
-export const OpenAIChatFormater:IChatFormater={
-    formatOption(opt:ChatTaskOption,model:string):OpenAIChatOption|undefined{
+export const OpenAIChatFormater:IChatFormater<OpenAIChatOption,AnyOpenAIApiRespFormat>={
+    formatOption(opt:ChatTaskOption,model:string){
         //验证参数
         if(opt.messages==null){
             SLogger.warn("TurboOptions 无效 messages为null");
@@ -52,21 +51,7 @@ export const OpenAIChatFormater:IChatFormater={
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    async calcToken(message: LaMChatMessages, tokensizerType: TokensizerType) {
-        const turboMessage = OpenAIChatChatTaskTool.transReq('unknown',message);
-        const tokenizer = getTokensizer(tokensizerType);
-        return (await tokenizer.encode(JSON.stringify(turboMessage))).length;
-    },
-    formatResp(resp:PromiseRetryResult<AnyTextCompletionRespFormat | undefined> | undefined){
-        if(resp==null) return DefChatLaMResult;
-        return {
-            completed:resp.completed ? OpenAIChatChatTaskTool.formatResp(resp.completed) : undefined,
-            pending:resp.pending.map(async p=>{
-                const res = await p;
-                if(res==null) return undefined;
-                return OpenAIChatChatTaskTool.formatResp(res);
-            })
-        };
-    },
+    formatResp:commonFormatResp(OpenAIChatChatTaskTool),
+    calcToken:stringifyCalcToken(OpenAIChatChatTaskTool),
 }
 

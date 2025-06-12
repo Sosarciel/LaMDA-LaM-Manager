@@ -1,10 +1,9 @@
-import { PromiseRetryResult, SLogger } from "@zwa73/utils";
+import { SLogger } from "@zwa73/utils";
 import { DeepseekChatModel } from "./DeepseekChatInterface";
-import { AnyTextCompletionRespFormat, DefChatLaMResult } from "@/TextCompletion/TextCompletionInterface";
-import { ChatTaskOption, LaMChatMessages } from '@/TextCompletion/ChatTaskInterface';
-import { IChatFormater } from "@/TextCompletion/ChatFormatAdapter";
-import { getTokensizer, TokensizerType } from "@/src/Tokensize";
+import { ChatTaskOption } from '@/TextCompletion/ChatTaskInterface';
+import { commonFormatResp, IChatFormater, stringifyCalcToken } from "@/TextCompletion/ChatFormatAdapter";
 import { DeepseekChatAPIEntry, DeepseekChatBetaChatTaskTool, DeepseekChatChatTaskTool } from "./Tool";
+import { AnyDeepseekChatRespFormat } from "../Resp";
 
 
 /**Deepseek模型配置 */
@@ -20,7 +19,7 @@ export type DeepseekChatOption=Partial<{
 }>;
 
 /**传统OpenAI系统提示模式的Formater */
-export const DeepseekChatChatTaskFormater:IChatFormater = {
+export const DeepseekChatChatTaskFormater:IChatFormater<DeepseekChatOption,AnyDeepseekChatRespFormat> = {
     formatOption(opt:ChatTaskOption,model:string):DeepseekChatOption|undefined{
         //验证参数
         if(opt.messages==null){
@@ -50,26 +49,12 @@ export const DeepseekChatChatTaskFormater:IChatFormater = {
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResp(resp:PromiseRetryResult<AnyTextCompletionRespFormat | undefined> | undefined){
-        if(resp==null) return DefChatLaMResult;
-        return {
-            completed:resp.completed ? DeepseekChatChatTaskTool.formatResp(resp.completed) : undefined,
-            pending:resp.pending.map(async p=>{
-                const res = await p;
-                if(res==null) return undefined;
-                return DeepseekChatChatTaskTool.formatResp(res);
-            })
-        };
-    },
-    async calcToken(message: LaMChatMessages, tokensizerType: TokensizerType) {
-        const turboMessage = DeepseekChatChatTaskTool.transReq('unknown',message);
-        const tokenizer = getTokensizer(tokensizerType);
-        return (await tokenizer.encode(JSON.stringify(turboMessage))).length;
-    }
+    formatResp:commonFormatResp(DeepseekChatChatTaskTool),
+    calcToken:stringifyCalcToken(DeepseekChatChatTaskTool),
 }
 
 /**前缀续写模式的Formater */
-export const DeepseekChatBetaChatTaskFormater:IChatFormater = {
+export const DeepseekChatBetaChatTaskFormater:IChatFormater<DeepseekChatOption,AnyDeepseekChatRespFormat> = {
     formatOption(opt:ChatTaskOption,model:string):DeepseekChatOption|undefined{
         //验证参数
         if(opt.messages==null){

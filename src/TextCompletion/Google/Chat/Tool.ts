@@ -1,5 +1,8 @@
 import { ChatTaskTool, MessageType } from "@/TextCompletion/ChatTaskInterface";
+import { OpenAIChatAPIEntry, OpenAIChatAPIRole, OpenAIChatChatTaskTool } from "@/TextCompletion/OpenAI/GPTChat/Tool";
 import { AnyGoogleChatApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
+import { AnyGoogleChatRespFormat } from "../Resp";
+import { AnyOpenAIChatRespFormat } from "@/TextCompletion/OpenAI/Resp";
 
 
 
@@ -19,7 +22,7 @@ type GoogleChatApiData = {
 }
 
 
-export const GoogleChatChatTaskTool:ChatTaskTool<GoogleChatApiData> = {
+export const GoogleChatChatTaskTool:ChatTaskTool<GoogleChatApiData,AnyGoogleChatRespFormat> = {
     transReq(chatTarget,messageList){
         let desc = "";
         let inDesc = true;
@@ -76,8 +79,7 @@ export const GoogleChatChatTaskTool:ChatTaskTool<GoogleChatApiData> = {
         return chatList;
     },
     formatResp:(resp)=>{
-        const fxresp = resp as AnyGoogleChatApiRespFormat;
-        const choices = fxresp.candidates
+        const choices = resp.candidates
             .filter(choice => choice?.content?.parts?.[0]?.text != undefined)
             .map(choice => ({ content: choice.content.parts[0].text }));
 
@@ -86,4 +88,68 @@ export const GoogleChatChatTaskTool:ChatTaskTool<GoogleChatApiData> = {
             vaild: choices.length > 0,
         };
     }
+}
+
+
+
+/**gptge兼容api消息段 */
+export type GoogleChatCompatAPIEntry={
+    role: OpenAIChatAPIRole;
+    content:string;
+}
+/**gptge兼容api的Tool */
+export const GoogleChatCompatChatTaskTool:ChatTaskTool<GoogleChatCompatAPIEntry[],AnyOpenAIChatRespFormat> = {
+    transReq(chatTarget,messageList){
+        let desc = "";
+        let inDesc = true;
+        const narr:GoogleChatCompatAPIEntry[] = [];
+
+        //处理主消息列表
+        for(const item of messageList){
+            if(item.type==MessageType.DESC){
+                //头部说明直接合并 gptge兼容仅支持一条system提示
+                if(inDesc){
+                    desc += `${item.content}\n`;
+                }
+                //其他作为用户输入
+                else{
+                    narr.push({
+                        role:OpenAIChatAPIRole.User,
+                        content:item.content
+                    });
+                }
+            }else{
+                inDesc = false;
+                narr.push({
+                    role:OpenAIChatAPIRole.User,
+                    content:item.name+":"
+                });
+
+                //为目标则视为模型输出
+                if(item.name==chatTarget){
+                    narr.push({
+                        role:OpenAIChatAPIRole.Assistant,
+                        content:item.content
+                    });
+                }
+                //其他视为用户输入
+                else{
+                    narr.push({
+                        role:OpenAIChatAPIRole.User,
+                        content:item.content
+                    });
+                }
+            }
+        }
+
+        //处理临时提示
+        if(messageList.getTemporaryPrompt().length>0)
+            narr[narr.length-1].content += messageList.getTemporaryPrompt();
+
+        return [{role:OpenAIChatAPIRole.System,content:desc.trim()},...narr];
+    },
+    formatReq(chatTarget,chatList){
+        return OpenAIChatChatTaskTool.formatReq(chatTarget,chatList as unknown as OpenAIChatAPIEntry[]) as unknown as GoogleChatCompatAPIEntry[];
+    },
+    formatResp:OpenAIChatChatTaskTool.formatResp,
 }

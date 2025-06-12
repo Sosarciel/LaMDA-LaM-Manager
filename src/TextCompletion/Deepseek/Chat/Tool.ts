@@ -1,11 +1,13 @@
 import { OpenAIChatAPIEntry, OpenAIChatAPIRole, OpenAIChatChatTaskTool } from "@/TextCompletion/OpenAI/GPTChat/Tool";
-import { ChatTaskTool, MessageType } from "TextCompletion";
+import { AnyOpenAIApiRespFormat, ChatTaskTool, MessageType } from "TextCompletion";
+import { AnyDeepseekChatRespFormat } from "../Resp";
+import { AnyOpenAIChatRespFormat } from "@/TextCompletion/OpenAI/Resp";
 
 
 
-/**用于Turbo模型的消息Entry */
+/**用于Deepseek模型的消息Entry */
 export type DeepseekChatAPIEntry={
-	role: DeepseekChatAPIRole;
+	role: OpenAIChatAPIRole;
 	content:string;
     /**指定为前缀补全模式 */
     prefix?:boolean;
@@ -24,18 +26,16 @@ function formatMessage(message?:string):string|undefined{
 }
 
 /**传统OpenAI系统提示的Tool */
-export const DeepseekChatChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[]> = {
+export const DeepseekChatChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[],AnyOpenAIApiRespFormat> = {
     transReq(chatTarget,messageList){
         return OpenAIChatChatTaskTool.transReq(chatTarget,messageList) as unknown as DeepseekChatAPIEntry[];
     },
-    formatReq(chatTarget,chatList){
-        return OpenAIChatChatTaskTool.formatReq(chatTarget,chatList as unknown as OpenAIChatAPIEntry[]) as unknown as DeepseekChatAPIEntry[];
-    },
+    formatReq:OpenAIChatChatTaskTool.formatReq,
     formatResp:OpenAIChatChatTaskTool.formatResp,
 }
 
 /**使用前缀续写模式的Tool */
-export const DeepseekChatBetaChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[]> = {
+export const DeepseekChatBetaChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[],AnyOpenAIApiRespFormat> = {
     transReq(chatTarget,messageList){
         const narr:DeepseekChatAPIEntry[] = [];
 

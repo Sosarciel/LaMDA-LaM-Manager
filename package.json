@@ -1,6 +1,6 @@
 {
 	"name": "@sosraciel-lamda/lam-manager",
-	"version": "1.0.46",
+	"version": "1.0.49",
 	"main": "index.js",
 	"scripts": {
 		"build": "powershell scripts/build",

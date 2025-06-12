@@ -1,10 +1,9 @@
-import { PromiseRetryResult, SLogger } from "@zwa73/utils";
+import { SLogger } from "@zwa73/utils";
 import { OpenAITextModel } from "./GPTTextInterface";
 import { OpenAITextChatTaskTool } from "./Tool";
-import { ChatTaskOption, LaMChatMessages } from "@/TextCompletion/ChatTaskInterface";
-import { getTokensizer, TokensizerType } from "@/src/Tokensize";
-import { IChatFormater } from "@/TextCompletion/ChatFormatAdapter";
-import { AnyTextCompletionRespFormat, DefChatLaMResult } from "@/TextCompletion/TextCompletionInterface";
+import { ChatTaskOption } from "@/TextCompletion/ChatTaskInterface";
+import { commonFormatResp, IChatFormater, stringifyCalcToken } from "@/TextCompletion/ChatFormatAdapter";
+import { AnyOpenAITextRespFormat } from "../Resp";
 
 /**turbo模型配置 */
 export type OpenAITextOption = Partial<{
@@ -20,8 +19,8 @@ export type OpenAITextOption = Partial<{
     n: number;
 }>;
 
-export const OpenAITextFormater:IChatFormater={
-    formatOption(opt:ChatTaskOption,model:string):OpenAITextOption|undefined{
+export const OpenAITextFormater:IChatFormater<OpenAITextOption,AnyOpenAITextRespFormat>={
+    formatOption(opt:ChatTaskOption,model:string){
         //验证参数
         if(opt.messages==null){
             SLogger.warn("TurboOptions 无效 messages为null");
@@ -53,20 +52,6 @@ export const OpenAITextFormater:IChatFormater={
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResp(resp:PromiseRetryResult<AnyTextCompletionRespFormat | undefined> | undefined){
-        if(resp==null) return DefChatLaMResult;
-        return {
-            completed:resp.completed ? OpenAITextChatTaskTool.formatResp(resp.completed) : undefined,
-            pending:resp.pending.map(async p=>{
-                const res = await p;
-                if(res==null) return undefined;
-                return OpenAITextChatTaskTool.formatResp(res);
-            })
-        };
-    },
-    async calcToken(message: LaMChatMessages, tokensizerType: TokensizerType) {
-        const turboMessage = OpenAITextChatTaskTool.transReq('unknow',message);
-        const tokenizer = getTokensizer(tokensizerType);
-        return (await tokenizer.encode(turboMessage)).length;
-    },
+    formatResp:commonFormatResp(OpenAITextChatTaskTool),
+    calcToken:stringifyCalcToken(OpenAITextChatTaskTool),
 };

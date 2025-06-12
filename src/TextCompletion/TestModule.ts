@@ -4,6 +4,7 @@ import { ChatTaskOption, LaMChatMessages, MessageType } from "./ChatTaskInterfac
 import { LaMInterface } from "@/src/LaMInterface";
 import { AnyOpenAITextRespFormat } from "./OpenAI/Resp";
 import { OpenAITextChatTaskTool } from "./OpenAI/GPTText/Tool";
+import { TextCompletionOptions } from "./TextCompletionInterface";
 
 
 /**测试模型 */
@@ -46,5 +47,8 @@ export class TestModule implements LaMInterface{
     }
     async decodeToken(arr: number[]) {
         return getTokensizer("cl100k_base").decode(arr);
+    }
+    getDefaultOption(): TextCompletionOptions {
+        return {}
     }
 }

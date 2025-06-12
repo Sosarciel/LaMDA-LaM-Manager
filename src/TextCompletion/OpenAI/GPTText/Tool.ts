@@ -1,9 +1,9 @@
 import { ChatTaskTool, MessageType } from "@/TextCompletion/ChatTaskInterface";
-import { AnyOpenAITextApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
+import { AnyOpenAITextRespFormat } from "../Resp";
 
 
 
-export const OpenAITextChatTaskTool: ChatTaskTool<string> = {
+export const OpenAITextChatTaskTool: ChatTaskTool<string,AnyOpenAITextRespFormat> = {
     transReq(chatTarget,messageList){
         let ntext="";
 
@@ -24,9 +24,8 @@ export const OpenAITextChatTaskTool: ChatTaskTool<string> = {
         return `${chatText}\n${chatTarget}:`;
     },
     formatResp:(resp)=>{
-        const fxresp = resp as AnyOpenAITextApiRespFormat;
         // 提取 choices 列表
-        const choices = fxresp.choices
+        const choices = resp.choices
             .filter(choice => choice?.text != undefined)
             .map(choice => ({ content: choice.text }));
 

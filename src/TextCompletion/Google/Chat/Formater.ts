@@ -1,9 +1,10 @@
-import { AnyTextCompletionRespFormat, DefChatLaMResult } from '@/TextCompletion/TextCompletionInterface';
-import { PromiseRetryResult, SLogger } from "@zwa73/utils";
-import { ChatTaskOption, LaMChatMessages } from '@/TextCompletion/ChatTaskInterface';
-import { IChatFormater } from '@/TextCompletion/ChatFormatAdapter';
-import { getTokensizer, TokensizerType } from '@/src/Tokensize';
-import { GoogleChatAPIEntry, GoogleChatChatTaskTool} from './Tool';
+import { SLogger } from "@zwa73/utils";
+import { ChatTaskOption } from '@/TextCompletion/ChatTaskInterface';
+import { commonFormatResp, IChatFormater, stringifyCalcToken } from '@/TextCompletion/ChatFormatAdapter';
+import { GoogleChatAPIEntry, GoogleChatChatTaskTool, GoogleChatCompatAPIEntry, GoogleChatCompatChatTaskTool} from './Tool';
+import { GoogleChatModel } from './GeminiInterface';
+import { AnyGoogleChatRespFormat } from "../Resp";
+import { AnyOpenAIChatRespFormat } from "@/TextCompletion/OpenAI/Resp";
 
 
 export type GoogleChatOption={
@@ -19,15 +20,15 @@ export type GoogleChatOption={
     }
 }
 
-export const GoogleChatChatTaskFormater:IChatFormater = {
+export const GoogleChatChatTaskFormater:IChatFormater<GoogleChatOption,AnyGoogleChatRespFormat> = {
     formatOption(opt:ChatTaskOption,model:string):GoogleChatOption|undefined{
         //验证参数
         if(opt.messages==null){
-            SLogger.warn("TurboOptions 无效 messages为null");
+            SLogger.warn("GoogleChatOption 无效 messages为null");
             return;
         }
         if(opt.messages.length==0){
-            SLogger.warn("TurboOptions 无效 messages长度不足");
+            SLogger.warn("GoogleChatOption 无效 messages长度不足");
             return;
         }
 
@@ -46,20 +47,62 @@ export const GoogleChatChatTaskFormater:IChatFormater = {
             }
         };
     },
-    async calcToken(message: LaMChatMessages, tokensizerType: TokensizerType) {
-        const turboMessage = GoogleChatChatTaskTool.transReq('unknown',message);
-        const tokenizer = getTokensizer(tokensizerType);
-        return (await tokenizer.encode(JSON.stringify(turboMessage))).length;
-    },
-    formatResp(resp:PromiseRetryResult<AnyTextCompletionRespFormat | undefined> | undefined){
-        if(resp==null) return DefChatLaMResult;
-        return {
-            completed:resp.completed ? GoogleChatChatTaskTool.formatResp(resp.completed) : undefined,
-            pending:resp.pending.map(async p=>{
-                const res = await p;
-                if(res==null) return undefined;
-                return GoogleChatChatTaskTool.formatResp(res);
-            })
-        };
-    }
+    calcToken:stringifyCalcToken(GoogleChatChatTaskTool),
+    formatResp:commonFormatResp(GoogleChatChatTaskTool),
 };
+
+
+
+/**gptge兼容api选项 */
+export type GoogleChatCompatOption=Partial<{
+    model: GoogleChatModel;
+    messages: GoogleChatCompatAPIEntry[];
+    max_tokens: number;
+    temperature: number;
+    top_p: number;
+    stop: string[]|null;
+    presence_penalty: number;
+    frequency_penalty: number;
+    thiinking:{
+        type: "enabled",
+        budget_tokens: number,
+    }
+}>;
+
+/**gptge兼容api格式化工具 */
+export const GoogleChatCompatChatTaskFormater:IChatFormater<GoogleChatCompatOption,AnyOpenAIChatRespFormat> = {
+    formatOption(opt:ChatTaskOption,model:string):GoogleChatCompatOption|undefined{
+        //验证参数
+        if(opt.messages==null){
+            SLogger.warn("GoogleChatCompatOption 无效 messages为null");
+            return;
+        }
+        if(opt.messages.length==0){
+            SLogger.warn("GoogleChatCompatOption 无效 messages长度不足");
+            return;
+        }
+
+        let msg = GoogleChatCompatChatTaskTool.transReq(opt.target,opt.messages);
+        msg = GoogleChatCompatChatTaskTool.formatReq(opt.target,msg);
+
+        const obj:GoogleChatCompatOption = {
+            model             : model as GoogleChatModel    ,//模型id
+            messages          : msg                         ,//提示
+            max_tokens        : opt.max_tokens              ,//最大生成令牌数
+            temperature       : opt.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题
+            top_p             : opt.top_p                   ,//top_p       权重控制 0为最准确 越大越偏离主题
+            presence_penalty  : opt.presence_penalty        ,//遭遇时将会停止生成的最多4个字符串 "1234"
+            frequency_penalty : opt.frequency_penalty       ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
+            stop              : opt.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
+        };
+        if(opt.think_budget!=null){
+            obj.thiinking = {
+                type: "enabled",
+                budget_tokens: opt.think_budget
+            };
+        }
+        return obj;
+    },
+    formatResp:commonFormatResp(GoogleChatCompatChatTaskTool),
+    calcToken:stringifyCalcToken(GoogleChatCompatChatTaskTool),
+}

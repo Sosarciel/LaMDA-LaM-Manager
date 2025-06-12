@@ -1,5 +1,6 @@
 import { AnyOpenAIChatApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
 import { ChatTaskTool, MessageType } from "@/TextCompletion/ChatTaskInterface";
+import { AnyOpenAIChatRespFormat } from "../Resp";
 
 
 /**用于Turbo模型的消息Entry */
@@ -16,7 +17,7 @@ export const OpenAIChatAPIRole = {
 export type OpenAIChatAPIRole = typeof OpenAIChatAPIRole[keyof typeof OpenAIChatAPIRole];
 
 
-export const OpenAIChatChatTaskTool:ChatTaskTool<OpenAIChatAPIEntry[]> = {
+export const OpenAIChatChatTaskTool:ChatTaskTool<OpenAIChatAPIEntry[],AnyOpenAIChatRespFormat> = {
     transReq(chatTarget,messageList){
         const narr:OpenAIChatAPIEntry[] = [];
 
@@ -60,8 +61,7 @@ export const OpenAIChatChatTaskTool:ChatTaskTool<OpenAIChatAPIEntry[]> = {
         return chatList;
     },
     formatResp:(resp)=>{
-        const fxresp = resp as AnyOpenAIChatApiRespFormat;
-        const choices = fxresp.choices
+        const choices = resp.choices
             .filter(choice => choice ?.message?.content!=undefined)
             .map(choice => ({content:choice .message.content!}));
         return {
