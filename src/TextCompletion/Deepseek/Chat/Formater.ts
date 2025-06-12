@@ -85,6 +85,6 @@ export const DeepseekChatBetaChatTaskFormater:IChatFormater<DeepseekChatOption,A
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResult:DeepseekChatChatTaskFormater.formatResult,
-    calcToken:DeepseekChatChatTaskFormater.calcToken,
+    formatResult:commonFormatResp(DeepseekChatBetaChatTaskTool),
+    calcToken:stringifyCalcToken(DeepseekChatBetaChatTaskTool),
 }
