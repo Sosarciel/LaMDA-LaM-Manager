@@ -4,7 +4,7 @@ import { OpenAITextChatTaskTool } from "./Tool";
 import { ChatTaskOption } from "@/TextCompletion/ChatTaskInterface";
 import { IChatFormater } from "@/TextCompletion/ChatFormatAdapter";
 import { AnyOpenAITextRespFormat } from "../Resp";
-import { commonFormatResp, stringifyCalcToken } from "@/TextCompletion/Utils";
+import { commonCalcToken, commonFormatResp, stringifyCalcToken } from "@/TextCompletion/Utils";
 
 /**turbo模型配置 */
 export type OpenAITextOption = Partial<{
@@ -54,5 +54,5 @@ export const OpenAITextFormater:IChatFormater<OpenAITextOption,AnyOpenAITextResp
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
     formatResp:commonFormatResp(OpenAITextChatTaskTool),
-    calcToken:stringifyCalcToken(OpenAITextChatTaskTool),
+    calcToken:commonCalcToken(OpenAITextChatTaskTool),
 };

@@ -8,6 +8,13 @@ import { AnyTextCompletionRespFormat, DefChatLaMResult, TextCompletionResult } f
 export const stringifyCalcToken = (tool:ChatTaskTool<any,any>)=>async (message:LaMChatMessages,tokensizerType:TokensizerType):Promise<number>=>{
     const turboMessage = tool.transReq('unknow',message);
     const tokenizer = getTokensizer(tokensizerType);
+    return (await tokenizer.encode(JSON.stringify(turboMessage))).length;
+};
+
+/**标准的计算tokens的高阶函数 */
+export const commonCalcToken = (tool:ChatTaskTool<any,any>)=>async (message:LaMChatMessages,tokensizerType:TokensizerType):Promise<number>=>{
+    const turboMessage = tool.transReq('unknow',message);
+    const tokenizer = getTokensizer(tokensizerType);
     return (await tokenizer.encode(turboMessage)).length;
 };
 
