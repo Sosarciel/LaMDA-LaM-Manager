@@ -1,9 +1,10 @@
 import { SLogger } from "@zwa73/utils";
 import { OpenAIChatModel } from "./GPTChatInterface";
 import { ChatTaskOption } from '@/TextCompletion/ChatTaskInterface';
-import { commonFormatResp, IChatFormater, stringifyCalcToken } from '@/TextCompletion/ChatFormatAdapter';
+import { IChatFormater } from '@/TextCompletion/ChatFormatAdapter';
 import { OpenAIChatAPIEntry, OpenAIChatChatTaskTool } from './Tool';
 import { AnyOpenAIApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
+import { commonFormatResp, stringifyCalcToken } from "@/TextCompletion/Utils";
 
 /**turbo模型配置 */
 export type OpenAIChatOption=Partial<{

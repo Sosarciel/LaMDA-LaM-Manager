@@ -1,10 +1,11 @@
 import { SLogger } from "@zwa73/utils";
 import { ChatTaskOption } from '@/TextCompletion/ChatTaskInterface';
-import { commonFormatResp, IChatFormater, stringifyCalcToken } from '@/TextCompletion/ChatFormatAdapter';
+import { IChatFormater } from '@/TextCompletion/ChatFormatAdapter';
 import { GoogleChatAPIEntry, GoogleChatChatTaskTool, GoogleChatCompatAPIEntry, GoogleChatCompatChatTaskTool} from './Tool';
 import { GoogleChatModel } from './GeminiInterface';
 import { AnyGoogleChatRespFormat } from "../Resp";
 import { AnyOpenAIChatRespFormat } from "@/TextCompletion/OpenAI/Resp";
+import { commonFormatResp, stringifyCalcToken } from "@/TextCompletion/Utils";
 
 
 export type GoogleChatOption={
