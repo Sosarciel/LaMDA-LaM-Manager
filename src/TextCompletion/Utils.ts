@@ -19,7 +19,7 @@ export const commonCalcToken = (tool:ChatTaskTool<any,any>)=>async (message:LaMC
 };
 
 /**通用的Resp转换函数 */
-export const commonFormatResp = (tool:ChatTaskTool<any,any>)=>async (resp:PromiseRetryResult<AnyTextCompletionRespFormat | undefined> | undefined):Promise<TextCompletionResult>=>{
+export const commonFormatResp = <Fmt extends AnyTextCompletionRespFormat>(tool:ChatTaskTool<any,Fmt>)=>async (resp:PromiseRetryResult<Fmt | undefined> | undefined):Promise<TextCompletionResult>=>{
     if(resp==null) return DefChatLaMResult;
     return {
         completed:resp.completed ? tool.formatResp(resp.completed) : undefined,
