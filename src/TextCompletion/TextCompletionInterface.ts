@@ -8,7 +8,7 @@ import { AnyGoogleChatRespFormat } from "./Google";
 
 
 /**文本完成模型通用配置 */
-export type TextCompletionOptions={
+export type TextCompletionOptions=Partial<{
     /**最大token数 */
     max_tokens: number;
     /**temperature 采样温度 越大越容易选择低概率token */
@@ -25,7 +25,9 @@ export type TextCompletionOptions={
     logit_bias: Record<string, number>|null;
     /**产生回复的数量 */
     n: number;
-}
+    /**思考token预算 模型将尽量保证思考链长度为此值 */
+    think_budget: number|null;
+}>;
 
 /**文本完成通用回复 */
 export type TextCompletionResp = {

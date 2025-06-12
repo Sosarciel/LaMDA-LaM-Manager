@@ -7,7 +7,7 @@ import { IChatFormater } from "@/TextCompletion/ChatFormatAdapter";
 import { AnyTextCompletionRespFormat, DefChatLaMResult } from "@/TextCompletion/TextCompletionInterface";
 
 /**turbo模型配置 */
-export type OpenAITextOption = {
+export type OpenAITextOption = Partial<{
     model: OpenAITextModel;
     prompt: string;
     max_tokens: number;
@@ -18,7 +18,7 @@ export type OpenAITextOption = {
     frequency_penalty: number;
     logit_bias: Record<string, number> | null;
     n: number;
-};
+}>;
 
 export const OpenAITextFormater:IChatFormater={
     formatOption(opt:ChatTaskOption,model:string):OpenAITextOption|undefined{

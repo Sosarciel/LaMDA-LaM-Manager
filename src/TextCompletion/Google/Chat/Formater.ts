@@ -15,6 +15,7 @@ export type GoogleChatOption={
         maxOutputTokens?: number|undefined;
         topP?: number|undefined;
         topK?: number|undefined;
+        thinkingBudget?: number|undefined;
     }
 }
 
@@ -41,6 +42,7 @@ export const GoogleChatChatTaskFormater:IChatFormater = {
                 temperature:opt.temperature??undefined,
                 maxOutputTokens:opt.max_tokens??undefined,
                 topP:opt.top_p??undefined,
+                thinkingBudget:opt.think_budget??undefined,
             }
         };
     },

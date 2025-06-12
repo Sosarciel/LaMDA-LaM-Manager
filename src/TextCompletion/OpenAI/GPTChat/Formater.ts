@@ -7,7 +7,7 @@ import { getTokensizer, TokensizerType } from '@/src/Tokensize';
 import { OpenAIChatAPIEntry, OpenAIChatChatTaskTool } from './Tool';
 
 /**turbo模型配置 */
-export type OpenAIChatOption={
+export type OpenAIChatOption=Partial<{
     model: OpenAIChatModel;
     messages: OpenAIChatAPIEntry[];
     max_tokens: number;
@@ -18,7 +18,7 @@ export type OpenAIChatOption={
     frequency_penalty: number;
     logit_bias: Record<string, number>|null;
     n: number;
-}
+}>;
 
 export const OpenAIChatFormater:IChatFormater={
     formatOption(opt:ChatTaskOption,model:string):OpenAIChatOption|undefined{

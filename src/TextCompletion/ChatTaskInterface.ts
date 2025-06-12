@@ -13,6 +13,8 @@ export const DEF_CHAT_OPT = {
     frequency_penalty: 0   ,
     n                : 1   ,
     preferred_account: [] as [],
+    logit_bias       : null,
+    think_budget     : null,
 } as const;
 assertType<Partial<ChatTaskOption>>(DEF_CHAT_OPT);
 /**默认设置为可选项的聊天设置 */

@@ -8,7 +8,7 @@ import { DeepseekChatAPIEntry, DeepseekChatBetaChatTaskTool, DeepseekChatChatTas
 
 
 /**Deepseek模型配置 */
-export type DeepseekChatOption={
+export type DeepseekChatOption=Partial<{
     model: DeepseekChatModel;
     messages: DeepseekChatAPIEntry[];
     max_tokens: number;
@@ -17,7 +17,7 @@ export type DeepseekChatOption={
     stop: string[]|null;
     presence_penalty: number;
     frequency_penalty: number;
-}
+}>;
 
 /**传统OpenAI系统提示模式的Formater */
 export const DeepseekChatChatTaskFormater:IChatFormater = {
