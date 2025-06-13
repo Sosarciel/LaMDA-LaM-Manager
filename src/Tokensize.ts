@@ -12,7 +12,7 @@ type TokensizerInterface = {
 
 class Cl100kBase implements TokensizerInterface{
     async encode(str: string){
-        return Array.from(UtilCodec.encodeTokenTurbo(str));
+        return Array.from(await UtilCodec.encodeTokenTurbo(str));
     }
     async decode(str: number[]){
         return UtilCodec.decodeTokenTurbo(str);
@@ -24,7 +24,7 @@ class Cl100kBase implements TokensizerInterface{
 
 class P50kBase implements TokensizerInterface{
     async encode(str: string){
-        return Array.from(UtilCodec.encodeTokenDavinci(str));
+        return Array.from(await UtilCodec.encodeTokenDavinci(str));
     }
     async decode(str: number[]){
         return UtilCodec.decodeTokenDavinci(str);
