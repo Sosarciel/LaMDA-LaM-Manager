@@ -103,7 +103,7 @@ class _GeminiPostTool implements IRequestFormater {
             //处理反馈 可以视为同步
             return await verifyResp(obj, accountData);
         };
-        return await UtilFunc.retryPromise(procFn,verifyFn,retryOption);
+        return await UtilFunc.retryPromise(procFn,verifyFn,{...retryOption,flag:"GeminiPostTool.postLaMRepeat"});
     }
 }
 
