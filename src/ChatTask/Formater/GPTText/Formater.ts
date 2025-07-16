@@ -20,7 +20,7 @@ export type OpenAITextOption = Partial<{
     n: number;
 }>;
 
-export const OpenAITextFormater:ChatTaskFormater<OpenAITextOption,AnyOpenAITextRespFormat>={
+export const OpenAITextChatFormater:ChatTaskFormater<OpenAITextOption,AnyOpenAITextRespFormat>={
     formatOption(opt:ChatTaskOption,model:string){
         //验证参数
         if(opt.messages==null){

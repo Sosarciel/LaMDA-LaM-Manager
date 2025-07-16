@@ -25,14 +25,14 @@ function formatMessage(message?:string):string|undefined{
 }
 
 /**传统OpenAI系统提示的Tool */
-export const DeepseekChatChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[],AnyOpenAIApiRespFormat> = {
+export const DeepseekChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[],AnyOpenAIApiRespFormat> = {
     transReq:OpenAIChatChatTaskTool.transReq,
     formatReq:OpenAIChatChatTaskTool.formatReq,
     formatResp:OpenAIChatChatTaskTool.formatResp,
 }
 
 /**使用前缀续写模式的Tool */
-export const DeepseekChatBetaChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[],AnyOpenAIApiRespFormat> = {
+export const DeepseekBetaChatTaskTool:ChatTaskTool<DeepseekChatAPIEntry[],AnyOpenAIApiRespFormat> = {
     transReq(chatTarget,messageList){
         const narr:DeepseekChatAPIEntry[] = [];
 

@@ -1,7 +1,7 @@
 import { SLogger, UtilFunc } from "@zwa73/utils";
 import { DeepseekChatModel } from "ModelConfig";
 import { ChatTaskFormater } from "../ChatFormatAdapter";
-import { DeepseekChatAPIEntry, DeepseekChatBetaChatTaskTool, DeepseekChatChatTaskTool } from "./Tool";
+import { DeepseekChatAPIEntry, DeepseekBetaChatTaskTool, DeepseekChatTaskTool } from "./Tool";
 import { AnyDeepseekChatRespFormat } from "RespFormat";
 import { ChatTaskOption } from "@/src/ChatTask/ChatTaskInterface";
 import { commonFormatResp, stringifyCalcToken } from "../Utils";
@@ -20,7 +20,7 @@ export type DeepseekChatOption=Partial<{
 }>;
 
 /**传统OpenAI系统提示模式的Formater */
-export const DeepseekChatChatTaskFormater:ChatTaskFormater<DeepseekChatOption,AnyDeepseekChatRespFormat> = {
+export const DeepseekChatTaskFormater:ChatTaskFormater<DeepseekChatOption,AnyDeepseekChatRespFormat> = {
     formatOption(opt:ChatTaskOption,model:string):DeepseekChatOption|undefined{
         //验证参数
         if(opt.messages==null){
@@ -32,8 +32,8 @@ export const DeepseekChatChatTaskFormater:ChatTaskFormater<DeepseekChatOption,An
             return;
         }
 
-        let msg = DeepseekChatChatTaskTool.transReq(opt.target,opt.messages);
-        msg = DeepseekChatChatTaskTool.formatReq(opt.target,msg);
+        let msg = DeepseekChatTaskTool.transReq(opt.target,opt.messages);
+        msg = DeepseekChatTaskTool.formatReq(opt.target,msg);
 
 
         return {
@@ -50,12 +50,12 @@ export const DeepseekChatChatTaskFormater:ChatTaskFormater<DeepseekChatOption,An
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResult:commonFormatResp(DeepseekChatChatTaskTool),
-    calcToken:stringifyCalcToken(DeepseekChatChatTaskTool),
+    formatResult:commonFormatResp(DeepseekChatTaskTool),
+    calcToken:stringifyCalcToken(DeepseekChatTaskTool),
 }
 
 /**前缀续写模式的Formater */
-export const DeepseekChatBetaChatTaskFormater:ChatTaskFormater<DeepseekChatOption,AnyDeepseekChatRespFormat> = {
+export const DeepseekBetaChatTaskFormater:ChatTaskFormater<DeepseekChatOption,AnyDeepseekChatRespFormat> = {
     formatOption(opt:ChatTaskOption,model:string):DeepseekChatOption|undefined{
         //验证参数
         if(opt.messages==null){
@@ -67,8 +67,8 @@ export const DeepseekChatBetaChatTaskFormater:ChatTaskFormater<DeepseekChatOptio
             return;
         }
 
-        let msg = DeepseekChatBetaChatTaskTool.transReq(opt.target,opt.messages);
-        msg = DeepseekChatBetaChatTaskTool.formatReq(opt.target,msg);
+        let msg = DeepseekBetaChatTaskTool.transReq(opt.target,opt.messages);
+        msg = DeepseekBetaChatTaskTool.formatReq(opt.target,msg);
 
 
         return {
@@ -85,6 +85,6 @@ export const DeepseekChatBetaChatTaskFormater:ChatTaskFormater<DeepseekChatOptio
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResult:commonFormatResp(DeepseekChatBetaChatTaskTool),
-    calcToken:stringifyCalcToken(DeepseekChatBetaChatTaskTool),
+    formatResult:commonFormatResp(DeepseekBetaChatTaskTool),
+    calcToken:stringifyCalcToken(DeepseekBetaChatTaskTool),
 }

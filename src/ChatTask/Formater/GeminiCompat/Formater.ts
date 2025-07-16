@@ -8,7 +8,7 @@ import { ChatTaskOption } from "@/src/ChatTask/ChatTaskInterface";
 
 
 /**gptge兼容api选项 */
-export type GeminiChatCompatOption=Partial<{
+export type GeminiCompatChatOption=Partial<{
     model: GoogleChatModel|any;
     messages: GeminiCompatChatAPIEntry[];
     max_tokens: number;
@@ -24,8 +24,8 @@ export type GeminiChatCompatOption=Partial<{
 }>;
 
 /**gptge兼容api格式化工具 */
-export const GeminiChatCompatChatTaskFormater:ChatTaskFormater<GeminiChatCompatOption,AnyOpenAIChatRespFormat> = {
-    formatOption(opt:ChatTaskOption,model:string):GeminiChatCompatOption|undefined{
+export const GeminiCompatChatTaskFormater:ChatTaskFormater<GeminiCompatChatOption,AnyOpenAIChatRespFormat> = {
+    formatOption(opt:ChatTaskOption,model:string):GeminiCompatChatOption|undefined{
         //验证参数
         if(opt.messages==null){
             SLogger.warn("GoogleChatCompatOption 无效 messages为null");
@@ -39,7 +39,7 @@ export const GeminiChatCompatChatTaskFormater:ChatTaskFormater<GeminiChatCompatO
         let msg = GeminiChatCompatChatTaskTool.transReq(opt.target,opt.messages);
         msg = GeminiChatCompatChatTaskTool.formatReq(opt.target,msg);
 
-        const obj:GeminiChatCompatOption = {
+        const obj:GeminiCompatChatOption = {
             model             : model as GoogleChatModel    ,//模型id
             messages          : msg                         ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数

@@ -1,5 +1,5 @@
 import { SLogger } from "@zwa73/utils";
-import { GoogleChatAPIEntry, GoogleChatChatTaskTool} from './Tool';
+import { GoogleChatAPIEntry, GoogleChatTaskTool} from './Tool';
 import { AnyGoogleChatRespFormat } from "RespFormat";
 import { ChatTaskFormater } from "../ChatFormatAdapter";
 import { commonFormatResp, stringifyCalcToken } from "../Utils";
@@ -19,7 +19,7 @@ export type GeminiChatOption={
     }
 }
 
-export const GeminiChatChatTaskFormater:ChatTaskFormater<GeminiChatOption,AnyGoogleChatRespFormat> = {
+export const GeminiChatTaskFormater:ChatTaskFormater<GeminiChatOption,AnyGoogleChatRespFormat> = {
     formatOption(opt:ChatTaskOption,model:string):GeminiChatOption|undefined{
         //验证参数
         if(opt.messages==null){
@@ -31,8 +31,8 @@ export const GeminiChatChatTaskFormater:ChatTaskFormater<GeminiChatOption,AnyGoo
             return;
         }
 
-        let turboMessahge = GoogleChatChatTaskTool.transReq(opt.target,opt.messages);
-        turboMessahge = GoogleChatChatTaskTool.formatReq(opt.target,turboMessahge);
+        let turboMessahge = GoogleChatTaskTool.transReq(opt.target,opt.messages);
+        turboMessahge = GoogleChatTaskTool.formatReq(opt.target,turboMessahge);
 
         return {
             system_instruction:{parts:{text:turboMessahge.define}},
@@ -46,6 +46,6 @@ export const GeminiChatChatTaskFormater:ChatTaskFormater<GeminiChatOption,AnyGoo
             }
         };
     },
-    calcToken:stringifyCalcToken(GoogleChatChatTaskTool),
-    formatResult:commonFormatResp(GoogleChatChatTaskTool),
+    calcToken:stringifyCalcToken(GoogleChatTaskTool),
+    formatResult:commonFormatResp(GoogleChatTaskTool),
 };

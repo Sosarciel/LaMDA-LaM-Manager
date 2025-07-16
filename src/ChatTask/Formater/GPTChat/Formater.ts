@@ -7,7 +7,7 @@ import { AnyOpenAIChatApiRespFormat } from "RespFormat";
 import { ChatTaskOption } from "@/src/ChatTask/ChatTaskInterface";
 
 /**turbo模型配置 */
-export type OpenAIChatOption=Partial<{
+export type OpenAIChatChatOption=Partial<{
     model: OpenAIChatModel;
     messages: OpenAIChatAPIEntry[];
     max_tokens: number;
@@ -20,7 +20,7 @@ export type OpenAIChatOption=Partial<{
     n: number;
 }>;
 
-export const OpenAIChatFormater:ChatTaskFormater<OpenAIChatOption,AnyOpenAIChatApiRespFormat>={
+export const OpenAIChatChatFormater:ChatTaskFormater<OpenAIChatChatOption,AnyOpenAIChatApiRespFormat>={
     formatOption(opt:ChatTaskOption,model:string){
         //验证参数
         if(opt.messages==null){

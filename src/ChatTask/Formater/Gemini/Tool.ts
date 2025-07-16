@@ -19,7 +19,7 @@ type GoogleChatApiData = {
 }
 
 
-export const GoogleChatChatTaskTool:ChatTaskTool<GoogleChatApiData,AnyGoogleChatRespFormat> = {
+export const GoogleChatTaskTool:ChatTaskTool<GoogleChatApiData,AnyGoogleChatRespFormat> = {
     transReq(chatTarget,messageList){
         let desc = "";
         let inDesc = true;
