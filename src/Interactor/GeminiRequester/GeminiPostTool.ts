@@ -1,14 +1,13 @@
-import { SLogger, UtilFunc, UtilHttp} from '@zwa73/utils';
+import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
 import createHttpsProxyAgent, {HttpsProxyAgent} from 'https-proxy-agent';
 import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
-import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/src/Requester/RequestFormatInterface';
+import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/src/Interactor';
 import { APIPriceResp, CredsManager } from '@sosraciel-lamda/creds-manager';
-import { AnyOpenAIApiRespFormat } from 'RespFormat';
-
+import { AnyGoogleApiRespFormat, AnyTextCompletionRespFormat } from 'RespFormat';
 
 /**适用与 openai 鉴权方式的post工具 */
-class _OpenApiPostTool implements IRequestFormater {
+class _GeminiPostTool implements IRequestFormater {
     constructor(){
         //代理
         this.httpsAgent = createHttpsProxyAgent('http://127.0.0.1:7890');
@@ -28,15 +27,16 @@ class _OpenApiPostTool implements IRequestFormater {
         const postOpt = accountData.instance.postOption;
         const postJson = opt.postJson;
 
+        const postPath = `${modelData.endpoint}/${modelData.id}:generateContent?key=${accountData.instance.getKey()}`;
+
         //组装opt
         const options = {
             method: 'POST'  as const,
             hostname: postOpt.hostname,
             port: postOpt.port,
-            path: modelData.endpoint,//'/v1/chat/completions'
+            path: postPath,//'/v1/chat/completions'
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accountData.instance.getKey()}`,
             },
             agent: undefined as HttpsProxyAgent|HttpProxyAgent|undefined,
         };
@@ -48,21 +48,21 @@ class _OpenApiPostTool implements IRequestFormater {
         const tool = postOpt.protocol == 'http'
             ? UtilHttp.http()
             : UtilHttp.https();
-        const respData = await tool.postJson()
+        const respData = (await tool.postJson()
             .finalize({...options,timeout:timeLimit})
-            .once(postJson);
+            .once(postJson));
 
-        const respObj = respData?.data as AnyOpenAIApiRespFormat|undefined;
+        const respObj = respData?.data as AnyGoogleApiRespFormat|undefined;
 
         //post错误
         const respcode = respData?.statusCode ?? 0;
         const respStat = (respcode>=200 && respcode<300) ? true : false;
         if(respObj==undefined){
-            SLogger.warn(`OpenApiPostTool.postLaM 错误 未能接收resp`);
+            SLogger.warn(`GeminiPostTool.postLaM 错误 未能接收resp`);
             return undefined;
         }
         if(respStat===false){
-            SLogger.warn(`OpenApiPostTool.postLaM 错误 不成功的状态码`);
+            SLogger.warn(`GeminiPostTool.postLaM 错误 不成功的状态码`);
             return undefined;
         }
 
@@ -70,16 +70,12 @@ class _OpenApiPostTool implements IRequestFormater {
         if ("error" in respObj) return respObj;
 
         //记录使用量
-        const usageObj = respObj.usage;
+        const usageObj = respObj.usageMetadata;
         if(usageObj!=null){
             const usageResp:APIPriceResp = {
-                completion_tokens       :usageObj.completion_tokens??0,
-                prompt_tokens           :usageObj.prompt_tokens??0,
+                completion_tokens:usageObj.candidatesTokenCount??0+usageObj.thoughtsTokenCount??0,
+                prompt_tokens    :usageObj.promptTokenCount??0,
             };
-            if('prompt_cache_hit_tokens' in usageObj)
-                usageResp.prompt_cache_hit_tokens = usageObj.prompt_cache_hit_tokens;
-            if('prompt_cache_miss_tokens' in usageObj)
-                usageResp.prompt_cache_miss_tokens = usageObj.prompt_cache_miss_tokens;
             //增加token数据
             await CredsManager.calcPrice(accountData,modelData.price,usageResp);
             //打印理论的当前使用量
@@ -103,13 +99,12 @@ class _OpenApiPostTool implements IRequestFormater {
         //重复post的处理函数
         const procFn = async ()=>client.postLaM(opt);
         //重复post的验证函数
-        const verifyFn = async (obj:AnyOpenAIApiRespFormat | undefined)=>{
+        const verifyFn = async (obj:AnyTextCompletionRespFormat | undefined)=>{
             //处理反馈 可以视为同步
             return await verifyResp(obj, accountData);
         };
-        return await UtilFunc.retryPromise(procFn,verifyFn,{...retryOption,flag:"OpenApiPostTool.postLaMRepeat"});
+        return await UtilFunc.retryPromise(procFn,verifyFn,{...retryOption,flag:"GeminiPostTool.postLaMRepeat"});
     }
 }
 
-export const OpenApiPostTool = new _OpenApiPostTool();
-
+export const GeminiPostTool = new _GeminiPostTool();

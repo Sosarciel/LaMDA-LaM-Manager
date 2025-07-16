@@ -3,7 +3,7 @@ import { LaMInterface } from "@/src/LaMInterface";
 import { getTokensizer, TokensizerType } from "@/src/Tokensize";
 import { DefChatLaMResult, TextCompletionOptions } from "./TextCompletionInterface";
 import { None, SLogger, UtilFunc } from "@zwa73/utils";
-import { IRequestFormater, RequestFormaterTable, RequestFormaterType } from "@/src/Requester";
+import { IRequestFormater, RequestFormaterTable, RequestFormaterType } from "@/src/Interactor";
 import { ChatTaskFormaterTable, ChatFormaterType, ChatTaskFormater, LaMChatMessages, ChatTaskOption } from "ChatTask";
 
 

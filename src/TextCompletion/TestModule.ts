@@ -3,7 +3,7 @@ import { getTokensizer } from "@/src/Tokensize";
 import { ChatTaskOption, LaMChatMessages, MessageType } from "ChatTask";
 import { LaMInterface } from "@/src/LaMInterface";
 import { AnyOpenAITextRespFormat } from "RespFormat";
-import { OpenAITextChatTaskTool } from "@/src/ChatTask/Formater/GPTText/Tool";
+import { OpenAITextChatTaskTool } from "@/src/ChatTask/Formatter/GPTText/Tool";
 import { TextCompletionOptions } from "./TextCompletionInterface";
 
 

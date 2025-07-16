@@ -17,7 +17,7 @@
             "RespFormat"              : ["./src/RespFormat"],
             "ModelConfig"             : ["./src/ModelConfig"],
             "TextCompletion"          : ["./src/TextCompletion"],
-            "Requester"               : ["./src/Requester"],
+            "Requester"               : ["./src/Interactor"],
             "ChatTask"                : ["./src/ChatTask"],
 			"@/src/*"                 : ["./src/*"],
 			"@/*"                     : ["./*"],

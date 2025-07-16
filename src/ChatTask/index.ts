@@ -1,2 +1,2 @@
 export * from './ChatTaskInterface';
-export * from './Formater';
+export * from './Formatter';
