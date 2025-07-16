@@ -5,7 +5,7 @@ export * from './DeepseekChat';
 export * from './GeminiInterface';
 
 
-import { DeepseekChatOption, GoogleChatOption, OpenAIChatOption, OpenAITextOption } from '@/src/ChatTask/Formater';
+import { DeepseekChatOption, GeminiChatOption, OpenAIChatOption, OpenAITextOption } from '@/src/ChatTask/Formater';
 import { DeepseekChatModel } from './DeepseekChat';
 import { GoogleChatModel } from './GeminiInterface';
 import { OpenAIChatModel } from './GPTChat';
@@ -22,7 +22,7 @@ export type AnyTextCompletionModel   = AnyOpenaiModel|AnyDeepseekModel|AnyGoogle
 
 export type AnyDeepseekOption = DeepseekChatOption;
 export type AnyOpenaiOption = OpenAIChatOption|OpenAITextOption;
-export type AnyGoogleOption = GoogleChatOption;
+export type AnyGoogleOption = GeminiChatOption;
 
 /**任何文本完成模型的配置 */
 export type AnyTextCompletionOption = AnyDeepseekOption|AnyOpenaiOption|AnyGoogleOption;

@@ -1,10 +1,10 @@
 import { MPromise, PromiseRetryResult } from "@zwa73/utils";
 import { ChatTaskOption, LaMChatMessages, TextCompletionResult } from "TextCompletion";
 import { TokensizerType } from "@/src/Tokensize";
-import { DeepseekChatBetaChatTaskFormater, DeepseekChatChatTaskFormater } from "./DeepseekChat";
+import { DeepseekChatBetaChatTaskFormater, DeepseekChatChatTaskFormater } from "./Deepseek";
 import { OpenAIChatFormater } from "./GPTChat";
 import { OpenAITextFormater } from "./GPTText";
-import { GoogleChatChatTaskFormater, GoogleChatCompatChatTaskFormater } from "./GoogleChat";
+import { GeminiChatChatTaskFormater, GoogleChatCompatChatTaskFormater } from "./Gemini";
 import { AnyTextCompletionRespFormat } from "RespFormat";
 import { AnyTextCompletionOption } from "ModelConfig";
 
@@ -22,7 +22,7 @@ export const ChatTaskFormaterTable = {
     deepseek_chat_beta:DeepseekChatBetaChatTaskFormater,
     openai_chat:OpenAIChatFormater,
     openai_text:OpenAITextFormater,
-    google_chat:GoogleChatChatTaskFormater,
+    google_chat:GeminiChatChatTaskFormater,
     google_chat_compat:GoogleChatCompatChatTaskFormater,
 };
 export type ChatFormaterType = keyof typeof ChatTaskFormaterTable;

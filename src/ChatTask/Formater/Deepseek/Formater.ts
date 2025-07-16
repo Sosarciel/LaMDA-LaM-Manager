@@ -1,4 +1,4 @@
-import { SLogger } from "@zwa73/utils";
+import { SLogger, UtilFunc } from "@zwa73/utils";
 import { DeepseekChatModel } from "ModelConfig";
 import { ChatTaskFormater } from "../ChatFormatAdapter";
 import { DeepseekChatAPIEntry, DeepseekChatBetaChatTaskTool, DeepseekChatChatTaskTool } from "./Tool";
