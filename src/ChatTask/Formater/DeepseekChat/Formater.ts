@@ -3,7 +3,8 @@ import { DeepseekChatModel } from "ModelConfig";
 import { ChatTaskFormater } from "../ChatFormatAdapter";
 import { DeepseekChatAPIEntry, DeepseekChatBetaChatTaskTool, DeepseekChatChatTaskTool } from "./Tool";
 import { AnyDeepseekChatRespFormat } from "RespFormat";
-import { ChatTaskOption, commonFormatResp, stringifyCalcToken } from "TextCompletion";
+import { ChatTaskOption } from "@/src/ChatTask/ChatTaskInterface";
+import { commonFormatResp, stringifyCalcToken } from "../Utils";
 
 
 /**Deepseek模型配置 */

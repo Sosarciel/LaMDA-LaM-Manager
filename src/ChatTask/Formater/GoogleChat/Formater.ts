@@ -2,8 +2,9 @@ import { SLogger } from "@zwa73/utils";
 import { GoogleChatAPIEntry, GoogleChatChatTaskTool, GoogleChatCompatAPIEntry, GoogleChatCompatChatTaskTool} from './Tool';
 import { GoogleChatModel } from 'ModelConfig';
 import { AnyGoogleChatRespFormat,AnyOpenAIChatRespFormat } from "RespFormat";
-import { commonFormatResp, stringifyCalcToken,ChatTaskOption } from "TextCompletion";
 import { ChatTaskFormater } from "../ChatFormatAdapter";
+import { commonFormatResp, stringifyCalcToken } from "../Utils";
+import { ChatTaskOption } from "@/src/ChatTask/ChatTaskInterface";
 
 
 export type GoogleChatOption={

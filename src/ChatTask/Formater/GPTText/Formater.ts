@@ -3,7 +3,8 @@ import { OpenAITextModel } from "ModelConfig";
 import { OpenAITextChatTaskTool } from "./Tool";
 import { ChatTaskFormater } from "../ChatFormatAdapter";
 import { AnyOpenAITextRespFormat } from "RespFormat";
-import { commonCalcToken, commonFormatResp,ChatTaskOption } from "TextCompletion";
+import { commonCalcToken, commonFormatResp } from "../Utils";
+import { ChatTaskOption } from "@/src/ChatTask/ChatTaskInterface";
 
 /**turbo模型配置 */
 export type OpenAITextOption = Partial<{

@@ -1,5 +1,5 @@
 import { assertType, LogLevel, PartialOption } from "@zwa73/utils";
-import { TextCompletionResp, TextCompletionOptions } from "./TextCompletionInterface";
+import { TextCompletionResp, TextCompletionOptions } from "TextCompletion";
 import { CredsType } from "@sosraciel-lamda/creds-manager";
 import { AnyTextCompletionRespFormat } from "RespFormat";
 

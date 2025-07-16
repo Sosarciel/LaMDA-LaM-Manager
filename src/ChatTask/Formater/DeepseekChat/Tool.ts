@@ -1,5 +1,5 @@
 import { AnyOpenAIApiRespFormat } from "RespFormat";
-import { ChatTaskTool, MessageType } from "TextCompletion";
+import { ChatTaskTool, MessageType } from "@/src/ChatTask/ChatTaskInterface";
 import { OpenAIChatAPIRole, OpenAIChatChatTaskTool } from "../GPTChat/Tool";
 
 

@@ -1,5 +1,7 @@
 import { ServiceInterface } from "@zwa73/service-manager";
-import { AnyTextCompletionModel, AnyTextCompletionOption, TextCompletionResult, ChatTaskOption, LaMChatMessages, TextCompletionOptions } from "./TextCompletion";
+import { TextCompletionResult, TextCompletionOptions } from "./TextCompletion";
+import { ChatTaskOption, LaMChatMessages } from "ChatTask";
+import { AnyTextCompletionModel, AnyTextCompletionOption } from "ModelConfig";
 
 
 /**语言模型接口

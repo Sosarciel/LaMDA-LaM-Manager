@@ -2,9 +2,9 @@ import { SLogger, UtilFunc, UtilHttp} from '@zwa73/utils';
 import createHttpsProxyAgent, {HttpsProxyAgent} from 'https-proxy-agent';
 import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
-import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/RequestFormatAdapter/RequestFormatInterface';
-import { AnyOpenAIApiRespFormat } from 'TextCompletion';
+import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/src/Requester/RequestFormatInterface';
 import { APIPriceResp, CredsManager } from '@sosraciel-lamda/creds-manager';
+import { AnyOpenAIApiRespFormat } from 'RespFormat';
 
 
 /**适用与 openai 鉴权方式的post工具 */

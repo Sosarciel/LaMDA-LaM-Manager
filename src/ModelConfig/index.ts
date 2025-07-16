@@ -5,7 +5,7 @@ export * from './DeepseekChat';
 export * from './GeminiInterface';
 
 
-import { DeepseekChatOption, GoogleChatOption, OpenAIChatOption, OpenAITextOption } from 'Formater';
+import { DeepseekChatOption, GoogleChatOption, OpenAIChatOption, OpenAITextOption } from '@/src/ChatTask/Formater';
 import { DeepseekChatModel } from './DeepseekChat';
 import { GoogleChatModel } from './GeminiInterface';
 import { OpenAIChatModel } from './GPTChat';
