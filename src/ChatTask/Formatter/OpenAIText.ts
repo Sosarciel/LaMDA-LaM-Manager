@@ -1,10 +1,9 @@
-import { SLogger } from "@zwa73/utils";
+import { lazyize, SLogger } from "@zwa73/utils";
 import { OpenAITextModel } from "ModelConfig";
-import { OpenAITextChatTaskTool } from "./Tool";
-import { ChatTaskFormater } from "../ChatFormatAdapter";
+import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { AnyOpenAITextRespFormat } from "RespFormat";
-import { commonCalcToken, commonFormatResp } from "../Utils";
-import { ChatTaskOption } from "@/src/ChatTask/ChatTaskInterface";
+import { commonCalcToken, commonFormatResp } from "./Utils";
+import { ChatTaskOption, LaMChatMessages, MessageType } from "@/src/ChatTask/ChatTaskInterface";
 
 /**turbo模型配置 */
 export type OpenAITextOption = Partial<{
@@ -20,7 +19,9 @@ export type OpenAITextOption = Partial<{
     n: number;
 }>;
 
-export const OpenAITextChatFormater:ChatTaskFormater<OpenAITextOption,AnyOpenAITextRespFormat>={
+
+
+export const OpenAITextChatFormatter:ChatTaskFormatter<string,OpenAITextOption,AnyOpenAITextRespFormat>={
     formatOption(opt:ChatTaskOption,model:string){
         //验证参数
         if(opt.messages==null){
@@ -32,8 +33,8 @@ export const OpenAITextChatFormater:ChatTaskFormater<OpenAITextOption,AnyOpenAIT
             return;
         }
         //转换文本
-        let turboMessahge = OpenAITextChatTaskTool.transReq(opt.target,opt.messages);
-        turboMessahge = OpenAITextChatTaskTool.formatReq(opt.target,turboMessahge);
+        let turboMessahge = OpenAITextChatFormatter.transReq(opt.target,opt.messages);
+        turboMessahge = OpenAITextChatFormatter.formatReq(opt.target,turboMessahge);
 
 
         return {
@@ -53,6 +54,43 @@ export const OpenAITextChatFormater:ChatTaskFormater<OpenAITextOption,AnyOpenAIT
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResult:commonFormatResp(OpenAITextChatTaskTool),
-    calcToken:commonCalcToken(OpenAITextChatTaskTool),
+    formatResult:lazyize(()=>commonFormatResp(OpenAITextChatFormatter)),
+    calcToken:lazyize(()=>commonCalcToken(OpenAITextChatFormatter)),
+    transReq(chatTarget,messageList){
+        let ntext="";
+
+        //处理主消息列表
+        for(const item of messageList){
+            ntext=item.type==MessageType.DESC
+            ? `${ntext}\n${item.content}`
+            : `${ntext}\n${item.name}:${item.content}`;
+        }
+
+        //处理临时提示
+        if(messageList.getTemporaryPrompt().length>0)
+            ntext += messageList.getTemporaryPrompt();
+
+        return ntext.trim();
+    },
+    formatReq(chatTarget,chatText){
+        return `${chatText}\n${chatTarget}:`;
+    },
+    formatResp:(resp)=>{
+        // 提取 choices 列表
+        const choices = resp.choices
+            .filter(choice => choice?.text != undefined)
+            .map(choice => ({ content: choice.text }));
+
+        return {
+            choices,
+            vaild: choices.length > 0,
+        };
+    }
 };
+
+//void (async ()=>{
+//    console.log(await OpenAITextChatFormater.calcToken(new LaMChatMessages({
+//        type:MessageType.DESC,
+//        content:"你好，我的民资是"
+//    }),"deepseek"))
+//})();

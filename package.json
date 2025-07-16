@@ -19,7 +19,7 @@
 		"@zwa73/js-utils": "^1.0.30",
 		"@zwa73/modular-mixer": "^1.0.4",
 		"@zwa73/service-manager": "^1.0.17",
-		"@zwa73/utils": "^1.0.226"
+		"@zwa73/utils": "^1.0.227"
 	},
 	"files": [
 		"dist",

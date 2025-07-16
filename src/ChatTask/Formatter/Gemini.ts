@@ -1,8 +1,22 @@
+import { lazyize, SLogger } from "@zwa73/utils";
 import { AnyGoogleChatRespFormat } from "RespFormat";
-import { ChatTaskTool, MessageType } from "@/src/ChatTask/ChatTaskInterface";
+import { ChatTaskFormatter } from "../ChatFormatAdapter";
+import { commonFormatResp, stringifyCalcToken } from "./Utils";
+import { ChatTaskOption, MessageType } from "@/src/ChatTask/ChatTaskInterface";
 
 
-
+export type GeminiChatOption={
+    system_instruction:{parts:{text: string}},
+    contents:GoogleChatAPIEntry[];
+    generationConfig:{
+        stopSequences: string[]|undefined;
+        temperature?: number|undefined;
+        maxOutputTokens?: number|undefined;
+        topP?: number|undefined;
+        topK?: number|undefined;
+        thinkingBudget?: number|undefined;
+    }
+}
 export type GoogleChatAPIEntry={
     role: GoogleChatAPIRole;
     parts:[{text:string}];
@@ -19,7 +33,36 @@ type GoogleChatApiData = {
 }
 
 
-export const GoogleChatTaskTool:ChatTaskTool<GoogleChatApiData,AnyGoogleChatRespFormat> = {
+
+export const GeminiChatTaskFormatter:ChatTaskFormatter<GoogleChatApiData,GeminiChatOption,AnyGoogleChatRespFormat> = {
+    formatOption(opt:ChatTaskOption,model:string):GeminiChatOption|undefined{
+        //验证参数
+        if(opt.messages==null){
+            SLogger.warn("GoogleChatOption 无效 messages为null");
+            return;
+        }
+        if(opt.messages.length==0){
+            SLogger.warn("GoogleChatOption 无效 messages长度不足");
+            return;
+        }
+
+        let turboMessahge = GeminiChatTaskFormatter.transReq(opt.target,opt.messages);
+        turboMessahge = GeminiChatTaskFormatter.formatReq(opt.target,turboMessahge);
+
+        return {
+            system_instruction:{parts:{text:turboMessahge.define}},
+            contents:turboMessahge.message,
+            generationConfig:{
+                stopSequences:opt.stop??undefined,
+                temperature:opt.temperature??undefined,
+                maxOutputTokens:opt.max_tokens??undefined,
+                topP:opt.top_p??undefined,
+                thinkingBudget:opt.think_budget??undefined,
+            }
+        };
+    },
+    calcToken:lazyize(()=>stringifyCalcToken(GeminiChatTaskFormatter)),
+    formatResult:lazyize(()=>commonFormatResp(GeminiChatTaskFormatter)),
     transReq(chatTarget,messageList){
         let desc = "";
         let inDesc = true;
@@ -85,4 +128,4 @@ export const GoogleChatTaskTool:ChatTaskTool<GoogleChatApiData,AnyGoogleChatResp
             vaild: choices.length > 0,
         };
     }
-}
+};

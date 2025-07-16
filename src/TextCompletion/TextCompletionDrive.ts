@@ -4,7 +4,7 @@ import { getTokensizer, TokensizerType } from "@/src/Tokensize";
 import { DefChatLaMResult, TextCompletionOptions } from "./TextCompletionInterface";
 import { None, SLogger, UtilFunc } from "@zwa73/utils";
 import { IRequestFormater, RequestFormaterTable, RequestFormaterType } from "@/src/Interactor";
-import { ChatTaskFormaterTable, ChatFormaterType, ChatTaskFormater, LaMChatMessages, ChatTaskOption } from "ChatTask";
+import { ChatTaskFormaterTable, ChatFormaterType, ChatTaskFormatter, LaMChatMessages, ChatTaskOption } from "ChatTask";
 
 
 
@@ -16,7 +16,7 @@ export type TextCompleteionModelData = {
 
 /**文本完成模型驱动器 */
 export class TextCompleteionModel implements LaMInterface{
-    chatFormater:ChatTaskFormater<any,any>;
+    chatFormater:ChatTaskFormatter<any,any,any>;
     requestFormater:IRequestFormater;
     constructor(private data:TextCompleteionModelData, private config:TextCompleteionModelConfig){
         this.chatFormater = ChatTaskFormaterTable[this.config.chat_formater];
