@@ -1,5 +1,5 @@
 ## 模块导航
 
-- [1](src/Constant.ts)
-- [2](src/payment/index.ts)
+- [请求格式化工具](src/RequestFormatAdapter)
+- [响应格式](src/RespFormat)
 - [3](src/utils/data.ts)

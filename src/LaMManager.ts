@@ -1,7 +1,8 @@
 import { None, SLogger, throwError } from "@zwa73/utils";
 import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig } from "@zwa73/service-manager";
 import { LaMInterface } from "./LaMInterface";
-import { TextCompleteionModel,TestModule,DeepseekChat, DEF_CHAT_OPT, DefChatLaMResult, Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini, LaMChatMessages, PartialChatOption, TextCompletionResult, Gemini20Pro, Gemini25Pro, DeepseekChatBeta, Gemini25ProCompat, TextCompleteionModelData, TextCompletionOptions } from "./TextCompletion";
+import { DeepseekChat,Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini,  Gemini20Pro, Gemini25Pro, DeepseekChatBeta, Gemini25ProCompat } from "ModelConfig";
+import { DEF_CHAT_OPT, DefChatLaMResult, TextCompleteionModel,TestModule, TextCompleteionModelData, TextCompletionOptions,LaMChatMessages, PartialChatOption, TextCompletionResult} from '@/src/TextCompletion';
 
 
 

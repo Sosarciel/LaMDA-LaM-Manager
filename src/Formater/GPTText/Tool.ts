@@ -1,5 +1,5 @@
-import { ChatTaskTool, MessageType } from "@/TextCompletion/ChatTaskInterface";
-import { AnyOpenAITextRespFormat } from "../Resp";
+import { ChatTaskTool, MessageType } from "TextCompletion";
+import { AnyOpenAITextRespFormat } from "RespFormat";
 
 
 

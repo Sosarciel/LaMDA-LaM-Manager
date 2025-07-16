@@ -1,10 +1,12 @@
 import { MPromise, PromiseRetryResult } from "@zwa73/utils";
-import { ChatTaskOption, LaMChatMessages } from "./ChatTaskInterface";
-import { AnyTextCompletionOption, AnyTextCompletionRespFormat, DefChatLaMResult, TextCompletionResult } from "./TextCompletionInterface";
+import { ChatTaskOption, LaMChatMessages, TextCompletionResult } from "TextCompletion";
 import { TokensizerType } from "@/src/Tokensize";
-import { DeepseekChatBetaChatTaskFormater, DeepseekChatChatTaskFormater } from "./Deepseek";
-import { OpenAIChatFormater, OpenAITextFormater } from "./OpenAI";
-import { GoogleChatChatTaskFormater, GoogleChatCompatChatTaskFormater } from "./Google";
+import { DeepseekChatBetaChatTaskFormater, DeepseekChatChatTaskFormater } from "./DeepseekChat";
+import { OpenAIChatFormater } from "./GPTChat";
+import { OpenAITextFormater } from "./GPTText";
+import { GoogleChatChatTaskFormater, GoogleChatCompatChatTaskFormater } from "./GoogleChat";
+import { AnyTextCompletionRespFormat } from "RespFormat";
+import { AnyTextCompletionOption } from "ModelConfig";
 
 export type IChatFormater<Opt extends AnyTextCompletionOption, Fmt extends AnyTextCompletionRespFormat> = {
     /**检查配置是否有效, 斌返回用于post的JObject */

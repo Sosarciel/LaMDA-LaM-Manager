@@ -14,10 +14,10 @@
         "baseUrl": ".",
         "paths": {
             "Constant"                : ["./src/Constant"],
-            "APITool"                 : ["./src/APITool"],
+            "RespFormat"              : ["./src/RespFormat"],
+            "ModelConfig"             : ["./src/ModelConfig"],
+            "Formater"                : ["./src/Formater"],
             "TextCompletion"          : ["./src/TextCompletion"],
-            "@/RequestFormatAdapter/*": ["./src/RequestFormatAdapter/*"],
-            "@/TextCompletion/*"      : ["./src/TextCompletion/*"],
 			"@/src/*"                 : ["./src/*"],
 			"@/*"                     : ["./*"],
 			"@"                       : ["./src/index"]

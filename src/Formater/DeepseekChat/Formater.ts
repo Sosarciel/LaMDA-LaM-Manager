@@ -1,10 +1,9 @@
 import { SLogger } from "@zwa73/utils";
-import { DeepseekChatModel } from "./DeepseekChatInterface";
-import { ChatTaskOption } from '@/TextCompletion/ChatTaskInterface';
-import { IChatFormater } from "@/TextCompletion/ChatFormatAdapter";
+import { DeepseekChatModel } from "ModelConfig";
+import { IChatFormater } from "../ChatFormatAdapter";
 import { DeepseekChatAPIEntry, DeepseekChatBetaChatTaskTool, DeepseekChatChatTaskTool } from "./Tool";
-import { AnyDeepseekChatRespFormat } from "../Resp";
-import { commonFormatResp, stringifyCalcToken } from "@/TextCompletion/Utils";
+import { AnyDeepseekChatRespFormat } from "RespFormat";
+import { ChatTaskOption, commonFormatResp, stringifyCalcToken } from "TextCompletion";
 
 
 /**Deepseek模型配置 */

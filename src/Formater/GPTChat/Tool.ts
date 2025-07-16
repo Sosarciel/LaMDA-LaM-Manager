@@ -1,5 +1,5 @@
-import { AnyOpenAIChatApiRespFormat } from "@/TextCompletion/TextCompletionInterface";
-import { ChatTaskTool, MessageType } from "@/TextCompletion/ChatTaskInterface";
+import { AnyOpenAIChatApiRespFormat } from "RespFormat";
+import { ChatTaskTool, MessageType } from "TextCompletion";
 
 
 /**用于Turbo模型的消息Entry */

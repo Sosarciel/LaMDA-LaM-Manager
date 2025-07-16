@@ -1,11 +1,9 @@
 import { SLogger } from "@zwa73/utils";
-import { ChatTaskOption } from '@/TextCompletion/ChatTaskInterface';
-import { IChatFormater } from '@/TextCompletion/ChatFormatAdapter';
 import { GoogleChatAPIEntry, GoogleChatChatTaskTool, GoogleChatCompatAPIEntry, GoogleChatCompatChatTaskTool} from './Tool';
-import { GoogleChatModel } from './GeminiInterface';
-import { AnyGoogleChatRespFormat } from "../Resp";
-import { AnyOpenAIChatRespFormat } from "@/TextCompletion/OpenAI/Resp";
-import { commonFormatResp, stringifyCalcToken } from "@/TextCompletion/Utils";
+import { GoogleChatModel } from 'ModelConfig';
+import { AnyGoogleChatRespFormat,AnyOpenAIChatRespFormat } from "RespFormat";
+import { commonFormatResp, stringifyCalcToken,ChatTaskOption } from "TextCompletion";
+import { IChatFormater } from "../ChatFormatAdapter";
 
 
 export type GoogleChatOption={
@@ -56,7 +54,7 @@ export const GoogleChatChatTaskFormater:IChatFormater<GoogleChatOption,AnyGoogle
 
 /**gptge兼容api选项 */
 export type GoogleChatCompatOption=Partial<{
-    model: GoogleChatModel;
+    model: GoogleChatModel|any;
     messages: GoogleChatCompatAPIEntry[];
     max_tokens: number;
     temperature: number;
