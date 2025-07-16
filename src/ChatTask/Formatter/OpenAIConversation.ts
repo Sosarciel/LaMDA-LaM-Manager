@@ -1,4 +1,4 @@
-import { memoizeGetter, SLogger } from "@zwa73/utils";
+import { lazyFunction, SLogger } from "@zwa73/utils";
 import { OpenAIChatModel } from "ModelConfig";
 import { ChatTaskFormatter } from '../ChatFormatAdapter';
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
@@ -66,8 +66,8 @@ export const OpenAIConversationChatFormatter:ChatTaskFormatter<OpenAIConversatio
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResult:memoizeGetter(()=>commonFormatResp(OpenAIConversationChatFormatter)),
-    calcToken:memoizeGetter(()=>stringifyCalcToken(OpenAIConversationChatFormatter)),
+    formatResult:lazyFunction(()=>commonFormatResp(OpenAIConversationChatFormatter)),
+    calcToken:lazyFunction(()=>stringifyCalcToken(OpenAIConversationChatFormatter)),
     transReq(chatTarget,messageList){
         const narr:OpenAIConversationAPIEntry[] = [];
 

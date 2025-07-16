@@ -1,9 +1,9 @@
-import { memoizeGetter, SLogger } from "@zwa73/utils";
+import { lazyFunction, SLogger } from "@zwa73/utils";
 import { OpenAITextModel } from "ModelConfig";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { AnyOpenAITextRespFormat } from "RespFormat";
 import { commonCalcToken, commonFormatResp } from "./Utils";
-import { ChatTaskOption, LaMChatMessages, MessageType } from "@/src/ChatTask/ChatTaskInterface";
+import { ChatTaskOption, MessageType } from "@/src/ChatTask/ChatTaskInterface";
 
 /**turbo模型配置 */
 export type OpenAITextOption = Partial<{
@@ -54,8 +54,8 @@ export const OpenAITextChatFormatter:ChatTaskFormatter<string,OpenAITextOption,A
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResult:memoizeGetter(()=>commonFormatResp(OpenAITextChatFormatter)),
-    calcToken:memoizeGetter(()=>commonCalcToken(OpenAITextChatFormatter)),
+    formatResult:lazyFunction(()=>commonFormatResp(OpenAITextChatFormatter)),
+    calcToken:lazyFunction(()=>commonCalcToken(OpenAITextChatFormatter)),
     transReq(chatTarget,messageList){
         let ntext="";
 

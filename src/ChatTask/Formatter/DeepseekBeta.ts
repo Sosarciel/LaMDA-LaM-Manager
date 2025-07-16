@@ -1,4 +1,4 @@
-import { SLogger, memoizeGetter } from "@zwa73/utils";
+import { SLogger, lazyFunction } from "@zwa73/utils";
 import { DeepseekChatModel } from "ModelConfig";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { AnyDeepseekChatRespFormat } from "RespFormat";
@@ -49,8 +49,8 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekChatAPIEntr
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResult:memoizeGetter(()=>commonFormatResp(DeepseekBetaChatTaskFormatter)),
-    calcToken:memoizeGetter(()=>stringifyCalcToken(DeepseekBetaChatTaskFormatter)),
+    formatResult:lazyFunction(()=>commonFormatResp(DeepseekBetaChatTaskFormatter)),
+    calcToken:lazyFunction(()=>stringifyCalcToken(DeepseekBetaChatTaskFormatter)),
     transReq(chatTarget,messageList){
         const narr:DeepseekChatAPIEntry[] = [];
 
