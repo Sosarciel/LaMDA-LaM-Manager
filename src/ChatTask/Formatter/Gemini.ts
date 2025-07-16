@@ -1,4 +1,4 @@
-import { lazyize, SLogger } from "@zwa73/utils";
+import { memoizeGetter, SLogger } from "@zwa73/utils";
 import { AnyGoogleChatRespFormat } from "RespFormat";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
@@ -61,8 +61,8 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GoogleChatApiData,GeminiC
             }
         };
     },
-    calcToken:lazyize(()=>stringifyCalcToken(GeminiChatTaskFormatter)),
-    formatResult:lazyize(()=>commonFormatResp(GeminiChatTaskFormatter)),
+    calcToken:memoizeGetter(()=>stringifyCalcToken(GeminiChatTaskFormatter)),
+    formatResult:memoizeGetter(()=>commonFormatResp(GeminiChatTaskFormatter)),
     transReq(chatTarget,messageList){
         let desc = "";
         let inDesc = true;

@@ -1,4 +1,4 @@
-import { lazyize, SLogger } from "@zwa73/utils";
+import { memoizeGetter, SLogger } from "@zwa73/utils";
 import { OpenAITextModel } from "ModelConfig";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { AnyOpenAITextRespFormat } from "RespFormat";
@@ -54,8 +54,8 @@ export const OpenAITextChatFormatter:ChatTaskFormatter<string,OpenAITextOption,A
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResult:lazyize(()=>commonFormatResp(OpenAITextChatFormatter)),
-    calcToken:lazyize(()=>commonCalcToken(OpenAITextChatFormatter)),
+    formatResult:memoizeGetter(()=>commonFormatResp(OpenAITextChatFormatter)),
+    calcToken:memoizeGetter(()=>commonCalcToken(OpenAITextChatFormatter)),
     transReq(chatTarget,messageList){
         let ntext="";
 
