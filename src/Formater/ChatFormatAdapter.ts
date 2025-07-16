@@ -8,7 +8,7 @@ import { GoogleChatChatTaskFormater, GoogleChatCompatChatTaskFormater } from "./
 import { AnyTextCompletionRespFormat } from "RespFormat";
 import { AnyTextCompletionOption } from "ModelConfig";
 
-export type IChatFormater<Opt extends AnyTextCompletionOption, Fmt extends AnyTextCompletionRespFormat> = {
+export type ChatTaskFormater<Opt extends AnyTextCompletionOption, Fmt extends AnyTextCompletionRespFormat> = {
     /**检查配置是否有效, 斌返回用于post的JObject */
     formatOption:(opt:ChatTaskOption,model:string)=>MPromise<undefined|Opt>;
     /**转换结果为通用Resp包装 */
@@ -17,7 +17,7 @@ export type IChatFormater<Opt extends AnyTextCompletionOption, Fmt extends AnyTe
     calcToken:(message:LaMChatMessages,tokensizerType:TokensizerType)=>MPromise<number>;
 }
 
-export const ChatFormaterTable = {
+export const ChatTaskFormaterTable = {
     deepseek_chat:DeepseekChatChatTaskFormater,
     deepseek_chat_beta:DeepseekChatBetaChatTaskFormater,
     openai_chat:OpenAIChatFormater,
@@ -25,5 +25,5 @@ export const ChatFormaterTable = {
     google_chat:GoogleChatChatTaskFormater,
     google_chat_compat:GoogleChatCompatChatTaskFormater,
 };
-export type ChatFormaterType = keyof typeof ChatFormaterTable;
+export type ChatFormaterType = keyof typeof ChatTaskFormaterTable;
 

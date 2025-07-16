@@ -3,7 +3,7 @@ import { GoogleChatAPIEntry, GoogleChatChatTaskTool, GoogleChatCompatAPIEntry, G
 import { GoogleChatModel } from 'ModelConfig';
 import { AnyGoogleChatRespFormat,AnyOpenAIChatRespFormat } from "RespFormat";
 import { commonFormatResp, stringifyCalcToken,ChatTaskOption } from "TextCompletion";
-import { IChatFormater } from "../ChatFormatAdapter";
+import { ChatTaskFormater } from "../ChatFormatAdapter";
 
 
 export type GoogleChatOption={
@@ -19,7 +19,7 @@ export type GoogleChatOption={
     }
 }
 
-export const GoogleChatChatTaskFormater:IChatFormater<GoogleChatOption,AnyGoogleChatRespFormat> = {
+export const GoogleChatChatTaskFormater:ChatTaskFormater<GoogleChatOption,AnyGoogleChatRespFormat> = {
     formatOption(opt:ChatTaskOption,model:string):GoogleChatOption|undefined{
         //验证参数
         if(opt.messages==null){
@@ -69,7 +69,7 @@ export type GoogleChatCompatOption=Partial<{
 }>;
 
 /**gptge兼容api格式化工具 */
-export const GoogleChatCompatChatTaskFormater:IChatFormater<GoogleChatCompatOption,AnyOpenAIChatRespFormat> = {
+export const GoogleChatCompatChatTaskFormater:ChatTaskFormater<GoogleChatCompatOption,AnyOpenAIChatRespFormat> = {
     formatOption(opt:ChatTaskOption,model:string):GoogleChatCompatOption|undefined{
         //验证参数
         if(opt.messages==null){

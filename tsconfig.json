@@ -18,6 +18,7 @@
             "ModelConfig"             : ["./src/ModelConfig"],
             "Formater"                : ["./src/Formater"],
             "TextCompletion"          : ["./src/TextCompletion"],
+            "Requester"               : ["./src/Requester"],
 			"@/src/*"                 : ["./src/*"],
 			"@/*"                     : ["./*"],
 			"@"                       : ["./src/index"]

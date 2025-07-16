@@ -3,8 +3,9 @@ import { assertType, PartialOption,PromiseRetries,PromiseRetryResult, SLogger } 
 
 
 
-import { AnyTextCompletionRespFormat,TextCompleteionModelConfig } from "TextCompletion";
+import { TextCompleteionModelConfig } from "TextCompletion";
 import { CredsData } from "@sosraciel-lamda/creds-manager";
+import { AnyTextCompletionRespFormat } from "RespFormat";
 
 
 //超时限制 ms 至少为 10000

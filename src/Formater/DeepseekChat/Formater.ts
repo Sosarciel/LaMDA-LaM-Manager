@@ -1,6 +1,6 @@
 import { SLogger } from "@zwa73/utils";
 import { DeepseekChatModel } from "ModelConfig";
-import { IChatFormater } from "../ChatFormatAdapter";
+import { ChatTaskFormater } from "../ChatFormatAdapter";
 import { DeepseekChatAPIEntry, DeepseekChatBetaChatTaskTool, DeepseekChatChatTaskTool } from "./Tool";
 import { AnyDeepseekChatRespFormat } from "RespFormat";
 import { ChatTaskOption, commonFormatResp, stringifyCalcToken } from "TextCompletion";
@@ -19,7 +19,7 @@ export type DeepseekChatOption=Partial<{
 }>;
 
 /**传统OpenAI系统提示模式的Formater */
-export const DeepseekChatChatTaskFormater:IChatFormater<DeepseekChatOption,AnyDeepseekChatRespFormat> = {
+export const DeepseekChatChatTaskFormater:ChatTaskFormater<DeepseekChatOption,AnyDeepseekChatRespFormat> = {
     formatOption(opt:ChatTaskOption,model:string):DeepseekChatOption|undefined{
         //验证参数
         if(opt.messages==null){
@@ -54,7 +54,7 @@ export const DeepseekChatChatTaskFormater:IChatFormater<DeepseekChatOption,AnyDe
 }
 
 /**前缀续写模式的Formater */
-export const DeepseekChatBetaChatTaskFormater:IChatFormater<DeepseekChatOption,AnyDeepseekChatRespFormat> = {
+export const DeepseekChatBetaChatTaskFormater:ChatTaskFormater<DeepseekChatOption,AnyDeepseekChatRespFormat> = {
     formatOption(opt:ChatTaskOption,model:string):DeepseekChatOption|undefined{
         //验证参数
         if(opt.messages==null){

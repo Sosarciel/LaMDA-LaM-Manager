@@ -2,9 +2,9 @@ import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
 import createHttpsProxyAgent, {HttpsProxyAgent} from 'https-proxy-agent';
 import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
-import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/RequestFormatAdapter/RequestFormatInterface';
-import { AnyGoogleApiRespFormat, AnyTextCompletionRespFormat } from 'TextCompletion';
+import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from 'Requester';
 import { APIPriceResp, CredsManager } from '@sosraciel-lamda/creds-manager';
+import { AnyGoogleApiRespFormat, AnyTextCompletionRespFormat } from 'RespFormat';
 
 /**适用与 openai 鉴权方式的post工具 */
 class _GeminiPostTool implements IRequestFormater {

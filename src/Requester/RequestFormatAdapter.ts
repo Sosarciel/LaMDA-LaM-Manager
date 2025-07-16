@@ -1,5 +1,5 @@
-import { GeminiPostTool } from "./GeminiPostTool";
-import { OpenApiPostTool } from "./OpenAIPostTool";
+import { GeminiPostTool } from "./GeminiRequester";
+import { OpenApiPostTool } from "./OpenAIRequester";
 
 export const RequestFormaterTable = {
     openai:OpenApiPostTool,

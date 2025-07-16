@@ -1,7 +1,7 @@
 import { SLogger } from "@zwa73/utils";
 import { OpenAITextModel } from "ModelConfig";
 import { OpenAITextChatTaskTool } from "./Tool";
-import { IChatFormater } from "../ChatFormatAdapter";
+import { ChatTaskFormater } from "../ChatFormatAdapter";
 import { AnyOpenAITextRespFormat } from "RespFormat";
 import { commonCalcToken, commonFormatResp,ChatTaskOption } from "TextCompletion";
 
@@ -19,7 +19,7 @@ export type OpenAITextOption = Partial<{
     n: number;
 }>;
 
-export const OpenAITextFormater:IChatFormater<OpenAITextOption,AnyOpenAITextRespFormat>={
+export const OpenAITextFormater:ChatTaskFormater<OpenAITextOption,AnyOpenAITextRespFormat>={
     formatOption(opt:ChatTaskOption,model:string){
         //验证参数
         if(opt.messages==null){
