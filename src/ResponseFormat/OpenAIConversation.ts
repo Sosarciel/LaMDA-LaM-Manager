@@ -1,5 +1,5 @@
 /**聊天API回复格式 */
-type ChatRespFormat={
+export type OpenAIConversationRespFormat={
     "id":`chatcmpl-${string}`,
     "object":"chat.completion",
     "created":number,
@@ -11,10 +11,10 @@ type ChatRespFormat={
         "completion_tokens":number,
         "total_tokens":number
     },
-    "choices":ChatChoiceFormat[]
+    "choices":ConversationChoiceFormat[]
 }
 /**聊天API选项格式 */
-type ChatChoiceFormat={
+type ConversationChoiceFormat={
     "message":{
         "role":"assistant",
         "content"?:string,
@@ -22,5 +22,3 @@ type ChatChoiceFormat={
     "finish_reason":"stop"|"length"|"content_filter",
     "index":number
 }
-/**所有聊天API的回复格式 */
-export type AnyOpenAIChatRespFormat=ChatRespFormat;

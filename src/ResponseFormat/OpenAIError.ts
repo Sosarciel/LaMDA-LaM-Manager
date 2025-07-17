@@ -167,6 +167,6 @@ type ContentFilter = ErrorRespFormat&{
 }
 
 /**所有错误格式的合集 */
-export type AnyOpenAIErrorFormat = OverloadedError|OverloadedError2|RateLimitError1|QuotaError|
+export type OpenAIErrorFormat = OverloadedError|OverloadedError2|RateLimitError1|QuotaError|
 InvalidKeyError|AuthSubrequestError|OtherError1|OtherError2|AccessTerminatedError|
 AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|NewApiErr|ContentFilter;

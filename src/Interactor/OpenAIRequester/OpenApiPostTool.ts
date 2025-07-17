@@ -4,7 +4,7 @@ import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
 import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/src/Interactor/RequestFormatInterface';
 import { APIPriceResp, CredsManager } from '@sosraciel-lamda/creds-manager';
-import { AnyOpenAIApiRespFormat } from 'ResponseFormat';
+import { AnyOpenAIConversationLikeRespFormat } from 'ResponseFormat';
 
 
 /**适用与 openai 鉴权方式的post工具 */
@@ -52,7 +52,7 @@ class _OpenApiPostTool implements IRequestFormater {
             .finalize({...options,timeout:timeLimit})
             .once(postJson);
 
-        const respObj = respData?.data as AnyOpenAIApiRespFormat|undefined;
+        const respObj = respData?.data as AnyOpenAIConversationLikeRespFormat|undefined;
 
         //post错误
         const respcode = respData?.statusCode ?? 0;
@@ -103,7 +103,7 @@ class _OpenApiPostTool implements IRequestFormater {
         //重复post的处理函数
         const procFn = async ()=>client.postLaM(opt);
         //重复post的验证函数
-        const verifyFn = async (obj:AnyOpenAIApiRespFormat | undefined)=>{
+        const verifyFn = async (obj:AnyOpenAIConversationLikeRespFormat | undefined)=>{
             //处理反馈 可以视为同步
             return await verifyResp(obj, accountData);
         };

@@ -1,5 +1,5 @@
 import { Failed, PromiseStatus, SLogger, Success, Terminated } from "@zwa73/utils";
-import { AnyOpenAIErrorFormat } from "ResponseFormat";
+import { OpenAIErrorFormat } from "ResponseFormat";
 import { CredsData } from "@sosraciel-lamda/creds-manager";
 
 /**验证回复可用性并处理错误
@@ -29,7 +29,7 @@ export const verifyResp = async <T>(
  * @returns 可用性
  */
 export const checkError = async (
-    error: AnyOpenAIErrorFormat['error'],
+    error: OpenAIErrorFormat['error'],
     accountData: CredsData
 ): Promise<PromiseStatus> => {
 

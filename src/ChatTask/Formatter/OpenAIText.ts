@@ -1,7 +1,7 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 import { OpenAITextModel } from "ModelConfig";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
-import { AnyOpenAITextRespFormat } from "ResponseFormat";
+import { OpenAITextRespFormat } from "ResponseFormat";
 import { commonCalcToken, commonFormatResp } from "./Utils";
 import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
 
@@ -21,7 +21,7 @@ export type OpenAITextOption = Partial<{
 
 
 
-export const OpenAITextChatFormatter:ChatTaskFormatter<string,OpenAITextOption,AnyOpenAITextRespFormat>={
+export const OpenAITextChatFormatter:ChatTaskFormatter<string,OpenAITextOption,OpenAITextRespFormat>={
     formatOption(opt:ChatTaskOption,model:string){
         //验证参数
         if(opt.messages==null){

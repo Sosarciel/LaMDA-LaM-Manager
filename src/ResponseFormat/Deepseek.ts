@@ -1,4 +1,6 @@
-type ChatResp = {
+
+
+export type DeepseekRespFormat = {
     id: string;
     choices: ChatChoice[];
     created: number;
@@ -20,5 +22,3 @@ type ChatChoice = {
         role: "assistant";
     };
 };
-
-export type AnyDeepseekChatRespFormat = ChatResp;

@@ -2,7 +2,7 @@ import { SLogger, UtilFunc } from "@zwa73/utils";
 import { getTokensizer } from "@/src/Tokensize";
 import { ChatTaskOption, LaMChatMessages, MessageType } from "ChatTask";
 import { LaMInterface } from "@/src/LaMInterface";
-import { AnyOpenAITextRespFormat } from "ResponseFormat";
+import { OpenAITextRespFormat } from "ResponseFormat";
 import { OpenAITextChatFormatter } from "@/src/ChatTask/Formatter";
 import { TextCompletionOptions } from "./TextCompletionInterface";
 
@@ -11,7 +11,7 @@ import { TextCompletionOptions } from "./TextCompletionInterface";
 export class TestModule implements LaMInterface{
     async chat(options:ChatTaskOption){
         SLogger.http(options);
-        const resp:AnyOpenAITextRespFormat = {
+        const resp:OpenAITextRespFormat = {
             "choices": [{
                 "finish_reason": "stop",
                 "index": 0,

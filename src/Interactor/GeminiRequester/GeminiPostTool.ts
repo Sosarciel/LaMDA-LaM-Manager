@@ -4,7 +4,7 @@ import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
 import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/src/Interactor';
 import { APIPriceResp, CredsManager } from '@sosraciel-lamda/creds-manager';
-import { AnyGeminiApiRespFormat, AnyTextCompletionRespFormat } from 'ResponseFormat';
+import { GeminiRespFormat, AnyTextCompletionRespFormat } from 'ResponseFormat';
 
 /**适用与 openai 鉴权方式的post工具 */
 class _GeminiPostTool implements IRequestFormater {
@@ -52,7 +52,7 @@ class _GeminiPostTool implements IRequestFormater {
             .finalize({...options,timeout:timeLimit})
             .once(postJson));
 
-        const respObj = respData?.data as AnyGeminiApiRespFormat|undefined;
+        const respObj = respData?.data as GeminiRespFormat|undefined;
 
         //post错误
         const respcode = respData?.statusCode ?? 0;

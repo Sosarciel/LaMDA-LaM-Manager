@@ -1,7 +1,7 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 import { DeepseekModel } from "ModelConfig";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
-import { AnyDeepseekChatRespFormat } from "ResponseFormat";
+import { DeepseekRespFormat } from "ResponseFormat";
 import { ChatTaskOption } from "@/src/ChatTask/ChatTaskInterface";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { DeepseekAPIEntry, DeepseekOption } from "RequestFormat";
@@ -11,7 +11,7 @@ import { OpenAIConversationChatFormatter } from "./OpenAIConversation";
 
 
 /**传统OpenAI系统提示模式的Formater */
-export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekOption,AnyDeepseekChatRespFormat> = {
+export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekOption,DeepseekRespFormat> = {
     formatOption(opt:ChatTaskOption,model:string):DeepseekOption|undefined{
         //验证参数
         if(opt.messages==null){

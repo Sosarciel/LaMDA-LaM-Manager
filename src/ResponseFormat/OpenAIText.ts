@@ -1,5 +1,5 @@
 /**文本API回复格式 */
-type TextRespFormat={
+export type OpenAITextRespFormat={
     "id":`cmpl-${string}`,
     "object":"text_completion",
     "created":number,
@@ -18,5 +18,3 @@ type TextChoiceFormat={
     "logprobs":any,
     "finish_reason":"stop"|"length"
 }
-/**所有文本API的回复格式 */
-export type AnyOpenAITextRespFormat=TextRespFormat;

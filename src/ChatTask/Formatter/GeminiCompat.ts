@@ -1,6 +1,6 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 import { GeminiModel } from 'ModelConfig';
-import { AnyOpenAIChatRespFormat } from "ResponseFormat";
+import { OpenAIConversationRespFormat } from "ResponseFormat";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
@@ -10,7 +10,7 @@ import { OpenAIConversationChatFormatter } from "./OpenAIConversation";
 
 
 /**gptge兼容api格式化工具 */
-export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatOption,AnyOpenAIChatRespFormat> = {
+export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatOption,OpenAIConversationRespFormat> = {
     formatOption(opt:ChatTaskOption,model:string):GeminiCompatOption|undefined{
         //验证参数
         if(opt.messages==null){

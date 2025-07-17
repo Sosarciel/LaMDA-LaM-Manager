@@ -2,11 +2,11 @@ import { lazyFunction, SLogger } from "@zwa73/utils";
 import { OpenAIConversationModel } from "ModelConfig";
 import { ChatTaskFormatter } from '../ChatFormatAdapter';
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { AnyOpenAIChatApiRespFormat } from "ResponseFormat";
+import { AnyOpenAIConversationLikeRespFormat } from "ResponseFormat";
 import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
 import { OpenAIConversationAPIEntry, OpenAIConversationAPIRole, OpenAIConversationOption } from "RequestFormat";
 
-export const OpenAIConversationChatFormatter:ChatTaskFormatter<OpenAIConversationAPIEntry[],OpenAIConversationOption,AnyOpenAIChatApiRespFormat>={
+export const OpenAIConversationChatFormatter:ChatTaskFormatter<OpenAIConversationAPIEntry[],OpenAIConversationOption,AnyOpenAIConversationLikeRespFormat>={
     formatOption(opt:ChatTaskOption,model:string){
         //验证参数
         if(opt.messages==null){

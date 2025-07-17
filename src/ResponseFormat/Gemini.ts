@@ -78,11 +78,8 @@ type UsageMetadata = {
     thoughtsTokenCount: number
 }
 
-type GeminiChatRespFormat = {
+export type GeminiRespFormat = {
     candidates:Candidate[],
     usageMetadata:UsageMetadata,
     modelVersion:string,
 }
-
-
-export type AnyGeminiChatRespFormat = GeminiChatRespFormat;
