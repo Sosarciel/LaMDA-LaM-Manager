@@ -3,7 +3,7 @@
 
 export type GeminiChatOption={
     system_instruction:{parts:{text: string}},
-    contents:GoogleChatAPIEntry[];
+    contents:GeminiChatAPIEntry[];
     generationConfig:{
         stopSequences: string[]|undefined;
         temperature?: number|undefined;
@@ -13,18 +13,21 @@ export type GeminiChatOption={
         thinkingBudget?: number|undefined;
     }
 }
-export type GoogleChatAPIEntry={
-    role: GoogleChatAPIRole;
+
+export type GeminiChatAPIEntry={
+    role: GeminiChatAPIRole;
     parts:[{text:string}];
 }
 
-export enum GoogleChatAPIRole{
-    User="user",
-    Model="model",
-}
+export const GeminiChatAPIRole = {
+    User:"user",
+    Model:"model",
+} as const;
+export type GeminiChatAPIRole = typeof GeminiChatAPIRole[keyof typeof GeminiChatAPIRole];
 
-export type GoogleChatApiData = {
-    message:GoogleChatAPIEntry[];
+
+export type GeminiChatApiData = {
+    message:GeminiChatAPIEntry[];
     define :string;
 }
 
