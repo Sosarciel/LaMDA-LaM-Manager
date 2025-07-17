@@ -3,7 +3,7 @@ import { getTokensizer } from "@/src/Tokensize";
 import { ChatTaskOption, LaMChatMessages, MessageType } from "ChatTask";
 import { LaMInterface } from "@/src/LaMInterface";
 import { OpenAITextRespFormat } from "ResponseFormat";
-import { OpenAITextChatFormatter } from "@/src/ChatTask/Formatter";
+import { OpenAITextChatTaskFormatter } from "@/src/ChatTask/Formatter";
 import { TextCompletionOptions } from "./TextCompletionInterface";
 
 
@@ -25,7 +25,7 @@ export class TestModule implements LaMInterface{
             "usage": {"completion_tokens":4248,"prompt_tokens":1849,"total_tokens":6097}
         };
         const result = {
-            completed:OpenAITextChatFormatter.formatResp(resp),
+            completed:OpenAITextChatTaskFormatter.formatResp(resp),
             pending:[]
         };
         return result;//DefChatLaMResult;

@@ -4,7 +4,7 @@ import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { DeepseekRespFormat } from "ResponseFormat";
 import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { OpenAIConversationChatFormatter } from "./OpenAIConversation";
+import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
 import { DeepseekAPIEntry, DeepseekAPIRole, DeepseekOption } from "RequestFormat";
 
 
@@ -93,5 +93,5 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
         ];
         return out;
     },
-    formatResp:OpenAIConversationChatFormatter.formatResp,
+    formatResp:OpenAIConversationChatTaskFormatter.formatResp,
 }

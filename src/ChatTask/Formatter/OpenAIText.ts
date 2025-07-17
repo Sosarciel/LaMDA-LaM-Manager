@@ -21,7 +21,7 @@ export type OpenAITextOption = Partial<{
 
 
 
-export const OpenAITextChatFormatter:ChatTaskFormatter<string,OpenAITextOption,OpenAITextRespFormat>={
+export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOption,OpenAITextRespFormat>={
     formatOption(opt:ChatTaskOption,model:string){
         //验证参数
         if(opt.messages==null){
@@ -33,8 +33,8 @@ export const OpenAITextChatFormatter:ChatTaskFormatter<string,OpenAITextOption,O
             return;
         }
         //转换文本
-        let turboMessahge = OpenAITextChatFormatter.transReq(opt.target,opt.messages);
-        turboMessahge = OpenAITextChatFormatter.formatReq(opt.target,turboMessahge);
+        let turboMessahge = OpenAITextChatTaskFormatter.transReq(opt.target,opt.messages);
+        turboMessahge = OpenAITextChatTaskFormatter.formatReq(opt.target,turboMessahge);
 
 
         return {
@@ -54,8 +54,8 @@ export const OpenAITextChatFormatter:ChatTaskFormatter<string,OpenAITextOption,O
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResult:lazyFunction(()=>commonFormatResp(OpenAITextChatFormatter)),
-    calcToken:lazyFunction(()=>commonCalcToken(OpenAITextChatFormatter)),
+    formatResult:lazyFunction(()=>commonFormatResp(OpenAITextChatTaskFormatter)),
+    calcToken:lazyFunction(()=>commonCalcToken(OpenAITextChatTaskFormatter)),
     transReq(chatTarget,messageList){
         let ntext="";
 

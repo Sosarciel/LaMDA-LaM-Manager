@@ -4,7 +4,7 @@ import { TokensizerType } from "@/src/Tokensize";
 import { AnyTextCompletionRespFormat } from "ResponseFormat";
 import { AnyTextCompletionOption } from "ModelConfig";
 import { ChatTaskOption, LaMChatMessages } from "./ChatTaskInterface";
-import { DeepseekBetaChatTaskFormatter, DeepseekChatTaskFormatter, GeminiCompatChatTaskFormatter, OpenAIConversationChatFormatter, OpenAITextChatFormatter } from "./Formatter";
+import { DeepseekBetaChatTaskFormatter, DeepseekChatTaskFormatter, GeminiCompatChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter } from "./Formatter";
 import { GeminiChatTaskFormatter } from "./Formatter/Gemini";
 
 /** 聊天任务格式化工具 */
@@ -33,8 +33,8 @@ export type ChatTaskFormatter<Msg,Opt extends AnyTextCompletionOption, Fmt exten
 export const ChatTaskFormaterTable = {
     deepseek_chat:DeepseekChatTaskFormatter,
     deepseek_chat_beta:DeepseekBetaChatTaskFormatter,
-    openai_chat:OpenAIConversationChatFormatter,
-    openai_text:OpenAITextChatFormatter,
+    openai_chat:OpenAIConversationChatTaskFormatter,
+    openai_text:OpenAITextChatTaskFormatter,
     google_chat:GeminiChatTaskFormatter,
     google_chat_compat:GeminiCompatChatTaskFormatter,
 };

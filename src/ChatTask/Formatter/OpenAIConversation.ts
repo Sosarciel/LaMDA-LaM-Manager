@@ -6,7 +6,7 @@ import { AnyOpenAIConversationLikeRespFormat } from "ResponseFormat";
 import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
 import { OpenAIConversationAPIEntry, OpenAIConversationAPIRole, OpenAIConversationOption } from "RequestFormat";
 
-export const OpenAIConversationChatFormatter:ChatTaskFormatter<OpenAIConversationAPIEntry[],OpenAIConversationOption,AnyOpenAIConversationLikeRespFormat>={
+export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConversationAPIEntry[],OpenAIConversationOption,AnyOpenAIConversationLikeRespFormat>={
     formatOption(opt:ChatTaskOption,model:string){
         //验证参数
         if(opt.messages==null){
@@ -18,8 +18,8 @@ export const OpenAIConversationChatFormatter:ChatTaskFormatter<OpenAIConversatio
             return;
         }
 
-        let turboMessahge = OpenAIConversationChatFormatter.transReq(opt.target,opt.messages);
-        turboMessahge = OpenAIConversationChatFormatter.formatReq(opt.target,turboMessahge);
+        let turboMessahge = OpenAIConversationChatTaskFormatter.transReq(opt.target,opt.messages);
+        turboMessahge = OpenAIConversationChatTaskFormatter.formatReq(opt.target,turboMessahge);
 
         return {
             model             : model as OpenAIConversationModel,//模型id
@@ -38,8 +38,8 @@ export const OpenAIConversationChatFormatter:ChatTaskFormatter<OpenAIConversatio
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResult:lazyFunction(()=>commonFormatResp(OpenAIConversationChatFormatter)),
-    calcToken:lazyFunction(()=>stringifyCalcToken(OpenAIConversationChatFormatter)),
+    formatResult:lazyFunction(()=>commonFormatResp(OpenAIConversationChatTaskFormatter)),
+    calcToken:lazyFunction(()=>stringifyCalcToken(OpenAIConversationChatTaskFormatter)),
     transReq(chatTarget,messageList){
         const narr:OpenAIConversationAPIEntry[] = [];
 

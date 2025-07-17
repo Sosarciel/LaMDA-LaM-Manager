@@ -5,7 +5,7 @@ import { DeepseekRespFormat } from "ResponseFormat";
 import { ChatTaskOption } from "@/src/ChatTask/ChatTaskInterface";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { DeepseekAPIEntry, DeepseekOption } from "RequestFormat";
-import { OpenAIConversationChatFormatter } from "./OpenAIConversation";
+import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
 
 
 
@@ -43,7 +43,7 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
     },
     formatResult:lazyFunction(()=>commonFormatResp(DeepseekChatTaskFormatter)),
     calcToken:lazyFunction(()=>stringifyCalcToken(DeepseekChatTaskFormatter)),
-    transReq:OpenAIConversationChatFormatter.transReq,
-    formatReq:OpenAIConversationChatFormatter.formatReq,
-    formatResp:OpenAIConversationChatFormatter.formatResp,
+    transReq:OpenAIConversationChatTaskFormatter.transReq,
+    formatReq:OpenAIConversationChatTaskFormatter.formatReq,
+    formatResp:OpenAIConversationChatTaskFormatter.formatResp,
 }

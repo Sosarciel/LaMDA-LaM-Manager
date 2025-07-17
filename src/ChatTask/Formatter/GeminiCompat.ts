@@ -6,7 +6,7 @@ import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
 import { GeminiCompatAPIEntry, GeminiCompatOption } from "@/src/RequestFormat/GeminiCompat";
 import { OpenAIConversationAPIRole } from "RequestFormat";
-import { OpenAIConversationChatFormatter } from "./OpenAIConversation";
+import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
 
 
 /**gptge兼容api格式化工具 */
@@ -94,6 +94,6 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
 
         return [{role:OpenAIConversationAPIRole.System,content:desc.trim()},...narr];
     },
-    formatReq:OpenAIConversationChatFormatter.formatReq,
-    formatResp:OpenAIConversationChatFormatter.formatResp,
+    formatReq:OpenAIConversationChatTaskFormatter.formatReq,
+    formatResp:OpenAIConversationChatTaskFormatter.formatResp,
 }
