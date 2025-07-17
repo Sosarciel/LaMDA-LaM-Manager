@@ -1,12 +1,12 @@
-import { DeepseekChatModel } from "ModelConfig";
+import { DeepseekModel } from "ModelConfig";
 import { OpenAIConversationAPIRole } from "./OpenAIConversation";
 
 
 
 /**Deepseek模型配置 */
-export type DeepseekChatOption=Partial<{
-    model: DeepseekChatModel;
-    messages: DeepseekChatAPIEntry[];
+export type DeepseekOption=Partial<{
+    model: DeepseekModel;
+    messages: DeepseekAPIEntry[];
     max_tokens: number;
     temperature: number;
     top_p: number;
@@ -16,12 +16,12 @@ export type DeepseekChatOption=Partial<{
 }>;
 
 /**用于Deepseek模型的消息Entry */
-export type DeepseekChatAPIEntry={
+export type DeepseekAPIEntry={
     role: OpenAIConversationAPIRole;
     content:string;
     /**指定为前缀补全模式 */
     prefix?:boolean;
 }
 
-export const DeepseekChatAPIRole = OpenAIConversationAPIRole;
-export type DeepseekChatAPIRole = OpenAIConversationAPIRole;
+export const DeepseekAPIRole = OpenAIConversationAPIRole;
+export type DeepseekAPIRole = OpenAIConversationAPIRole;

@@ -1,28 +1,28 @@
 
-export * from './GPTChat';
-export * from './GPTText';
-export * from './DeepseekChat';
-export * from './GeminiInterface';
+export * from './OpenAIConversation';
+export * from './OpenAIText';
+export * from './Deepseek';
+export * from './Gemini';
 
 
-import { DeepseekChatOption, GeminiChatOption, OpenAIConversationChatOption, OpenAITextOption } from '@/src/ChatTask';
-import { DeepseekChatModel } from './DeepseekChat';
-import { GoogleChatModel } from './GeminiInterface';
-import { OpenAIChatModel } from './GPTChat';
-import { OpenAITextModel } from './GPTText';
+import { DeepseekOption, GeminiOption, OpenAIConversationOption, OpenAITextOption } from 'RequestFormat';
+import { DeepseekModel } from './Deepseek';
+import { GeminiModel } from './Gemini';
+import { OpenAIConversationModel } from './OpenAIConversation';
+import { OpenAITextModel } from './OpenAIText';
 
-export type AnyOpenaiModel = OpenAITextModel|OpenAIChatModel;
+export type AnyOpenaiModel = OpenAITextModel|OpenAIConversationModel;
 
-export type AnyDeepseekModel = DeepseekChatModel;
+export type AnyDeepseekModel = DeepseekModel;
 
-export type AnyGoogleModel = GoogleChatModel;
+export type AnyGoogleModel = GeminiModel;
 
 /**任何文本完成模型 */
 export type AnyTextCompletionModel   = AnyOpenaiModel|AnyDeepseekModel|AnyGoogleModel;
 
-export type AnyDeepseekOption = DeepseekChatOption;
-export type AnyOpenaiOption = OpenAIConversationChatOption|OpenAITextOption;
-export type AnyGoogleOption = GeminiChatOption;
+export type AnyDeepseekOption = DeepseekOption;
+export type AnyOpenaiOption = OpenAIConversationOption|OpenAITextOption;
+export type AnyGeminiOption = GeminiOption;
 
 /**任何文本完成模型的配置 */
-export type AnyTextCompletionOption = AnyDeepseekOption|AnyOpenaiOption|AnyGoogleOption;
+export type AnyTextCompletionOption = AnyDeepseekOption|AnyOpenaiOption|AnyGeminiOption;

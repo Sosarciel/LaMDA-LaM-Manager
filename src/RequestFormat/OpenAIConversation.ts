@@ -1,9 +1,9 @@
-import { OpenAIChatModel } from "ModelConfig";
+import { OpenAIConversationModel } from "ModelConfig";
 
 
 /**turbo模型配置 */
-export type OpenAIConversationChatOption=Partial<{
-    model: OpenAIChatModel;
+export type OpenAIConversationOption=Partial<{
+    model: OpenAIConversationModel;
     messages: OpenAIConversationAPIEntry[];
     max_tokens: number;
     temperature: number;

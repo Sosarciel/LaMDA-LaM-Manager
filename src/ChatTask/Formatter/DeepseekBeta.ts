@@ -1,11 +1,11 @@
 import { SLogger, lazyFunction } from "@zwa73/utils";
-import { DeepseekChatModel } from "ModelConfig";
+import { DeepseekModel } from "ModelConfig";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { AnyDeepseekChatRespFormat } from "ResponseFormat";
 import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { OpenAIConversationChatFormatter } from "./OpenAIConversation";
-import { DeepseekChatAPIEntry, DeepseekChatAPIRole, DeepseekChatOption } from "RequestFormat";
+import { DeepseekAPIEntry, DeepseekAPIRole, DeepseekOption } from "RequestFormat";
 
 
 
@@ -19,8 +19,8 @@ function formatMessage(message?:string):string|undefined{
 }
 
 /**前缀续写模式的Formater */
-export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekChatAPIEntry[],DeepseekChatOption,AnyDeepseekChatRespFormat> = {
-    formatOption(opt:ChatTaskOption,model:string):DeepseekChatOption|undefined{
+export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekOption,AnyDeepseekChatRespFormat> = {
+    formatOption(opt:ChatTaskOption,model:string):DeepseekOption|undefined{
         //验证参数
         if(opt.messages==null){
             SLogger.warn("DeepseekChatOptions 无效 messages为null");
@@ -36,7 +36,7 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekChatAPIEntr
 
 
         return {
-            model             : model as DeepseekChatModel  ,//模型id
+            model             : model as DeepseekModel  ,//模型id
             messages          : msg                         ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
             temperature       : opt.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题
@@ -52,24 +52,24 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekChatAPIEntr
     formatResult:lazyFunction(()=>commonFormatResp(DeepseekBetaChatTaskFormatter)),
     calcToken:lazyFunction(()=>stringifyCalcToken(DeepseekBetaChatTaskFormatter)),
     transReq(chatTarget,messageList){
-        const narr:DeepseekChatAPIEntry[] = [];
+        const narr:DeepseekAPIEntry[] = [];
 
         //处理主消息列表
         for(const item of messageList){
             if(item.type==MessageType.DESC){
                 narr.push({
-                    role:DeepseekChatAPIRole.System,
+                    role:DeepseekAPIRole.System,
                     content:item.content
                 });
             }else{
                 if(item.name==chatTarget){
                     narr.push({
-                        role:DeepseekChatAPIRole.Assistant,
+                        role:DeepseekAPIRole.Assistant,
                         content:item.name+":"+item.content
                     });
                 }else{
                     narr.push({
-                        role:DeepseekChatAPIRole.User,
+                        role:DeepseekAPIRole.User,
                         content:item.name+":"+item.content
                     });
                 }
@@ -83,10 +83,10 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekChatAPIEntr
         return narr;
     },
     formatReq(chatTarget,chatList){
-        const out:DeepseekChatAPIEntry[] = [
+        const out:DeepseekAPIEntry[] = [
             ...chatList,
             {
-                role:DeepseekChatAPIRole.Assistant,
+                role:DeepseekAPIRole.Assistant,
                 content:chatTarget+":",
                 prefix:true
             }

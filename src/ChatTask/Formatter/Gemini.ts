@@ -1,13 +1,13 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import { AnyGoogleChatRespFormat } from "ResponseFormat";
+import { AnyGeminiChatRespFormat } from "ResponseFormat";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
-import { GeminiChatOption, GeminiChatApiData, GeminiChatAPIEntry, GeminiChatAPIRole } from "RequestFormat";
+import { GeminiOption, GeminiApiData, GeminiAPIEntry, GeminiAPIRole } from "RequestFormat";
 
 
-export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiChatApiData,GeminiChatOption,AnyGoogleChatRespFormat> = {
-    formatOption(opt:ChatTaskOption,model:string):GeminiChatOption|undefined{
+export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOption,AnyGeminiChatRespFormat> = {
+    formatOption(opt:ChatTaskOption,model:string):GeminiOption|undefined{
         //验证参数
         if(opt.messages==null){
             SLogger.warn("GoogleChatOption 无效 messages为null");
@@ -38,7 +38,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiChatApiData,GeminiC
     transReq(chatTarget,messageList){
         let desc = "";
         let inDesc = true;
-        const narr:GeminiChatAPIEntry[] = [];
+        const narr:GeminiAPIEntry[] = [];
 
         //处理主消息列表
         for(const item of messageList){
@@ -50,24 +50,24 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiChatApiData,GeminiC
                 //其他作为用户输入
                 else{
                     narr.push({
-                        role:GeminiChatAPIRole.User,
+                        role:GeminiAPIRole.User,
                         parts:[{text:item.content}]
                     });
                 }
             }else{
                 inDesc = false;
                 narr.push({
-                    role:GeminiChatAPIRole.User,
+                    role:GeminiAPIRole.User,
                     parts:[{text:item.name+":"}]
                 });
                 if(item.name==chatTarget){
                     narr.push({
-                        role:GeminiChatAPIRole.Model,
+                        role:GeminiAPIRole.Model,
                         parts:[{text:item.content}]
                     });
                 }else{
                     narr.push({
-                        role:GeminiChatAPIRole.User,
+                        role:GeminiAPIRole.User,
                         parts:[{text:item.content}]
                     });
                 }
@@ -85,7 +85,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiChatApiData,GeminiC
     },
     formatReq(chatTarget,chatList){
         chatList.message.push({
-            role:GeminiChatAPIRole.User,
+            role:GeminiAPIRole.User,
             parts:[{text:`${chatTarget}:`}],
         });
         return chatList;

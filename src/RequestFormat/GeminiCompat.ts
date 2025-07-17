@@ -1,12 +1,12 @@
-import { GoogleChatModel } from "ModelConfig";
+import { GeminiModel } from "ModelConfig";
 import { OpenAIConversationAPIRole } from "./OpenAIConversation";
 
 
 
 /**gptge兼容api选项 */
-export type GeminiCompatChatOption=Partial<{
-    model: GoogleChatModel|any;
-    messages: GeminiCompatChatAPIEntry[];
+export type GeminiCompatOption=Partial<{
+    model: GeminiModel|any;
+    messages: GeminiCompatAPIEntry[];
     max_tokens: number;
     temperature: number;
     top_p: number;
@@ -20,7 +20,7 @@ export type GeminiCompatChatOption=Partial<{
 }>;
 
 /**gptge兼容api消息段 */
-export type GeminiCompatChatAPIEntry={
+export type GeminiCompatAPIEntry={
     role: OpenAIConversationAPIRole;
     content:string;
 }

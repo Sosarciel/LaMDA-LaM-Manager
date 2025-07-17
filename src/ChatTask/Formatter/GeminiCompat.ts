@@ -1,17 +1,17 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import { GoogleChatModel } from 'ModelConfig';
+import { GeminiModel } from 'ModelConfig';
 import { AnyOpenAIChatRespFormat } from "ResponseFormat";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
-import { GeminiCompatChatAPIEntry, GeminiCompatChatOption } from "@/src/RequestFormat/GeminiCompat";
+import { GeminiCompatAPIEntry, GeminiCompatOption } from "@/src/RequestFormat/GeminiCompat";
 import { OpenAIConversationAPIRole } from "RequestFormat";
 import { OpenAIConversationChatFormatter } from "./OpenAIConversation";
 
 
 /**gptge兼容api格式化工具 */
-export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatChatAPIEntry[],GeminiCompatChatOption,AnyOpenAIChatRespFormat> = {
-    formatOption(opt:ChatTaskOption,model:string):GeminiCompatChatOption|undefined{
+export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatOption,AnyOpenAIChatRespFormat> = {
+    formatOption(opt:ChatTaskOption,model:string):GeminiCompatOption|undefined{
         //验证参数
         if(opt.messages==null){
             SLogger.warn("GoogleChatCompatOption 无效 messages为null");
@@ -25,8 +25,8 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatChatAPI
         let msg = GeminiCompatChatTaskFormatter.transReq(opt.target,opt.messages);
         msg = GeminiCompatChatTaskFormatter.formatReq(opt.target,msg);
 
-        const obj:GeminiCompatChatOption = {
-            model             : model as GoogleChatModel    ,//模型id
+        const obj:GeminiCompatOption = {
+            model             : model as GeminiModel    ,//模型id
             messages          : msg                         ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
             temperature       : opt.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题
@@ -48,7 +48,7 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatChatAPI
     transReq(chatTarget,messageList){
         let desc = "";
         let inDesc = true;
-        const narr:GeminiCompatChatAPIEntry[] = [];
+        const narr:GeminiCompatAPIEntry[] = [];
 
         //处理主消息列表
         for(const item of messageList){

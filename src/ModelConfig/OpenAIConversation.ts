@@ -1,7 +1,7 @@
 import { assertType } from '@zwa73/utils';
 import { TextCompleteionModelConfig } from 'TextCompletion';
 
-const OpenAIChatModelDataBase = {
+const OpenAIConversationModelDataBase = {
     /**此模型api的标准路径 */
     endpoint:'/v1/chat/completions',
     chat_formater:'openai_chat',
@@ -10,7 +10,7 @@ const OpenAIChatModelDataBase = {
 } as const;
 
 export const GPT4 = {
-    ...OpenAIChatModelDataBase,
+    ...OpenAIConversationModelDataBase,
     id:'gpt-4',
     alias:'GPT4',
     price:{
@@ -23,7 +23,7 @@ export type GPT4 = typeof GPT4;
 assertType<TextCompleteionModelConfig>(GPT4);
 
 export const GPT4Chat = {
-    ...OpenAIChatModelDataBase,
+    ...OpenAIConversationModelDataBase,
     id:'gpt-4-turbo',
     alias:'GPT4Chat',
     price:{
@@ -36,7 +36,7 @@ export type GPT4Chat = typeof GPT4Chat;
 assertType<TextCompleteionModelConfig>(GPT4Chat);
 
 export const GPT4O = {
-    ...OpenAIChatModelDataBase,
+    ...OpenAIConversationModelDataBase,
     id:'gpt-4o',
     alias:'GPT4O',
     price:{
@@ -49,7 +49,7 @@ export type GPT4O = typeof GPT4O;
 assertType<TextCompleteionModelConfig>(GPT4O);
 
 export const GPT4OMini = {
-    ...OpenAIChatModelDataBase,
+    ...OpenAIConversationModelDataBase,
     id:'gpt-4o-mini',
     alias:'GPT4OMini',
     price:{
@@ -62,7 +62,7 @@ export type GPT4OMini = typeof GPT4OMini;
 assertType<TextCompleteionModelConfig>(GPT4OMini);
 
 export const GPT35Chat = {
-    ...OpenAIChatModelDataBase,
+    ...OpenAIConversationModelDataBase,
     id:'gpt-3.5-turbo',
     alias:'GPT35Chat',
     price:{
@@ -74,5 +74,5 @@ export const GPT35Chat = {
 export type GPT35Chat = typeof GPT35Chat;
 assertType<TextCompleteionModelConfig>(GPT35Chat);
 
-export type OpenAIChatModelData =  GPT4 | GPT4Chat | GPT4O | GPT4OMini | GPT35Chat;
-export type OpenAIChatModel =  OpenAIChatModelData['id'];
+export type OpenAIConversationModelData =  GPT4 | GPT4Chat | GPT4O | GPT4OMini | GPT35Chat;
+export type OpenAIConversationModel =  OpenAIConversationModelData['id'];

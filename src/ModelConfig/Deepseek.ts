@@ -1,14 +1,14 @@
 import { assertType } from '@zwa73/utils';
 import { TextCompleteionModelConfig } from 'TextCompletion';
 
-const DeepseekChatModelDataBase = {
+const DeepseekModelDataBase = {
     /**此模型api的标准路径 */
     tokensizer:'deepseek',
     request_formater:'openai',
 } as const;
 
 export const DeepseekChat = {
-    ...DeepseekChatModelDataBase,
+    ...DeepseekModelDataBase,
     chat_formater:'deepseek_chat',
     endpoint:'/v1/chat/completions',
     id:'deepseek-chat',
@@ -25,7 +25,7 @@ assertType<TextCompleteionModelConfig>(DeepseekChat);
 
 
 export const DeepseekChatBeta = {
-    ...DeepseekChatModelDataBase,
+    ...DeepseekModelDataBase,
     chat_formater:'deepseek_chat_beta',
     endpoint:'/beta/v1/chat/completions',
     id:'deepseek-chat',
@@ -40,5 +40,5 @@ export const DeepseekChatBeta = {
 export type DeepseekChatBeta = typeof DeepseekChatBeta;
 assertType<TextCompleteionModelConfig>(DeepseekChatBeta);
 
-export type DeepseekChatModelData = DeepseekChat;
-export type DeepseekChatModel = DeepseekChatModelData['id'];
+export type DeepseekModelData = DeepseekChat;
+export type DeepseekModel = DeepseekModelData['id'];

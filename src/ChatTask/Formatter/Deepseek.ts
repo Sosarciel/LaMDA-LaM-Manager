@@ -1,18 +1,18 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import { DeepseekChatModel } from "ModelConfig";
+import { DeepseekModel } from "ModelConfig";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { AnyDeepseekChatRespFormat } from "ResponseFormat";
 import { ChatTaskOption } from "@/src/ChatTask/ChatTaskInterface";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { DeepseekChatAPIEntry, DeepseekChatOption } from "RequestFormat";
+import { DeepseekAPIEntry, DeepseekOption } from "RequestFormat";
 import { OpenAIConversationChatFormatter } from "./OpenAIConversation";
 
 
 
 
 /**传统OpenAI系统提示模式的Formater */
-export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekChatAPIEntry[],DeepseekChatOption,AnyDeepseekChatRespFormat> = {
-    formatOption(opt:ChatTaskOption,model:string):DeepseekChatOption|undefined{
+export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekOption,AnyDeepseekChatRespFormat> = {
+    formatOption(opt:ChatTaskOption,model:string):DeepseekOption|undefined{
         //验证参数
         if(opt.messages==null){
             SLogger.warn("DeepseekChatOptions 无效 messages为null");
@@ -28,7 +28,7 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekChatAPIEntry[],
 
 
         return {
-            model             : model as DeepseekChatModel  ,//模型id
+            model             : model as DeepseekModel  ,//模型id
             messages          : msg                         ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
             temperature       : opt.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题

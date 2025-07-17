@@ -1,12 +1,12 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import { OpenAIChatModel } from "ModelConfig";
+import { OpenAIConversationModel } from "ModelConfig";
 import { ChatTaskFormatter } from '../ChatFormatAdapter';
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { AnyOpenAIChatApiRespFormat } from "ResponseFormat";
 import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
-import { OpenAIConversationAPIEntry, OpenAIConversationAPIRole, OpenAIConversationChatOption } from "RequestFormat";
+import { OpenAIConversationAPIEntry, OpenAIConversationAPIRole, OpenAIConversationOption } from "RequestFormat";
 
-export const OpenAIConversationChatFormatter:ChatTaskFormatter<OpenAIConversationAPIEntry[],OpenAIConversationChatOption,AnyOpenAIChatApiRespFormat>={
+export const OpenAIConversationChatFormatter:ChatTaskFormatter<OpenAIConversationAPIEntry[],OpenAIConversationOption,AnyOpenAIChatApiRespFormat>={
     formatOption(opt:ChatTaskOption,model:string){
         //验证参数
         if(opt.messages==null){
@@ -22,7 +22,7 @@ export const OpenAIConversationChatFormatter:ChatTaskFormatter<OpenAIConversatio
         turboMessahge = OpenAIConversationChatFormatter.formatReq(opt.target,turboMessahge);
 
         return {
-            model             : model as OpenAIChatModel,//模型id
+            model             : model as OpenAIConversationModel,//模型id
             messages          : turboMessahge           ,//提示
             max_tokens        : opt.max_tokens          ,//最大生成令牌数
             temperature       : opt.temperature         ,//temperature 权重控制 0为最准确 越大越偏离主题

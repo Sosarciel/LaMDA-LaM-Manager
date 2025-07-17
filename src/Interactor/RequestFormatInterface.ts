@@ -1,21 +1,8 @@
 import { AnyLaMOption } from "@/src/LaMInterface";
 import { assertType, PartialOption,PromiseRetries,PromiseRetryResult, SLogger } from "@zwa73/utils";
-
-
-
 import { TextCompleteionModelConfig } from "TextCompletion";
 import { CredsData } from "@sosraciel-lamda/creds-manager";
 import { AnyTextCompletionRespFormat } from "ResponseFormat";
-
-
-//超时限制 ms 至少为 10000
-//30000
-const POST_TIME_LIMIT = 3_600_000;
-const REPEAT_TIME_LIMIT = 300_000;
-const REPEAT_COUNT = 3;
-SLogger.info(`OpenAILaMClient postAsync 超时:${POST_TIME_LIMIT} ms`);
-SLogger.info(`OpenAILaMClient postAsyncRepeat 超时:${REPEAT_TIME_LIMIT} ms`);
-SLogger.info(`OpenAILaMClient postAsyncRepeat 重试:${REPEAT_COUNT} 次`);
 
 
 
@@ -53,6 +40,14 @@ export type PostLaMOption={
     /**重试选项 */
     retryOption:PromiseRetries;
 }
+//超时限制 ms 至少为 10000
+//30000
+const POST_TIME_LIMIT = 3_600_000;
+const REPEAT_TIME_LIMIT = 300_000;
+const REPEAT_COUNT = 3;
+SLogger.info(`OpenAILaMClient postAsync 超时:${POST_TIME_LIMIT} ms`);
+SLogger.info(`OpenAILaMClient postAsyncRepeat 超时:${REPEAT_TIME_LIMIT} ms`);
+SLogger.info(`OpenAILaMClient postAsyncRepeat 重试:${REPEAT_COUNT} 次`);
 /**默认的聊天设置 */
 export const DEF_POST_LAM_OPT = {
     timeLimit:POST_TIME_LIMIT,
