@@ -1,34 +1,14 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 import { DeepseekChatModel } from "ModelConfig";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
-import { AnyDeepseekChatRespFormat } from "RespFormat";
+import { AnyDeepseekChatRespFormat } from "ResponseFormat";
 import { ChatTaskOption } from "@/src/ChatTask/ChatTaskInterface";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { OpenAIConversationAPIRole, OpenAIConversationChatFormatter } from "./OpenAIConversation";
+import { DeepseekChatAPIEntry, DeepseekChatOption } from "RequestFormat";
+import { OpenAIConversationChatFormatter } from "./OpenAIConversation";
 
 
-/**Deepseek模型配置 */
-export type DeepseekChatOption=Partial<{
-    model: DeepseekChatModel;
-    messages: DeepseekChatAPIEntry[];
-    max_tokens: number;
-    temperature: number;
-    top_p: number;
-    stop: string[]|null;
-    presence_penalty: number;
-    frequency_penalty: number;
-}>;
 
-/**用于Deepseek模型的消息Entry */
-export type DeepseekChatAPIEntry={
-    role: OpenAIConversationAPIRole;
-    content:string;
-    /**指定为前缀补全模式 */
-    prefix?:boolean;
-}
-
-export const DeepseekChatAPIRole = OpenAIConversationAPIRole;
-export type DeepseekChatAPIRole = OpenAIConversationAPIRole;
 
 /**传统OpenAI系统提示模式的Formater */
 export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekChatAPIEntry[],DeepseekChatOption,AnyDeepseekChatRespFormat> = {

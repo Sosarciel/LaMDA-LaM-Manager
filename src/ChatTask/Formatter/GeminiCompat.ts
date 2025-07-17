@@ -1,33 +1,13 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 import { GoogleChatModel } from 'ModelConfig';
-import { AnyOpenAIChatRespFormat } from "RespFormat";
+import { AnyOpenAIChatRespFormat } from "ResponseFormat";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { ChatTaskOption, MessageType } from "@/src/ChatTask/ChatTaskInterface";
-import { OpenAIConversationAPIRole, OpenAIConversationChatFormatter } from "./OpenAIConversation";
+import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
+import { GeminiCompatChatAPIEntry, GeminiCompatChatOption } from "@/src/RequestFormat/GeminiCompat";
+import { OpenAIConversationAPIRole } from "RequestFormat";
+import { OpenAIConversationChatFormatter } from "./OpenAIConversation";
 
-
-/**gptge兼容api选项 */
-export type GeminiCompatChatOption=Partial<{
-    model: GoogleChatModel|any;
-    messages: GeminiCompatChatAPIEntry[];
-    max_tokens: number;
-    temperature: number;
-    top_p: number;
-    stop: string[]|null;
-    presence_penalty: number;
-    frequency_penalty: number;
-    thinking:{
-        type: "enabled",
-        budget_tokens: number,
-    }
-}>;
-
-/**gptge兼容api消息段 */
-export type GeminiCompatChatAPIEntry={
-    role: OpenAIConversationAPIRole;
-    content:string;
-}
 
 /**gptge兼容api格式化工具 */
 export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatChatAPIEntry[],GeminiCompatChatOption,AnyOpenAIChatRespFormat> = {

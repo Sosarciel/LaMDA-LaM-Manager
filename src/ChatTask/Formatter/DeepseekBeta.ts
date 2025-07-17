@@ -1,11 +1,11 @@
 import { SLogger, lazyFunction } from "@zwa73/utils";
 import { DeepseekChatModel } from "ModelConfig";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
-import { AnyDeepseekChatRespFormat } from "RespFormat";
-import { ChatTaskOption, MessageType } from "@/src/ChatTask/ChatTaskInterface";
+import { AnyDeepseekChatRespFormat } from "ResponseFormat";
+import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { OpenAIConversationChatFormatter } from "./OpenAIConversation";
-import { DeepseekChatAPIEntry, DeepseekChatAPIRole, DeepseekChatOption } from "./Deepseek";
+import { DeepseekChatAPIEntry, DeepseekChatAPIRole, DeepseekChatOption } from "RequestFormat";
 
 
 

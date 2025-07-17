@@ -1,12 +1,13 @@
 import { MPromise, PromiseRetryResult } from "@zwa73/utils";
 import { TextCompletionResp, TextCompletionResult } from "TextCompletion";
 import { TokensizerType } from "@/src/Tokensize";
-import { AnyTextCompletionRespFormat } from "RespFormat";
+import { AnyTextCompletionRespFormat } from "ResponseFormat";
 import { AnyTextCompletionOption } from "ModelConfig";
 import { ChatTaskOption, LaMChatMessages } from "./ChatTaskInterface";
 import { DeepseekBetaChatTaskFormatter, DeepseekChatTaskFormatter, GeminiCompatChatTaskFormatter, OpenAIConversationChatFormatter, OpenAITextChatFormatter } from "./Formatter";
 import { GeminiChatTaskFormatter } from "./Formatter/Gemini";
 
+/** 聊天任务格式化工具 */
 export type ChatTaskFormatter<Msg,Opt extends AnyTextCompletionOption, Fmt extends AnyTextCompletionRespFormat> = {
     /**检查配置是否有效, 斌返回用于post的JObject */
     formatOption:(opt:ChatTaskOption,model:string)=>MPromise<undefined|Opt>;

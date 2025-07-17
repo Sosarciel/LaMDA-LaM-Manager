@@ -2,37 +2,9 @@ import { lazyFunction, SLogger } from "@zwa73/utils";
 import { OpenAIChatModel } from "ModelConfig";
 import { ChatTaskFormatter } from '../ChatFormatAdapter';
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { AnyOpenAIChatApiRespFormat } from "RespFormat";
-import { ChatTaskOption, MessageType } from "@/src/ChatTask/ChatTaskInterface";
-
-/**turbo模型配置 */
-export type OpenAIConversationChatOption=Partial<{
-    model: OpenAIChatModel;
-    messages: OpenAIConversationAPIEntry[];
-    max_tokens: number;
-    temperature: number;
-    top_p: number;
-    stop: string[]|null;
-    presence_penalty: number;
-    frequency_penalty: number;
-    logit_bias: Record<string, number>|null;
-    n: number;
-}>;
-
-/**用于Turbo模型的消息Entry */
-export type OpenAIConversationAPIEntry={
-    role: OpenAIConversationAPIRole;
-    content:string;
-}
-
-export const OpenAIConversationAPIRole = {
-    User:"user",
-    Assistant:"assistant",
-    System:"system",
-} as const;
-export type OpenAIConversationAPIRole = typeof OpenAIConversationAPIRole[keyof typeof OpenAIConversationAPIRole];
-
-
+import { AnyOpenAIChatApiRespFormat } from "ResponseFormat";
+import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
+import { OpenAIConversationAPIEntry, OpenAIConversationAPIRole, OpenAIConversationChatOption } from "RequestFormat";
 
 export const OpenAIConversationChatFormatter:ChatTaskFormatter<OpenAIConversationAPIEntry[],OpenAIConversationChatOption,AnyOpenAIChatApiRespFormat>={
     formatOption(opt:ChatTaskOption,model:string){

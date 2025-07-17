@@ -14,7 +14,8 @@
         "baseUrl": ".",
         "paths": {
             "Constant"                : ["./src/Constant"],
-            "RespFormat"              : ["./src/RespFormat"],
+            "ResponseFormat"          : ["./src/ResponseFormat"],
+            "RequestFormat"           : ["./src/RequestFormat"],
             "ModelConfig"             : ["./src/ModelConfig"],
             "TextCompletion"          : ["./src/TextCompletion"],
             "Requester"               : ["./src/Interactor"],

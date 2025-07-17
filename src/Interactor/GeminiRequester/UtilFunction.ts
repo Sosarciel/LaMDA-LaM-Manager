@@ -1,6 +1,6 @@
 import { CredsData } from "@sosraciel-lamda/creds-manager";
 import { Failed, PromiseStatus, SLogger, Success, Terminated } from "@zwa73/utils";
-import { AnyGoogleErrorRespFormat } from "RespFormat";
+import { AnyGoogleErrorRespFormat } from "ResponseFormat";
 /**验证回复可用性并处理错误
  * @async
  * @param rawResp      - 未做处理的回复

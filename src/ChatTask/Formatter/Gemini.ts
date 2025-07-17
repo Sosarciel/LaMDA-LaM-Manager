@@ -1,37 +1,9 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import { AnyGoogleChatRespFormat } from "RespFormat";
+import { AnyGoogleChatRespFormat } from "ResponseFormat";
 import { ChatTaskFormatter } from "../ChatFormatAdapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { ChatTaskOption, MessageType } from "@/src/ChatTask/ChatTaskInterface";
-
-
-export type GeminiChatOption={
-    system_instruction:{parts:{text: string}},
-    contents:GoogleChatAPIEntry[];
-    generationConfig:{
-        stopSequences: string[]|undefined;
-        temperature?: number|undefined;
-        maxOutputTokens?: number|undefined;
-        topP?: number|undefined;
-        topK?: number|undefined;
-        thinkingBudget?: number|undefined;
-    }
-}
-export type GoogleChatAPIEntry={
-    role: GoogleChatAPIRole;
-    parts:[{text:string}];
-}
-
-enum GoogleChatAPIRole{
-    User="user",
-    Model="model",
-}
-
-type GoogleChatApiData = {
-    message:GoogleChatAPIEntry[];
-    define :string;
-}
-
+import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
+import { GeminiChatOption, GoogleChatApiData, GoogleChatAPIEntry, GoogleChatAPIRole } from "RequestFormat";
 
 
 export const GeminiChatTaskFormatter:ChatTaskFormatter<GoogleChatApiData,GeminiChatOption,AnyGoogleChatRespFormat> = {
