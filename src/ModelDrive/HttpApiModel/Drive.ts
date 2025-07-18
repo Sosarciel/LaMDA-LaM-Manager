@@ -37,7 +37,7 @@ export class HttpAPIModelDrive implements LaMInterface{
             SLogger.warn(`DeepseekChat.chat 错误 无有效账号`);
             return DefChatLaMResult;
         }
-        SLogger.info(`当前 account_type: ${accountData.type} account_name: ${accountData.name}`);
+        SLogger.info(`当前 account_category: ${accountData.instance.getData().cred_category} account_name: ${accountData.name}`);
 
         const chatOption = await this.chatFormater.formatOption(opt,this.data.config.id);
         if(chatOption===undefined) return DefChatLaMResult;
