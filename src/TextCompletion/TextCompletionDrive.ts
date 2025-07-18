@@ -1,6 +1,6 @@
 import { APIPrice, CredsManager, CredsType } from "@sosraciel-lamda/creds-manager";
 import { LaMInterface } from "@/src/LaMInterface";
-import { getTokensizer, TokensizerType } from "@/src/Tokensize";
+import { getTokensizer, TokensizerType } from "Tokensizer";
 import { DefChatLaMResult, TextCompletionOptions } from "./TextCompletionInterface";
 import { None, SLogger, UtilFunc } from "@zwa73/utils";
 import { IRequestFormater, RequestFormaterTable, RequestFormaterType } from "@/src/Interactor";

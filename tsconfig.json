@@ -20,6 +20,7 @@
             "TextCompletion"          : ["./src/TextCompletion"],
             "Requester"               : ["./src/Interactor"],
             "ChatTask"                : ["./src/ChatTask"],
+            "Tokensizer"              : ["./src/Tokensizer"],
 			"@/src/*"                 : ["./src/*"],
 			"@/*"                     : ["./*"],
 			"@"                       : ["./src/index"]

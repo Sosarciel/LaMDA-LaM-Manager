@@ -1,5 +1,5 @@
 import type { PromiseRetryResult } from "@zwa73/js-utils";
-import { getTokensizer, TokensizerType } from "@/src/Tokensize";
+import { getTokensizer, TokensizerType } from "Tokensizer";
 import type { LaMChatMessages } from "../ChatTaskInterface";
 import { DefChatLaMResult, TextCompletionResult } from "TextCompletion";
 import { AnyTextCompletionRespFormat } from "ResponseFormat";

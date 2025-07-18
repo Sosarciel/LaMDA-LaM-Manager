@@ -3,12 +3,7 @@ import { Tokenizer } from "@anush008/tokenizers";
 import path from 'pathe';
 import { DATA_PATH } from "Constant";
 import fs from 'fs';
-
-type TokensizerInterface = {
-    encode  : (str:string)      => Promise<number[]>;
-    decode  : (str:number[])    => Promise<string>;
-    counting: (str:string)      => Promise<number>;
-}
+import { TokensizerInterface } from "./TokensizerInterface";
 
 class Cl100kBase implements TokensizerInterface{
     async encode(str: string){
