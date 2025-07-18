@@ -1,6 +1,6 @@
 import { MPromise, PromiseRetryResult } from "@zwa73/utils";
 import { TextCompletionResp, TextCompletionResult } from "TextCompletion";
-import { TokensizerType } from "Tokensize";
+import { TokensizerType } from "Tokensizer";
 import { AnyTextCompletionRespFormat } from "ResponseFormat";
 import { AnyTextCompletionOption } from "ModelConfig";
 import { ChatTaskOption, LaMChatMessages } from "./ChatTaskInterface";

@@ -1,6 +1,6 @@
-import { AnyLaMOption } from "@/src/LaMInterface";
+import { AnyLaMOption } from "LaMService";
 import { assertType, PartialOption,PromiseRetries,PromiseRetryResult, SLogger } from "@zwa73/utils";
-import { TextCompleteionModelConfig } from "TextCompletion";
+import { TextCompleteionModelConfig } from "LaMService";
 import { CredsData } from "@sosraciel-lamda/creds-manager";
 import { AnyTextCompletionRespFormat } from "ResponseFormat";
 

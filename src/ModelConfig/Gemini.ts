@@ -1,5 +1,5 @@
 import { assertType } from '@zwa73/utils';
-import { TextCompleteionModelConfig } from 'TextCompletion';
+import { TextCompleteionModelConfig } from 'LaMService';
 
 const GeminiModelDataBase = {
     /**此模型api的标准路径 */

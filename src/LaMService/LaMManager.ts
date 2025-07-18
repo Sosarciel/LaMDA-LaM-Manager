@@ -2,8 +2,9 @@ import { None, SLogger, throwError } from "@zwa73/utils";
 import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig } from "@zwa73/service-manager";
 import { LaMInterface } from "./LaMInterface";
 import { DeepseekChat,Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini,  Gemini20Pro, Gemini25Pro, DeepseekChatBeta, Gemini25ProCompat } from "ModelConfig";
-import { DefChatLaMResult, TextCompleteionModel,TestModule, TextCompleteionModelData, TextCompletionOptions, TextCompletionResult} from 'TextCompletion';
+import { DefChatLaMResult,TestModule, TextCompletionOptions, TextCompletionResult} from 'TextCompletion';
 import { DEF_CHAT_OPT, LaMChatMessages, PartialChatOption } from "ChatTask";
+import { TextCompleteionModel, TextCompleteionModelData } from "./TextCompletionDrive";
 
 
 

@@ -21,6 +21,8 @@
             "Requester"               : ["./src/Interactor"],
             "ChatTask"                : ["./src/ChatTask"],
             "Tokensizer"              : ["./src/Tokensizer"],
+            "LaMService"              : ["./src/LaMService"],
+			"Interactor"              : ["./src/Interactor"],
 			"@/src/*"                 : ["./src/*"],
 			"@/*"                     : ["./*"],
 			"@"                       : ["./src/index"]
