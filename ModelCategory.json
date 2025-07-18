@@ -1,0 +1,315 @@
+{
+    "$schema": "schema/ServiceJsonTable.schema.json",
+    "instance_table": {
+		"default": {
+			"name": "default",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "endpoint":"/v1/chat/completions",
+                    "chat_formater":"openai_chat",
+                    "tokensizer":"cl100k_base",
+                    "interactor":"openai",
+                    "id":"gpt-3.5-turbo",
+                    "alias":"GPT35Chat",
+                    "price":{
+                        "promptPrice":0.0005,
+                        "completionPrice":0.0015
+                    },
+                    "valid_account":["EylinkAz","Eylink4","Gptge","Gptus"]
+
+                },
+				"default_option": {
+					"max_hist": 6000
+				}
+			}
+		},
+		"GPT35Text": {
+			"name": "GPT35Text",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "endpoint":"/v1/completions",
+                    "chat_formater":"openai_text",
+                    "tokensizer":"cl100k_base",
+                    "interactor":"openai",
+                    "id":"gpt-3.5-turbo-instruct",
+                    "alias":"GPT35Text",
+                    "price":{
+                        "promptPrice":0.0015,
+                        "completionPrice":0.002
+                    },
+                    "valid_account":["EylinkAz","Eylink4","Gptge","Gptus"]
+
+                },
+				"default_option": {
+					"temperature": 0.9,
+					"max_hist": 3000
+				}
+			}
+		},
+		"GPT4": {
+			"name": "GPT4",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "endpoint":"/v1/chat/completions",
+                    "chat_formater":"openai_chat",
+                    "tokensizer":"cl100k_base",
+                    "interactor":"openai",
+                    "id":"gpt-4",
+                    "alias":"GPT4",
+                    "price":{
+                        "promptPrice":0.03,
+                        "completionPrice":0.06
+                    },
+                    "valid_account":["EylinkAz","Eylink4","Gptge","Gptus"]
+
+                },
+				"default_option": {
+					"temperature": 0.9,
+					"max_hist": 3000
+				}
+			}
+		},
+		"GPT4O": {
+			"name": "GPT4O",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "endpoint":"/v1/chat/completions",
+                    "chat_formater":"openai_chat",
+                    "tokensizer":"cl100k_base",
+                    "interactor":"openai",
+                    "id":"gpt-4o",
+                    "alias":"GPT4O",
+                    "price":{
+                        "promptPrice":0.005,
+                        "completionPrice":0.015
+                    },
+                    "valid_account":["EylinkAz","Eylink4","Gptge","Gptus"]
+
+                },
+				"default_option": {
+					"temperature": 0.9,
+					"max_hist": 4000
+				}
+			}
+		},
+		"GPT4Chat": {
+			"name": "GPT4Chat",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "endpoint":"/v1/chat/completions",
+                    "chat_formater":"openai_chat",
+                    "tokensizer":"cl100k_base",
+                    "interactor":"openai",
+                    "id":"gpt-4-turbo",
+                    "alias":"GPT4Chat",
+                    "price":{
+                        "promptPrice":0.01,
+                        "completionPrice":0.03
+                    },
+                    "valid_account":["EylinkAz","Eylink4","Gptge","Gptus"]
+
+                },
+				"default_option": {
+					"temperature": 0.9,
+					"max_hist": 3000
+				}
+			}
+		},
+		"GPT4OMini": {
+			"name": "GPT4OMini",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "endpoint":"/v1/chat/completions",
+                    "chat_formater":"openai_chat",
+                    "tokensizer":"cl100k_base",
+                    "interactor":"openai",
+                    "id":"gpt-4o-mini",
+                    "alias":"GPT4OMini",
+                    "price":{
+                        "promptPrice":0.00015,
+                        "completionPrice":0.0006
+                    },
+                    "valid_account":["EylinkAz","Eylink4","Gptge","Gptus"]
+                },
+				"default_option": {
+					"temperature": 0.9,
+					"max_hist": 6000
+				}
+			}
+		},
+		"DeepseekChat": {
+			"name": "DeepseekChat",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "tokensizer":"deepseek",
+                    "interactor": "openai",
+                    "chat_formater":"deepseek_chat",
+                    "endpoint":"/v1/chat/completions",
+                    "id":"deepseek-chat",
+                    "alias":"DeepseekChat",
+                    "price":{
+                        "cacheHitPromptPrice":0.0005,
+                        "promptPrice":0.002,
+                        "completionPrice":0.008
+                    },
+                    "valid_account":["Deepseek","SiliconFlow"]
+                },
+				"default_option": {
+					"temperature": 1.5,
+					"max_hist": 3000
+				}
+			}
+		},
+		"DeepseekChatBeta": {
+			"name": "DeepseekChatBeta",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "tokensizer":"deepseek",
+                    "interactor": "openai",
+                    "chat_formater":"deepseek_chat_beta",
+                    "endpoint":"/beta/v1/chat/completions",
+                    "id":"deepseek-chat",
+                    "alias":"DeepseekChatBeta",
+                    "price":{
+                        "cacheHitPromptPrice":0.0005,
+                        "promptPrice":0.002,
+                        "completionPrice":0.008
+                    },
+                    "valid_account":["Deepseek"]
+                },
+				"default_option": {
+					"temperature": 1.5,
+					"max_hist": 3000
+				}
+			}
+		},
+		"Gemini2Flash": {
+			"name": "Gemini2Flash",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "endpoint":"/v1beta/models",
+                    "chat_formater":"google_chat",
+                    "tokensizer":"cl100k_base",
+                    "interactor":"gemini",
+                    "id":"gemini-2.0-flash",
+                    "alias":"Gemini2Flash",
+                    "price":{
+                        "promptPrice":0,
+                        "completionPrice":0
+                    },
+                    "valid_account":["Google"]
+                },
+				"default_option": {
+					"temperature": 0.95,
+					"max_hist": 4000
+				}
+			}
+		},
+		"Gemini15Pro": {
+			"name": "Gemini15Pro",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "endpoint":"/v1beta/models",
+                    "chat_formater":"google_chat",
+                    "tokensizer":"cl100k_base",
+                    "interactor":"gemini",
+                    "id":"gemini-1.5-pro",
+                    "alias":"Gemini15Pro",
+                    "price":{
+                        "promptPrice":0,
+                        "completionPrice":0
+                    },
+                    "valid_account":["Google"]
+                },
+				"default_option": {
+					"temperature": 0.95,
+					"max_hist": 4000
+				}
+			}
+		},
+		"Gemini20Pro": {
+			"name": "Gemini20Pro",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "endpoint":"/v1beta/models",
+                    "chat_formater":"google_chat",
+                    "tokensizer":"cl100k_base",
+                    "interactor":"gemini",
+                    "id":"gemini-2.0-pro-exp-02-05",
+                    "alias":"Gemini20Pro",
+                    "price":{
+                        "promptPrice":0,
+                        "completionPrice":0
+                    },
+                    "valid_account":["Google"]
+                },
+				"default_option": {
+					"temperature": 0.95,
+					"max_hist": 4000
+				}
+			}
+		},
+		"Gemini25Pro": {
+			"name": "Gemini25Pro",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "endpoint":"/v1beta/models",
+                    "chat_formater":"google_chat",
+                    "tokensizer":"cl100k_base",
+                    "interactor":"gemini",
+                    "id":"gemini-2.5-pro-preview-06-05",
+                    "alias":"Gemini25Pro",
+                    "price":{
+                        "promptPrice":0.00125,
+                        "completionPrice":0.01
+                    },
+                    "valid_account":["Google"]
+                },
+				"default_option": {
+					"temperature": 0.95,
+					"max_hist": 4000
+				}
+			}
+		},
+		"Gemini25ProCompat": {
+			"name": "Gemini25ProCompat",
+			"type": "HttpAPIModel",
+			"data": {
+                "config": {
+                    "endpoint":"/v1/chat/completions",
+                    "chat_formater":"google_chat_compat",
+                    "tokensizer":"cl100k_base",
+                    "interactor":"openai",
+                    "id":"gemini-2.5-pro-preview-06-05",
+                    "alias":"Gemini25ProCompat",
+                    "price":{
+                        "promptPrice":0.00125,
+                        "completionPrice":0.01
+                    },
+                    "valid_account":["Gptge"]
+                },
+				"default_option": {
+					"temperature": 0.95,
+					"max_hist": 4000
+				}
+			}
+		},
+		"Test": {
+			"name": "Test",
+			"type": "Test",
+			"data": {}
+		}
+	}
+}

@@ -11,7 +11,7 @@ import { TokensizerType } from "Tokensizer";
 export type HttpAPIModelData = {
     /**默认请求选项 */
     default_option?: TextCompletionOptions;
-    /**模型配置 */
+    ///**模型配置 */
     config:HttpApiModelCategory;
 }
 

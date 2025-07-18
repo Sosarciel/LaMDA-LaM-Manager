@@ -1,9 +1,8 @@
-import { OpenAIConversationModel } from "ModelConfig";
 
 
 /**turbo模型配置 */
 export type OpenAIConversationOption=Partial<{
-    model: OpenAIConversationModel;
+    model: string;
     messages: OpenAIConversationAPIEntry[];
     max_tokens: number;
     temperature: number;

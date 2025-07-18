@@ -1,11 +1,10 @@
-import { GeminiModel } from "ModelConfig";
 import { OpenAIConversationAPIRole } from "./OpenAIConversation";
 
 
 
 /**gptge兼容api选项 */
 export type GeminiCompatOption=Partial<{
-    model: GeminiModel|any;
+    model: string;
     messages: GeminiCompatAPIEntry[];
     max_tokens: number;
     temperature: number;

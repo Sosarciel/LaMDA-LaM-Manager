@@ -1,24 +1,9 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import { OpenAITextModel } from "ModelConfig";
 import { ChatTaskFormatter } from "../Adapter";
 import { OpenAITextRespFormat } from "ResponseFormat";
 import { commonCalcToken, commonFormatResp } from "./Utils";
 import { ChatTaskOption, MessageType } from "../Interface";
-
-/**turbo模型配置 */
-export type OpenAITextOption = Partial<{
-    model: OpenAITextModel;
-    prompt: string;
-    max_tokens: number;
-    temperature: number;
-    top_p: number;
-    stop: string[] | null;
-    presence_penalty: number;
-    frequency_penalty: number;
-    logit_bias: Record<string, number> | null;
-    n: number;
-}>;
-
+import { OpenAITextOption } from "RequestFormat";
 
 
 export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOption,OpenAITextRespFormat>={
@@ -38,7 +23,7 @@ export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOpti
 
 
         return {
-            model             : model as OpenAITextModel ,//模型id
+            model             : model                    ,//模型id
             prompt            : turboMessahge            ,//提示
             max_tokens        : opt.max_tokens           ,//最大生成令牌数
             temperature       : opt.temperature          ,//temperature 权重控制 0为最准确 越大越偏离主题

@@ -1,9 +1,8 @@
-import { OpenAITextModel } from "ModelConfig";
 
 
 /**turbo模型配置 */
 export type OpenAITextOption = Partial<{
-    model: OpenAITextModel;
+    model: string;
     prompt: string;
     max_tokens: number;
     temperature: number;

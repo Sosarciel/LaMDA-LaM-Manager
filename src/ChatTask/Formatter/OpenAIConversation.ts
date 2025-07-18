@@ -1,5 +1,4 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import { OpenAIConversationModel } from "ModelConfig";
 import { ChatTaskFormatter } from '../Adapter';
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { AnyOpenAIConversationLikeRespFormat } from "ResponseFormat";
@@ -22,7 +21,7 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
         turboMessahge = OpenAIConversationChatTaskFormatter.formatReq(opt.target,turboMessahge);
 
         return {
-            model             : model as OpenAIConversationModel,//模型id
+            model             : model                   ,//模型id
             messages          : turboMessahge           ,//提示
             max_tokens        : opt.max_tokens          ,//最大生成令牌数
             temperature       : opt.temperature         ,//temperature 权重控制 0为最准确 越大越偏离主题

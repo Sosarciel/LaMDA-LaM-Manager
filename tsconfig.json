@@ -16,7 +16,6 @@
             "Constant"                : ["./src/Constant"],
             "ResponseFormat"          : ["./src/ResponseFormat"],
             "RequestFormat"           : ["./src/RequestFormat"],
-            "ModelConfig"             : ["./src/ModelConfig"],
             "TextCompletion"          : ["./src/TextCompletion"],
             "Requester"               : ["./src/Interactor"],
             "ChatTask"                : ["./src/ChatTask"],

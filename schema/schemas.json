@@ -20,7 +20,7 @@
 						"instance_table": {
 							"type": "object",
 							"additionalProperties": {
-								"$ref": "#/definitions/ServiceConfig<{GPT35Chat:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;GPT35Text:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;GPT4:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;GPT4O:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;GPT4OMini:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;GPT4Chat:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;DeepseekChat:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;DeepseekChatBeta:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Gemini2Flash:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Gemini15Pro:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Gemini20Pro:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Gemini25Pro:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Gemini25ProCompat:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Test:(d:HttpAPIModelData)=>Promise<any>;}>"
+								"$ref": "#/definitions/ServiceConfig<{HttpAPIModel:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Test:(d:{})=>Promise<TestModule>;}>"
 							}
 						}
 					},
@@ -30,92 +30,7 @@
 				}
 			]
 		},
-		"ModelCategoryJsonTable": {
-			"description": "用于设置实例类别",
-			"allOf": [
-				{
-					"description": "服务管理器基础配置",
-					"type": "object",
-					"properties": {
-						"max_resource": {
-							"description": "最大允许资源量 未设置则视为无限",
-							"type": "number"
-						}
-					}
-				},
-				{
-					"type": "object",
-					"properties": {
-						"httpapi_model": {
-							"description": "适用于HttpApi的模型",
-							"type": "object",
-							"additionalProperties": {
-								"description": "适用于网络API的文本完成模型类别配置",
-								"type": "object",
-								"properties": {
-									"id": {
-										"description": "模型id",
-										"type": "string"
-									},
-									"alias": {
-										"description": "模型别名",
-										"anyOf": [
-											{
-												"type": "array",
-												"items": {
-													"type": "string"
-												}
-											},
-											{
-												"type": "string"
-											}
-										]
-									},
-									"endpoint": {
-										"description": "此模型api的标准路径",
-										"type": "string"
-									},
-									"valid_account": {
-										"$ref": "#/definitions/ReadonlyArray",
-										"description": "支持此模型的账号, 优先度排序"
-									},
-									"price": {
-										"$ref": "#/definitions/APIPrice",
-										"description": "此模型的官方价格"
-									},
-									"chat_formater": {
-										"$ref": "#/definitions/unknown_1",
-										"description": "此模型的聊天任务格式化工具"
-									},
-									"interactor": {
-										"$ref": "#/definitions/unknown_2",
-										"description": "此模型的交互器"
-									},
-									"tokensizer": {
-										"$ref": "#/definitions/unknown_3",
-										"description": "此模型所用的分词器"
-									}
-								},
-								"required": [
-									"alias",
-									"chat_formater",
-									"endpoint",
-									"id",
-									"interactor",
-									"price",
-									"tokensizer",
-									"valid_account"
-								]
-							}
-						}
-					},
-					"required": [
-						"httpapi_model"
-					]
-				}
-			]
-		},
-		"ServiceConfig<{GPT35Chat:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;GPT35Text:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;GPT4:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;GPT4O:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;GPT4OMini:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;GPT4Chat:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;DeepseekChat:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;DeepseekChatBeta:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Gemini2Flash:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Gemini15Pro:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Gemini20Pro:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Gemini25Pro:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Gemini25ProCompat:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Test:(d:HttpAPIModelData)=>Promise<any>;}>": {
+		"ServiceConfig<{HttpAPIModel:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Test:(d:{})=>Promise<TestModule>;}>": {
 			"description": "服务构造函数表所对应的单个服务的配置表\n将 类型:工厂函数 映射 转换为完整配置文件",
 			"anyOf": [
 				{
@@ -191,511 +106,7 @@
 									"description": "服务类型"
 								},
 								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
-						}
-					]
-				},
-				{
-					"allOf": [
-						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P_2",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
-						}
-					]
-				},
-				{
-					"allOf": [
-						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P_3",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
-						}
-					]
-				},
-				{
-					"allOf": [
-						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P_4",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
-						}
-					]
-				},
-				{
-					"allOf": [
-						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P_5",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
-						}
-					]
-				},
-				{
-					"allOf": [
-						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P_6",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
-						}
-					]
-				},
-				{
-					"allOf": [
-						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P_7",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
-						}
-					]
-				},
-				{
-					"allOf": [
-						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P_8",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
-						}
-					]
-				},
-				{
-					"allOf": [
-						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P_9",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
-						}
-					]
-				},
-				{
-					"allOf": [
-						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P_10",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
-						}
-					]
-				},
-				{
-					"allOf": [
-						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P_11",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
-						}
-					]
-				},
-				{
-					"allOf": [
-						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P_12",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
-						}
-					]
-				},
-				{
-					"allOf": [
-						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P_13",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
+									"$ref": "#/definitions/Opt_1",
 									"description": "此实例的初始化数据"
 								}
 							},
@@ -710,93 +121,172 @@
 		},
 		"P": {
 			"type": "string",
-			"const": "GPT35Text"
+			"const": "HttpAPIModel"
 		},
 		"__type": {
 			"description": "适用于网络API的文本完成模型数据",
 			"type": "object",
 			"properties": {
 				"default_option": {
-					"$ref": "#/definitions/unknown",
+					"$ref": "#/definitions/TextCompletionOptions",
 					"description": "默认请求选项"
+				},
+				"config": {
+					"$ref": "#/definitions/HttpApiModelCategory"
+				}
+			},
+			"required": [
+				"config"
+			]
+		},
+		"TextCompletionOptions": {
+			"description": "文本完成模型通用配置",
+			"$ref": "#/definitions/Partial"
+		},
+		"__type_1": {
+			"type": "object",
+			"properties": {
+				"max_tokens": {
+					"description": "最大token数",
+					"type": "number"
+				},
+				"temperature": {
+					"description": "temperature 采样温度 越大越容易选择低概率token",
+					"type": "number"
+				},
+				"top_p": {
+					"description": "top_p 越低可选的token越少,优先淘汰掉最低概率的token",
+					"type": "number"
+				},
+				"stop": {
+					"description": "stop字符串数组",
+					"anyOf": [
+						{
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						{
+							"type": "null"
+						}
+					]
+				},
+				"presence_penalty": {
+					"description": "存在惩罚 只要token出现在提示中,出现概率就会受到惩罚",
+					"type": "number"
+				},
+				"frequency_penalty": {
+					"description": "频率惩罚 token每出现一次,出现概率就会受到一次惩罚",
+					"type": "number"
+				},
+				"logit_bias": {
+					"description": "逻辑对数偏置 {\"token\":偏置值} 对特定token的出现率调整",
+					"anyOf": [
+						{
+							"$ref": "#/definitions/Record"
+						},
+						{
+							"type": "null"
+						}
+					]
+				},
+				"n": {
+					"description": "产生回复的数量",
+					"type": "number"
+				},
+				"think_budget": {
+					"description": "思考token预算 模型将尽量保证思考链长度为此值",
+					"type": [
+						"null",
+						"number"
+					]
 				}
 			}
 		},
-		"unknown": {},
-		"Opt": {
-			"$ref": "#/definitions/__type"
+		"__type_2": {
+			"type": "object"
 		},
-		"P_1": {
-			"type": "string",
-			"const": "GPT4"
+		"Record": {
+			"$ref": "#/definitions/__type_2"
 		},
-		"P_2": {
-			"type": "string",
-			"const": "GPT4Chat"
+		"Partial": {
+			"$ref": "#/definitions/__type_1"
 		},
-		"P_3": {
-			"type": "string",
-			"const": "GPT4O"
+		"__type_3": {
+			"description": "适用于网络API的文本完成模型类别配置",
+			"type": "object",
+			"properties": {
+				"id": {
+					"description": "模型id",
+					"type": "string"
+				},
+				"alias": {
+					"description": "模型别名",
+					"anyOf": [
+						{
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						{
+							"type": "string"
+						}
+					]
+				},
+				"endpoint": {
+					"description": "此模型api的标准路径",
+					"type": "string"
+				},
+				"valid_account": {
+					"description": "支持此模型的账号, 优先度排序",
+					"type": "array",
+					"items": {
+						"enum": [
+							"Deepseek",
+							"DoubleGPT",
+							"Eylink",
+							"Eylink4",
+							"EylinkAz",
+							"Google",
+							"Gptge",
+							"Gptus",
+							"OpenAI",
+							"SiliconFlow"
+						],
+						"type": "string"
+					}
+				},
+				"price": {
+					"$ref": "#/definitions/APIPrice",
+					"description": "此模型的官方价格"
+				},
+				"chat_formater": {
+					"$ref": "#/definitions/ChatFormaterType",
+					"description": "此模型的聊天任务格式化工具"
+				},
+				"interactor": {
+					"$ref": "#/definitions/RequestFormaterType",
+					"description": "此模型的交互器"
+				},
+				"tokensizer": {
+					"$ref": "#/definitions/TokensizerType",
+					"description": "此模型所用的分词器"
+				}
+			},
+			"required": [
+				"alias",
+				"chat_formater",
+				"endpoint",
+				"id",
+				"interactor",
+				"price",
+				"tokensizer",
+				"valid_account"
+			]
 		},
-		"P_4": {
-			"type": "string",
-			"const": "GPT4OMini"
-		},
-		"P_5": {
-			"type": "string",
-			"const": "GPT35Chat"
-		},
-		"P_6": {
-			"type": "string",
-			"const": "DeepseekChat"
-		},
-		"P_7": {
-			"type": "string",
-			"const": "DeepseekChatBeta"
-		},
-		"P_8": {
-			"type": "string",
-			"const": "Gemini2Flash"
-		},
-		"P_9": {
-			"type": "string",
-			"const": "Gemini15Pro"
-		},
-		"P_10": {
-			"type": "string",
-			"const": "Gemini20Pro"
-		},
-		"P_11": {
-			"type": "string",
-			"const": "Gemini25Pro"
-		},
-		"P_12": {
-			"type": "string",
-			"const": "Gemini25ProCompat"
-		},
-		"P_13": {
-			"type": "string",
-			"const": "Test"
-		},
-		"ReadonlyArray": {
-			"type": "array",
-			"items": {
-				"enum": [
-					"Deepseek",
-					"DoubleGPT",
-					"Eylink",
-					"Eylink4",
-					"EylinkAz",
-					"Google",
-					"Gptge",
-					"Gptus",
-					"OpenAI",
-					"SiliconFlow"
-				],
-				"type": "string"
-			}
-		},
-		"__type_1": {
+		"__type_4": {
 			"description": "价格",
 			"type": "object",
 			"properties": {
@@ -819,10 +309,50 @@
 			]
 		},
 		"APIPrice": {
-			"$ref": "#/definitions/__type_1"
+			"$ref": "#/definitions/__type_4"
 		},
-		"unknown_1": {},
-		"unknown_2": {},
-		"unknown_3": {}
+		"ChatFormaterType": {
+			"enum": [
+				"deepseek_chat",
+				"deepseek_chat_beta",
+				"google_chat",
+				"google_chat_compat",
+				"openai_chat",
+				"openai_text"
+			],
+			"type": "string"
+		},
+		"RequestFormaterType": {
+			"enum": [
+				"gemini",
+				"openai"
+			],
+			"type": "string"
+		},
+		"TokensizerType": {
+			"enum": [
+				"cl100k_base",
+				"deepseek",
+				"p50k_base"
+			],
+			"type": "string"
+		},
+		"HttpApiModelCategory": {
+			"$ref": "#/definitions/__type_3"
+		},
+		"Opt": {
+			"$ref": "#/definitions/__type"
+		},
+		"P_1": {
+			"type": "string",
+			"const": "Test"
+		},
+		"__type_5": {
+			"type": "object",
+			"properties": {}
+		},
+		"Opt_1": {
+			"$ref": "#/definitions/__type_5"
+		}
 	}
 }

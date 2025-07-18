@@ -1,5 +1,4 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import { GeminiModel } from 'ModelConfig';
 import { OpenAIConversationRespFormat } from "ResponseFormat";
 import { ChatTaskFormatter } from "../Adapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
@@ -26,7 +25,7 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
         msg = GeminiCompatChatTaskFormatter.formatReq(opt.target,msg);
 
         const obj:GeminiCompatOption = {
-            model             : model as GeminiModel    ,//模型id
+            model             : model                       ,//模型id
             messages          : msg                         ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
             temperature       : opt.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题

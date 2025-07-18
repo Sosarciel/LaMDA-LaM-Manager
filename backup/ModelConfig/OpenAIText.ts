@@ -4,7 +4,7 @@ import { HttpApiModelCategory } from 'ModelDrive';
 
 
 const OpenAITextModelDataBase = {
-    endpoint:'/v1/completionss',
+    endpoint:'/v1/completions',
     chat_formater:'openai_text',
     tokensizer:'cl100k_base',
     interactor:'openai',

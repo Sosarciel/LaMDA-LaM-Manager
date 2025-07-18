@@ -19,7 +19,7 @@ export type AnyGoogleModel = GeminiModel;
 
 /**任何文本完成模型 */
 export type AnyTextCompletionModel   = AnyOpenaiModel|AnyDeepseekModel|AnyGoogleModel;
-
+import { DeepseekOption, GeminiOption, OpenAIConversationOption, OpenAITextOption } from 'RequestFormat';
 export type AnyDeepseekOption = DeepseekOption;
 export type AnyOpenaiOption = OpenAIConversationOption|OpenAITextOption;
 export type AnyGeminiOption = GeminiOption;

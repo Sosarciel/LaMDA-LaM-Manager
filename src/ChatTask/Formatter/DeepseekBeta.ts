@@ -1,5 +1,4 @@
 import { SLogger, lazyFunction } from "@zwa73/utils";
-import { DeepseekModel } from "ModelConfig";
 import { ChatTaskFormatter } from "../Adapter";
 import { DeepseekRespFormat } from "ResponseFormat";
 import { ChatTaskOption, MessageType } from "../Interface";
@@ -36,7 +35,7 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
 
 
         return {
-            model             : model as DeepseekModel  ,//模型id
+            model             : model                       ,//模型id
             messages          : msg                         ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
             temperature       : opt.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题

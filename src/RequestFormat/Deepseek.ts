@@ -1,11 +1,10 @@
-import { DeepseekModel } from "ModelConfig";
 import { OpenAIConversationAPIRole } from "./OpenAIConversation";
 
 
 
 /**Deepseek模型配置 */
 export type DeepseekOption=Partial<{
-    model: DeepseekModel;
+    model: string;
     messages: DeepseekAPIEntry[];
     max_tokens: number;
     temperature: number;
