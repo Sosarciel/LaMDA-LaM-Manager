@@ -1,9 +1,9 @@
 import { None, SLogger, throwError } from "@zwa73/utils";
 import { ServiceManager } from "@zwa73/service-manager";
 import { LaMInterface } from "./LaMInterface";
-import { DefChatLaMResult,TestModule, TextCompletionOptions, TextCompletionResult} from 'TextCompletion';
+import { DefChatLaMResult, TextCompletionOptions, TextCompletionResult} from 'TextCompletion';
 import { DEF_CHAT_OPT, LaMChatMessages, PartialChatOption } from "ChatTask";
-import { HttpAPIModelDrive, HttpAPIModelData } from "ModelDrive";
+import { HttpAPIModelDrive, HttpAPIModelData, TestModule } from "ModelDrive";
 
 
 

@@ -1,10 +1,10 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import { ChatTaskFormatter } from "../Adapter";
 import { DeepseekRespFormat } from "ResponseFormat";
-import { ChatTaskOption } from "@/src/ChatTask/Interface";
-import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { DeepseekAPIEntry, DeepseekOption } from "RequestFormat";
+import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
+import { ChatTaskOption } from "../Interface";
+import { ChatTaskFormatter } from "../Adapter";
 
 
 
