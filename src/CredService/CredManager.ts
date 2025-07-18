@@ -19,8 +19,8 @@ const CtorTable = {
     //SiliconFlow : (table:AccountData)   => new AccountManagerDrive(SiliconFlowOption,table),
     //Google      : (table:AccountData)   => new AccountManagerDrive(GoogleOption,table),
     Common        : async (table:AccountData)   => {
-        const categoryData = await CredsManager.getCategoryData(table.cred_category);
-        if(categoryData==null) throwError(`CredsManager.getAvailableAccount 缺少类别:${table.cred_category}`);
+        const categoryData = await CredManager.getCategoryData(table.cred_category);
+        if(categoryData==null) throwError(`CredManager.getAvailableAccount 缺少类别:${table.cred_category}`);
         return new AccountManagerDrive(categoryData,table);
     },
 };
@@ -30,7 +30,7 @@ export type CredCtorTable = typeof CtorTable;
 export type CredsData = ServiceInstance<CredCtorTable,AccountManager>;
 
 /**credentials_manager 凭证管理器 需先调用init */
-class _CredsManager implements NeedInit{
+class _CredManager implements NeedInit{
     readonly sm;
     readonly _categoryTable;
     inited;
@@ -79,7 +79,7 @@ class _CredsManager implements NeedInit{
             (completionCount*price.completionPrice)+
             (cachedPromptCount*(price.cacheHitPromptPrice??0));
         if(isNaN(totalPrice)){
-            SLogger.error(`CredsManager.calcPrice 错误 无法计算价格`);
+            SLogger.error(`CredManager.calcPrice 错误 无法计算价格`);
             SLogger.error(usage);
             return;
         }
@@ -112,22 +112,22 @@ class _CredsManager implements NeedInit{
     /**保存凭证数据 */
     async save(){
         await this.sm.save();
-        SLogger.info("CredsManager.save 完成保存");
+        SLogger.info("CredManager.save 完成保存");
     }
     //#endregion
 }
 
 /**credentials_manager 凭证管理器 */
-export type CredsManager = _CredsManager&{init:(tablePath: string,categoryTablePath:string)=>void};
-export const CredsManager = new Proxy({} as {ins?:_CredsManager}, {
+export type CredManager = _CredManager&{init:(tablePath: string,categoryTablePath:string)=>void};
+export const CredManager = new Proxy({} as {ins?:_CredManager}, {
     get(target, prop, receiver) {
         if (prop === 'init') {
             return (tablePath: string,categoryTablePath:string) => {
                 if (target.ins==null)
-                    target.ins = new _CredsManager(tablePath,categoryTablePath);
+                    target.ins = new _CredManager(tablePath,categoryTablePath);
             };
         }
-        if (target.ins==null) throwError("CredsManager 未初始化", 'error');
+        if (target.ins==null) throwError("CredManager 未初始化", 'error');
         return Reflect.get(target.ins!, prop, receiver);
     }
-}) as any as CredsManager;
+}) as any as CredManager;

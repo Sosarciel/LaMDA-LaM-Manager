@@ -1,4 +1,4 @@
-import { CredsManager } from "CredService";
+import { CredManager } from "CredService";
 import { LaMInterface } from "LaMService";
 import { getTokensizer } from "Tokensizer";
 import { DefChatLaMResult, TextCompletionOptions } from "TextCompletion";
@@ -31,7 +31,7 @@ export class HttpAPIModelDrive implements LaMInterface{
     }
     async chat(opt: ChatTaskOption) {
         //路由api key 获取有效keyname
-        const accountData = await CredsManager.getAvailableAccount(
+        const accountData = await CredManager.getAvailableAccount(
             ...opt.preferred_account,...this.data.config.valid_account);
         if(accountData==None){
             SLogger.warn(`DeepseekChat.chat 错误 无有效账号`);

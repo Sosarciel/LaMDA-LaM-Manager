@@ -3,7 +3,7 @@ import createHttpsProxyAgent, {HttpsProxyAgent} from 'https-proxy-agent';
 import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
 import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/src/Interactor/Interface';
-import { APIPriceResp, CredsManager } from 'CredService';
+import { APIPriceResp, CredManager } from 'CredService';
 import { AnyOpenAIConversationLikeRespFormat } from 'ResponseFormat';
 
 
@@ -81,9 +81,9 @@ class _OpenApiPostTool implements IRequestFormater {
             if('prompt_cache_miss_tokens' in usageObj)
                 usageResp.prompt_cache_miss_tokens = usageObj.prompt_cache_miss_tokens;
             //增加token数据
-            await CredsManager.calcPrice(accountData,modelData.price,usageResp);
+            await CredManager.calcPrice(accountData,modelData.price,usageResp);
             //打印理论的当前使用量
-            await CredsManager.currUsedUSD(accountData);
+            await CredManager.currUsedUSD(accountData);
         }else SLogger.error(`OpenAILaMClient.postLaM 警告 无法计费 未找到 usage, respObj:\n${respObj}`);
 
         return respObj;
