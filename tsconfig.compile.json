@@ -1,6 +1,10 @@
 {
     "compilerOptions": {
-        "esModuleInterop": true
+        "module": "node16",
+        "moduleResolution": "node16",
+        "outDir": "./dist",
+        "target": "ES2022",
+        "declaration": true
     },
     "extends": "./tsconfig.json",
     "include": ["./src/**/*.ts"],
