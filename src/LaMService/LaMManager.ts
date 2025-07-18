@@ -1,7 +1,6 @@
 import { None, SLogger, throwError } from "@zwa73/utils";
 import { ServiceManager } from "@zwa73/service-manager";
 import { LaMInterface } from "./LaMInterface";
-import { DeepseekChat,Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini,  Gemini20Pro, Gemini25Pro, DeepseekChatBeta, Gemini25ProCompat } from "ModelConfig";
 import { DefChatLaMResult,TestModule, TextCompletionOptions, TextCompletionResult} from 'TextCompletion';
 import { DEF_CHAT_OPT, LaMChatMessages, PartialChatOption } from "ChatTask";
 import { HttpAPIModelDrive, HttpAPIModelData } from "ModelDrive";
@@ -9,20 +8,21 @@ import { HttpAPIModelDrive, HttpAPIModelData } from "ModelDrive";
 
 
 const CtorTable = {
-    GPT35Chat           : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT35Chat),
-    GPT35Text           : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT35Text),
-    GPT4                : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4),
-    GPT4O               : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4O),
-    GPT4OMini           : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4OMini),
-    GPT4Chat            : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4Chat),
-    DeepseekChat        : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,DeepseekChat),
-    DeepseekChatBeta    : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,DeepseekChatBeta),
-    Gemini2Flash        : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini2Flash),
-    Gemini15Pro         : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini15Pro),
-    Gemini20Pro         : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini20Pro),
-    Gemini25Pro         : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini25Pro),
-    Gemini25ProCompat   : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini25ProCompat),
-    Test                : async (d:HttpAPIModelData)=> new TestModule(),
+    //GPT35Chat           : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT35Chat),
+    //GPT35Text           : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT35Text),
+    //GPT4                : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4),
+    //GPT4O               : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4O),
+    //GPT4OMini           : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4OMini),
+    //GPT4Chat            : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4Chat),
+    //DeepseekChat        : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,DeepseekChat),
+    //DeepseekChatBeta    : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,DeepseekChatBeta),
+    //Gemini2Flash        : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini2Flash),
+    //Gemini15Pro         : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini15Pro),
+    //Gemini20Pro         : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini20Pro),
+    //Gemini25Pro         : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini25Pro),
+    //Gemini25ProCompat   : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini25ProCompat),
+    HttpAPIModelData      : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d),
+    Test                  : async (d:{})=> new TestModule(),
 };
 export type CtorTable = typeof CtorTable;
 

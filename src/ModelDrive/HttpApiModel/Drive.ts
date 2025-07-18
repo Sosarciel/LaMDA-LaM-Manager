@@ -12,34 +12,34 @@ import { HttpApiModelCategory, HttpAPIModelData } from "./Interface";
 export class HttpAPIModelDrive implements LaMInterface{
     chatFormater:ChatTaskFormatter<any,any,any>;
     requestFormater:IRequestFormater;
-    constructor(private data:HttpAPIModelData, private config:HttpApiModelCategory){
-        this.chatFormater = ChatTaskFormaterTable[this.config.chat_formater];
-        this.requestFormater = RequestFormaterTable[this.config.interactor];
+    constructor(private data:HttpAPIModelData){
+        this.chatFormater = ChatTaskFormaterTable[this.data.config.chat_formater];
+        this.requestFormater = RequestFormaterTable[this.data.config.interactor];
     }
     isRuning(){return true;}
     getData(){return this.data;}
     async calcToken(message: LaMChatMessages) {
-        return this.chatFormater.calcToken(message,this.config.tokensizer);
+        return this.chatFormater.calcToken(message,this.data.config.tokensizer);
     }
     async decodeToken(arr: number[]) {
-        const tokenizer = getTokensizer(this.config.tokensizer);
+        const tokenizer = getTokensizer(this.data.config.tokensizer);
         return tokenizer.decode(arr);
     }
     async encodeToken(str: string) {
-        const tokenizer = getTokensizer(this.config.tokensizer);
+        const tokenizer = getTokensizer(this.data.config.tokensizer);
         return tokenizer.encode(str);
     }
     async chat(opt: ChatTaskOption) {
         //路由api key 获取有效keyname
         const accountData = await CredsManager.getAvailableAccount(
-            ...opt.preferred_account,...this.config.valid_account);
+            ...opt.preferred_account,...this.data.config.valid_account);
         if(accountData==None){
             SLogger.warn(`DeepseekChat.chat 错误 无有效账号`);
             return DefChatLaMResult;
         }
         SLogger.info(`当前 account_type: ${accountData.type} account_name: ${accountData.name}`);
 
-        const chatOption = await this.chatFormater.formatOption(opt,this.config.id);
+        const chatOption = await this.chatFormater.formatOption(opt,this.data.config.id);
         if(chatOption===undefined) return DefChatLaMResult;
         const fixedOption = accountData.instance.postOption.procOption
             ? accountData.instance.postOption.procOption(chatOption)
@@ -55,7 +55,7 @@ export class HttpAPIModelDrive implements LaMInterface{
         const resp = await this.requestFormater.postLaMRepeat({
             accountData,
             postJson:fixedOption,
-            modelData:this.config,
+            modelData:this.data.config,
             retryOption:accountData.instance.postOption.retryOption,
         });
         return this.chatFormater.formatResult(resp);

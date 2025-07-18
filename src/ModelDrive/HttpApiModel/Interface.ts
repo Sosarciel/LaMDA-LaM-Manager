@@ -11,6 +11,8 @@ import { TokensizerType } from "Tokensizer";
 export type HttpAPIModelData = {
     /**默认请求选项 */
     default_option?: TextCompletionOptions;
+    /**模型配置 */
+    config:HttpApiModelCategory;
 }
 
 /**适用于网络API的文本完成模型类别配置 */
@@ -22,7 +24,7 @@ export type HttpApiModelCategory = {
     /**此模型api的标准路径 */
     endpoint:string;
     /**支持此模型的账号, 优先度排序 */
-    valid_account:ReadonlyArray<CredsType>;
+    valid_account:CredsType[];
     /**此模型的官方价格 */
     price:APIPrice;
     /**此模型的聊天任务格式化工具 */

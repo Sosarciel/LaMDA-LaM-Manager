@@ -1,4 +1,5 @@
 import { assertType } from '@zwa73/utils';
+import { DeepReadonly } from 'ModelConfig';
 import { HttpApiModelCategory } from 'ModelDrive';
 
 const GeminiModelDataBase = {
@@ -21,7 +22,7 @@ export const Gemini2Flash = {
 } as const;
 
 export type Gemini2Flash = typeof Gemini2Flash;
-assertType<HttpApiModelCategory>(Gemini2Flash);
+assertType<DeepReadonly<HttpApiModelCategory>>(Gemini2Flash);
 
 export const Gemini15Pro = {
     ...GeminiModelDataBase,
@@ -35,7 +36,7 @@ export const Gemini15Pro = {
 } as const;
 
 export type Gemini15Pro = typeof Gemini15Pro;
-assertType<HttpApiModelCategory>(Gemini15Pro);
+assertType<DeepReadonly<HttpApiModelCategory>>(Gemini15Pro);
 
 export const Gemini20Pro = {
     ...GeminiModelDataBase,
@@ -49,7 +50,7 @@ export const Gemini20Pro = {
 } as const;
 
 export type Gemini20Pro = typeof Gemini20Pro;
-assertType<HttpApiModelCategory>(Gemini20Pro);
+assertType<DeepReadonly<HttpApiModelCategory>>(Gemini20Pro);
 
 export const Gemini25Pro = {
     ...GeminiModelDataBase,
@@ -64,7 +65,7 @@ export const Gemini25Pro = {
 } as const;
 
 export type Gemini25Pro = typeof Gemini25Pro;
-assertType<HttpApiModelCategory>(Gemini25Pro);
+assertType<DeepReadonly<HttpApiModelCategory>>(Gemini25Pro);
 
 export const Gemini25ProCompat = {
     ...GeminiModelDataBase,
@@ -83,7 +84,7 @@ export const Gemini25ProCompat = {
 } as const;
 
 export type Gemini25ProCompat = typeof Gemini25ProCompat;
-assertType<HttpApiModelCategory>(Gemini25ProCompat);
+assertType<DeepReadonly<HttpApiModelCategory>>(Gemini25ProCompat);
 
 export type GeminiModelData = Gemini2Flash|Gemini15Pro|Gemini20Pro|Gemini25Pro|Gemini25ProCompat;
 export type GeminiModel = GeminiModelData['id'];

@@ -1,4 +1,5 @@
-import { assertType } from '@zwa73/utils';
+import { assertType, Writeable } from '@zwa73/utils';
+import { DeepReadonly } from 'ModelConfig';
 import { HttpApiModelCategory } from 'ModelDrive';
 
 const DeepseekModelDataBase = {
@@ -20,8 +21,9 @@ export const DeepseekChat = {
     },
     valid_account:['Deepseek','SiliconFlow'],
 } as const;
+
 export type DeepseekChat = typeof DeepseekChat;
-assertType<HttpApiModelCategory>(DeepseekChat);
+assertType<DeepReadonly<HttpApiModelCategory>>(DeepseekChat);
 
 
 export const DeepseekChatBeta = {
@@ -38,7 +40,7 @@ export const DeepseekChatBeta = {
     valid_account:['Deepseek'],
 } as const;
 export type DeepseekChatBeta = typeof DeepseekChatBeta;
-assertType<HttpApiModelCategory>(DeepseekChatBeta);
+assertType<DeepReadonly<HttpApiModelCategory>>(DeepseekChatBeta);
 
 export type DeepseekModelData = DeepseekChat;
 export type DeepseekModel = DeepseekModelData['id'];

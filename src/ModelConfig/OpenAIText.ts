@@ -1,4 +1,5 @@
 import { assertType } from '@zwa73/utils';
+import { DeepReadonly } from 'ModelConfig';
 import { HttpApiModelCategory } from 'ModelDrive';
 
 
@@ -20,7 +21,7 @@ export const GPT35Text = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT35Text = typeof GPT35Text;
-assertType<HttpApiModelCategory>(GPT35Text);
+assertType<DeepReadonly<HttpApiModelCategory>>(GPT35Text);
 
 export type OpenAITextModelData = GPT35Text;
 export type OpenAITextModel = OpenAITextModelData['id'];

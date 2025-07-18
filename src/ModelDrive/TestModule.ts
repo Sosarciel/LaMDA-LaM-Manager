@@ -4,7 +4,7 @@ import { ChatTaskOption, LaMChatMessages, MessageType } from "ChatTask";
 import { LaMInterface } from "LaMService";
 import { OpenAITextRespFormat } from "ResponseFormat";
 import { OpenAITextChatTaskFormatter } from "@/src/ChatTask/Formatter";
-import { TextCompletionOptions } from "./TextCompletionInterface";
+import { TextCompletionOptions } from "TextCompletion";
 
 
 /**测试模型 */

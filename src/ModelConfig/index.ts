@@ -26,3 +26,10 @@ export type AnyGeminiOption = GeminiOption;
 
 /**任何文本完成模型的配置 */
 export type AnyTextCompletionOption = AnyDeepseekOption|AnyOpenaiOption|AnyGeminiOption;
+
+export type DeepReadonly<T> = T extends {} ? {
+    readonly [P in keyof T]:
+        T[P] extends Array<infer U>
+            ? ReadonlyArray<DeepReadonly<U>>
+            : DeepReadonly<T[P]>
+} : T;
