@@ -1,26 +1,20 @@
-import { APIPrice, CredsManager, CredsType } from "@sosraciel-lamda/creds-manager";
+import { CredsManager } from "@sosraciel-lamda/creds-manager";
 import { LaMInterface } from "LaMService";
-import { getTokensizer, TokensizerType } from "Tokensizer";
+import { getTokensizer } from "Tokensizer";
 import { DefChatLaMResult, TextCompletionOptions } from "TextCompletion";
 import { None, SLogger, UtilFunc } from "@zwa73/utils";
-import { IRequestFormater, RequestFormaterTable, RequestFormaterType } from "Interactor";
-import { ChatTaskFormaterTable, ChatFormaterType, ChatTaskFormatter, LaMChatMessages, ChatTaskOption } from "ChatTask";
+import { IRequestFormater, RequestFormaterTable } from "Interactor";
+import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, ChatTaskOption } from "ChatTask";
+import { HttpApiModelCategory, HttpAPIModelData } from "./HttpAPIModelInterface";
 
 
-
-
-export type TextCompleteionModelData = {
-    /**默认请求选项 */
-    default_option?: TextCompletionOptions;
-}
-
-/**文本完成模型驱动器 */
-export class TextCompleteionModel implements LaMInterface{
+/**适用于网络API的文本完成模型驱动器 */
+export class HttpAPIModelDrive implements LaMInterface{
     chatFormater:ChatTaskFormatter<any,any,any>;
     requestFormater:IRequestFormater;
-    constructor(private data:TextCompleteionModelData, private config:TextCompleteionModelConfig){
+    constructor(private data:HttpAPIModelData, private config:HttpApiModelCategory){
         this.chatFormater = ChatTaskFormaterTable[this.config.chat_formater];
-        this.requestFormater = RequestFormaterTable[this.config.request_formater];
+        this.requestFormater = RequestFormaterTable[this.config.interactor];
     }
     isRuning(){return true;}
     getData(){return this.data;}
@@ -69,24 +63,4 @@ export class TextCompleteionModel implements LaMInterface{
     getDefaultOption():TextCompletionOptions{
         return this.data.default_option??{};
     }
-}
-
-/**文本生成模型配置 */
-export type TextCompleteionModelConfig = {
-    /**模型id */
-    readonly id: string;
-    /**模型别名 */
-    readonly alias: ReadonlyArray<string>|string;
-    /**此模型api的标准路径 */
-    readonly endpoint:string;
-    /**支持此模型的账号, 优先度排序 */
-    readonly valid_account:ReadonlyArray<CredsType>;
-    /**此模型的官方价格 */
-    readonly price:APIPrice;
-    /**此模型的聊天格式适配器 */
-    readonly chat_formater:ChatFormaterType;
-    /**此模型的请求格式适配器 */
-    readonly request_formater:RequestFormaterType;
-    /**此模型所用的分词器 */
-    readonly tokensizer:TokensizerType;
 }

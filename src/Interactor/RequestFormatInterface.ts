@@ -1,6 +1,6 @@
 import { AnyLaMOption } from "LaMService";
 import { assertType, PartialOption,PromiseRetries,PromiseRetryResult, SLogger } from "@zwa73/utils";
-import { TextCompleteionModelConfig } from "LaMService";
+import { HttpApiModelCategory } from "LaMService";
 import { CredsData } from "@sosraciel-lamda/creds-manager";
 import { AnyTextCompletionRespFormat } from "ResponseFormat";
 
@@ -34,7 +34,7 @@ export type PostLaMOption={
     /**账户数据 */
     accountData:CredsData;
     /**api价格 */
-    modelData:TextCompleteionModelConfig;
+    modelData:HttpApiModelCategory;
     /**单个超时时间/毫秒 最小为10000毫秒 -1为不存在 */
     timeLimit:number;
     /**重试选项 */

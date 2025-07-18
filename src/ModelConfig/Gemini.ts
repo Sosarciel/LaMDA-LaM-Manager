@@ -1,12 +1,12 @@
 import { assertType } from '@zwa73/utils';
-import { TextCompleteionModelConfig } from 'LaMService';
+import { HttpApiModelCategory } from 'LaMService';
 
 const GeminiModelDataBase = {
     /**此模型api的标准路径 */
     endpoint:'/v1beta/models',
     chat_formater:'google_chat',
     tokensizer:'cl100k_base',
-    request_formater:'gemini',
+    interactor:'gemini',
 } as const;
 
 export const Gemini2Flash = {
@@ -21,7 +21,7 @@ export const Gemini2Flash = {
 } as const;
 
 export type Gemini2Flash = typeof Gemini2Flash;
-assertType<TextCompleteionModelConfig>(Gemini2Flash);
+assertType<HttpApiModelCategory>(Gemini2Flash);
 
 export const Gemini15Pro = {
     ...GeminiModelDataBase,
@@ -35,7 +35,7 @@ export const Gemini15Pro = {
 } as const;
 
 export type Gemini15Pro = typeof Gemini15Pro;
-assertType<TextCompleteionModelConfig>(Gemini15Pro);
+assertType<HttpApiModelCategory>(Gemini15Pro);
 
 export const Gemini20Pro = {
     ...GeminiModelDataBase,
@@ -49,7 +49,7 @@ export const Gemini20Pro = {
 } as const;
 
 export type Gemini20Pro = typeof Gemini20Pro;
-assertType<TextCompleteionModelConfig>(Gemini20Pro);
+assertType<HttpApiModelCategory>(Gemini20Pro);
 
 export const Gemini25Pro = {
     ...GeminiModelDataBase,
@@ -64,7 +64,7 @@ export const Gemini25Pro = {
 } as const;
 
 export type Gemini25Pro = typeof Gemini25Pro;
-assertType<TextCompleteionModelConfig>(Gemini25Pro);
+assertType<HttpApiModelCategory>(Gemini25Pro);
 
 export const Gemini25ProCompat = {
     ...GeminiModelDataBase,
@@ -79,11 +79,11 @@ export const Gemini25ProCompat = {
     valid_account:['Gptge'],
     endpoint:'/v1/chat/completions',
     chat_formater:'google_chat_compat',
-    request_formater:'openai',
+    Interactor:'openai',
 } as const;
 
 export type Gemini25ProCompat = typeof Gemini25ProCompat;
-assertType<TextCompleteionModelConfig>(Gemini25ProCompat);
+assertType<HttpApiModelCategory>(Gemini25ProCompat);
 
 export type GeminiModelData = Gemini2Flash|Gemini15Pro|Gemini20Pro|Gemini25Pro|Gemini25ProCompat;
 export type GeminiModel = GeminiModelData['id'];

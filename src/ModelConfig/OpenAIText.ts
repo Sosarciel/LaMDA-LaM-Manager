@@ -1,12 +1,12 @@
 import { assertType } from '@zwa73/utils';
-import { TextCompleteionModelConfig } from 'LaMService';
+import { HttpApiModelCategory } from 'LaMService';
 
 
 const OpenAITextModelDataBase = {
     endpoint:'/v1/completionss',
     chat_formater:'openai_text',
     tokensizer:'cl100k_base',
-    request_formater:'openai',
+    interactor:'openai',
 } as const;
 
 export const GPT35Text = {
@@ -20,7 +20,7 @@ export const GPT35Text = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT35Text = typeof GPT35Text;
-assertType<TextCompleteionModelConfig>(GPT35Text);
+assertType<HttpApiModelCategory>(GPT35Text);
 
 export type OpenAITextModelData = GPT35Text;
 export type OpenAITextModel = OpenAITextModelData['id'];

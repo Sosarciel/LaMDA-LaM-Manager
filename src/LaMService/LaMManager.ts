@@ -1,36 +1,30 @@
 import { None, SLogger, throwError } from "@zwa73/utils";
-import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig } from "@zwa73/service-manager";
+import { ServiceManager } from "@zwa73/service-manager";
 import { LaMInterface } from "./LaMInterface";
 import { DeepseekChat,Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini,  Gemini20Pro, Gemini25Pro, DeepseekChatBeta, Gemini25ProCompat } from "ModelConfig";
 import { DefChatLaMResult,TestModule, TextCompletionOptions, TextCompletionResult} from 'TextCompletion';
 import { DEF_CHAT_OPT, LaMChatMessages, PartialChatOption } from "ChatTask";
-import { TextCompleteionModel, TextCompleteionModelData } from "./TextCompletionDrive";
+import { HttpAPIModelDrive, HttpAPIModelData } from "./HttpApiModel";
 
 
 
 const CtorTable = {
-    GPT35Chat           : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,GPT35Chat),
-    GPT35Text           : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,GPT35Text),
-    GPT4                : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,GPT4),
-    GPT4O               : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,GPT4O),
-    GPT4OMini           : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,GPT4OMini),
-    GPT4Chat            : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,GPT4Chat),
-    DeepseekChat        : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,DeepseekChat),
-    DeepseekChatBeta    : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,DeepseekChatBeta),
-    Gemini2Flash        : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,Gemini2Flash),
-    Gemini15Pro         : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,Gemini15Pro),
-    Gemini20Pro         : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,Gemini20Pro),
-    Gemini25Pro         : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,Gemini25Pro),
-    Gemini25ProCompat   : async (d:TextCompleteionModelData)=> new TextCompleteionModel(d,Gemini25ProCompat),
-    Test                : async (d:TextCompleteionModelData)=> new TestModule(),
+    GPT35Chat           : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT35Chat),
+    GPT35Text           : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT35Text),
+    GPT4                : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4),
+    GPT4O               : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4O),
+    GPT4OMini           : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4OMini),
+    GPT4Chat            : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4Chat),
+    DeepseekChat        : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,DeepseekChat),
+    DeepseekChatBeta    : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,DeepseekChatBeta),
+    Gemini2Flash        : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini2Flash),
+    Gemini15Pro         : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini15Pro),
+    Gemini20Pro         : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini20Pro),
+    Gemini25Pro         : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini25Pro),
+    Gemini25ProCompat   : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini25ProCompat),
+    Test                : async (d:HttpAPIModelData)=> new TestModule(),
 };
-type CtorTable = typeof CtorTable;
-
-export type LaMManagerJsonTable = ServiceManagerBaseConfig & {
-    instance_table: {
-        [key: string]: ServiceConfig<CtorTable>;
-    };
-};
+export type CtorTable = typeof CtorTable;
 
 class _LaMManager{
     readonly sm;

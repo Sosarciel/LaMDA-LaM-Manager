@@ -1,10 +1,10 @@
 import { assertType } from '@zwa73/utils';
-import { TextCompleteionModelConfig } from 'LaMService';
+import { HttpApiModelCategory } from 'LaMService';
 
 const DeepseekModelDataBase = {
     /**此模型api的标准路径 */
     tokensizer:'deepseek',
-    request_formater:'openai',
+    interactor:'openai',
 } as const;
 
 export const DeepseekChat = {
@@ -21,7 +21,7 @@ export const DeepseekChat = {
     valid_account:['Deepseek','SiliconFlow'],
 } as const;
 export type DeepseekChat = typeof DeepseekChat;
-assertType<TextCompleteionModelConfig>(DeepseekChat);
+assertType<HttpApiModelCategory>(DeepseekChat);
 
 
 export const DeepseekChatBeta = {
@@ -38,7 +38,7 @@ export const DeepseekChatBeta = {
     valid_account:['Deepseek'],
 } as const;
 export type DeepseekChatBeta = typeof DeepseekChatBeta;
-assertType<TextCompleteionModelConfig>(DeepseekChatBeta);
+assertType<HttpApiModelCategory>(DeepseekChatBeta);
 
 export type DeepseekModelData = DeepseekChat;
 export type DeepseekModel = DeepseekModelData['id'];

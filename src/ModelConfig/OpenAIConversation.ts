@@ -1,12 +1,12 @@
 import { assertType } from '@zwa73/utils';
-import { TextCompleteionModelConfig } from 'LaMService';
+import { HttpApiModelCategory } from 'LaMService';
 
 const OpenAIConversationModelDataBase = {
     /**此模型api的标准路径 */
     endpoint:'/v1/chat/completions',
     chat_formater:'openai_chat',
     tokensizer:'cl100k_base',
-    request_formater:'openai',
+    interactor:'openai',
 } as const;
 
 export const GPT4 = {
@@ -20,7 +20,7 @@ export const GPT4 = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT4 = typeof GPT4;
-assertType<TextCompleteionModelConfig>(GPT4);
+assertType<HttpApiModelCategory>(GPT4);
 
 export const GPT4Chat = {
     ...OpenAIConversationModelDataBase,
@@ -33,7 +33,7 @@ export const GPT4Chat = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT4Chat = typeof GPT4Chat;
-assertType<TextCompleteionModelConfig>(GPT4Chat);
+assertType<HttpApiModelCategory>(GPT4Chat);
 
 export const GPT4O = {
     ...OpenAIConversationModelDataBase,
@@ -46,7 +46,7 @@ export const GPT4O = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT4O = typeof GPT4O;
-assertType<TextCompleteionModelConfig>(GPT4O);
+assertType<HttpApiModelCategory>(GPT4O);
 
 export const GPT4OMini = {
     ...OpenAIConversationModelDataBase,
@@ -59,7 +59,7 @@ export const GPT4OMini = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT4OMini = typeof GPT4OMini;
-assertType<TextCompleteionModelConfig>(GPT4OMini);
+assertType<HttpApiModelCategory>(GPT4OMini);
 
 export const GPT35Chat = {
     ...OpenAIConversationModelDataBase,
@@ -72,7 +72,7 @@ export const GPT35Chat = {
     valid_account:['EylinkAz','Eylink4','Gptge','Gptus'],
 } as const;
 export type GPT35Chat = typeof GPT35Chat;
-assertType<TextCompleteionModelConfig>(GPT35Chat);
+assertType<HttpApiModelCategory>(GPT35Chat);
 
 export type OpenAIConversationModelData =  GPT4 | GPT4Chat | GPT4O | GPT4OMini | GPT35Chat;
 export type OpenAIConversationModel =  OpenAIConversationModelData['id'];
