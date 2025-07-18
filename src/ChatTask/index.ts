@@ -1,3 +1,3 @@
-export * from './ChatTaskInterface';
+export * from './Interface';
 export * from './Formatter';
-export * from './ChatFormatAdapter';
+export * from './Adapter';

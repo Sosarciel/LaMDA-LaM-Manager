@@ -4,7 +4,7 @@ import { LaMInterface } from "./LaMInterface";
 import { DeepseekChat,Gemini15Pro, Gemini2Flash, GPT35Chat, GPT35Text, GPT4, GPT4Chat, GPT4O, GPT4OMini,  Gemini20Pro, Gemini25Pro, DeepseekChatBeta, Gemini25ProCompat } from "ModelConfig";
 import { DefChatLaMResult,TestModule, TextCompletionOptions, TextCompletionResult} from 'TextCompletion';
 import { DEF_CHAT_OPT, LaMChatMessages, PartialChatOption } from "ChatTask";
-import { HttpAPIModelDrive, HttpAPIModelData } from "./HttpApiModel";
+import { HttpAPIModelDrive, HttpAPIModelData } from "ModelDrive";
 
 
 

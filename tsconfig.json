@@ -23,6 +23,7 @@
             "Tokensizer"              : ["./src/Tokensizer"],
             "LaMService"              : ["./src/LaMService"],
 			"Interactor"              : ["./src/Interactor"],
+			"ModelDrive"              : ["./src/ModelDrive"],
 			"@/src/*"                 : ["./src/*"],
 			"@/*"                     : ["./*"],
 			"@"                       : ["./src/index"]

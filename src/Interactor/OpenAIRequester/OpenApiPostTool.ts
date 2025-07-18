@@ -2,7 +2,7 @@ import { SLogger, UtilFunc, UtilHttp} from '@zwa73/utils';
 import createHttpsProxyAgent, {HttpsProxyAgent} from 'https-proxy-agent';
 import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
-import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/src/Interactor/RequestFormatInterface';
+import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/src/Interactor/Interface';
 import { APIPriceResp, CredsManager } from '@sosraciel-lamda/creds-manager';
 import { AnyOpenAIConversationLikeRespFormat } from 'ResponseFormat';
 

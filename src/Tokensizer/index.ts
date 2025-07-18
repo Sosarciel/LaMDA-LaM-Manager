@@ -1,2 +1,2 @@
-export * from './TokensizerInterface';
+export * from './Interface';
 export * from './Tokensizer';

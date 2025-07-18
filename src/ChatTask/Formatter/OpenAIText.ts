@@ -1,9 +1,9 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 import { OpenAITextModel } from "ModelConfig";
-import { ChatTaskFormatter } from "../ChatFormatAdapter";
+import { ChatTaskFormatter } from "../Adapter";
 import { OpenAITextRespFormat } from "ResponseFormat";
 import { commonCalcToken, commonFormatResp } from "./Utils";
-import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
+import { ChatTaskOption, MessageType } from "../Interface";
 
 /**turbo模型配置 */
 export type OpenAITextOption = Partial<{

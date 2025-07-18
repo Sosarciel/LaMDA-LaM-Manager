@@ -1,0 +1,19 @@
+{
+    $schema: "schema/ModelCategoryJsonTable.schema.json",
+    httpapi_model: {
+        DeepseekChat:{
+            tokensizer:'deepseek',
+            interactor:'openai',
+            chat_formater:'deepseek_chat',
+            endpoint:'/v1/chat/completions',
+            id:'deepseek-chat',
+            alias:'DeepseekChat',
+            price:{
+                cacheHitPromptPrice:0.0005,
+                promptPrice:0.002,
+                completionPrice:0.008,
+            },
+            valid_account:['Deepseek','SiliconFlow'],
+        }
+    }
+}

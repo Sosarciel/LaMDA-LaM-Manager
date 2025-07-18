@@ -1,5 +1,5 @@
 import { assertType } from '@zwa73/utils';
-import { HttpApiModelCategory } from 'LaMService';
+import { HttpApiModelCategory } from 'ModelDrive';
 
 
 const OpenAITextModelDataBase = {

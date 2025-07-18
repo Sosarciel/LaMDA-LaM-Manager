@@ -1,9 +1,9 @@
 import type { PromiseRetryResult } from "@zwa73/js-utils";
 import { getTokensizer, TokensizerType } from "Tokensizer";
-import type { LaMChatMessages } from "../ChatTaskInterface";
+import type { LaMChatMessages } from "../Interface";
 import { DefChatLaMResult, TextCompletionResult } from "TextCompletion";
 import { AnyTextCompletionRespFormat } from "ResponseFormat";
-import { ChatTaskFormatter } from "../ChatFormatAdapter";
+import { ChatTaskFormatter } from "../Adapter";
 
 
 /**标准的 stringify 后计算tokens的高阶函数 */

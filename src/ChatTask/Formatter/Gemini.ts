@@ -1,8 +1,8 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 import { GeminiRespFormat } from "ResponseFormat";
-import { ChatTaskFormatter } from "../ChatFormatAdapter";
+import { ChatTaskFormatter } from "../Adapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
+import { ChatTaskOption, MessageType } from "../Interface";
 import { GeminiOption, GeminiApiData, GeminiAPIEntry, GeminiAPIRole } from "RequestFormat";
 
 

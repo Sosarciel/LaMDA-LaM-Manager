@@ -1,9 +1,9 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 import { GeminiModel } from 'ModelConfig';
 import { OpenAIConversationRespFormat } from "ResponseFormat";
-import { ChatTaskFormatter } from "../ChatFormatAdapter";
+import { ChatTaskFormatter } from "../Adapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
+import { ChatTaskOption, MessageType } from "../Interface";
 import { GeminiCompatAPIEntry, GeminiCompatOption } from "@/src/RequestFormat/GeminiCompat";
 import { OpenAIConversationAPIRole } from "RequestFormat";
 import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";

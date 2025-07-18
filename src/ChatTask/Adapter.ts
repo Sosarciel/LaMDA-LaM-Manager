@@ -3,7 +3,7 @@ import { TextCompletionResp, TextCompletionResult } from "TextCompletion";
 import { TokensizerType } from "Tokensizer";
 import { AnyTextCompletionRespFormat } from "ResponseFormat";
 import { AnyTextCompletionOption } from "ModelConfig";
-import { ChatTaskOption, LaMChatMessages } from "./ChatTaskInterface";
+import { ChatTaskOption, LaMChatMessages } from "./Interface";
 import { DeepseekBetaChatTaskFormatter, DeepseekChatTaskFormatter, GeminiCompatChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter } from "./Formatter";
 import { GeminiChatTaskFormatter } from "./Formatter/Gemini";
 

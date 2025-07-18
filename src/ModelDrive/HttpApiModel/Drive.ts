@@ -5,7 +5,7 @@ import { DefChatLaMResult, TextCompletionOptions } from "TextCompletion";
 import { None, SLogger, UtilFunc } from "@zwa73/utils";
 import { IRequestFormater, RequestFormaterTable } from "Interactor";
 import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, ChatTaskOption } from "ChatTask";
-import { HttpApiModelCategory, HttpAPIModelData } from "./HttpAPIModelInterface";
+import { HttpApiModelCategory, HttpAPIModelData } from "./Interface";
 
 
 /**适用于网络API的文本完成模型驱动器 */

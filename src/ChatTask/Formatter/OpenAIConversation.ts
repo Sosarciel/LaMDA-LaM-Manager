@@ -1,9 +1,9 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 import { OpenAIConversationModel } from "ModelConfig";
-import { ChatTaskFormatter } from '../ChatFormatAdapter';
+import { ChatTaskFormatter } from '../Adapter';
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { AnyOpenAIConversationLikeRespFormat } from "ResponseFormat";
-import { ChatTaskOption, MessageType } from "../ChatTaskInterface";
+import { ChatTaskOption, MessageType } from "../Interface";
 import { OpenAIConversationAPIEntry, OpenAIConversationAPIRole, OpenAIConversationOption } from "RequestFormat";
 
 export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConversationAPIEntry[],OpenAIConversationOption,AnyOpenAIConversationLikeRespFormat>={
