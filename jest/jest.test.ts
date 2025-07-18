@@ -1,5 +1,3 @@
-import { test, expect } from '@jest/globals';
-
 // main.test.ts
 const add = (a: number, b: number): number => a + b;
 

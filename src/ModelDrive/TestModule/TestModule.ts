@@ -1,9 +1,8 @@
 import { SLogger, UtilFunc } from "@zwa73/utils";
 import { getTokensizer } from "Tokensizer";
-import { ChatTaskOption, LaMChatMessages, MessageType } from "ChatTask";
+import { ChatTaskOption, LaMChatMessages, MessageType,OpenAITextChatTaskFormatter } from "ChatTask";
 import { LaMInterface } from "LaMService";
 import { OpenAITextRespFormat } from "ResponseFormat";
-import { OpenAITextChatTaskFormatter } from "@/src/ChatTask/Formatter";
 import { TextCompletionOptions } from "TextCompletion";
 
 
