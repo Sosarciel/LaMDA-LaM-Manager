@@ -3,7 +3,7 @@ import createHttpsProxyAgent, {HttpsProxyAgent} from 'https-proxy-agent';
 import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
 import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/src/Interactor';
-import { APIPriceResp, CredsManager } from '@sosraciel-lamda/creds-manager';
+import { APIPriceResp, CredsManager } from 'CredService';
 import { GeminiRespFormat, AnyTextCompletionRespFormat } from 'ResponseFormat';
 
 /**适用与 openai 鉴权方式的post工具 */

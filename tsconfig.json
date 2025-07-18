@@ -23,6 +23,7 @@
             "LaMService"              : ["./src/LaMService"],
 			"Interactor"              : ["./src/Interactor"],
 			"ModelDrive"              : ["./src/ModelDrive"],
+			"CredService"             : ["./src/CredService"],
 			"@/src/*"                 : ["./src/*"],
 			"@/*"                     : ["./*"],
 			"@"                       : ["./src/index"]

@@ -1,4 +1,4 @@
-import { APIPrice, CredsType } from "@sosraciel-lamda/creds-manager";
+import { APIPrice, CredsType } from "CredService";
 import { ChatFormaterType } from "ChatTask";
 import { RequestFormaterType } from "Requester";
 import { TextCompletionOptions } from "TextCompletion";

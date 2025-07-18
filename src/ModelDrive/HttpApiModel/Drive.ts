@@ -1,4 +1,4 @@
-import { CredsManager } from "@sosraciel-lamda/creds-manager";
+import { CredsManager } from "CredService";
 import { LaMInterface } from "LaMService";
 import { getTokensizer } from "Tokensizer";
 import { DefChatLaMResult, TextCompletionOptions } from "TextCompletion";

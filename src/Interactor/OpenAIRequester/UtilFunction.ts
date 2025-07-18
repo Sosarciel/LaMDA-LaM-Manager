@@ -1,6 +1,6 @@
 import { Failed, PromiseStatus, SLogger, Success, Terminated } from "@zwa73/utils";
 import { OpenAIErrorFormat } from "ResponseFormat";
-import { CredsData } from "@sosraciel-lamda/creds-manager";
+import { CredsData } from "CredService";
 
 /**验证回复可用性并处理错误
  * @async

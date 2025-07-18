@@ -1,7 +1,7 @@
 import { AnyLaMOption } from "LaMService";
 import { assertType, PartialOption,PromiseRetries,PromiseRetryResult, SLogger } from "@zwa73/utils";
 import { HttpApiModelCategory } from "ModelDrive";
-import { CredsData } from "@sosraciel-lamda/creds-manager";
+import { CredsData } from "CredService";
 import { AnyTextCompletionRespFormat } from "ResponseFormat";
 
 
