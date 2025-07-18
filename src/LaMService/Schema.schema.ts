@@ -1,12 +1,12 @@
 
 import { ServiceManagerBaseConfig, ServiceConfig } from "@zwa73/service-manager";
-import { CtorTable } from "./LaMManager";
+import { LaMCtorTable } from "./LaMManager";
 
 
 
 /**用于实例加载 */
 type LaMServiceJsonTable = ServiceManagerBaseConfig & {
     instance_table: {
-        [key: string]: ServiceConfig<CtorTable>;
+        [key: string]: ServiceConfig<LaMCtorTable>;
     };
 };

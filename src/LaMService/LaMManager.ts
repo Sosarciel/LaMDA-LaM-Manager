@@ -24,12 +24,12 @@ const CtorTable = {
     HttpAPIModel          : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d),
     Test                  : async (d:{})=> new TestModule(),
 };
-export type CtorTable = typeof CtorTable;
+export type LaMCtorTable = typeof CtorTable;
 
 class _LaMManager{
     readonly sm;
     constructor(tablePath:string){
-        this.sm = ServiceManager.from<CtorTable,LaMInterface>({
+        this.sm = ServiceManager.from<LaMCtorTable,LaMInterface>({
             cfgPath:tablePath,
             ctorTable:CtorTable
         });

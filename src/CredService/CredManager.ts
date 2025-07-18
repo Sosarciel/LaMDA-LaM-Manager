@@ -24,10 +24,10 @@ const CtorTable = {
         return new AccountManagerDrive(categoryData,table);
     },
 };
-export type CtorTable = typeof CtorTable;
+export type CredCtorTable = typeof CtorTable;
 
 /**凭证数据 */
-export type CredsData = ServiceInstance<CtorTable,AccountManager>;
+export type CredsData = ServiceInstance<CredCtorTable,AccountManager>;
 
 /**credentials_manager 凭证管理器 需先调用init */
 class _CredsManager implements NeedInit{
@@ -37,7 +37,7 @@ class _CredsManager implements NeedInit{
     //#region 构造函数
     constructor(tablePath:string,categoryTablePath:string){
         this._categoryTable = UtilFT.loadJSONFile(categoryTablePath) as Promise<CredCategoryJsonTable>;
-        this.sm = ServiceManager.from<CtorTable,AccountManager>({
+        this.sm = ServiceManager.from<CredCtorTable,AccountManager>({
             cfgPath:tablePath,
             ctorTable:CtorTable
         });
