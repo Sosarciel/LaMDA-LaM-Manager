@@ -11,5 +11,7 @@ type CredServiceJsonTable =  ServiceManagerBaseConfig & {
 }
 
 export type CredCategoryJsonTable = {
-    [key: string]: AccountCategoryData
+    category_table:{
+        [key: string]: AccountCategoryData
+    }
 }

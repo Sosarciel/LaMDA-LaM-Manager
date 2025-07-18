@@ -1,7 +1,129 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"definitions": {
-		"ServiceJsonTable": {
+		"CredServiceJsonTable": {
+			"allOf": [
+				{
+					"description": "服务管理器基础配置",
+					"type": "object",
+					"properties": {
+						"max_resource": {
+							"description": "最大允许资源量 未设置则视为无限",
+							"type": "number"
+						}
+					}
+				},
+				{
+					"type": "object",
+					"properties": {
+						"instance_table": {
+							"type": "object",
+							"additionalProperties": {
+								"allOf": [
+									{
+										"description": "服务基础配置",
+										"type": "object",
+										"properties": {
+											"name": {
+												"description": "服务实例名",
+												"type": "string"
+											},
+											"rollback": {
+												"description": "此服务若失败则尝试回退的实例名",
+												"type": "string"
+											},
+											"resource_usage": {
+												"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
+												"type": "number"
+											}
+										},
+										"required": [
+											"name"
+										]
+									},
+									{
+										"type": "object",
+										"properties": {
+											"type": {
+												"$ref": "#/definitions/P",
+												"description": "服务类型"
+											},
+											"data": {
+												"$ref": "#/definitions/Opt",
+												"description": "此实例的初始化数据"
+											}
+										},
+										"required": [
+											"data",
+											"type"
+										]
+									}
+								]
+							}
+						}
+					},
+					"required": [
+						"instance_table"
+					]
+				}
+			]
+		},
+		"CredCategoryJsonTable": {
+			"type": "object",
+			"properties": {
+				"category_table": {
+					"type": "object",
+					"additionalProperties": {
+						"description": "账户类型数据",
+						"type": "object",
+						"properties": {
+							"id": {
+								"$ref": "#/definitions/CredCategoryID",
+								"description": "此账户类型的id"
+							},
+							"hostname": {
+								"description": "此类型账户的hostname",
+								"type": "string"
+							},
+							"port": {
+								"description": "此类型账户的port",
+								"type": "number"
+							},
+							"use_proxy": {
+								"description": "是否使用代理",
+								"type": "boolean"
+							},
+							"protocol": {
+								"description": "所用协议 默认https",
+								"enum": [
+									"http",
+									"https"
+								],
+								"type": "string"
+							},
+							"retry": {
+								"$ref": "#/definitions/Partial",
+								"description": "重试设定 PromiseRetries"
+							},
+							"model_id_map": {
+								"$ref": "#/definitions/Record",
+								"description": "modelid 映射  \n用于处理类似SiliconFlow的模型id不一致问题"
+							}
+						},
+						"required": [
+							"hostname",
+							"id",
+							"port",
+							"use_proxy"
+						]
+					}
+				}
+			},
+			"required": [
+				"category_table"
+			]
+		},
+		"LaMServiceJsonTable": {
 			"description": "用于实例加载",
 			"allOf": [
 				{
@@ -30,51 +152,107 @@
 				}
 			]
 		},
-		"ServiceConfig<{HttpAPIModel:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Test:(d:{})=>Promise<TestModule>;}>": {
-			"description": "服务构造函数表所对应的单个服务的配置表\n将 类型:工厂函数 映射 转换为完整配置文件",
-			"anyOf": [
-				{
-					"allOf": [
+		"P": {
+			"type": "string",
+			"const": "Common"
+		},
+		"__type": {
+			"description": "账号数据",
+			"type": "object",
+			"properties": {
+				"api_key": {
+					"description": "APIKey",
+					"anyOf": [
 						{
-							"description": "服务基础配置",
-							"type": "object",
-							"properties": {
-								"name": {
-									"description": "服务实例名",
-									"type": "string"
-								},
-								"rollback": {
-									"description": "此服务若失败则尝试回退的实例名",
-									"type": "string"
-								},
-								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
-									"type": "number"
-								}
-							},
-							"required": [
-								"name"
-							]
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
 						},
 						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"$ref": "#/definitions/P",
-									"description": "服务类型"
-								},
-								"data": {
-									"$ref": "#/definitions/Opt",
-									"description": "此实例的初始化数据"
-								}
-							},
-							"required": [
-								"data",
-								"type"
-							]
+							"type": "string"
 						}
 					]
 				},
+				"is_available": {
+					"description": "有效的",
+					"type": "boolean"
+				},
+				"used_credit": {
+					"description": "使用的额度 单位 千分之一USD",
+					"type": "number"
+				},
+				"credit_limit": {
+					"description": "额度限制 单位 千分之一USD",
+					"type": "number"
+				},
+				"cred_category": {
+					"description": "凭证类别 由 CredCategoryJsonTable 定义",
+					"type": "string"
+				}
+			},
+			"required": [
+				"api_key",
+				"cred_category"
+			]
+		},
+		"Opt": {
+			"$ref": "#/definitions/__type"
+		},
+		"CredCategoryID": {
+			"type": "string"
+		},
+		"Partial": {
+			"$ref": "#/definitions/Partial_1"
+		},
+		"__type_1": {
+			"type": "object",
+			"properties": {
+				"count": {
+					"description": "重试次数 默认3",
+					"type": "number"
+				},
+				"try_interval": {
+					"description": "尝试间隔时间/毫秒 超过此事件会重新创建新的Promise\n同时等待新的与旧的Promise 默认180_000\n最小1000毫秒, 小于1000则视为无限",
+					"type": "number"
+				},
+				"try_delay": {
+					"description": "尝试延迟/毫秒 重新尝试时会先等待此毫秒数\n默认0",
+					"type": "number"
+				},
+				"exp_backoff": {
+					"description": "是否使用指数回退 默认false 仅在tryDelay被设置时有效",
+					"type": "boolean"
+				},
+				"exp_backoff_max": {
+					"description": "指数回退上限值 默认无限",
+					"type": "number"
+				},
+				"flag": {
+					"description": "此重试任务的标志",
+					"type": "string"
+				},
+				"log": {
+					"description": "是否打印重试步骤 默认true",
+					"type": "boolean"
+				}
+			}
+		},
+		"Partial_1": {
+			"$ref": "#/definitions/__type_1"
+		},
+		"Record": {
+			"$ref": "#/definitions/Record_1"
+		},
+		"__type_2": {
+			"type": "object"
+		},
+		"Record_1": {
+			"$ref": "#/definitions/__type_2"
+		},
+		"ServiceConfig<{HttpAPIModel:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Test:(d:{})=>Promise<TestModule>;}>": {
+			"description": "服务构造函数表所对应的单个服务的配置表\n将 类型:工厂函数 映射 转换为完整配置文件",
+			"anyOf": [
 				{
 					"allOf": [
 						{
@@ -116,14 +294,56 @@
 							]
 						}
 					]
+				},
+				{
+					"allOf": [
+						{
+							"description": "服务基础配置",
+							"type": "object",
+							"properties": {
+								"name": {
+									"description": "服务实例名",
+									"type": "string"
+								},
+								"rollback": {
+									"description": "此服务若失败则尝试回退的实例名",
+									"type": "string"
+								},
+								"resource_usage": {
+									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
+									"type": "number"
+								}
+							},
+							"required": [
+								"name"
+							]
+						},
+						{
+							"type": "object",
+							"properties": {
+								"type": {
+									"$ref": "#/definitions/P_2",
+									"description": "服务类型"
+								},
+								"data": {
+									"$ref": "#/definitions/Opt_2",
+									"description": "此实例的初始化数据"
+								}
+							},
+							"required": [
+								"data",
+								"type"
+							]
+						}
+					]
 				}
 			]
 		},
-		"P": {
+		"P_1": {
 			"type": "string",
 			"const": "HttpAPIModel"
 		},
-		"__type": {
+		"__type_3": {
 			"description": "适用于网络API的文本完成模型数据",
 			"type": "object",
 			"properties": {
@@ -141,9 +361,9 @@
 		},
 		"TextCompletionOptions": {
 			"description": "文本完成模型通用配置",
-			"$ref": "#/definitions/Partial"
+			"$ref": "#/definitions/Partial_2"
 		},
-		"__type_1": {
+		"__type_4": {
 			"type": "object",
 			"properties": {
 				"max_tokens": {
@@ -184,7 +404,7 @@
 					"description": "逻辑对数偏置 {\"token\":偏置值} 对特定token的出现率调整",
 					"anyOf": [
 						{
-							"$ref": "#/definitions/Record"
+							"$ref": "#/definitions/Record_2"
 						},
 						{
 							"type": "null"
@@ -204,16 +424,16 @@
 				}
 			}
 		},
-		"__type_2": {
+		"__type_5": {
 			"type": "object"
 		},
-		"Record": {
-			"$ref": "#/definitions/__type_2"
+		"Record_2": {
+			"$ref": "#/definitions/__type_5"
 		},
-		"Partial": {
-			"$ref": "#/definitions/__type_1"
+		"Partial_2": {
+			"$ref": "#/definitions/__type_4"
 		},
-		"__type_3": {
+		"__type_6": {
 			"description": "适用于网络API的文本完成模型类别配置",
 			"type": "object",
 			"properties": {
@@ -243,18 +463,6 @@
 					"description": "支持此模型的账号, 优先度排序",
 					"type": "array",
 					"items": {
-						"enum": [
-							"Deepseek",
-							"DoubleGPT",
-							"Eylink",
-							"Eylink4",
-							"EylinkAz",
-							"Google",
-							"Gptge",
-							"Gptus",
-							"OpenAI",
-							"SiliconFlow"
-						],
 						"type": "string"
 					}
 				},
@@ -286,7 +494,7 @@
 				"valid_account"
 			]
 		},
-		"__type_4": {
+		"__type_7": {
 			"description": "价格",
 			"type": "object",
 			"properties": {
@@ -309,7 +517,7 @@
 			]
 		},
 		"APIPrice": {
-			"$ref": "#/definitions/__type_4"
+			"$ref": "#/definitions/__type_7"
 		},
 		"ChatFormaterType": {
 			"enum": [
@@ -338,21 +546,21 @@
 			"type": "string"
 		},
 		"HttpApiModelCategory": {
+			"$ref": "#/definitions/__type_6"
+		},
+		"Opt_1": {
 			"$ref": "#/definitions/__type_3"
 		},
-		"Opt": {
-			"$ref": "#/definitions/__type"
-		},
-		"P_1": {
+		"P_2": {
 			"type": "string",
 			"const": "Test"
 		},
-		"__type_5": {
+		"__type_8": {
 			"type": "object",
 			"properties": {}
 		},
-		"Opt_1": {
-			"$ref": "#/definitions/__type_5"
+		"Opt_2": {
+			"$ref": "#/definitions/__type_8"
 		}
 	}
 }

@@ -49,7 +49,7 @@ class _CredsManager implements NeedInit{
     private _autoSaveTimer:undefined|NodeJS.Timeout;
     //#endregion
     async getCategoryData(category:string){
-        return (await this._categoryTable)[category];
+        return (await this._categoryTable).category_table[category];
     }
     /**按照优先级获取第一个有效账户
      * @param accountType - 账户类型 按优先级排列
