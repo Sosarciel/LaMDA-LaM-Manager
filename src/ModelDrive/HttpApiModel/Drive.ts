@@ -2,7 +2,7 @@ import { CredsManager } from "CredService";
 import { LaMInterface } from "LaMService";
 import { getTokensizer } from "Tokensizer";
 import { DefChatLaMResult, TextCompletionOptions } from "TextCompletion";
-import { None, SLogger, UtilFunc } from "@zwa73/utils";
+import { ivk, None, SLogger, UtilFunc } from "@zwa73/utils";
 import { IRequestFormater, RequestFormaterTable } from "Interactor";
 import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, ChatTaskOption } from "ChatTask";
 import { HttpApiModelCategory, HttpAPIModelData } from "./Interface";
@@ -41,9 +41,14 @@ export class HttpAPIModelDrive implements LaMInterface{
 
         const chatOption = await this.chatFormater.formatOption(opt,this.data.config.id);
         if(chatOption===undefined) return DefChatLaMResult;
-        const fixedOption = accountData.instance.postOption.procOption
-            ? accountData.instance.postOption.procOption(chatOption)
-            : chatOption;
+        const fixedOption = ivk(()=>{
+            const out = {...chatOption};
+            if('model' in out && typeof out.model === 'string'){
+                const mapname = accountData.instance.categoryData.model_id_map?.[out.model];
+                if(mapname!=null) out.model = mapname;
+            }
+            return out;
+        });
         if(fixedOption===undefined) return DefChatLaMResult;
 
         opt.logLevel??='http';
@@ -56,7 +61,7 @@ export class HttpAPIModelDrive implements LaMInterface{
             accountData,
             postJson:fixedOption,
             modelData:this.data.config,
-            retryOption:accountData.instance.postOption.retryOption,
+            retryOption:accountData.instance.categoryData.retry,
         });
         return this.chatFormater.formatResult(resp);
     }

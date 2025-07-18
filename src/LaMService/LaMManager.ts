@@ -1,5 +1,5 @@
 import { None, SLogger, throwError } from "@zwa73/utils";
-import { ServiceManager,ServiceManagerBaseConfig, ServiceConfig } from "@zwa73/service-manager";
+import { ServiceManager } from "@zwa73/service-manager";
 import { LaMInterface } from "./LaMInterface";
 import { DefChatLaMResult,TestModule, TextCompletionOptions, TextCompletionResult} from 'TextCompletion';
 import { DEF_CHAT_OPT, LaMChatMessages, PartialChatOption } from "ChatTask";
@@ -25,13 +25,6 @@ const CtorTable = {
     Test                  : async (d:{})=> new TestModule(),
 };
 export type CtorTable = typeof CtorTable;
-
-/**用于实例加载 */
-type ServiceJsonTable = ServiceManagerBaseConfig & {
-    instance_table: {
-        [key: string]: ServiceConfig<CtorTable>;
-    };
-};
 
 class _LaMManager{
     readonly sm;

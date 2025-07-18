@@ -1,6 +1,6 @@
 import { assertType, LogLevel, PartialOption } from "@zwa73/utils";
+import { CredCategoryID } from "CredService";
 import { TextCompletionOptions } from "TextCompletion";
-import { CredsType } from "CredService";
 
 //#region 缺省option参数
 
@@ -27,8 +27,8 @@ export type ChatTaskOption = TextCompletionOptions&{
     messages: LaMChatMessages;
     /**聊天的目标名称 */
     target:string;
-    /**首选账户 */
-    preferred_account:CredsType[];
+    /**首选账户 需要填入 CredCategoryJsonTable 定义的 CredCategory */
+    preferred_account:CredCategoryID[];
     /**log等级 */
     logLevel:LogLevel|'none';
 }

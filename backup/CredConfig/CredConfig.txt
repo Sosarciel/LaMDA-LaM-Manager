@@ -1,5 +1,5 @@
 import { assertType, JObject } from "@zwa73/utils";
-import { AccountPostOption } from "./CredsInterface";
+import { AccountPostOption } from "./Interface";
 
 
 /**Deepseek官方账号参数
@@ -8,7 +8,7 @@ import { AccountPostOption } from "./CredsInterface";
 export const DeepseekOption:AccountPostOption = {
     hostname : 'api.deepseek.com',
     port     : 443,
-    useAgent : false,
+    use_proxy : false,
 }
 assertType<AccountPostOption>(DeepseekOption);
 
@@ -18,7 +18,7 @@ assertType<AccountPostOption>(DeepseekOption);
 export const DoubleGPTOption:AccountPostOption = {
     hostname : 'www.doublegpt.io',
     port     : 443,
-    useAgent : true,
+    use_proxy : true,
 };
 assertType<AccountPostOption>(DoubleGPTOption);
 
@@ -28,7 +28,7 @@ assertType<AccountPostOption>(DoubleGPTOption);
 export const EylinkOption:AccountPostOption = {
     hostname : 'gtapi.xiaoerchaoren.com',
     port     : 8932,
-    useAgent : false,
+    use_proxy : false,
 }
 assertType<AccountPostOption>(EylinkOption);
 
@@ -45,7 +45,7 @@ export const Eylink4Option:AccountPostOption = {
     hostname : 'api.yesapikey.com',
     //port     : 4000,
     port     : 443,
-    useAgent : false,
+    use_proxy : false,
     //protocol : 'http' as const
     protocol : 'https' as const
 }
@@ -57,7 +57,7 @@ assertType<AccountPostOption>(Eylink4Option);
 export const EylinkAzOption:AccountPostOption = {
     hostname : 'az.yesapikey.com',
     port     : 443,
-    useAgent : false,
+    use_proxy : false,
     protocol : 'https' as const
 }
 assertType<AccountPostOption>(EylinkAzOption);
@@ -68,7 +68,7 @@ assertType<AccountPostOption>(EylinkAzOption);
 export const GoogleOption:AccountPostOption = {
     hostname : 'generativelanguage.googleapis.com',
     port     : 443,
-    useAgent : true,
+    use_proxy : true,
 }
 assertType<AccountPostOption>(GoogleOption);
 
@@ -79,48 +79,10 @@ assertType<AccountPostOption>(GoogleOption);
 export const GptgeOption:AccountPostOption = {
     hostname : 'api.gpt.ge',
     port     : 443,
-    useAgent : false,
-    procOption(option:JObject){
-        /**应对以下转换方式 需合并system
-         *  for _, message := range textRequest.Messages {
-         *      if messageLink.Role == "system" {
-         *          geminiRequest.Systeminstruction = &ChatContent{
-         *              Parts: []Part{ { Text: messageLink.StringContent() } }
-         *          }
-         *          continue
-         *      }
-         *  }
-         */
-        type MessageArr = {
-            content:string;
-            role:"system"|"assistant"|"user";
-        }[];
-        if( 'model' in option && typeof option.model === 'string' &&
-            'messages' in option && Array.isArray(option.messages) &&
-            option.model.includes('gemini')){
-                const message = option.messages as MessageArr;
-                let topstr:string = "";
-                let isContinus = true;
-                const seps:MessageArr = [];
-                message.forEach(obj => {
-                    if(isContinus && obj.role=="system" && obj.content.length>10)
-                        return topstr+=obj.content+"\n";
-                    isContinus = false;
-                    seps.push({
-                        role:obj.role == "system" ? "user" : obj.role,
-                        content:obj.content,
-                    });
-                });
-                option.messages = [
-                    {role:"system",content:topstr.trim()},
-                    ...seps,
-                ]
-        }
-        return option;
-    },
-    retryOption:{
+    use_proxy : false,
+    retry:{
         count:3,
-        tryInterval:60_000
+        try_interval:60_000
     }
 }
 assertType<AccountPostOption>(GptgeOption);
@@ -132,7 +94,7 @@ assertType<AccountPostOption>(GptgeOption);
 export const GptusOption:AccountPostOption = {
     hostname : 'www.gptapi.us',
     port     : 443,
-    useAgent : false,
+    use_proxy : false,
 }
 assertType<AccountPostOption>(GptusOption);
 
@@ -142,7 +104,7 @@ assertType<AccountPostOption>(GptusOption);
 export const OpenAIOption:AccountPostOption = {
     hostname : 'api.openai.com',
     port     :  443,
-    useAgent : true,
+    use_proxy : true,
 }
 assertType<AccountPostOption>(OpenAIOption);
 
@@ -152,17 +114,20 @@ assertType<AccountPostOption>(OpenAIOption);
 export const SiliconFlowOption:AccountPostOption = {
     hostname : 'api.siliconflow.cn',
     port     : 443,
-    useAgent : false,
-    procOption(option:JObject){
-        const modelNameMap:Record<string,string>={
-            "deepseek-chat":"deepseek-ai/DeepSeek-V3"
-        };
-        if('model' in option && typeof option.model === 'string'){
-            const mapname = modelNameMap[option.model];
-            if(mapname!=null)
-                option.model = mapname as any;
-        }
-        return option;
-    },
+    use_proxy : false,
+    model_id_map:{
+        "deepseek-chat":"deepseek-ai/DeepSeek-V3"
+    }
+    //procOption(option:JObject){
+    //    const modelNameMap:Record<string,string>={
+    //        "deepseek-chat":"deepseek-ai/DeepSeek-V3"
+    //    };
+    //    if('model' in option && typeof option.model === 'string'){
+    //        const mapname = modelNameMap[option.model];
+    //        if(mapname!=null)
+    //            option.model = mapname as any;
+    //    }
+    //    return option;
+    //},
 }
 assertType<AccountPostOption>(SiliconFlowOption);

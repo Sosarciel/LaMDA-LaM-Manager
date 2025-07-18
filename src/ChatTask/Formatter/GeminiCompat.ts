@@ -52,6 +52,16 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
         //处理主消息列表
         for(const item of messageList){
             if(item.type==MessageType.DESC){
+                /**应对以下转换方式 需合并system
+                 *  for _, message := range textRequest.Messages {
+                 *      if messageLink.Role == "system" {
+                 *          geminiRequest.Systeminstruction = &ChatContent{
+                 *              Parts: []Part{ { Text: messageLink.StringContent() } }
+                 *          }
+                 *          continue
+                 *      }
+                 *  }
+                 */
                 //头部说明直接合并 gptge兼容仅支持一条system提示
                 if(inDesc){
                     desc += `${item.content}\n`;

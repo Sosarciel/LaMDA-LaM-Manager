@@ -25,7 +25,7 @@ class _OpenApiPostTool implements IRequestFormater {
     async postLaM(partialOpt:PartialPostLaMOption){
         const opt = Object.assign({},DEF_POST_LAM_OPT,partialOpt);
         const {accountData,modelData,timeLimit} = opt;
-        const postOpt = accountData.instance.postOption;
+        const postOpt = accountData.instance.categoryData;
         const postJson = opt.postJson;
 
         //组装opt
@@ -41,7 +41,7 @@ class _OpenApiPostTool implements IRequestFormater {
             agent: undefined as HttpsProxyAgent|HttpProxyAgent|undefined,
         };
 
-        if(postOpt.useAgent) options.agent = postOpt.protocol=='http'
+        if(postOpt.use_proxy) options.agent = postOpt.protocol=='http'
             ? this.httpAgent : this.httpsAgent;
 
         //post

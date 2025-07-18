@@ -1,15 +1,15 @@
 import { SLogger } from "@zwa73/utils";
-import { AccountData, AccountManager, AccountPostOption } from "./CredsInterface";
+import { AccountData, AccountManager, AccountCategoryData } from "./Interface";
 
 
 /**基本的账户管理器 */
 export class AccountManagerDrive implements AccountManager{
-    postOption: AccountPostOption;
+    categoryData: AccountCategoryData;
     keyIdx = 0;
     uid:string;
     /** 构造函数 */
-    constructor(option:AccountPostOption,accountTable:AccountData){
-        this.postOption = option;
+    constructor(categoryData:AccountCategoryData,accountTable:AccountData){
+        this.categoryData = categoryData;
         this._accountTable = accountTable;
         this.uid = JSON.stringify(this._accountTable.api_key);
     }

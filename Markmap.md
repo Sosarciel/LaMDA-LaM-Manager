@@ -8,6 +8,13 @@ markmap:
 # 其他链接
 ## [Markmap](https://markmap.js.org/docs/json-options)
 
+# [语言模型服务](src/LaMService/index.ts)
+
+# [凭证服务](src/LaMService/index.ts)
+
+# [模型驱动器](src/ModelDrive/index.ts)
+## 根据LaMService.data.config驱动模型服务
+
 # [API请求格式](src/RequestFormat/index.ts)
 ## 以API格式分类
 
@@ -16,9 +23,6 @@ markmap:
 
 # [模型交互器](src/Interactor/index.ts)
 ## 根据模型设置与`语言模型API`或`嵌入式语言模型`交互
-
-# [模型设置](src/ModelConfig/index.ts)
-## 由[`TextCompleteionDrive`](src/TextCompletion/TextCompletionDrive.ts)驱动为服务实例<br>以研发商分类
 
 # [聊天任务](src/ChatTask/index.ts)
 ## 基于角色扮演的对话任务

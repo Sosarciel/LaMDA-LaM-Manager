@@ -1,31 +1,30 @@
-import { AwaitInited, NeedInit, None, SLogger, throwError } from "@zwa73/utils";
-import { APIPrice, APIPriceResp, AccountData, AccountManager, CredsType } from "./CredsInterface";
-import { ServiceConfig, ServiceInstance, ServiceManager, ServiceManagerBaseConfig } from "@zwa73/service-manager";
-import { DeepseekOption, DoubleGPTOption, Eylink4Option, EylinkAzOption, EylinkOption, GoogleOption, GptgeOption, GptusOption, OpenAIOption, SiliconFlowOption } from "./CredsOption";
-import { AccountManagerDrive } from "./CredsManagerBase";
+import { AwaitInited, NeedInit, None, SLogger, throwError, UtilFT } from "@zwa73/utils";
+import { APIPrice, APIPriceResp, AccountData, AccountManager } from "./Interface";
+import { ServiceInstance, ServiceManager } from "@zwa73/service-manager";
+import { AccountManagerDrive } from "./Drive";
+import { CredCategoryJsonTable } from "./Schema.schema";
 
 
 
 
 const CtorTable = {
-    OpenAI      : (table:AccountData)   => new AccountManagerDrive(OpenAIOption,table),
-    DoubleGPT   : (table:AccountData)   => new AccountManagerDrive(DoubleGPTOption,table),
-    Eylink      : (table:AccountData)   => new AccountManagerDrive(EylinkOption,table),
-    Eylink4     : (table:AccountData)   => new AccountManagerDrive(Eylink4Option,table),
-    EylinkAz    : (table:AccountData)   => new AccountManagerDrive(EylinkAzOption,table),
-    Gptus       : (table:AccountData)   => new AccountManagerDrive(GptusOption,table),
-    Gptge       : (table:AccountData)   => new AccountManagerDrive(GptgeOption,table),
-    Deepseek    : (table:AccountData)   => new AccountManagerDrive(DeepseekOption,table),
-    SiliconFlow : (table:AccountData)   => new AccountManagerDrive(SiliconFlowOption,table),
-    Google      : (table:AccountData)   => new AccountManagerDrive(GoogleOption,table),
+    //OpenAI      : (table:AccountData)   => new AccountManagerDrive(OpenAIOption,table),
+    //DoubleGPT   : (table:AccountData)   => new AccountManagerDrive(DoubleGPTOption,table),
+    //Eylink      : (table:AccountData)   => new AccountManagerDrive(EylinkOption,table),
+    //Eylink4     : (table:AccountData)   => new AccountManagerDrive(Eylink4Option,table),
+    //EylinkAz    : (table:AccountData)   => new AccountManagerDrive(EylinkAzOption,table),
+    //Gptus       : (table:AccountData)   => new AccountManagerDrive(GptusOption,table),
+    //Gptge       : (table:AccountData)   => new AccountManagerDrive(GptgeOption,table),
+    //Deepseek    : (table:AccountData)   => new AccountManagerDrive(DeepseekOption,table),
+    //SiliconFlow : (table:AccountData)   => new AccountManagerDrive(SiliconFlowOption,table),
+    //Google      : (table:AccountData)   => new AccountManagerDrive(GoogleOption,table),
+    Common        : async (table:AccountData)   => {
+        const categoryData = await CredsManager.getCategoryData(table.cred_category);
+        if(categoryData==null) throwError(`CredsManager.getAvailableAccount 缺少类别:${table.cred_category}`);
+        return new AccountManagerDrive(categoryData,table);
+    },
 };
-type CtorTable = typeof CtorTable;
-
-export type CredsManagerJsonTable =  ServiceManagerBaseConfig & {
-    instance_table: {
-        [key: string]: ServiceConfig<CtorTable>;
-    };
-}
+export type CtorTable = typeof CtorTable;
 
 /**凭证数据 */
 export type CredsData = ServiceInstance<CtorTable,AccountManager>;
@@ -33,9 +32,11 @@ export type CredsData = ServiceInstance<CtorTable,AccountManager>;
 /**credentials_manager 凭证管理器 需先调用init */
 class _CredsManager implements NeedInit{
     readonly sm;
+    readonly _categoryTable;
     inited;
     //#region 构造函数
-    constructor(tablePath:string){
+    constructor(tablePath:string,categoryTablePath:string){
+        this._categoryTable = UtilFT.loadJSONFile(categoryTablePath) as Promise<CredCategoryJsonTable>;
         this.sm = ServiceManager.from<CtorTable,AccountManager>({
             cfgPath:tablePath,
             ctorTable:CtorTable
@@ -47,14 +48,18 @@ class _CredsManager implements NeedInit{
     /**自动保存定时器 */
     private _autoSaveTimer:undefined|NodeJS.Timeout;
     //#endregion
+    async getCategoryData(category:string){
+        return (await this._categoryTable)[category];
+    }
     /**按照优先级获取第一个有效账户
      * @param accountType - 账户类型 按优先级排列
      */
     @AwaitInited
-    async getAvailableAccount(...accountType:CredsType[]){
+    async getAvailableAccount(...accountType:string[]){
         const ac = (await Promise.all(accountType
             .map(async t=>await this.sm.getServiceList(
-                sd=>sd.type===t && sd.instance.getData().is_available===true
+                sd=>sd.instance.getData().cred_category===t &&
+                    sd.instance.getData().is_available===true
             )))).flat();
         return ac.length>=1 ? ac[0] : None;
     }
@@ -113,13 +118,13 @@ class _CredsManager implements NeedInit{
 }
 
 /**credentials_manager 凭证管理器 */
-export type CredsManager = _CredsManager&{init:(tablePath: string)=>void};
+export type CredsManager = _CredsManager&{init:(tablePath: string,categoryTablePath:string)=>void};
 export const CredsManager = new Proxy({} as {ins?:_CredsManager}, {
     get(target, prop, receiver) {
         if (prop === 'init') {
-            return (tablePath: string) => {
+            return (tablePath: string,categoryTablePath:string) => {
                 if (target.ins==null)
-                    target.ins = new _CredsManager(tablePath);
+                    target.ins = new _CredsManager(tablePath,categoryTablePath);
             };
         }
         if (target.ins==null) throwError("CredsManager 未初始化", 'error');
