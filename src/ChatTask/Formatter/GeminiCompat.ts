@@ -103,6 +103,12 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
 
         return [{role:OpenAIConversationAPIRole.System,content:desc.trim()},...narr];
     },
-    formatReq:OpenAIConversationChatTaskFormatter.formatReq,
+    formatReq(chatTarget,chatList){
+        chatList.push({
+            role:OpenAIConversationAPIRole.User,
+            content:`${chatTarget}:`,
+        });
+        return chatList;
+    },
     formatResp:OpenAIConversationChatTaskFormatter.formatResp,
 }
