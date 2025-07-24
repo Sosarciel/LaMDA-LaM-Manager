@@ -1,20 +1,15 @@
 import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
-import createHttpsProxyAgent, {HttpsProxyAgent} from 'https-proxy-agent';
-import createHttpProxyAgent, { HttpProxyAgent } from 'http-proxy-agent';
+import {HttpsProxyAgent} from 'https-proxy-agent';
+import { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
 import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/src/Interactor';
 import { APIPriceResp, CredManager } from 'CredService';
 import { GeminiRespFormat, AnyTextCompletionRespFormat } from 'ResponseFormat';
+import { getProxy } from '../ProxyPool';
 
 /**适用与 openai 鉴权方式的post工具 */
 class _GeminiPostTool implements IRequestFormater {
-    constructor(){
-        //代理
-        this.httpsAgent = createHttpsProxyAgent('http://127.0.0.1:7890');
-        this.httpAgent  = createHttpProxyAgent('http://127.0.0.1:7890');
-    }
-    httpsAgent:HttpsProxyAgent;
-    httpAgent:HttpProxyAgent;
+    constructor(){}
 
     /**向 openai模型 发送一个POST请求并接受数据
      * @async
@@ -42,11 +37,12 @@ class _GeminiPostTool implements IRequestFormater {
             agent: undefined as HttpsProxyAgent|HttpProxyAgent|undefined,
         };
 
-        if(postOpt.use_proxy) options.agent = postOpt.protocol=='http'
-            ? this.httpAgent : this.httpsAgent;
+        const protocol = postOpt.protocol??'https';
+        if(postOpt.proxy_url)
+            options.agent = getProxy(protocol,postOpt.proxy_url);
 
         //post
-        const tool = postOpt.protocol == 'http'
+        const tool = protocol == 'http'
             ? UtilHttp.http()
             : UtilHttp.https();
         const respData = (await tool.postJson()

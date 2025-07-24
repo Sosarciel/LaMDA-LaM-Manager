@@ -53,7 +53,7 @@ export type AccountCategoryData = {
     /**此类型账户的port */
     port:number;
     /**是否使用代理 */
-    use_proxy:boolean;
+    proxy_url?:string;
     /**所用协议 默认https */
     protocol?:'http' | 'https';
     /**重试设定 PromiseRetries */

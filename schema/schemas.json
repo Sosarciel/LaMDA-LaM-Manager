@@ -89,9 +89,9 @@
 								"description": "此类型账户的port",
 								"type": "number"
 							},
-							"use_proxy": {
+							"proxy_url": {
 								"description": "是否使用代理",
-								"type": "boolean"
+								"type": "string"
 							},
 							"protocol": {
 								"description": "所用协议 默认https",
@@ -113,8 +113,7 @@
 						"required": [
 							"hostname",
 							"id",
-							"port",
-							"use_proxy"
+							"port"
 						]
 					}
 				}
