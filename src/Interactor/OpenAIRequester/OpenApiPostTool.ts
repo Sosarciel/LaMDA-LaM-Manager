@@ -45,8 +45,8 @@ class _OpenApiPostTool implements IRequestFormater {
             ? UtilHttp.http()
             : UtilHttp.https();
         const respData = await tool.postJson()
-            .finalize({...options,timeout:timeLimit})
-            .once(postJson);
+            .option({...options,timeout:timeLimit})
+            .once({json:postJson});
 
         const respObj = respData?.data as AnyOpenAIConversationLikeRespFormat|undefined;
 
