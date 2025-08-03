@@ -14,13 +14,6 @@
 	"author": "",
 	"license": "ISC",
 	"description": "",
-	"dependencies": {
-		"@anush008/tokenizers": "^0.0.0",
-		"@zwa73/js-utils": "^1.0.35",
-		"@zwa73/modular-mixer": "^1.0.4",
-		"@zwa73/service-manager": "^1.0.17",
-		"@zwa73/utils": "^1.0.234"
-	},
 	"files": [
 		"dist",
 		"data",
@@ -28,6 +21,13 @@
 		"index.js",
 		"index.d.ts"
 	],
+	"dependencies": {
+		"@anush008/tokenizers": "^0.0.0",
+		"@zwa73/js-utils": "^1.0.35",
+		"@zwa73/modular-mixer": "^1.0.4",
+		"@zwa73/service-manager": "^1.0.17",
+		"@zwa73/utils": "^1.0.234"
+	},
 	"devDependencies": {
 		"@types/jest": "^30.0.0"
 	}
