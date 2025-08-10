@@ -111,8 +111,9 @@ class _CredManager implements NeedInit{
     }
     /**保存凭证数据 */
     async save(){
-        await this.sm.save();
-        SLogger.info("CredManager.save 完成保存");
+        //只在实际写入时打印
+        if(await this.sm.save())
+            SLogger.info("CredManager.save 完成保存");
     }
     //#endregion
 }
