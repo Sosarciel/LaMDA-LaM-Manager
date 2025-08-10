@@ -1,4 +1,4 @@
-import { AwaitInited, NeedInit, None, SLogger, throwError, UtilFT } from "@zwa73/utils";
+import { AwaitInited, NeedInit, None, PartialOption, SLogger, throwError, UtilFT } from "@zwa73/utils";
 import { APIPrice, APIPriceResp, AccountData, AccountManager } from "./Interface";
 import { ServiceInstance, ServiceManager } from "@zwa73/service-manager";
 import { AccountManagerDrive } from "./Drive";
@@ -29,13 +29,27 @@ export type CredCtorTable = typeof CtorTable;
 /**凭证数据 */
 export type CredsData = ServiceInstance<CredCtorTable,AccountManager>;
 
+
+export type CredsManagerOption = {
+    /**配置表单路径 */
+    tablePath:string;
+    /**类别表单路径 */
+    categoryTablePath:string;
+    /**自动保存间隔 <10000时不自动保存 默认-1 */
+    saveInterval:number;
+}
+export const CredsManagerDefOption = {
+    saveInterval:-1,
+}
+export type CredsManagerPartialOption = PartialOption<CredsManagerOption,typeof CredsManagerDefOption>;
 /**credentials_manager 凭证管理器 需先调用init */
 class _CredManager implements NeedInit{
     readonly sm;
     readonly _categoryTable;
     inited;
     //#region 构造函数
-    constructor(tablePath:string,categoryTablePath:string){
+    constructor(opt:CredsManagerPartialOption){
+        const {categoryTablePath,tablePath,saveInterval} = Object.assign({},CredsManagerDefOption,opt);
         this._categoryTable = UtilFT.loadJSONFile(categoryTablePath) as Promise<CredCategoryJsonTable>;
         this.sm = ServiceManager.from<CredCtorTable,AccountManager>({
             cfgPath:tablePath,
@@ -43,7 +57,7 @@ class _CredManager implements NeedInit{
         });
         this.inited = this.sm.inited;
         //自动保存
-        this.autoSave(300);
+        this.autoSave(saveInterval);
     }
     /**自动保存定时器 */
     private _autoSaveTimer:undefined|NodeJS.Timeout;
@@ -119,13 +133,13 @@ class _CredManager implements NeedInit{
 }
 
 /**credentials_manager 凭证管理器 */
-export type CredManager = _CredManager&{init:(tablePath: string,categoryTablePath:string)=>void};
+export type CredManager = _CredManager&{init:(opt:CredsManagerPartialOption)=>void};
 export const CredManager = new Proxy({} as {ins?:_CredManager}, {
     get(target, prop, receiver) {
         if (prop === 'init') {
-            return (tablePath: string,categoryTablePath:string) => {
+            return (opt:CredsManagerPartialOption) => {
                 if (target.ins==null)
-                    target.ins = new _CredManager(tablePath,categoryTablePath);
+                    target.ins = new _CredManager(opt);
             };
         }
         if (target.ins==null) throwError("CredManager 未初始化", 'error');
