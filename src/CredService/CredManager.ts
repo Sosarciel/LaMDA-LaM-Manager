@@ -114,9 +114,7 @@ class _CredManager implements NeedInit{
      */
     autoSave(time:number){
         //最低10秒
-        if(time<10_000)
-            return;
-
+        if(time<10_000) return;
         const bot = this;
         if(this._autoSaveTimer!=null)
             clearInterval(this._autoSaveTimer);
