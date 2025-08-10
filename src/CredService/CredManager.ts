@@ -35,7 +35,7 @@ export type CredsManagerOption = {
     tablePath:string;
     /**类别表单路径 */
     categoryTablePath:string;
-    /**自动保存间隔 <10000时不自动保存 默认-1 */
+    /**自动保存间隔 毫秒 <10_000 时不自动保存 默认-1 */
     saveInterval:number;
 }
 export const CredsManagerDefOption = {
@@ -113,15 +113,16 @@ class _CredManager implements NeedInit{
      * @param time - 自动保存间隔
      */
     autoSave(time:number){
-        const bot = this;
-        if(time<10)//最低10秒
-            time=10;
+        //最低10秒
+        if(time<10_000)
+            return;
 
+        const bot = this;
         if(this._autoSaveTimer!=null)
             clearInterval(this._autoSaveTimer);
         this._autoSaveTimer = setInterval(() => {
             void bot.save();
-        }, time * 1000);
+        }, time);
     }
     /**保存凭证数据 */
     async save(){
