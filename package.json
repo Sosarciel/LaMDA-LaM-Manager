@@ -1,7 +1,7 @@
 {
 	"name": "@sosraciel-lamda/lam-manager",
 	"version": "1.0.66",
-	"main": "index.js",
+	"main": "dist/index.js",
 	"scripts": {
 		"test": "jest",
 		"build": "powershell scripts/build",
@@ -17,9 +17,7 @@
 	"files": [
 		"dist",
 		"data",
-		"schema",
-		"index.js",
-		"index.d.ts"
+		"schema"
 	],
 	"dependencies": {
 		"@anush008/tokenizers": "^0.0.0",
