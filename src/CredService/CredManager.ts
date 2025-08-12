@@ -137,8 +137,9 @@ export const CredManager = new Proxy({} as {ins?:_CredManager}, {
     get(target, prop, receiver) {
         if (prop === 'init') {
             return (opt:CredsManagerPartialOption) => {
-                if (target.ins==null)
-                    target.ins = new _CredManager(opt);
+                if (target.ins!=null)
+                    return SLogger.warn(`CredManager 出现重复的init调用, 重复的初始化已被跳过`);
+                target.ins = new _CredManager(opt);
             };
         }
         if (target.ins==null) throwError("CredManager 未初始化", 'error');

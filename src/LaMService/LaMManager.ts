@@ -108,8 +108,9 @@ export const LaMManager = new Proxy({} as {ins?:_LaMManager}, {
     get(target, prop, receiver) {
         if (prop === 'init') {
             return (tablePath: string) => {
-                if (target.ins==null)
-                    target.ins = new _LaMManager(tablePath);
+                if (target.ins!=null)
+                    return SLogger.warn(`LaMManager 出现重复的init调用, 重复的初始化已被跳过`);
+                target.ins = new _LaMManager(tablePath);
             };
         }
         if (target.ins==null) throwError("LaMManager 未初始化", 'error');
