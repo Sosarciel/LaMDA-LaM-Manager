@@ -1,4 +1,4 @@
-import { AwaitInited, NeedInit, None, PartialOption, SLogger, throwError, UtilFT } from "@zwa73/utils";
+import { AwaitInited, NeedInit, None, PartialOption, SLogger, throwError, UtilFT, UtilFunc } from "@zwa73/utils";
 import { APIPrice, APIPriceResp, AccountData, AccountManager } from "./Interface";
 import { ServiceInstance, ServiceManager } from "@zwa73/service-manager";
 import { AccountManagerDrive } from "./Drive";
@@ -8,16 +8,6 @@ import { CredCategoryJsonTable } from "./Schema.schema";
 
 
 const CtorTable = {
-    //OpenAI      : (table:AccountData)   => new AccountManagerDrive(OpenAIOption,table),
-    //DoubleGPT   : (table:AccountData)   => new AccountManagerDrive(DoubleGPTOption,table),
-    //Eylink      : (table:AccountData)   => new AccountManagerDrive(EylinkOption,table),
-    //Eylink4     : (table:AccountData)   => new AccountManagerDrive(Eylink4Option,table),
-    //EylinkAz    : (table:AccountData)   => new AccountManagerDrive(EylinkAzOption,table),
-    //Gptus       : (table:AccountData)   => new AccountManagerDrive(GptusOption,table),
-    //Gptge       : (table:AccountData)   => new AccountManagerDrive(GptgeOption,table),
-    //Deepseek    : (table:AccountData)   => new AccountManagerDrive(DeepseekOption,table),
-    //SiliconFlow : (table:AccountData)   => new AccountManagerDrive(SiliconFlowOption,table),
-    //Google      : (table:AccountData)   => new AccountManagerDrive(GoogleOption,table),
     Common        : async (table:AccountData)   => {
         const categoryData = await CredManager.getCategoryData(table.cred_category);
         if(categoryData==null) throwError(`CredManager.getAvailableAccount 缺少类别:${table.cred_category}`);
@@ -132,17 +122,9 @@ class _CredManager implements NeedInit{
 }
 
 /**credentials_manager 凭证管理器 */
-export type CredManager = _CredManager&{init:(opt:CredsManagerPartialOption)=>void};
-export const CredManager = new Proxy({} as {ins?:_CredManager}, {
-    get(target, prop, receiver) {
-        if (prop === 'init') {
-            return (opt:CredsManagerPartialOption) => {
-                if (target.ins!=null)
-                    return SLogger.warn(`CredManager 出现重复的init调用, 重复的初始化已被跳过`);
-                target.ins = new _CredManager(opt);
-            };
-        }
-        if (target.ins==null) throwError("CredManager 未初始化", 'error');
-        return Reflect.get(target.ins!, prop, receiver);
+export const CredManager = UtilFunc.createInjectable({
+    initInject:(opt:CredsManagerPartialOption)=>{
+        return new _CredManager(opt);
     }
-}) as any as CredManager;
+})
+export type CredManager = typeof CredManager;

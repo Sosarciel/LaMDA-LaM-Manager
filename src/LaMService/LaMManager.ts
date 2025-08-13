@@ -1,6 +1,5 @@
-import { None, SLogger, throwError } from "@zwa73/utils";
-import { ServiceManager } from "@zwa73/service-manager";
-import { LaMInterface } from "./LaMInterface";
+import { None, SLogger, UtilFunc } from "@zwa73/utils";
+import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig } from "@zwa73/service-manager";
 import { DefChatLaMResult, TextCompletionOptions, TextCompletionResult} from 'TextCompletion';
 import { DEF_CHAT_OPT, LaMChatMessages, PartialChatOption } from "ChatTask";
 import { HttpAPIModelDrive, HttpAPIModelData, TestModule } from "ModelDrive";
@@ -8,28 +7,22 @@ import { HttpAPIModelDrive, HttpAPIModelData, TestModule } from "ModelDrive";
 
 
 const CtorTable = {
-    //GPT35Chat           : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT35Chat),
-    //GPT35Text           : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT35Text),
-    //GPT4                : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4),
-    //GPT4O               : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4O),
-    //GPT4OMini           : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4OMini),
-    //GPT4Chat            : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,GPT4Chat),
-    //DeepseekChat        : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,DeepseekChat),
-    //DeepseekChatBeta    : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,DeepseekChatBeta),
-    //Gemini2Flash        : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini2Flash),
-    //Gemini15Pro         : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini15Pro),
-    //Gemini20Pro         : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini20Pro),
-    //Gemini25Pro         : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini25Pro),
-    //Gemini25ProCompat   : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d,Gemini25ProCompat),
     HttpAPIModel          : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d),
     Test                  : async (d:{})=> new TestModule(),
 };
 export type LaMCtorTable = typeof CtorTable;
+/**用于实例加载 */
+type LaMServiceJsonTable = ServiceManagerBaseConfig & {
+    instance_table: {
+        [key: string]: ServiceConfig<LaMCtorTable>;
+    };
+};
 
 class _LaMManager{
     readonly sm;
-    constructor(tablePath:string){
-        this.sm = ServiceManager.from<LaMCtorTable,LaMInterface>({
+    constructor(opt:LaMManagerOption){
+        const {tablePath} = opt;
+        this.sm = ServiceManager.from({
             cfgPath:tablePath,
             ctorTable:CtorTable
         });
@@ -102,18 +95,14 @@ class _LaMManager{
     }
 }
 
+type LaMManagerOption = {
+    /**配置文件路径 */
+    tablePath:string;
+}
 /**语言模型管理器 需先调用init */
-export type LaMManager = _LaMManager&{init:(tablePath: string)=>void};
-export const LaMManager = new Proxy({} as {ins?:_LaMManager}, {
-    get(target, prop, receiver) {
-        if (prop === 'init') {
-            return (tablePath: string) => {
-                if (target.ins!=null)
-                    return SLogger.warn(`LaMManager 出现重复的init调用, 重复的初始化已被跳过`);
-                target.ins = new _LaMManager(tablePath);
-            };
-        }
-        if (target.ins==null) throwError("LaMManager 未初始化", 'error');
-        return Reflect.get(target.ins, prop, receiver);
+export const LaMManager = UtilFunc.createInjectable({
+    initInject:(opt:LaMManagerOption)=>{
+        return new _LaMManager(opt);
     }
-}) as any as LaMManager;
+});
+export type LaMManager = typeof LaMManager;
