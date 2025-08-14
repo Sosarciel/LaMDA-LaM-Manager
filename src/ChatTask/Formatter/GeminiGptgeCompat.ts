@@ -38,7 +38,6 @@ export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCom
 
             obj.extra_body.google = {
                 thinking_config:{
-                    include_thoughts: true,
                     thinking_budget: opt.think_budget
                 }
             };
