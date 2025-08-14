@@ -2,14 +2,14 @@ import { lazyFunction, SLogger } from "@zwa73/utils";
 import { ChatTaskFormatter } from "../Adapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { ChatTaskOption, MessageType } from "../Interface";
-import { OpenAIConversationAPIRole,GeminiCompatAPIEntry, GeminiCompatOption } from "RequestFormat";
+import { OpenAIConversationAPIRole,GeminiGptgeCompatAPIEntry, GeminiGptgeCompatOption } from "RequestFormat";
 import { OpenAIConversationRespFormat } from "ResponseFormat";
 import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
 
 
 /**gptge兼容api格式化工具 */
-export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatOption,OpenAIConversationRespFormat> = {
-    formatOption(opt:ChatTaskOption,model:string):GeminiCompatOption|undefined{
+export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCompatAPIEntry[],GeminiGptgeCompatOption,OpenAIConversationRespFormat> = {
+    formatOption(opt:ChatTaskOption,model:string):GeminiGptgeCompatOption|undefined{
         //验证参数
         if(opt.messages==null){
             SLogger.warn("GoogleChatCompatOption 无效 messages为null");
@@ -20,10 +20,10 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
             return;
         }
 
-        let msg = GeminiCompatChatTaskFormatter.transReq(opt.target,opt.messages);
-        msg = GeminiCompatChatTaskFormatter.formatReq(opt.target,msg);
+        let msg = GeminiGptgeCompatChatTaskFormatter.transReq(opt.target,opt.messages);
+        msg = GeminiGptgeCompatChatTaskFormatter.formatReq(opt.target,msg);
 
-        const obj:GeminiCompatOption = {
+        const obj:GeminiGptgeCompatOption = {
             model             : model                       ,//模型id
             messages          : msg                         ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
@@ -34,19 +34,23 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
             stop              : opt.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
         };
         if(opt.think_budget!=null){
-            obj.thinking = {
-                type: "enabled",
-                budget_tokens: opt.think_budget
+            obj.extra_body??={};
+
+            obj.extra_body.google = {
+                thinking_config:{
+                    include_thoughts: true,
+                    budget_tokens: opt.think_budget
+                }
             };
         }
         return obj;
     },
-    formatResult:lazyFunction(()=>commonFormatResp(GeminiCompatChatTaskFormatter)),
-    calcToken:lazyFunction(()=>stringifyCalcToken(GeminiCompatChatTaskFormatter)),
+    formatResult:lazyFunction(()=>commonFormatResp(GeminiGptgeCompatChatTaskFormatter)),
+    calcToken:lazyFunction(()=>stringifyCalcToken(GeminiGptgeCompatChatTaskFormatter)),
     transReq(chatTarget,messageList){
         let desc = "";
         let inDesc = true;
-        const narr:GeminiCompatAPIEntry[] = [];
+        const narr:GeminiGptgeCompatAPIEntry[] = [];
 
         //处理主消息列表
         for(const item of messageList){

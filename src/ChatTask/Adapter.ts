@@ -3,7 +3,7 @@ import { TextCompletionResp, TextCompletionResult } from "TextCompletion";
 import { TokensizerType } from "Tokensizer";
 import { AnyTextCompletionRespFormat } from "ResponseFormat";
 import { ChatTaskOption, LaMChatMessages } from "./Interface";
-import { DeepseekBetaChatTaskFormatter, DeepseekChatTaskFormatter, GeminiCompatChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter } from "./Formatter";
+import { DeepseekBetaChatTaskFormatter, DeepseekChatTaskFormatter, GeminiGptgeCompatChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter } from "./Formatter";
 import { GeminiChatTaskFormatter } from "./Formatter/Gemini";
 import { AnyTextCompletionOption } from "RequestFormat";
 
@@ -36,7 +36,7 @@ export const ChatTaskFormaterTable = {
     openai_chat:OpenAIConversationChatTaskFormatter,
     openai_text:OpenAITextChatTaskFormatter,
     google_chat:GeminiChatTaskFormatter,
-    google_chat_compat:GeminiCompatChatTaskFormatter,
+    google_chat_gptge_compat:GeminiGptgeCompatChatTaskFormatter,
 };
 export type ChatFormaterType = keyof typeof ChatTaskFormaterTable;
 
