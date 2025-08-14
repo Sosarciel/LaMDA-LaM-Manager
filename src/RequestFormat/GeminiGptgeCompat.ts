@@ -18,7 +18,7 @@ export type GeminiGptgeCompatOption=Partial<{
         google?:{
             thinking_config?:{
                 include_thoughts?: boolean,
-                budget_tokens?: number,
+                thinking_budget?: number,
             }
         }
     }
