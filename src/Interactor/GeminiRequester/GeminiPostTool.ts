@@ -70,7 +70,7 @@ class _GeminiPostTool implements IRequestFormater {
         const usageObj = respObj.usageMetadata;
         if(usageObj!=null){
             const usageResp:APIPriceResp = {
-                completion_tokens:usageObj.candidatesTokenCount??0+usageObj.thoughtsTokenCount??0,
+                completion_tokens:(usageObj.candidatesTokenCount??0) + (usageObj.thoughtsTokenCount??0),
                 prompt_tokens    :usageObj.promptTokenCount??0,
             };
             //增加token数据
@@ -100,7 +100,7 @@ class _GeminiPostTool implements IRequestFormater {
             //处理反馈 可以视为同步
             return await verifyResp(obj, accountData);
         };
-        return await UtilFunc.retryPromise(procFn,verifyFn,{...retryOption,flag:"GeminiPostTool.postLaMRepeat"});
+        return await UtilFunc.retryPromise(procFn,verifyFn,{...retryOption,logFlag:"GeminiPostTool.postLaMRepeat"});
     }
 }
 

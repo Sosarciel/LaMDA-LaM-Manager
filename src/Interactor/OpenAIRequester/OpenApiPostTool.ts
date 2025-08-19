@@ -103,7 +103,7 @@ class _OpenApiPostTool implements IRequestFormater {
             //处理反馈 可以视为同步
             return await verifyResp(obj, accountData);
         };
-        return await UtilFunc.retryPromise(procFn,verifyFn,{...retryOption,flag:"OpenApiPostTool.postLaMRepeat"});
+        return await UtilFunc.retryPromise(procFn,verifyFn,{...retryOption,logFlag:"OpenApiPostTool.postLaMRepeat"});
     }
 }
 
