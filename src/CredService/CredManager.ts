@@ -1,4 +1,4 @@
-import { AwaitInited, NeedInit, None, PartialOption, SLogger, throwError, UtilFT, UtilFunc } from "@zwa73/utils";
+import { AwaitInited, NeedInit, None, PartialOption, preset, PresetOption, SLogger, throwError, UtilFT, UtilFunc } from "@zwa73/utils";
 import { APIPrice, APIPriceResp, AccountData, AccountManager } from "./Interface";
 import { ServiceInstance, ServiceManager } from "@zwa73/service-manager";
 import { AccountManagerDrive } from "./Drive";
@@ -19,27 +19,25 @@ export type CredCtorTable = typeof CtorTable;
 /**凭证数据 */
 export type CredsData = ServiceInstance<CredCtorTable,AccountManager>;
 
-
-export type CredsManagerOption = {
+const CredsManagerOption = preset<{
     /**配置表单路径 */
     tablePath:string;
     /**类别表单路径 */
     categoryTablePath:string;
     /**自动保存间隔 毫秒 <10_000 时不自动保存 默认-1 */
     saveInterval:number;
-}
-export const CredsManagerDefOption = {
+}>()({
     saveInterval:-1,
-}
-export type CredsManagerPartialOption = PartialOption<CredsManagerOption,typeof CredsManagerDefOption>;
+}as const);
+
 /**credentials_manager 凭证管理器 需先调用init */
 class _CredManager implements NeedInit{
     readonly sm;
     readonly _categoryTable;
     inited;
     //#region 构造函数
-    constructor(opt:CredsManagerPartialOption){
-        const {categoryTablePath,tablePath,saveInterval} = Object.assign({},CredsManagerDefOption,opt);
+    constructor(opt:PresetOption<typeof CredsManagerOption>){
+        const {categoryTablePath,tablePath,saveInterval} = CredsManagerOption.assign(opt);
         this._categoryTable = UtilFT.loadJSONFile(categoryTablePath) as Promise<CredCategoryJsonTable>;
         this.sm = ServiceManager.from<CredCtorTable,AccountManager>({
             cfgPath:tablePath,
@@ -123,7 +121,7 @@ class _CredManager implements NeedInit{
 
 /**credentials_manager 凭证管理器 */
 export const CredManager = UtilFunc.createInjectable({
-    initInject:(opt:CredsManagerPartialOption)=>{
+    initInject:(opt:PresetOption<typeof CredsManagerOption>)=>{
         return new _CredManager(opt);
     }
 })
