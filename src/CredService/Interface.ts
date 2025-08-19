@@ -1,6 +1,6 @@
 import { ServiceInterface } from "@zwa73/service-manager";
 import { CredsData } from "./CredManager";
-import { PromiseRetries } from "@zwa73/js-utils";
+import { LogLevel, PromiseRetries } from "@zwa73/js-utils";
 
 /**账户管理器接口 */
 export type AccountManager = ServiceInterface<{
@@ -74,9 +74,9 @@ export type AccountCategoryData = {
         /**指数回退上限值 默认无限*/
         exp_backoff_max?: number;
         /**此重试任务的标志 */
-        flag?: string;
+        logFlag?: string;
         /**是否打印重试步骤 默认true */
-        log?: boolean;
+        logLevel?: LogLevel;
     }>;
     /**modelid 映射  
      * 用于处理类似SiliconFlow的模型id不一致问题
@@ -91,8 +91,8 @@ const retry2PromiseRetries = (retry:AccountCategoryData['retry']):PromiseRetries
         tryDelay:retry?.try_delay,
         expBackoff:retry?.exp_backoff,
         expBackoffMax:retry?.exp_backoff_max,
-        flag:retry?.flag,
-        log:retry?.log
+        logFlag:retry?.logFlag,
+        logLevel:retry?.logLevel
     }
 }
 
