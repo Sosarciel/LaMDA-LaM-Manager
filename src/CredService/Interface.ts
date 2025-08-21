@@ -1,5 +1,4 @@
 import { ServiceInterface } from "@zwa73/service-manager";
-import { CredsData } from "./CredManager";
 import { LogLevel, PromiseRetries } from "@zwa73/js-utils";
 
 /**账户管理器接口 */

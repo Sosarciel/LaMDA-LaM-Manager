@@ -1,6 +1,6 @@
-import { AwaitInited, NeedInit, None, PartialOption, preset, PresetOption, SLogger, throwError, UtilFT, UtilFunc } from "@zwa73/utils";
-import { APIPrice, APIPriceResp, AccountData, AccountManager } from "./Interface";
-import { ServiceInstance, ServiceManager } from "@zwa73/service-manager";
+import { AwaitInited, NeedInit, None, preset, PresetOption, SLogger, throwError, UtilFT, UtilFunc } from "@zwa73/utils";
+import { APIPrice, APIPriceResp, AccountData } from "./Interface";
+import { ServiceInsPack, ServiceManager } from "@zwa73/service-manager";
 import { AccountManagerDrive } from "./Drive";
 import { CredCategoryJsonTable } from "./Schema.schema";
 
@@ -17,7 +17,7 @@ const CtorTable = {
 export type CredCtorTable = typeof CtorTable;
 
 /**凭证数据 */
-export type CredsData = ServiceInstance<CredCtorTable,AccountManager>;
+export type CredsData = ServiceInsPack<CredCtorTable>;
 
 const CredsManagerOption = preset<{
     /**配置表单路径 */
@@ -39,7 +39,7 @@ class _CredManager implements NeedInit{
     constructor(opt:PresetOption<typeof CredsManagerOption>){
         const {categoryTablePath,tablePath,saveInterval} = CredsManagerOption.assign(opt);
         this._categoryTable = UtilFT.loadJSONFile(categoryTablePath) as Promise<CredCategoryJsonTable>;
-        this.sm = ServiceManager.from<CredCtorTable,AccountManager>({
+        this.sm = ServiceManager.from({
             cfgPath:tablePath,
             ctorTable:CtorTable
         });

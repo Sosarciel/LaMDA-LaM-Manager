@@ -227,15 +227,29 @@
 					"description": "指数回退上限值 默认无限",
 					"type": "number"
 				},
-				"flag": {
+				"logFlag": {
 					"description": "此重试任务的标志",
 					"type": "string"
 				},
-				"log": {
-					"description": "是否打印重试步骤 默认true",
-					"type": "boolean"
+				"logLevel": {
+					"$ref": "#/definitions/LogLevel",
+					"description": "是否打印重试步骤 默认true"
 				}
 			}
+		},
+		"LogLevel": {
+			"description": "log等级 undefined相当于 silly",
+			"enum": [
+				"debug",
+				"error",
+				"fatal",
+				"http",
+				"info",
+				"silly",
+				"verbose",
+				"warn"
+			],
+			"type": "string"
 		},
 		"Partial_1": {
 			"$ref": "#/definitions/__type_1"
