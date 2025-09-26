@@ -31,12 +31,12 @@ export type ChatTaskFormatter<Msg,Opt extends AnyTextCompletionOption, Fmt exten
 }
 
 export const ChatTaskFormaterTable = {
-    deepseek_chat:DeepseekChatTaskFormatter,
-    deepseek_chat_beta:DeepseekBetaChatTaskFormatter,
-    openai_chat:OpenAIConversationChatTaskFormatter,
-    openai_text:OpenAITextChatTaskFormatter,
-    google_chat:GeminiChatTaskFormatter,
-    google_chat_gptge_compat:GeminiGptgeCompatChatTaskFormatter,
+    deepseek_chat            : DeepseekChatTaskFormatter,
+    deepseek_chat_beta       : DeepseekBetaChatTaskFormatter,
+    openai_chat              : OpenAIConversationChatTaskFormatter,
+    openai_text              : OpenAITextChatTaskFormatter,
+    google_chat              : GeminiChatTaskFormatter,
+    google_chat_gptge_compat : GeminiGptgeCompatChatTaskFormatter,
 };
 export type ChatFormaterType = keyof typeof ChatTaskFormaterTable;
 

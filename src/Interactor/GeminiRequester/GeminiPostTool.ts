@@ -1,10 +1,10 @@
-import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
+import { PresetOption, SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
 import {HttpsProxyAgent} from 'https-proxy-agent';
 import { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
-import { DEF_POST_LAM_OPT, IRequestFormater, PartialPostLaMOption } from '@/src/Interactor';
+import { IRequestFormater, PostLaMOptionPreset } from '@/src/Interactor';
 import { APIPriceResp, CredManager } from 'CredService';
-import { GeminiRespFormat, AnyTextCompletionRespFormat } from 'ResponseFormat';
+import { GeminiRespFormat } from 'ResponseFormat';
 import { getProxy } from '../ProxyPool';
 
 /**适用与 openai 鉴权方式的post工具 */
@@ -16,8 +16,8 @@ class _GeminiPostTool implements IRequestFormater {
      * @param partialOpt - 可选的参数
      * @returns 结果 undefined 为未能成功接收
      */
-    async postLaM(partialOpt:PartialPostLaMOption){
-        const opt = Object.assign({},DEF_POST_LAM_OPT,partialOpt);
+    async postLaM(partialOpt:PresetOption<typeof PostLaMOptionPreset>){
+        const opt = PostLaMOptionPreset.assign(partialOpt);
         const {accountData,modelData,timeLimit} = opt;
         const postOpt = accountData.instance.categoryData;
         const postJson = opt.postJson;
@@ -86,21 +86,18 @@ class _GeminiPostTool implements IRequestFormater {
      * @param partialOpt - 可选的参数
      * @returns 结果 undefined 为未能成功接收
      */
-    async postLaMRepeat(partialOpt:PartialPostLaMOption){
+    async postLaMRepeat(partialOpt:PresetOption<typeof PostLaMOptionPreset>){
         //解构参数
-        const opt = Object.assign({},DEF_POST_LAM_OPT,partialOpt);
-        const retryOption = Object.assign({},DEF_POST_LAM_OPT.retryOption,partialOpt.retryOption);
-        const {accountData} = opt;
+        const opt = PostLaMOptionPreset.assign(partialOpt);
+        const retryOption = Object.assign({},
+            PostLaMOptionPreset.default().retryOption,
+            partialOpt.retryOption);
 
-        const client = this;
-        //重复post的处理函数
-        const procFn = async ()=>client.postLaM(opt);
-        //重复post的验证函数
-        const verifyFn = async (obj:AnyTextCompletionRespFormat | undefined)=>{
-            //处理反馈 可以视为同步
-            return await verifyResp(obj, accountData);
-        };
-        return await UtilFunc.retryPromise(procFn,verifyFn,{...retryOption,logFlag:"GeminiPostTool.postLaMRepeat"});
+        return await UtilFunc.retryPromise(
+            async ()=>this.postLaM(opt),
+            async obj=>await verifyResp(obj, opt.accountData),
+            {...retryOption,logFlag:"GeminiPostTool.postLaMRepeat"}
+        );
     }
 }
 

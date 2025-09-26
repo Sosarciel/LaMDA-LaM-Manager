@@ -1,7 +1,7 @@
-import { None, SLogger, UtilFunc } from "@zwa73/utils";
+import { None, PresetOption, SLogger, UtilFunc } from "@zwa73/utils";
 import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig } from "@zwa73/service-manager";
 import { DefChatLaMResult, TextCompletionOptions, TextCompletionResult} from 'TextCompletion';
-import { DEF_CHAT_OPT, LaMChatMessages, PartialChatOption } from "ChatTask";
+import { ChatTaskOptionPreset, LaMChatMessages } from "ChatTask";
 import { HttpAPIModelDrive, HttpAPIModelData, TestModule } from "ModelDrive";
 
 
@@ -33,8 +33,8 @@ class _LaMManager{
      * @param opt          - 参数
      * @returns 结果
      */
-    async chat(instanceName:string,opt:PartialChatOption):Promise<TextCompletionResult>{
-        const fopt = Object.assign({},DEF_CHAT_OPT,opt);
+    async chat(instanceName:string,opt:PresetOption<typeof ChatTaskOptionPreset>):Promise<TextCompletionResult>{
+        const fopt = ChatTaskOptionPreset.assign(opt);
         const resp = await this.sm.invoke(instanceName,'chat',fopt);
         if(resp===None){
             SLogger.warn(`LaMManager.chat 错误 instanceName:${instanceName} 不存在`);

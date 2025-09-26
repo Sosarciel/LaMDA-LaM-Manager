@@ -1,25 +1,7 @@
-import { assertType, LogLevel, PartialOption } from "@zwa73/utils";
+import { LogLevel, preset } from "@zwa73/utils";
 import { CredCategoryID } from "CredService";
 import { TextCompletionOptions } from "TextCompletion";
 
-//#region 缺省option参数
-
-/**默认的聊天设置 */
-export const DEF_CHAT_OPT = {
-    max_tokens       : 16  ,
-    temperature      : 1   ,
-    top_p            : 1   ,
-    presence_penalty : 0   ,
-    frequency_penalty: 0   ,
-    n                : 1   ,
-    preferred_account: [] as [],
-    logit_bias       : null,
-    think_budget     : null,
-} as const;
-assertType<Partial<ChatTaskOption>>(DEF_CHAT_OPT);
-/**默认设置为可选项的聊天设置 */
-export type PartialChatOption = PartialOption<ChatTaskOption,typeof DEF_CHAT_OPT>;
-//#endregion
 
 /**聊天任务配置 */
 export type ChatTaskOption = TextCompletionOptions&{
@@ -32,6 +14,18 @@ export type ChatTaskOption = TextCompletionOptions&{
     /**log等级 */
     logLevel:LogLevel|'none';
 }
+/**默认的聊天设置 */
+export const ChatTaskOptionPreset = preset<ChatTaskOption>()({
+    max_tokens       : 16  ,
+    temperature      : 1   ,
+    top_p            : 1   ,
+    presence_penalty : 0   ,
+    frequency_penalty: 0   ,
+    n                : 1   ,
+    preferred_account: [] as [],
+    logit_bias       : null,
+    think_budget     : null,
+});
 
 
 /**通用消息表 */
