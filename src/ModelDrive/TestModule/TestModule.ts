@@ -7,7 +7,19 @@ import { OpenAITextRespFormat } from "ResponseFormat";
 
 /**测试模型 */
 export class TestModule implements LaMInterface{
-    async chat(options:ChatTaskOption){
+    async isRuning(){return true;}
+    async getData(){return {};}
+    getDefaultOption(): TextCompletionOption {
+        return {}
+    }
+    async encodeToken(str: string) {
+        return getTokensizer("cl100k_base").encode(str);
+    }
+    async decodeToken(arr: number[]) {
+        return getTokensizer("cl100k_base").decode(arr);
+    }
+
+    async chatTask(options:ChatTaskOption){
         SLogger.http(options);
         const resp:OpenAITextRespFormat = {
             "choices": [{
@@ -28,9 +40,7 @@ export class TestModule implements LaMInterface{
         };
         return result;//DefChatLaMResult;
     }
-    async isRuning(){return true;}
-    async getData(){return {};}
-    async calcToken(messageList: LaMChatMessages): Promise<number> {
+    async chatCalcToken(messageList: LaMChatMessages): Promise<number> {
         let ntext:string="";
         for(const item of messageList){
             ntext=item.type==MessageType.DESC
@@ -39,14 +49,5 @@ export class TestModule implements LaMInterface{
         }
         const turboMessage = ntext.trim();
         return (await this.encodeToken(turboMessage)).length;
-    }
-    async encodeToken(str: string) {
-        return getTokensizer("cl100k_base").encode(str);
-    }
-    async decodeToken(arr: number[]) {
-        return getTokensizer("cl100k_base").decode(arr);
-    }
-    getDefaultOption(): TextCompletionOption {
-        return {}
     }
 }

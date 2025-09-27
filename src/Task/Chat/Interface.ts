@@ -141,26 +141,10 @@ export type ChatTaskInterface = {
      * @param messageList - 待计算的通用消息列表
      * @returns token数
      */
-    calc(messageList:LaMChatMessages):Promise<number>;
-    /**token编码
-     * @async
-     * @param str - 待编码的字符串
-     * @returns Token数组
-     */
-    encode(str:string):Promise<number[]>
-    /**token解码
-      * @param arr = Token数组
-      * @returns 消息字符串
-      */
-    decode(arr:number[]):Promise<string>
+    chatCalcToken(messageList:LaMChatMessages):Promise<number>;
     /**和语言模型实例对话
      * @param opt - 对话选项
      * @returns 对话结果
      */
-    task(opt:ChatTaskOption):Promise<TextCompletionResult>
+    chatTask(opt:ChatTaskOption):Promise<TextCompletionResult>
 }
-
-type PrefixTask<Prefix extends string, T extends Record<string,any>>={
-    [K in keyof T as K extends string ? `${Prefix}_${K}` : never]:T[K]
-}
-type c = PrefixTask<"chat",ChatTaskInterface>;

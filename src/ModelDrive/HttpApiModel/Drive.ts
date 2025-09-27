@@ -13,13 +13,14 @@ export class HttpAPIModelDrive implements LaMInterface{
     interactor  :Interactor;
     constructor(private data:HttpAPIModelData){
         this.chatFormater = ChatTaskFormaterTable[this.data.config.chat_formater];
-        this.interactor = InteractorTable[this.data.config.interactor];
+        this.interactor   = InteractorTable[this.data.config.interactor];
     }
     isRuning(){return true;}
     getData(){return this.data;}
-    async calcToken(message: LaMChatMessages) {
-        return this.chatFormater.calcToken(message,this.data.config.tokensizer);
+    getDefaultOption():TextCompletionOption{
+        return this.data.default_option??{};
     }
+
     async decodeToken(arr: number[]) {
         const tokenizer = getTokensizer(this.data.config.tokensizer);
         return tokenizer.decode(arr);
@@ -28,7 +29,11 @@ export class HttpAPIModelDrive implements LaMInterface{
         const tokenizer = getTokensizer(this.data.config.tokensizer);
         return tokenizer.encode(str);
     }
-    async chat(opt: ChatTaskOption) {
+
+    async chatCalcToken(message: LaMChatMessages) {
+        return this.chatFormater.calcToken(message,this.data.config.tokensizer);
+    }
+    async chatTask(opt: ChatTaskOption) {
         //路由api key 获取有效keyname
         const accountData = await CredManager.getAvailableAccount(
             ...(opt.preferred_account??[]),...this.data.config.valid_account);
@@ -62,8 +67,5 @@ export class HttpAPIModelDrive implements LaMInterface{
             retryOption:accountData.instance.categoryData.retry,
         });
         return this.chatFormater.formatResult(resp);
-    }
-    getDefaultOption():TextCompletionOption{
-        return this.data.default_option??{};
     }
 }

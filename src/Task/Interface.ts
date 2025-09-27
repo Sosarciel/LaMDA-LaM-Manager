@@ -1,6 +1,5 @@
-import { JToken, LogLevel, MPromise, PromiseRetryResult } from "@zwa73/utils";
+import { LogLevel, PromiseRetryResult } from "@zwa73/utils";
 import { CredCategoryID } from "CredService";
-import { ChatTaskOption } from "./Chat";
 
 
 /**文本完成模型通用配置 */
@@ -46,14 +45,19 @@ export const DefChatLaMResult:TextCompletionResult = {completed:undefined,pendin
 /**文本完成通用结果 */
 export type TextCompletionResult = PromiseRetryResult<TextCompletionResp>;
 
-/**nlp任务类型 */
-export type TaskType = "Chat"|"Translate";
-
-/**nlp任务格式化工具 */
-export type TaskFormatter = {
-    /**检查配置是否有效, 斌返回用于post的JObject */
-    formatOption:(opt:any,model:string)=>MPromise<undefined|JToken>;
-    /**转换结果为通用Resp包装 */
-    formatResult:(resp:PromiseRetryResult<any | undefined> | undefined)=>MPromise<TextCompletionResult>;
+/**文本完成通用接口 */
+export type TextCompletionInterface = {
+    /**token编码
+     * @async
+     * @param str - 待编码的字符串
+     * @returns Token数组
+     */
+    encodeToken(str:string):Promise<number[]>
+    /**token解码
+      * @param arr = Token数组
+      * @returns 消息字符串
+      */
+    decodeToken(arr:number[]):Promise<string>
+    /**获取默认选项 */
+    getDefaultOption():TextCompletionOption;
 }
-
