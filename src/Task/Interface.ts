@@ -1,5 +1,6 @@
-import { LogLevel, PromiseRetryResult } from "@zwa73/utils";
+import { JObject, JToken, LogLevel, MPromise, PromiseRetryResult } from "@zwa73/utils";
 import { CredCategoryID } from "CredService";
+import { ChatTaskFormatter } from "./Chat";
 
 
 /**文本完成模型通用配置 */
@@ -60,4 +61,12 @@ export type TextCompletionInterface = {
     decodeToken(arr:number[]):Promise<string>
     /**获取默认选项 */
     getDefaultOption():TextCompletionOption;
+}
+
+/**文本完成任务通用格式化工具 */
+export type TextCompletionTaskFormatter<OPT,FMT> = {
+     /**检查配置是否有效, 斌返回用于post的JObject */
+    formatOption:(opt:OPT,model:string)=>MPromise<undefined|OPT>;
+    /**转换结果为通用Resp包装 */
+    formatResult:(resp:PromiseRetryResult<FMT | undefined> | undefined)=>MPromise<TextCompletionResult>;
 }

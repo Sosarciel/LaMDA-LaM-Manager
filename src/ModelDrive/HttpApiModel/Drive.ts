@@ -1,9 +1,9 @@
 import { CredManager } from "CredService";
 import { LaMInterface } from "LaMService";
 import { getTokensizer } from "Tokensizer";
-import { ivk, None, SLogger, UtilFunc } from "@zwa73/utils";
+import { ivk, JObject, None, SLogger, UtilFunc } from "@zwa73/utils";
 import { Interactor, InteractorTable } from "Interactor";
-import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, ChatTaskOption,DefChatLaMResult, TextCompletionOption } from "Task";
+import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, ChatTaskOption,DefChatLaMResult, TextCompletionOption, TextCompletionTaskFormatter } from "Task";
 import { HttpAPIModelData } from "./Interface";
 
 
@@ -30,10 +30,8 @@ export class HttpAPIModelDrive implements LaMInterface{
         return tokenizer.encode(str);
     }
 
-    async chatCalcToken(message: LaMChatMessages) {
-        return this.chatFormater.calcToken(message,this.data.config.tokensizer);
-    }
-    async chatTask(opt: ChatTaskOption) {
+    /**task共用请求 */
+    private async commonTask(opt:TextCompletionOption,formatter:TextCompletionTaskFormatter<any,any>){
         //路由api key 获取有效keyname
         const accountData = await CredManager.getAvailableAccount(
             ...(opt.preferred_account??[]),...this.data.config.valid_account);
@@ -43,7 +41,7 @@ export class HttpAPIModelDrive implements LaMInterface{
         }
         SLogger.info(`当前 account_category: ${accountData.instance.getData().cred_category} account_name: ${accountData.name}`);
 
-        const chatOption = await this.chatFormater.formatOption(opt,this.data.config.id);
+        const chatOption = await formatter.formatOption(opt,this.data.config.id);
         if(chatOption===undefined) return DefChatLaMResult;
         const fixedOption = ivk(()=>{
             const out = {...chatOption};
@@ -66,6 +64,13 @@ export class HttpAPIModelDrive implements LaMInterface{
             modelData:this.data.config,
             retryOption:accountData.instance.categoryData.retry,
         });
-        return this.chatFormater.formatResult(resp);
+        return formatter.formatResult(resp);
+    }
+
+    async chatCalcToken(message: LaMChatMessages) {
+        return this.chatFormater.calcToken(message,this.data.config.tokensizer);
+    }
+    async chatTask(opt: ChatTaskOption) {
+        return this.commonTask(opt,this.chatFormater);
     }
 }
