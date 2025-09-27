@@ -1,5 +1,5 @@
-import { preset, PresetOption } from "@zwa73/utils";
-import { TextCompletionOption } from "../Interface";
+import { preset } from "@zwa73/utils";
+import { TextCompletionOption, TextCompletionResult } from "../Interface";
 
 
 /**聊天任务配置 */
@@ -132,3 +132,35 @@ export enum MessageType{
     /**旁白/描述 */
     DESC="desc",
 }
+
+
+/**聊天任务接口 */
+export type ChatTaskInterface = {
+    /**计算token数量
+     * @async
+     * @param messageList - 待计算的通用消息列表
+     * @returns token数
+     */
+    calc(messageList:LaMChatMessages):Promise<number>;
+    /**token编码
+     * @async
+     * @param str - 待编码的字符串
+     * @returns Token数组
+     */
+    encode(str:string):Promise<number[]>
+    /**token解码
+      * @param arr = Token数组
+      * @returns 消息字符串
+      */
+    decode(arr:number[]):Promise<string>
+    /**和语言模型实例对话
+     * @param opt - 对话选项
+     * @returns 对话结果
+     */
+    task(opt:ChatTaskOption):Promise<TextCompletionResult>
+}
+
+type PrefixTask<Prefix extends string, T extends Record<string,any>>={
+    [K in keyof T as K extends string ? `${Prefix}_${K}` : never]:T[K]
+}
+type c = PrefixTask<"chat",ChatTaskInterface>;

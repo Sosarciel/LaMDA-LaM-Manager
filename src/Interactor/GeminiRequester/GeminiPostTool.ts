@@ -2,13 +2,13 @@ import { PresetOption, SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
 import {HttpsProxyAgent} from 'https-proxy-agent';
 import { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
-import { IRequestFormater, PostLaMOptionPreset } from '@/src/Interactor';
+import { Interactor, PostLaMOptionPreset } from '@/src/Interactor';
 import { APIPriceResp, CredManager } from 'CredService';
 import { GeminiRespFormat } from 'ResponseFormat';
 import { getProxy } from '../ProxyPool';
 
 /**适用与 openai 鉴权方式的post工具 */
-class _GeminiPostTool implements IRequestFormater {
+class _GeminiPostTool implements Interactor {
     constructor(){}
 
     /**向 openai模型 发送一个POST请求并接受数据

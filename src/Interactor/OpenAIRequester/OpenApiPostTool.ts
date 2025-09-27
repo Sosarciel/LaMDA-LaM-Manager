@@ -2,14 +2,14 @@ import { PresetOption, SLogger, UtilFunc, UtilHttp} from '@zwa73/utils';
 import {HttpsProxyAgent} from 'https-proxy-agent';
 import { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
-import { IRequestFormater, PostLaMOptionPreset } from '@/src/Interactor/Interface';
+import { Interactor, PostLaMOptionPreset } from '@/src/Interactor/Interface';
 import { APIPriceResp, CredManager } from 'CredService';
 import { AnyOpenAIConversationLikeRespFormat } from 'ResponseFormat';
 import { getProxy } from '../ProxyPool';
 
 
 /**适用与 openai 鉴权方式的post工具 */
-class _OpenApiPostTool implements IRequestFormater {
+class _OpenApiPostTool implements Interactor {
     constructor(){}
 
     /**向 openai模型 发送一个POST请求并接受数据

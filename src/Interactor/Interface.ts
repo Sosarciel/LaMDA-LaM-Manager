@@ -7,7 +7,7 @@ import { AnyTextCompletionRespFormat } from "ResponseFormat";
 
 
 /**请求格式化工具 */
-export type IRequestFormater = {
+export type Interactor = {
     /**向 openai模型 发送一个POST请求并接受数据
      * @async
      * @param partialOpt - 可选的参数

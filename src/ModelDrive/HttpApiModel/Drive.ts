@@ -2,7 +2,7 @@ import { CredManager } from "CredService";
 import { LaMInterface } from "LaMService";
 import { getTokensizer } from "Tokensizer";
 import { ivk, None, SLogger, UtilFunc } from "@zwa73/utils";
-import { IRequestFormater, InteractorTable } from "Interactor";
+import { Interactor, InteractorTable } from "Interactor";
 import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, ChatTaskOption,DefChatLaMResult, TextCompletionOption } from "Task";
 import { HttpAPIModelData } from "./Interface";
 
@@ -10,10 +10,10 @@ import { HttpAPIModelData } from "./Interface";
 /**适用于网络API的文本完成模型驱动器 */
 export class HttpAPIModelDrive implements LaMInterface{
     chatFormater:ChatTaskFormatter<any,any,any>;
-    requestFormater:IRequestFormater;
+    interactor  :Interactor;
     constructor(private data:HttpAPIModelData){
         this.chatFormater = ChatTaskFormaterTable[this.data.config.chat_formater];
-        this.requestFormater = InteractorTable[this.data.config.interactor];
+        this.interactor = InteractorTable[this.data.config.interactor];
     }
     isRuning(){return true;}
     getData(){return this.data;}
@@ -55,7 +55,7 @@ export class HttpAPIModelDrive implements LaMInterface{
         }
 
         //重复请求
-        const resp = await this.requestFormater.postLaMRepeat({
+        const resp = await this.interactor.postLaMRepeat({
             accountData,
             postJson:fixedOption,
             modelData:this.data.config,
