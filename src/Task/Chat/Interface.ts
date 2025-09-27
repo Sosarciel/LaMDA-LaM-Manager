@@ -1,18 +1,13 @@
-import { LogLevel, preset } from "@zwa73/utils";
-import { CredCategoryID } from "CredService";
-import { TextCompletionOptions } from "TextCompletion";
+import { preset, PresetOption } from "@zwa73/utils";
+import { TextCompletionOption } from "../Interface";
 
 
 /**聊天任务配置 */
-export type ChatTaskOption = TextCompletionOptions&{
+export type ChatTaskOption = TextCompletionOption&{
     /**聊天的历史记录 */
     messages: LaMChatMessages;
     /**聊天的目标名称 */
     target:string;
-    /**首选账户 需要填入 CredCategoryJsonTable 定义的 CredCategory */
-    preferred_account:CredCategoryID[];
-    /**log等级 */
-    logLevel:LogLevel|'none';
 }
 /**默认的聊天设置 */
 export const ChatTaskOptionPreset = preset<ChatTaskOption>()({
@@ -22,11 +17,11 @@ export const ChatTaskOptionPreset = preset<ChatTaskOption>()({
     presence_penalty : 0   ,
     frequency_penalty: 0   ,
     n                : 1   ,
-    preferred_account: [] as [],
     logit_bias       : null,
     think_budget     : null,
+    preferred_account: [] as [],
+    log_level        : "none",
 });
-
 
 /**通用消息表 */
 export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{

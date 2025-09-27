@@ -1,7 +1,6 @@
 import { APIPrice, CredCategoryID } from "CredService";
-import { ChatFormaterType } from "ChatTask";
-import { RequestFormaterType } from "Requester";
-import { TextCompletionOptions } from "TextCompletion";
+import { ChatFormaterType,TextCompletionOption } from "Task";
+import { InteractorType } from "Requester";
 import { TokensizerType } from "Tokensizer";
 
 
@@ -10,7 +9,7 @@ import { TokensizerType } from "Tokensizer";
 /**适用于网络API的文本完成模型数据 */
 export type HttpAPIModelData = {
     /**默认请求选项 */
-    default_option?: TextCompletionOptions;
+    default_option?: TextCompletionOption;
     ///**模型配置 */
     config:HttpApiModelCategory;
 }
@@ -30,7 +29,7 @@ export type HttpApiModelCategory = {
     /**此模型的聊天任务格式化工具 */
     chat_formater:ChatFormaterType;
     /**此模型的交互器 */
-    interactor:RequestFormaterType;
+    interactor:InteractorType;
     /**此模型所用的分词器 */
     tokensizer:TokensizerType;
 }

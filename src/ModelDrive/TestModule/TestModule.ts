@@ -1,9 +1,8 @@
 import { SLogger, UtilFunc } from "@zwa73/utils";
 import { getTokensizer } from "Tokensizer";
-import { ChatTaskOption, LaMChatMessages, MessageType,OpenAITextChatTaskFormatter } from "ChatTask";
+import { ChatTaskOption, LaMChatMessages, MessageType,OpenAITextChatTaskFormatter,TextCompletionOption } from "Task";
 import { LaMInterface } from "LaMService";
 import { OpenAITextRespFormat } from "ResponseFormat";
-import { TextCompletionOptions } from "TextCompletion";
 
 
 /**测试模型 */
@@ -47,7 +46,7 @@ export class TestModule implements LaMInterface{
     async decodeToken(arr: number[]) {
         return getTokensizer("cl100k_base").decode(arr);
     }
-    getDefaultOption(): TextCompletionOptions {
+    getDefaultOption(): TextCompletionOption {
         return {}
     }
 }

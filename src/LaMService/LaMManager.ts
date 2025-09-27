@@ -1,7 +1,6 @@
 import { None, PresetOption, SLogger, UtilFunc } from "@zwa73/utils";
 import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig } from "@zwa73/service-manager";
-import { DefChatLaMResult, TextCompletionOptions, TextCompletionResult} from 'TextCompletion';
-import { ChatTaskOptionPreset, LaMChatMessages } from "ChatTask";
+import { ChatTaskOptionPreset, LaMChatMessages,DefChatLaMResult, TextCompletionOption, TextCompletionResult } from "Task";
 import { HttpAPIModelDrive, HttpAPIModelData, TestModule } from "ModelDrive";
 
 
@@ -85,7 +84,7 @@ class _LaMManager{
         return res;
     }
     /**获取指定实例的默认选项 */
-    async getDefaultOption(instanceName:string):Promise<TextCompletionOptions|undefined>{
+    async getDefaultOption(instanceName:string):Promise<TextCompletionOption|undefined>{
         const res = await this.sm.invoke(instanceName,'getDefaultOption');
         if(res===None){
             SLogger.warn(`LaMManager.getDefaultOption 错误 instanceName:${instanceName} 不存在`);

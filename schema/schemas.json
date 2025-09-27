@@ -361,7 +361,7 @@
 			"type": "object",
 			"properties": {
 				"default_option": {
-					"$ref": "#/definitions/TextCompletionOptions",
+					"$ref": "#/definitions/TextCompletionOption",
 					"description": "默认请求选项"
 				},
 				"config": {
@@ -372,7 +372,7 @@
 				"config"
 			]
 		},
-		"TextCompletionOptions": {
+		"TextCompletionOption": {
 			"description": "文本完成模型通用配置",
 			"$ref": "#/definitions/Partial_2"
 		},
@@ -434,6 +434,28 @@
 						"null",
 						"number"
 					]
+				},
+				"preferred_account": {
+					"description": "首选账户 需要填入 CredCategoryJsonTable 定义的 CredCategory",
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"log_level": {
+					"description": "log等级",
+					"enum": [
+						"debug",
+						"error",
+						"fatal",
+						"http",
+						"info",
+						"none",
+						"silly",
+						"verbose",
+						"warn"
+					],
+					"type": "string"
 				}
 			}
 		},
@@ -488,7 +510,7 @@
 					"description": "此模型的聊天任务格式化工具"
 				},
 				"interactor": {
-					"$ref": "#/definitions/RequestFormaterType",
+					"$ref": "#/definitions/InteractorType",
 					"description": "此模型的交互器"
 				},
 				"tokensizer": {
@@ -543,7 +565,7 @@
 			],
 			"type": "string"
 		},
-		"RequestFormaterType": {
+		"InteractorType": {
 			"enum": [
 				"gemini",
 				"openai"

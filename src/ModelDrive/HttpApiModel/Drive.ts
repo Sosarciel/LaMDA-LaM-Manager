@@ -1,11 +1,10 @@
 import { CredManager } from "CredService";
 import { LaMInterface } from "LaMService";
 import { getTokensizer } from "Tokensizer";
-import { DefChatLaMResult, TextCompletionOptions } from "TextCompletion";
 import { ivk, None, SLogger, UtilFunc } from "@zwa73/utils";
-import { IRequestFormater, RequestFormaterTable } from "Interactor";
-import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, ChatTaskOption } from "ChatTask";
-import { HttpApiModelCategory, HttpAPIModelData } from "./Interface";
+import { IRequestFormater, InteractorTable } from "Interactor";
+import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, ChatTaskOption,DefChatLaMResult, TextCompletionOption } from "Task";
+import { HttpAPIModelData } from "./Interface";
 
 
 /**适用于网络API的文本完成模型驱动器 */
@@ -14,7 +13,7 @@ export class HttpAPIModelDrive implements LaMInterface{
     requestFormater:IRequestFormater;
     constructor(private data:HttpAPIModelData){
         this.chatFormater = ChatTaskFormaterTable[this.data.config.chat_formater];
-        this.requestFormater = RequestFormaterTable[this.data.config.interactor];
+        this.requestFormater = InteractorTable[this.data.config.interactor];
     }
     isRuning(){return true;}
     getData(){return this.data;}
@@ -32,7 +31,7 @@ export class HttpAPIModelDrive implements LaMInterface{
     async chat(opt: ChatTaskOption) {
         //路由api key 获取有效keyname
         const accountData = await CredManager.getAvailableAccount(
-            ...opt.preferred_account,...this.data.config.valid_account);
+            ...(opt.preferred_account??[]),...this.data.config.valid_account);
         if(accountData==None){
             SLogger.warn(`DeepseekChat.chat 错误 无有效账号`);
             return DefChatLaMResult;
@@ -51,9 +50,8 @@ export class HttpAPIModelDrive implements LaMInterface{
         });
         if(fixedOption===undefined) return DefChatLaMResult;
 
-        opt.logLevel??='http';
-        if(opt.logLevel!='none'){
-            SLogger.log(opt.logLevel,`参数: ${UtilFunc.stringifyJToken(fixedOption,{compress:true,space:2})}`);
+        if(opt.log_level!='none'){
+            SLogger.log(opt.log_level,`参数: ${UtilFunc.stringifyJToken(fixedOption,{compress:true,space:2})}`);
         }
 
         //重复请求
@@ -65,7 +63,7 @@ export class HttpAPIModelDrive implements LaMInterface{
         });
         return this.chatFormater.formatResult(resp);
     }
-    getDefaultOption():TextCompletionOptions{
+    getDefaultOption():TextCompletionOption{
         return this.data.default_option??{};
     }
 }

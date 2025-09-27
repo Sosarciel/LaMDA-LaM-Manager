@@ -1,8 +1,10 @@
-import { PromiseRetryResult } from "@zwa73/utils";
+import { JToken, LogLevel, MPromise, PromiseRetryResult } from "@zwa73/utils";
+import { CredCategoryID } from "CredService";
+import { ChatTaskOption } from "./Chat";
 
 
 /**文本完成模型通用配置 */
-export type TextCompletionOptions=Partial<{
+export type TextCompletionOption=Partial<{
     /**最大token数 */
     max_tokens: number;
     /**temperature 采样温度 越大越容易选择低概率token */
@@ -21,6 +23,10 @@ export type TextCompletionOptions=Partial<{
     n: number;
     /**思考token预算 模型将尽量保证思考链长度为此值 */
     think_budget: number|null;
+    /**首选账户 需要填入 CredCategoryJsonTable 定义的 CredCategory */
+    preferred_account:CredCategoryID[];
+    /**log等级 */
+    log_level:LogLevel|'none';
 }>;
 
 /**文本完成通用回复 */
@@ -40,4 +46,14 @@ export const DefChatLaMResult:TextCompletionResult = {completed:undefined,pendin
 /**文本完成通用结果 */
 export type TextCompletionResult = PromiseRetryResult<TextCompletionResp>;
 
+/**nlp任务类型 */
+export type TaskType = "Chat"|"Translate";
+
+/**nlp任务格式化工具 */
+export type TaskFormatter = {
+    /**检查配置是否有效, 斌返回用于post的JObject */
+    formatOption:(opt:any,model:string)=>MPromise<undefined|JToken>;
+    /**转换结果为通用Resp包装 */
+    formatResult:(resp:PromiseRetryResult<any | undefined> | undefined)=>MPromise<TextCompletionResult>;
+}
 

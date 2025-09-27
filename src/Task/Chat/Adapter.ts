@@ -1,10 +1,9 @@
 import { MPromise, PromiseRetryResult } from "@zwa73/utils";
-import { TextCompletionResp, TextCompletionResult } from "TextCompletion";
+import { TextCompletionResp, TextCompletionResult } from "../Interface";
 import { TokensizerType } from "Tokensizer";
 import { AnyTextCompletionRespFormat } from "ResponseFormat";
 import { ChatTaskOption, LaMChatMessages } from "./Interface";
-import { DeepseekBetaChatTaskFormatter, DeepseekChatTaskFormatter, GeminiGptgeCompatChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter } from "./Formatter";
-import { GeminiChatTaskFormatter } from "./Formatter/Gemini";
+import { DeepseekBetaChatTaskFormatter, DeepseekChatTaskFormatter, GeminiGptgeCompatChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter,GeminiChatTaskFormatter } from "./Formatter";
 import { AnyTextCompletionOption } from "RequestFormat";
 
 /** 聊天任务格式化工具 */

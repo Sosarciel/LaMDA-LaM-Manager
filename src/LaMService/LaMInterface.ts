@@ -1,6 +1,5 @@
 import { ServiceInterface } from "@zwa73/service-manager";
-import { TextCompletionResult, TextCompletionOptions } from "TextCompletion";
-import { ChatTaskOption, LaMChatMessages } from "ChatTask";
+import { ChatTaskOption, LaMChatMessages,TextCompletionResult, TextCompletionOption } from "Task";
 import { AnyTextCompletionOption } from "RequestFormat";
 
 
@@ -31,7 +30,7 @@ export type LaMInterface = ServiceInterface<{
      */
     chat(opt:ChatTaskOption):Promise<TextCompletionResult>
     /**获取默认选项 */
-    getDefaultOption():TextCompletionOptions;
+    getDefaultOption():TextCompletionOption;
 }>;
 
 export type AnyLaMOption = AnyTextCompletionOption;
