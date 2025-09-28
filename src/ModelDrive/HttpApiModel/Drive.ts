@@ -5,26 +5,19 @@ import { Interactor, InteractorTable } from "Interactor";
 import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, ChatTaskOption,DefChatLaMResult, TextCompletionOption, TextCompletionTaskFormatter, ChatTaskInterface } from "Task";
 import { HttpAPIModelData } from "./Interface";
 import { LaMDrive } from "../Interface";
+import { chatTaskCtor } from "./ChatTask";
+import { DefaultDrive } from "../DefaultDrive";
 
 
 /**适用于网络API的文本完成模型驱动器 */
-export class HttpAPIModelDrive implements LaMDrive{
+export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
     chatFormater:ChatTaskFormatter<any,any,any>;
     interactor  :Interactor;
-    chat:ChatTaskInterface;
+    chat = chatTaskCtor(this);
     constructor(private data:HttpAPIModelData){
+        super();
         this.chatFormater = ChatTaskFormaterTable[this.data.config.chat_formater];
         this.interactor   = InteractorTable[this.data.config.interactor];
-
-        const drive = this;
-        this.chat = {
-            async calcToken(message: LaMChatMessages) {
-                return drive.chatFormater.calcToken(message,drive.data.config.tokensizer);
-            },
-            async chat(opt: ChatTaskOption) {
-                return drive.commonTask(opt,drive.chatFormater);
-            }
-        }
     }
     isRuning(){return true;}
     getData(){return this.data;}
@@ -42,7 +35,7 @@ export class HttpAPIModelDrive implements LaMDrive{
     }
 
     /**task共用请求 */
-    private async commonTask(opt:TextCompletionOption,formatter:TextCompletionTaskFormatter<any,any>){
+    async commonTask(opt:TextCompletionOption,formatter:TextCompletionTaskFormatter<any,any>){
         //路由api key 获取有效keyname
         const accountData = await CredManager.getAvailableAccount(
             ...(opt.preferred_account??[]),...this.data.config.valid_account);

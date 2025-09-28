@@ -1,5 +1,5 @@
 import { SLogger, UtilFunc } from "@zwa73/utils";
-import { TestModule } from "./TestModule";
+import { TestModule } from "./Drive";
 import { ChatTaskOption, LaMChatMessages, MessageType, OpenAITextChatTaskFormatter } from "Task";
 import { OpenAITextRespFormat } from "ResponseFormat";
 
