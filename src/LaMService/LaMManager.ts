@@ -2,12 +2,13 @@ import { None, PresetOption, SLogger, UtilFunc } from "@zwa73/utils";
 import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig } from "@zwa73/service-manager";
 import { ChatTaskOptionPreset, LaMChatMessages,DefChatLaMResult, TextCompletionOption, TextCompletionResult } from "Task";
 import { HttpAPIModelDrive, HttpAPIModelData, TestModule } from "ModelDrive";
+import { expandDrive } from "./LaMInterface";
 
 
 
 const CtorTable = {
-    HttpAPIModel          : async (d:HttpAPIModelData)=> new HttpAPIModelDrive(d),
-    Test                  : async (d:{})=> new TestModule(),
+    HttpAPIModel          : async (d:HttpAPIModelData)=> expandDrive(new HttpAPIModelDrive(d)),
+    Test                  : async (d:{})=> expandDrive(new TestModule()),
 };
 export type LaMCtorTable = typeof CtorTable;
 /**用于实例加载 */
@@ -65,34 +66,37 @@ class _LaMManager{
         return res;
     }
 
-    /**模型路由
-     * @async
-     * @param instanceName - 目标实例名
-     * @param opt          - 参数
-     * @returns 结果
-     */
-    async chat(instanceName:string,opt:PresetOption<typeof ChatTaskOptionPreset>):Promise<TextCompletionResult>{
-        const fopt = ChatTaskOptionPreset.assign(opt);
-        const resp = await this.sm.invoke(instanceName,'chatTask',fopt);
-        if(resp===None){
-            SLogger.warn(`LaMManager.chat 错误 instanceName:${instanceName} 不存在`);
-            return DefChatLaMResult;
+    /**聊天任务 */
+    chat = {
+        /**模型路由
+         * @async
+         * @param instanceName - 目标实例名
+         * @param opt          - 参数
+         * @returns 结果
+         */
+        async chat(instanceName:string,opt:PresetOption<typeof ChatTaskOptionPreset>):Promise<TextCompletionResult>{
+            const fopt = ChatTaskOptionPreset.assign(opt);
+            const resp = await LaMManager.sm.invoke(instanceName,'chat_chat',fopt);
+            if(resp===None){
+                SLogger.warn(`LaMManager.chat 错误 instanceName:${instanceName} 不存在`);
+                return DefChatLaMResult;
+            }
+            return resp;
+        },
+        /**计算token数量
+         * @async
+         * @param instanceName - 目标实例名
+         * @param messageList - 待计算的通用消息表
+         * @returns token数 null为计算错误
+         */
+        async calcToken(instanceName:string,messageList:LaMChatMessages):Promise<number|undefined>{
+            const res = await LaMManager.sm.invoke(instanceName,'chat_calcToken',messageList);
+            if(res==None){
+                SLogger.warn(`LaMManager.calcToken 错误 instanceName:${instanceName} 不存在`);
+                return undefined;
+            }
+            return res;
         }
-        return resp;
-    }
-    /**计算token数量
-     * @async
-     * @param instanceName - 目标实例名
-     * @param messageList - 待计算的通用消息表
-     * @returns token数 null为计算错误
-     */
-    async calcToken(instanceName:string,messageList:LaMChatMessages):Promise<number|undefined>{
-        const res = await this.sm.invoke(instanceName,'chatCalcToken',messageList);
-        if(res==None){
-            SLogger.warn(`LaMManager.calcToken 错误 instanceName:${instanceName} 不存在`);
-            return undefined;
-        }
-        return res;
     }
 }
 

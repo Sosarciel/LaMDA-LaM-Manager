@@ -1,19 +1,30 @@
 import { CredManager } from "CredService";
-import { LaMInterface } from "LaMService";
 import { getTokensizer } from "Tokensizer";
-import { ivk, JObject, None, SLogger, UtilFunc } from "@zwa73/utils";
+import { ivk, None, SLogger, UtilFunc } from "@zwa73/utils";
 import { Interactor, InteractorTable } from "Interactor";
-import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, ChatTaskOption,DefChatLaMResult, TextCompletionOption, TextCompletionTaskFormatter } from "Task";
+import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, ChatTaskOption,DefChatLaMResult, TextCompletionOption, TextCompletionTaskFormatter, ChatTaskInterface } from "Task";
 import { HttpAPIModelData } from "./Interface";
+import { LaMDrive } from "../Interface";
 
 
 /**适用于网络API的文本完成模型驱动器 */
-export class HttpAPIModelDrive implements LaMInterface{
+export class HttpAPIModelDrive implements LaMDrive{
     chatFormater:ChatTaskFormatter<any,any,any>;
     interactor  :Interactor;
+    chat:ChatTaskInterface;
     constructor(private data:HttpAPIModelData){
         this.chatFormater = ChatTaskFormaterTable[this.data.config.chat_formater];
         this.interactor   = InteractorTable[this.data.config.interactor];
+
+        const drive = this;
+        this.chat = {
+            async calcToken(message: LaMChatMessages) {
+                return drive.chatFormater.calcToken(message,drive.data.config.tokensizer);
+            },
+            async chat(opt: ChatTaskOption) {
+                return drive.commonTask(opt,drive.chatFormater);
+            }
+        }
     }
     isRuning(){return true;}
     getData(){return this.data;}
@@ -65,12 +76,5 @@ export class HttpAPIModelDrive implements LaMInterface{
             retryOption:accountData.instance.categoryData.retry,
         });
         return formatter.formatResult(resp);
-    }
-
-    async chatCalcToken(message: LaMChatMessages) {
-        return this.chatFormater.calcToken(message,this.data.config.tokensizer);
-    }
-    async chatTask(opt: ChatTaskOption) {
-        return this.commonTask(opt,this.chatFormater);
     }
 }

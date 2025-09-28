@@ -1,6 +1,6 @@
-import { JObject, JToken, LogLevel, MPromise, PromiseRetryResult } from "@zwa73/utils";
+import { assertType, LogLevel, MPromise, PromiseRetryResult } from "@zwa73/utils";
 import { CredCategoryID } from "CredService";
-import { ChatTaskFormatter } from "./Chat";
+import { ChatTaskInterface } from "./Chat";
 
 
 /**文本完成模型通用配置 */
@@ -70,3 +70,15 @@ export type TextCompletionTaskFormatter<OPT,FMT> = {
     /**转换结果为通用Resp包装 */
     formatResult:(resp:PromiseRetryResult<FMT | undefined> | undefined)=>MPromise<TextCompletionResult>;
 }
+
+
+/**task接口 */
+export type TaskInterface = {
+    /**chat任务, 与实体渐进式聊天 */
+    chat:ChatTaskInterface;
+}
+/**task类型 */
+export type TaskType =  keyof TaskInterface;
+/**task类型 列表 */
+export const TaskTypeList = ['chat'] as const;
+assertType<ReadonlyArray<TaskType>>(TaskTypeList);
