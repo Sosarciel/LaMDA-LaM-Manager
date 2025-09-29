@@ -6,7 +6,7 @@ import { ChatTaskOption, MessageType } from "../Interface";
 import { OpenAIConversationAPIEntry, OpenAIConversationAPIRole, OpenAIConversationOption } from "RequestFormat";
 
 export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConversationAPIEntry[],OpenAIConversationOption,AnyOpenAIConversationLikeRespFormat>={
-    formatOption(opt:ChatTaskOption,model:string){
+    formatOption(opt,model){
         //验证参数
         if(opt.messages==null){
             SLogger.warn("TurboOptions 无效 messages为null");
@@ -32,7 +32,7 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
             logit_bias        : opt.logit_bias          ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
             //best_of         : best_of                 ,//产生n条候选消息，根据n返回n条最佳消息
             stop              : opt.stop                ,//调整某token出现的概率 {"tokenid":-100~100}
-        };
+        } satisfies OpenAIConversationOption;
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence

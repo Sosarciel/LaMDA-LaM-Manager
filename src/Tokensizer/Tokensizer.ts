@@ -1,4 +1,4 @@
-import { AwaitInited, ivk, NeedInit, UtilCodec, UtilFunc } from "@zwa73/utils";
+import { AwaitInited, ivk, NeedInit, UtilCodec } from "@zwa73/utils";
 import { Tokenizer } from "@anush008/tokenizers";
 import path from 'pathe';
 import { DATA_PATH } from "Constant";

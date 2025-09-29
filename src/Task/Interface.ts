@@ -1,6 +1,8 @@
 import { assertType, LogLevel, MPromise, PromiseRetryResult } from "@zwa73/utils";
 import { CredCategoryID } from "CredService";
 import { ChatTaskInterface } from "./Chat";
+import { AnyTextCompletionOption } from "RequestFormat";
+import { AnyTextCompletionRespFormat } from "ResponseFormat";
 
 
 /**文本完成模型通用配置 */
@@ -64,9 +66,11 @@ export type TextCompletionInterface = {
 }
 
 /**文本完成任务通用格式化工具 */
-export type TextCompletionTaskFormatter<OPT,FMT> = {
+export type TextCompletionTaskFormatter<IOPT,
+OOPT extends AnyTextCompletionOption,
+FMT extends AnyTextCompletionRespFormat> = {
      /**检查配置是否有效, 斌返回用于post的JObject */
-    formatOption:(opt:OPT,model:string)=>MPromise<undefined|OPT>;
+    formatOption:(opt:IOPT,model:string)=>MPromise<undefined|OOPT>;
     /**转换结果为通用Resp包装 */
     formatResult:(resp:PromiseRetryResult<FMT | undefined> | undefined)=>MPromise<TextCompletionResult>;
 }

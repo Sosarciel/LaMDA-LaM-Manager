@@ -1,7 +1,7 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 import { ChatTaskFormatter } from "../Adapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { ChatTaskOption, MessageType } from "../Interface";
+import { MessageType } from "../Interface";
 import { OpenAIConversationAPIRole,GeminiGptgeCompatAPIEntry, GeminiGptgeCompatOption } from "RequestFormat";
 import { OpenAIConversationRespFormat } from "ResponseFormat";
 import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
@@ -9,7 +9,7 @@ import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
 
 /**gptge兼容api格式化工具 */
 export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCompatAPIEntry[],GeminiGptgeCompatOption,OpenAIConversationRespFormat> = {
-    formatOption(opt:ChatTaskOption,model:string):GeminiGptgeCompatOption|undefined{
+    formatOption(opt,model){
         //验证参数
         if(opt.messages==null){
             SLogger.warn("GoogleChatCompatOption 无效 messages为null");

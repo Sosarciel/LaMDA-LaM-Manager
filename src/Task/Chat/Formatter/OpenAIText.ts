@@ -2,12 +2,12 @@ import { lazyFunction, SLogger } from "@zwa73/utils";
 import { ChatTaskFormatter } from "../Adapter";
 import { OpenAITextRespFormat } from "ResponseFormat";
 import { commonCalcToken, commonFormatResp } from "./Utils";
-import { ChatTaskOption, MessageType } from "../Interface";
+import { MessageType } from "../Interface";
 import { OpenAITextOption } from "RequestFormat";
 
 
 export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOption,OpenAITextRespFormat>={
-    formatOption(opt:ChatTaskOption,model:string){
+    formatOption(opt,model){
         //验证参数
         if(opt.messages==null){
             SLogger.warn("TurboOptions 无效 messages为null");
@@ -34,7 +34,7 @@ export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOpti
             logit_bias        : opt.logit_bias           ,//调整某token出现的概率 {"tokenid":-100~100}
             //best_of         : best_of                  ,//产生n条候选消息，根据n返回n条最佳消息
             stop              : opt.stop                 ,//遭遇时将会停止生成的最多4个字符串 "1234"
-        };
+        } satisfies OpenAITextOption;
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence

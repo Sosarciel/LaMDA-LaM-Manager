@@ -2,12 +2,12 @@ import { lazyFunction, SLogger } from "@zwa73/utils";
 import { GeminiRespFormat } from "ResponseFormat";
 import { ChatTaskFormatter } from "../Adapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { ChatTaskOption, MessageType } from "../Interface";
+import { MessageType } from "../Interface";
 import { GeminiOption, GeminiApiData, GeminiAPIEntry, GeminiAPIRole } from "RequestFormat";
 
 
 export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOption,GeminiRespFormat> = {
-    formatOption(opt:ChatTaskOption,model:string):GeminiOption|undefined{
+    formatOption(opt,model){
         //验证参数
         if(opt.messages==null){
             SLogger.warn("GoogleChatOption 无效 messages为null");
@@ -31,7 +31,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
                 topP:opt.top_p??undefined,
                 thinkingBudget:opt.think_budget??undefined,
             }
-        };
+        } satisfies GeminiOption;
     },
     calcToken:lazyFunction(()=>stringifyCalcToken(GeminiChatTaskFormatter)),
     formatResult:lazyFunction(()=>commonFormatResp(GeminiChatTaskFormatter)),

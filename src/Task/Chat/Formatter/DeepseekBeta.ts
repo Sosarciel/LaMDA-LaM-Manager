@@ -1,7 +1,7 @@
 import { SLogger, lazyFunction } from "@zwa73/utils";
 import { ChatTaskFormatter } from "../Adapter";
 import { DeepseekRespFormat } from "ResponseFormat";
-import { ChatTaskOption, MessageType } from "../Interface";
+import { MessageType } from "../Interface";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
 import { DeepseekAPIEntry, DeepseekAPIRole, DeepseekOption } from "RequestFormat";
@@ -19,7 +19,7 @@ function formatMessage(message?:string):string|undefined{
 
 /**前缀续写模式的Formater */
 export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekOption,DeepseekRespFormat> = {
-    formatOption(opt:ChatTaskOption,model:string):DeepseekOption|undefined{
+    formatOption(opt,model){
         //验证参数
         if(opt.messages==null){
             SLogger.warn("DeepseekChatOptions 无效 messages为null");
@@ -43,7 +43,7 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
             presence_penalty  : opt.presence_penalty        ,//遭遇时将会停止生成的最多4个字符串 "1234"
             frequency_penalty : opt.frequency_penalty       ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
             stop              : opt.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
-        };
+        } satisfies DeepseekOption;
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
