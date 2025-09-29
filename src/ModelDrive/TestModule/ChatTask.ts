@@ -1,6 +1,6 @@
-import { SLogger, UtilFunc } from "@zwa73/utils";
+import { PresetOption, SLogger, UtilFunc } from "@zwa73/utils";
 import { TestModule } from "./Drive";
-import { ChatTaskOption, LaMChatMessages, MessageType, OpenAITextChatTaskFormatter } from "Task";
+import { ChatTaskOption, ChatTaskOptionPreset, LaMChatMessages, MessageType, OpenAITextChatTaskFormatter } from "Task";
 import { OpenAITextRespFormat } from "ResponseFormat";
 
 
@@ -24,8 +24,9 @@ const getMockresp = ()=>{
 
 export const chatTaskCtor = (drive:TestModule) => {
     return {
-        async chat(options:ChatTaskOption){
-            SLogger.http(options);
+        async chat(opt: PresetOption<typeof ChatTaskOptionPreset>) {
+            const fopt = ChatTaskOptionPreset.assign(opt);
+            SLogger.http(fopt);
             return {
                 completed:OpenAITextChatTaskFormatter.formatResp(getMockresp()),
                 pending:[]
