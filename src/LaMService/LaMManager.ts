@@ -4,6 +4,7 @@ import { ChatTaskOptionPreset, LaMChatMessages,DefChatLaMResult, TextCompletionO
 import { HttpAPIModelDrive, HttpAPIModelData, TestModule } from "ModelDrive";
 import { expandDrive } from "./LaMInterface";
 import { LaMDrive } from "../ModelDrive/Interface";
+import { DefaultDrive } from "../ModelDrive/DefaultDrive";
 
 
 
@@ -69,6 +70,7 @@ class _LaMManager{
 }
 
 //构造代理
+const defDrive = new DefaultDrive();
 const TaskProxyCache:PRecord<string,any> = {};
 const ctor = (mgr:_LaMManager)=>{
     return new Proxy(mgr,{
@@ -83,8 +85,8 @@ const ctor = (mgr:_LaMManager)=>{
                     return async (instanceName:string,...args:any)=>{
                         if(typeof p2 != 'string') return Reflect.get(target2,p2,receiver2);
                         if(! await mgr.sm.hasService(instanceName)){
-                            SLogger.warn(`LaMManager.${p1}.${p2} 错误 instanceName:${instanceName} 不存在`);
-                            return None;
+                            SLogger.warn(`LaMManager.${p1}.${p2} 错误 instanceName:${instanceName} 不存在, 将使用默认驱动器`);
+                            return (defDrive as any)[p1][p2](instanceName,...args);
                         }
                         return await mgr.sm.invoke(instanceName,`${p1}_${p2}` as any,...args);
                     }

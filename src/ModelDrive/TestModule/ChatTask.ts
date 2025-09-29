@@ -1,6 +1,6 @@
 import { PresetOption, SLogger, UtilFunc } from "@zwa73/utils";
 import { TestModule } from "./Drive";
-import { ChatTaskOption, ChatTaskOptionPreset, LaMChatMessages, MessageType, OpenAITextChatTaskFormatter } from "Task";
+import { ChatTaskInterface, ChatTaskOption, ChatTaskOptionPreset, LaMChatMessages, MessageType, OpenAITextChatTaskFormatter } from "Task";
 import { OpenAITextRespFormat } from "ResponseFormat";
 
 
@@ -24,7 +24,7 @@ const getMockresp = ()=>{
 
 export const chatTaskCtor = (drive:TestModule) => {
     return {
-        async chat(opt: PresetOption<typeof ChatTaskOptionPreset>) {
+        async execute(opt: PresetOption<typeof ChatTaskOptionPreset>) {
             const fopt = ChatTaskOptionPreset.assign(opt);
             SLogger.http(fopt);
             return {
@@ -32,7 +32,7 @@ export const chatTaskCtor = (drive:TestModule) => {
                 pending:[]
             };
         },
-        async calcToken(messageList: LaMChatMessages): Promise<number> {
+        async countToken(messageList: LaMChatMessages): Promise<number> {
             let ntext:string="";
             for(const item of messageList){
                 ntext=item.type==MessageType.DESC
@@ -42,5 +42,5 @@ export const chatTaskCtor = (drive:TestModule) => {
             const turboMessage = ntext.trim();
             return (await drive.encodeToken(turboMessage)).length;
         }
-    }
+    } satisfies ChatTaskInterface;
 }

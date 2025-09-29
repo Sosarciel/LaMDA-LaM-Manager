@@ -141,10 +141,10 @@ export type ChatTaskInterface = {
      * @param messageList - 待计算的通用消息列表
      * @returns token数
      */
-    calcToken(messageList:LaMChatMessages):Promise<number>;
+    countToken(messageList:LaMChatMessages):Promise<number>;
     /**和语言模型实例对话
      * @param opt - 对话选项
      * @returns 对话结果
      */
-    chat(opt:ChatTaskOption):Promise<TextCompletionResult>
+    execute(opt:ChatTaskOption):Promise<TextCompletionResult>
 }
