@@ -22,16 +22,18 @@ type ExpandDrive<T extends LaMDrive> = T&UnionToIntersection<{
 }[TaskType]>;
 /**展开驱动器为扁平接口 */
 export const expandDrive = <T extends LaMDrive>(d:T):ExpandDrive<T> => {
-    const fixedD = d as any;
-    return new Proxy(d,{
-        get(target,field,receiver){
-            if(typeof field === 'string' && field.includes('_')){
-                const [taskname,funcname] = field.split('_');
-                if( TaskTypeList.includes(taskname as TaskType) &&
-                    typeof fixedD[taskname][funcname] == 'function')
-                    return (...args:any)=> fixedD[taskname][funcname](...args);
-            }
-            return fixedD[field];
+    return new Proxy(d as any,{
+        get(target,prop,receiver){
+            if(typeof prop != 'string' || prop in target)
+                return Reflect.get(target,prop,receiver);
+
+            const match = prop.match(/(.+)-(.+)/);
+            if(match==null) return undefined;
+
+            const [_,task,func] = match;
+            if( TaskTypeList.includes(task as TaskType) &&
+                typeof target[task][func] == 'function')
+                return (...args:any)=> target[task][func](...args);
         }
-    }) as any;
+    });
 }

@@ -74,14 +74,14 @@ const TaskProxyCache:PRecord<string,any> = {};
 const proxyCtor = (mgr:_LaMManager)=>{
     return new Proxy(mgr,{
         get(target1,prop1,receiver1){
-            if(prop1 in target1) return Reflect.get(target1,prop1,receiver1);
-            if(typeof prop1 != 'string') return Reflect.get(target1,prop1,receiver1);
+            if(typeof prop1 != 'string' || prop1 in target1)
+                return Reflect.get(target1,prop1,receiver1);
 
             //基于taskName创建代理
             return TaskProxyCache[prop1] ??= new Proxy({},{
                 get(target2, prop2, receiver2) {
+                    if(typeof prop2 != 'string') return undefined;
                     return async (instanceName:string,...args:any)=>{
-                        if(typeof prop2 != 'string') return undefined;
                         if(! await mgr.sm.hasService(instanceName)){
                             SLogger.warn(`LaMManager.${prop1}.${prop2} 错误 instanceName:${instanceName} 不存在, 将使用默认驱动器`);
                             return (defDrive as any)[prop1][prop2](instanceName,...args);
