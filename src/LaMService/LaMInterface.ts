@@ -13,8 +13,8 @@ export type LaMInterface = ServiceInterface<ExpandDrive<LaMDrive>>;
 export type AnyLaMOption = AnyTextCompletionOption;
 
 /**添加前缀 */
-export type PrefixObject<Prefix extends string, T extends {}> = {
-    [K in keyof T as K extends string ? `${Prefix}_${K}`:never]:T[K]
+type PrefixObject<Prefix extends string, T extends {}> = {
+    [K in keyof T as K extends string ? `${Prefix}-${K}`:never]:T[K]
 }
 /**展开驱动器为扁平接口 */
 type ExpandDrive<T extends LaMDrive> = T&UnionToIntersection<{
