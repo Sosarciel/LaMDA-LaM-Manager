@@ -4,7 +4,7 @@ import { CredsData } from "CredService";
 
 /**验证回复可用性并处理错误
  * @async
- * @param rawResp      - 未做处理的回复
+ * @param rawResp    - 未做处理的回复
  * @param apiKeyName - 本次回复的APIkey
  * @returns 可用性
  */
