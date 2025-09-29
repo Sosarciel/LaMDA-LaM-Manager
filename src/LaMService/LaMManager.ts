@@ -1,5 +1,5 @@
 import { AnyFunc, None, PRecord, PresetOption, SLogger, UtilFunc } from "@zwa73/utils";
-import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig } from "@zwa73/service-manager";
+import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig, ServiceManagerOption } from "@zwa73/service-manager";
 import { ChatTaskOptionPreset, LaMChatMessages,DefChatLaMResult, TextCompletionOption, TextCompletionResult, TaskType } from "Task";
 import { HttpAPIModelDrive, HttpAPIModelData, TestModule } from "ModelDrive";
 import { expandDrive } from "./LaMInterface";
@@ -12,11 +12,10 @@ const CtorTable = {
     HttpAPIModel          : async (d:HttpAPIModelData)=> expandDrive(new HttpAPIModelDrive(d)),
     Test                  : async (d:{})=> expandDrive(new TestModule()),
 };
-export type LaMCtorTable = typeof CtorTable;
 /**用于实例加载 */
 type LaMServiceJsonTable = ServiceManagerBaseConfig & {
     instance_table: {
-        [key: string]: ServiceConfig<LaMCtorTable>;
+        [key: string]: ServiceConfig<typeof CtorTable>;
     };
 };
 
@@ -72,7 +71,7 @@ class _LaMManager{
 //构造代理
 const defDrive = new DefaultDrive();
 const TaskProxyCache:PRecord<string,any> = {};
-const ctor = (mgr:_LaMManager)=>{
+const proxyCtor = (mgr:_LaMManager)=>{
     return new Proxy(mgr,{
         get(target1,p1,receiver1){
             if(p1 in target1) return Reflect.get(target1,p1,receiver1);
@@ -110,7 +109,7 @@ type LaMManagerOption = {
 /**语言模型管理器 需先调用init */
 export const LaMManager = UtilFunc.createInjectable({
     initInject:(opt:LaMManagerOption)=>{
-        return ctor(new _LaMManager(opt));
+        return proxyCtor(new _LaMManager(opt));
     }
 });
 export type LaMManager = typeof LaMManager;
