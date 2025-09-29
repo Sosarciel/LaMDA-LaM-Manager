@@ -31,9 +31,9 @@ export const expandDrive = <T extends LaMDrive>(d:T):ExpandDrive<T> => {
             if(match==null) return undefined;
 
             const [_,task,func] = match;
-            if( TaskTypeList.includes(task as TaskType) &&
-                typeof target[task][func] == 'function')
-                return Reflect.get(target[task],func,target[task]);
+            const taskObj = target[task];
+            if(TaskTypeList.includes(task as TaskType) && typeof taskObj[func] == 'function')
+                return Reflect.get(taskObj,func,taskObj);
         }
     });
 }
