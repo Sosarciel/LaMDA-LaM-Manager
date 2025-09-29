@@ -1,6 +1,6 @@
 import { PresetOption } from "@zwa73/js-utils";
 import { HttpAPIModelDrive } from "./Drive";
-import { ChatTaskInterface, ChatTaskOption, ChatTaskOptionPreset, LaMChatMessages } from "Task";
+import { ChatTaskInterface, ChatTaskOptionPreset, LaMChatMessages } from "Task";
 
 
 

@@ -1,5 +1,5 @@
 import { getTokensizer } from "Tokensizer";
-import { ChatTaskInterface, TextCompletionOption } from "Task";
+import { TextCompletionOption } from "Task";
 import { chatTaskCtor } from "./ChatTask";
 import { DefaultDrive } from "../DefaultDrive";
 import { LaMDrive } from "../Interface";
@@ -7,7 +7,7 @@ import { LaMDrive } from "../Interface";
 
 /**测试模型 */
 export class TestModule extends DefaultDrive implements LaMDrive{
-    chat:ChatTaskInterface = chatTaskCtor(this);
+    chat = chatTaskCtor(this);
 
     async isRuning(){return true;}
     async getData(){return {};}
