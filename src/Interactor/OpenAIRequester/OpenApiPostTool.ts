@@ -1,6 +1,4 @@
 import { PresetOption, SLogger, UtilFunc, UtilHttp} from '@zwa73/utils';
-import {HttpsProxyAgent} from 'https-proxy-agent';
-import { HttpProxyAgent } from 'http-proxy-agent';
 import { verifyResp } from './UtilFunction';
 import { Interactor, PostLaMOptionPreset } from '@/src/Interactor/Interface';
 import { APIPriceResp, CredManager } from 'CredService';
@@ -23,40 +21,30 @@ class _OpenApiPostTool implements Interactor {
         const postOpt = accountData.instance.categoryData;
         const postJson = opt.postJson;
 
-        //组装opt
-        const options = {
-            method: 'POST'  as const,
-            hostname: postOpt.hostname,
-            port: postOpt.port,
-            path: modelData.endpoint,//'/v1/chat/completions'
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accountData.instance.getKey()}`,
-            },
-            agent: undefined as HttpsProxyAgent|HttpProxyAgent|undefined,
-        };
-
         const protocol = postOpt.protocol??'https';
-        if(postOpt.proxy_url)
-            options.agent = getProxy(protocol,postOpt.proxy_url);
 
-        //post
-        const tool = protocol == 'http'
-            ? UtilHttp.http()
-            : UtilHttp.https();
-        const respData = await tool.postJson()
-            .option({...options,timeout:timeLimit})
-            .once({json:postJson});
+        const respData = await UtilHttp.url(`${protocol}://${postOpt.hostname}`)
+            .postJson().option({
+                hostname: postOpt.hostname,
+                port: postOpt.port,
+                path: modelData.endpoint,//'/v1/chat/completions'
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accountData.instance.getKey()}`,
+                },
+                agent: postOpt.proxy_url ? getProxy(protocol,postOpt.proxy_url) : undefined,
+                timeout:timeLimit,
+            }).once({json:postJson});
 
         const respObj = respData?.data as AnyOpenAIConversationLikeRespFormat|undefined;
-
         //post错误
-        const respcode = respData?.statusCode ?? 0;
-        const respStat = (respcode>=200 && respcode<300) ? true : false;
         if(respObj==undefined){
             SLogger.warn(`OpenApiPostTool.postLaM 错误 未能接收resp`);
             return undefined;
         }
+
+        const respcode = respData?.statusCode ?? 0;
+        const respStat = respcode>=200 && respcode<300;
         if(respStat===false){
             SLogger.warn(`OpenApiPostTool.postLaM 错误 不成功的状态码`);
             return undefined;
