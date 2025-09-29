@@ -95,9 +95,9 @@ const ctor = (mgr:_LaMManager)=>{
             return TaskProxyCache[p1];
         }
     }) as _LaMManager&{
-        [TASK in keyof LaMDrive]:{
-            [K in keyof LaMDrive[TASK]]: LaMDrive[TASK][K] extends AnyFunc
-                ? (instanceName:string,...args:Parameters<LaMDrive[TASK][K]>)=>ReturnType<LaMDrive[TASK][K]>
+        [TSK in keyof LaMDrive]:{
+            [K in keyof LaMDrive[TSK]]: LaMDrive[TSK][K] extends AnyFunc
+                ? (instanceName:string,...args:Parameters<LaMDrive[TSK][K]>)=>ReturnType<LaMDrive[TSK][K]>
                 : never
         }
     };

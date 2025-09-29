@@ -141,7 +141,7 @@
 						"instance_table": {
 							"type": "object",
 							"additionalProperties": {
-								"$ref": "#/definitions/ServiceConfig<{HttpAPIModel:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Test:(d:{})=>Promise<TestModule>;}>"
+								"$ref": "#/definitions/ServiceConfig<{HttpAPIModel:(d:HttpAPIModelData)=>Promise<ExpandDrive<HttpAPIModelDrive>>;Test:(d:{})=>Promise<ExpandDrive<TestModule>>;}>"
 							}
 						}
 					},
@@ -263,7 +263,7 @@
 		"Record_1": {
 			"$ref": "#/definitions/__type_2"
 		},
-		"ServiceConfig<{HttpAPIModel:(d:HttpAPIModelData)=>Promise<HttpAPIModelDrive>;Test:(d:{})=>Promise<TestModule>;}>": {
+		"ServiceConfig<{HttpAPIModel:(d:HttpAPIModelData)=>Promise<ExpandDrive<HttpAPIModelDrive>>;Test:(d:{})=>Promise<ExpandDrive<TestModule>>;}>": {
 			"description": "服务构造函数表所对应的单个服务的配置表\n将 类型:工厂函数 映射 转换为完整配置文件",
 			"anyOf": [
 				{
