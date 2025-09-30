@@ -1,0 +1,11 @@
+{
+    "$schema": "../schema/CredCategoryJsonTable.schema.json",
+    "category_table": {
+		"MockCredCategory":{
+			"id": "MockCredCategory",
+			"hostname" : "localhost",
+			"port"     : 3000,
+			"protocol" : "http"
+		}
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"$schema": "../schema/CredServiceJsonTable.schema.json",
+	"instance_table": {
+		"MockCred": {
+			"type": "Common",
+			"name": "MockCred",
+			"data": {
+				"cred_category": "MockCredCategory",
+				"api_key": "sk-mock_api_key",
+				"is_available": true,
+				"credit_limit": 100000,
+				"used_credit": 0
+			}
+		}
+	}
+}

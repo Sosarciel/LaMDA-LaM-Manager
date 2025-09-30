@@ -2,7 +2,7 @@ import { CredManager } from "CredService";
 import { getTokensizer } from "Tokensizer";
 import { ivk, None, SLogger, UtilFunc } from "@zwa73/utils";
 import { Interactor, InteractorTable } from "Interactor";
-import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, ChatTaskOption,DefChatLaMResult, TextCompletionOption, TextCompletionTaskFormatter, ChatTaskInterface } from "Task";
+import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, DefChatLaMResult, TextCompletionOption, TextCompletionTaskFormatter, ChatTaskInterface } from "Task";
 import { HttpAPIModelData } from "./Interface";
 import { LaMDrive } from "../Interface";
 import { chatTaskCtor } from "./ChatTask";
@@ -37,8 +37,13 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
     /**task共用请求 */
     async commonTask(opt:TextCompletionOption,formatter:TextCompletionTaskFormatter<any,any,any>){
         //路由api key 获取有效keyname
+        const vaildAccount = this.data.config.valid_account;
         const accountData = await CredManager.getAvailableAccount(
-            ...(opt.preferred_account??[]),...this.data.config.valid_account);
+            "MockCredCategory",
+            ...(opt.preferred_account??[]).filter(v=>vaildAccount.includes(v)),
+            ...vaildAccount
+        );
+
         if(accountData==None){
             SLogger.warn(`DeepseekChat.chat 错误 无有效账号`);
             return DefChatLaMResult;

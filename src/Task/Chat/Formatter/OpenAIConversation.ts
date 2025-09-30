@@ -1,4 +1,4 @@
-import { lazyFunction, SLogger } from "@zwa73/utils";
+import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
 import { ChatTaskFormatter } from '../Adapter';
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { AnyOpenAIConversationLikeRespFormat } from "ResponseFormat";
@@ -82,6 +82,13 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
         return chatList;
     },
     formatResp:(resp)=>{
+        if(!UtilFunc.checkSharpSchema(resp,{
+            choices:"array"
+        })){
+            SLogger.warn(`OpenAIConversationChatTaskFormatter.formatResp 错误, resp不符合格式, resp: `,resp);
+            return { choices:[], vaild:false }
+        }
+
         const choices = resp.choices
             .filter(choice => choice ?.message?.content!=undefined)
             .map(choice => ({content:choice .message.content!}));
