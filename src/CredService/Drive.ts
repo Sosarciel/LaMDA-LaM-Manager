@@ -1,7 +1,6 @@
 import { SLogger } from "@zwa73/utils";
 import { AccountData, AccountManager, AccountCategoryData } from "./Interface";
 
-
 /**基本的账户管理器 */
 export class AccountManagerDrive implements AccountManager{
     categoryData: AccountCategoryData;
