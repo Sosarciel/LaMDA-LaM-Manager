@@ -2,7 +2,6 @@ import { lazyFunction, SLogger } from "@zwa73/utils";
 import { ChatTaskFormatter } from "../Adapter";
 import { OpenAITextRespFormat } from "ResponseFormat";
 import { commonCalcToken, commonFormatResp } from "./Utils";
-import { MessageType } from "../Interface";
 import { OpenAITextOption } from "RequestFormat";
 
 
@@ -46,7 +45,7 @@ export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOpti
 
         //处理主消息列表
         for(const item of messageList){
-            ntext=item.type==MessageType.DESC
+            ntext=item.type=='desc'
             ? `${ntext}\n${item.content}`
             : `${ntext}\n${item.name}:${item.content}`;
         }

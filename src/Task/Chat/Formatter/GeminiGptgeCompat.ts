@@ -1,7 +1,6 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 import { ChatTaskFormatter } from "../Adapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { MessageType } from "../Interface";
 import { OpenAIConversationAPIRole,GeminiGptgeCompatAPIEntry, GeminiGptgeCompatOption } from "RequestFormat";
 import { OpenAIConversationRespFormat } from "ResponseFormat";
 import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
@@ -53,7 +52,7 @@ export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCom
 
         //处理主消息列表
         for(const item of messageList){
-            if(item.type==MessageType.DESC){
+            if(item.type=='desc'){
                 /**应对以下转换方式 需合并system
                  *  for _, message := range textRequest.Messages {
                  *      if messageLink.Role == "system" {

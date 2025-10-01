@@ -44,7 +44,7 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
 
         //处理主消息列表
         for(const item of messageList){
-            if(item.type==MessageType.DESC){
+            if(item.type=='desc'){
                 narr.push({
                     role:OpenAIConversationAPIRole.System,
                     content:item.content

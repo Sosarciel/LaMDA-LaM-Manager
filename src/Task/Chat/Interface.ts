@@ -35,7 +35,7 @@ export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{
      */
     pushCharMessage(name:string,content:string,id:undefined|string):number{
         return this.push({
-            type:MessageType.CHAT,
+            type:'chat',
             name,
             content,
             id
@@ -49,7 +49,7 @@ export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{
      */
     unshiftCharMessage(name:string,content:string,id:undefined|string):number{
         return this.unshift({
-            type:MessageType.CHAT,
+            type:'chat',
             name,
             content,
             id
@@ -61,7 +61,7 @@ export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{
      */
     pushDescMessage(content:string):number{
         return this.push({
-            type:MessageType.DESC,
+            type:'desc',
             content,
         });
     }
@@ -71,7 +71,7 @@ export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{
      */
     unshiftDescMessage(content:string):number{
         return this.unshift({
-            type:MessageType.DESC,
+            type:'desc',
             content,
         });
     }
@@ -109,7 +109,7 @@ export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{
 /**角色消息对象 */
 export type CharMessageEntry={
     /**必定为 chat */
-    type:MessageType.CHAT;
+    type:'chat';
     /**角色名称 */
     name:string;
     /**消息内容 */
@@ -120,19 +120,14 @@ export type CharMessageEntry={
 /**旁白消息对象 */
 export type SystemMessageEntry={
     /**必定为 desc */
-    type:MessageType.DESC;
+    type:'desc';
     /**消息内容 */
     content:string;
 }
 
-/**消息可用角色类型 */
-export enum MessageType{
-    /**聊天信息 */
-    CHAT="chat",
-    /**旁白/描述 */
-    DESC="desc",
-}
-
+/**消息可用类型 */
+export const MessageTypeList = ["chat","desc"];
+export type MessageType = typeof MessageTypeList[number];
 
 /**聊天任务接口 */
 export type ChatTaskInterface = {

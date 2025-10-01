@@ -1,7 +1,6 @@
 import { SLogger, lazyFunction } from "@zwa73/utils";
 import { ChatTaskFormatter } from "../Adapter";
 import { DeepseekRespFormat } from "ResponseFormat";
-import { MessageType } from "../Interface";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
 import { DeepseekAPIEntry, DeepseekAPIRole, DeepseekOption } from "RequestFormat";
@@ -55,7 +54,7 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
 
         //处理主消息列表
         for(const item of messageList){
-            if(item.type==MessageType.DESC){
+            if(item.type=='desc'){
                 narr.push({
                     role:DeepseekAPIRole.System,
                     content:item.content

@@ -1,6 +1,6 @@
 {
 	"name": "@sosraciel-lamda/lam-manager",
-	"version": "1.0.80",
+	"version": "1.0.81",
 	"main": "dist/index.js",
 	"scripts": {
 		"test": "jest",

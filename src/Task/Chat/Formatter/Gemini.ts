@@ -2,7 +2,6 @@ import { lazyFunction, SLogger } from "@zwa73/utils";
 import { GeminiRespFormat } from "ResponseFormat";
 import { ChatTaskFormatter } from "../Adapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import { MessageType } from "../Interface";
 import { GeminiOption, GeminiApiData, GeminiAPIEntry, GeminiAPIRole } from "RequestFormat";
 
 
@@ -42,7 +41,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
 
         //处理主消息列表
         for(const item of messageList){
-            if(item.type==MessageType.DESC){
+            if(item.type=='desc'){
                 //头部说明直接合并
                 if(inDesc){
                     desc += `${item.content}\n`;
