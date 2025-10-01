@@ -25,7 +25,7 @@ type ChatChoice = {
 };
 
 export const TemplateDeepseekResponse = {
-    id: "3fbb230d-6350-4185-82f3-b17e909ce99f",
+    id: "456a034b-6e31-4a4d-9548-e87b5d694ae0",
     object: "chat.completion",
     created: 1759123711,
     model: "deepseek-chat",

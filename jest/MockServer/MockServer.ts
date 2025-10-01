@@ -2,7 +2,7 @@
 import { match, SLogger } from "@zwa73/utils";
 import { createServer } from "http";
 import { parse } from 'url';
-import { procOpenAIChat } from "./OpenAIChat";
+import { procOpenAIChat } from "./OpenAIRequester";
 
 
 export const MockServerPort = 3000;
@@ -21,6 +21,7 @@ const server = createServer((req, res) => {
         const data = JSON.parse(body || "{}");
         const result = await match(pathname??'',{
             '/v1/chat/completions':()=>procOpenAIChat(data),
+            '/v1/completions':()=>procOpenAIChat(data),
         },()=>{
             SLogger.warn(`req 错误 不支持的pathname`);
             return {};

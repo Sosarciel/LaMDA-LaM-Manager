@@ -1,6 +1,8 @@
 import { JObject } from "@zwa73/js-utils";
 import { match, SLogger, UtilFunc } from "@zwa73/utils";
 import { procGPT35Chat } from "./GPT35Chat";
+import { procGPT35Text } from "./GPT35Text";
+import { procDeepseekChat } from "./DeepseekChat";
 
 
 
@@ -12,6 +14,8 @@ export const procOpenAIChat = (data:JObject)=>{
     })){
         return match(data.model,{
             'gpt-3.5-turbo':()=>procGPT35Chat(data),
+            'gpt-3.5-turbo-instruct':()=>procGPT35Text(data),
+            'deepseek-chat':()=>procDeepseekChat(data),
         },()=>{
             SLogger.warn(`procOpenAIChat 错误 不支持的模型 data:`,data);
             return {}
