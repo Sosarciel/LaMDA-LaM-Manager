@@ -1,8 +1,8 @@
 {
-	"$schema": "../schema/LaMServiceJsonTable.schema.json",
+	"$schema": "../../schema/LaMServiceJsonTable.schema.json",
 	"instance_table": {
-		"GPT35Turbo": {
-			"name": "GPT35Turbo",
+		"GPT35Chat": {
+			"name": "GPT35Chat",
 			"type": "HttpAPIModel",
 			"data": {
 				"config": {

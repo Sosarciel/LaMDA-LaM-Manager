@@ -1,5 +1,5 @@
 {
-	"$schema": "../schema/CredServiceJsonTable.schema.json",
+	"$schema": "../../schema/CredServiceJsonTable.schema.json",
 	"instance_table": {
 		"MockCred": {
 			"type": "Common",

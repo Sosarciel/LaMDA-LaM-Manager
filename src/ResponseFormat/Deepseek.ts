@@ -24,7 +24,7 @@ type ChatChoice = {
     logprobs: null|number[]
 };
 
-export const TemplateDeepseekResponse: DeepseekRespFormat = {
+export const TemplateDeepseekResponse = {
     id: "3fbb230d-6350-4185-82f3-b17e909ce99f",
     object: "chat.completion",
     created: 1759123711,
@@ -49,4 +49,4 @@ export const TemplateDeepseekResponse: DeepseekRespFormat = {
         prompt_cache_miss_tokens: 2115,
     },
     system_fingerprint: "fp_8333852bec_prod0820_fp8_kvcache",
-};
+} satisfies DeepseekRespFormat;

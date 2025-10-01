@@ -53,12 +53,12 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
         const chatOption = await formatter.formatOption(opt,this.data.config.id);
         if(chatOption===undefined) return DefChatLaMResult;
         const fixedOption = ivk(()=>{
-            const out = {...chatOption};
-            if('model' in out && typeof out.model === 'string'){
+            const out:unknown = {...chatOption};
+            if(UtilFunc.checkSharpSchema(out,{model:"string"})){
                 const mapname = accountData.instance.categoryData.model_id_map?.[out.model];
                 if(mapname!=null) out.model = mapname;
             }
-            return out;
+            return out as any;
         });
         if(fixedOption===undefined) return DefChatLaMResult;
 

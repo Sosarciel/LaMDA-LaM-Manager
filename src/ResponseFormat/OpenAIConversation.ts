@@ -23,7 +23,7 @@ type ConversationChoiceFormat = {
     index: number;
 };
 
-export const TemplateOpenAIConversationResponse: OpenAIConversationRespFormat = {
+export const TemplateOpenAIConversationResponse = {
     id: "chatcmpl-123456",
     system_fingerprint: "fp_123456_prod0820_fp8_kvcache",
     object: "chat.completion",
@@ -37,4 +37,4 @@ export const TemplateOpenAIConversationResponse: OpenAIConversationRespFormat = 
             index: 0,
         },
     ],
-};
+} satisfies OpenAIConversationRespFormat;

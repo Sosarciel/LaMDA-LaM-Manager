@@ -1,5 +1,5 @@
 {
-    "$schema": "../schema/CredCategoryJsonTable.schema.json",
+    "$schema": "../../schema/CredCategoryJsonTable.schema.json",
     "category_table": {
 		"MockCredCategory":{
 			"id": "MockCredCategory",

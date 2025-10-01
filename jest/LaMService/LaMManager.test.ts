@@ -1,22 +1,22 @@
 import { CredManager, LaMChatMessages, LaMManager, MessageType } from "@";
-import { ROOT_PATH } from "../MockManager";
+import { DATA_PATH } from "../Constant";
 import path from "pathe";
 
 beforeAll(()=>{
     LaMManager.initInject({
-        tablePath:path.join(ROOT_PATH,'LaMService.json'),
+        tablePath:path.join(DATA_PATH,'LaMService.json'),
     });
 
     CredManager.initInject({
-        tablePath        :path.join(ROOT_PATH,'CredService.json'),
-        categoryTablePath:path.join(ROOT_PATH,'CredCategory.json'),
+        tablePath        :path.join(DATA_PATH,'CredService.json'),
+        categoryTablePath:path.join(DATA_PATH,'CredCategory.json'),
     });
 })
 
 describe("LaMService", () => {
     describe("ChatTask", () => {
-        it("尝试与GPT35Turbo对话", async () => {
-            const result = await LaMManager.chat.execute("GPT35Turbo",{
+        const chatFn = async (instanceName:string) => {
+            return LaMManager.chat.execute(instanceName,{
                 target:"someone_char",
                 messages:new LaMChatMessages({
                     content:"你好",
@@ -29,7 +29,10 @@ describe("LaMService", () => {
                 max_tokens:100,
                 stop:["\n"],
             });
-            console.log(result);
+        }
+        it("尝试与 GPT35Chat 对话", async () => {
+            const result = await chatFn("GPT35Chat");
+            expect(result.completed?.choices?.[0].content).toBe("来自GPT35Chat的响应");
         });
     });
 });
