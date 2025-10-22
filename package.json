@@ -24,7 +24,8 @@
 		"@zwa73/js-utils": "^1.0.63",
 		"@zwa73/modular-mixer": "^1.0.4",
 		"@zwa73/service-manager": "^1.0.24",
-		"@zwa73/utils": "^1.0.263"
+		"@zwa73/utils": "^1.0.266",
+		"tiktoken": "^1.0.7"
 	},
 	"devDependencies": {
 		"@types/jest": "^30.0.0"
