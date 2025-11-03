@@ -24,86 +24,11 @@ export const ChatTaskOptionPreset = preset<ChatTaskOption>()({
 });
 
 /**通用消息表 */
-export class LaMChatMessages extends Array<CharMessageEntry|SystemMessageEntry>{
+export type LaMChatMessages = {
     /**临时提示 */
-    private _temporaryPrompt = '';
-    /**添加一条角色entry
-     * @param name      - 名称
-     * @param content   - 内容
-     * @param id        - 消息id 未定义代表未记录的临时消息或系统消息
-     * @returns 添加后的数组长度
-     */
-    pushCharMessage(name:string,content:string,id:undefined|string):number{
-        return this.push({
-            type:'chat',
-            name,
-            content,
-            id
-        });
-    }
-    /**在头部添加一条角色entry
-     * @param name      - 名称
-     * @param content   - 内容
-     * @param id        - 消息id 未定义代表未记录的临时消息或系统消息
-     * @returns 添加后的数组长度
-     */
-    unshiftCharMessage(name:string,content:string,id:undefined|string):number{
-        return this.unshift({
-            type:'chat',
-            name,
-            content,
-            id
-        });
-    }
-    /**添加一条旁白entry
-     * @param content   - 内容
-     * @returns 添加后的数组长度
-     */
-    pushDescMessage(content:string):number{
-        return this.push({
-            type:'desc',
-            content,
-        });
-    }
-    /**在头部添加一条旁白entry
-     * @param content   - 内容
-     * @returns 添加后的数组长度
-     */
-    unshiftDescMessage(content:string):number{
-        return this.unshift({
-            type:'desc',
-            content,
-        });
-    }
-    /**克隆
-     * @returns 新的 LaMChatMessages
-     */
-    clone():LaMChatMessages{
-        const nlist = new LaMChatMessages(this.length);
-        for(let i=0;i<this.length;i++)
-            nlist[i] = this[i];
-        nlist._temporaryPrompt = this._temporaryPrompt;
-        return nlist;
-    }
-    /**链接
-     * @returns 新的 LaMChatMessages
-     */
-    concatMessage(messageList:LaMChatMessages):LaMChatMessages{
-        const nlist = this.clone();
-        for(const item of messageList)
-            nlist.push(item);
-        return nlist;
-    }
-
-    /**设置临时提示 */
-    setTemporaryPrompt(temporaryPrompt:string):LaMChatMessages{
-        this._temporaryPrompt = temporaryPrompt;
-        return this;
-    }
-    /**获取临时提示 */
-    getTemporaryPrompt():string{
-        return this._temporaryPrompt;
-    }
+    tempPrompt?:string;
+    /**对话消息 */
+    list:(CharMessageEntry|SystemMessageEntry)[];
 }
 
 /**角色消息对象 */
@@ -111,7 +36,7 @@ export type CharMessageEntry={
     /**必定为 chat */
     type:'chat';
     /**角色名称 */
-    name:string;
+    senderName:string;
     /**消息内容 */
     content:string;
     /**消息id 未定义代表未记录的临时消息或系统消息*/

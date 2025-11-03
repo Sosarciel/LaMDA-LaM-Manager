@@ -12,7 +12,7 @@ export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOpti
             SLogger.warn("TurboOptions 无效 messages为null");
             return;
         }
-        if(opt.messages.length==0){
+        if(opt.messages.list.length==0){
             SLogger.warn("TurboOptions 无效 messages长度不足");
             return;
         }
@@ -44,15 +44,15 @@ export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOpti
         let ntext="";
 
         //处理主消息列表
-        for(const item of messageList){
+        for(const item of messageList.list){
             ntext=item.type=='desc'
             ? `${ntext}\n${item.content}`
-            : `${ntext}\n${item.name}:${item.content}`;
+            : `${ntext}\n${item.senderName}:${item.content}`;
         }
 
         //处理临时提示
-        if(messageList.getTemporaryPrompt().length>0)
-            ntext += messageList.getTemporaryPrompt();
+        if(messageList.tempPrompt!=null && messageList.tempPrompt.length>0)
+            ntext += messageList.tempPrompt;
 
         return ntext.trim();
     },

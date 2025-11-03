@@ -16,7 +16,7 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
             SLogger.warn("DeepseekChatOptions 无效 messages为null");
             return;
         }
-        if(opt.messages.length==0){
+        if(opt.messages.list.length==0){
             SLogger.warn("DeepseekChatOptions 无效 messages长度不足");
             return;
         }

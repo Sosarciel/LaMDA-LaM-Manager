@@ -12,7 +12,7 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
             SLogger.warn("TurboOptions 无效 messages为null");
             return;
         }
-        if(opt.messages.length==0){
+        if(opt.messages.list.length==0){
             SLogger.warn("TurboOptions 无效 messages长度不足");
             return;
         }
@@ -43,7 +43,7 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
         const narr:OpenAIConversationAPIEntry[] = [];
 
         //处理主消息列表
-        for(const item of messageList){
+        for(const item of messageList.list){
             if(item.type=='desc'){
                 narr.push({
                     role:OpenAIConversationAPIRole.System,
@@ -52,9 +52,9 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
             }else{
                 narr.push({
                     role:OpenAIConversationAPIRole.System,
-                    content:item.name+":"
+                    content:item.senderName+":"
                 });
-                if(item.name==chatTarget){
+                if(item.senderName==chatTarget){
                     narr.push({
                         role:OpenAIConversationAPIRole.Assistant,
                         content:item.content
@@ -69,8 +69,8 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
         }
 
         //处理临时提示
-        if(messageList.getTemporaryPrompt().length>0)
-            narr[narr.length-1].content += messageList.getTemporaryPrompt();
+        if(messageList.tempPrompt!=null && messageList.tempPrompt.length>0)
+            narr[narr.length-1].content += messageList.tempPrompt;
 
         return narr;
     },

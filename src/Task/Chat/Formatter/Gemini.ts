@@ -12,7 +12,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
             SLogger.warn("GoogleChatOption 无效 messages为null");
             return;
         }
-        if(opt.messages.length==0){
+        if(opt.messages.list.length==0){
             SLogger.warn("GoogleChatOption 无效 messages长度不足");
             return;
         }
@@ -40,7 +40,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
         const narr:GeminiAPIEntry[] = [];
 
         //处理主消息列表
-        for(const item of messageList){
+        for(const item of messageList.list){
             if(item.type=='desc'){
                 //头部说明直接合并
                 if(inDesc){
@@ -57,9 +57,9 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
                 inDesc = false;
                 narr.push({
                     role:GeminiAPIRole.User,
-                    parts:[{text:item.name+":"}]
+                    parts:[{text:item.senderName+":"}]
                 });
-                if(item.name==chatTarget){
+                if(item.senderName==chatTarget){
                     narr.push({
                         role:GeminiAPIRole.Model,
                         parts:[{text:item.content}]
@@ -74,9 +74,8 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
         }
     
         //处理临时提示
-        if(messageList.getTemporaryPrompt().length>0)
-            narr[narr.length-1].parts[0].text += messageList.getTemporaryPrompt();
-    
+        if(messageList.tempPrompt!=null && messageList.tempPrompt.length>0)
+            narr[narr.length-1].parts[0].text += messageList.tempPrompt;
         return {
             message:narr,
             define:desc.trim(),

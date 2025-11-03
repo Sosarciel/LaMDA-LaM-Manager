@@ -8,7 +8,15 @@
 					"type": "object",
 					"properties": {
 						"max_resource": {
-							"description": "最大允许资源量 未设置则视为无限",
+							"description": "允许占用的最大资源量\n在超出此值时会尝试关闭一些实例空出资源\nstop由实例本身管理, 不能保证效果\n在需要加载多个配置的情况下, 第一个配置的max_resource会被用作全局最大资源量\n默认 Infinity",
+							"type": "number"
+						},
+						"hold_time": {
+							"description": "实例的最小存活时间/秒\n在此时间内不会因资源调度而尝试关闭\n小于等于0则不限制\n默认 0",
+							"type": "number"
+						},
+						"idle_timeout": {
+							"description": "实例的最大允许空闲时间/秒\n超过此时间后会被关闭\n小于等于0则不限制\n默认 0",
 							"type": "number"
 						}
 					}
@@ -25,7 +33,7 @@
 										"type": "object",
 										"properties": {
 											"name": {
-												"description": "服务实例名",
+												"description": "服务实例名 必须为全局全配置唯一id",
 												"type": "string"
 											},
 											"rollback": {
@@ -33,7 +41,19 @@
 												"type": "string"
 											},
 											"resource_usage": {
-												"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
+												"description": "此服务的资源占用量\n小于等于0时不会尝试卸载\n默认 0",
+												"type": "number"
+											},
+											"start_on_create": {
+												"description": "在创建时会尝试启动此实例\n若有资源占用则在资源占用达到满值后不会尝试启动\n默认 true",
+												"type": "boolean"
+											},
+											"hold_time": {
+												"description": "此实例的最小存活时间/秒, 覆盖全局设置\n在此时间内不会因资源调度而尝试关闭\n小于等于0则不限制\n默认 0",
+												"type": "number"
+											},
+											"idle_timeout": {
+												"description": "此实例的最大允许空闲时间/秒, 覆盖全局设置\n超过此时间后会被关闭\n小于等于0则不限制\n默认 0",
 												"type": "number"
 											}
 										},
@@ -130,7 +150,15 @@
 					"type": "object",
 					"properties": {
 						"max_resource": {
-							"description": "最大允许资源量 未设置则视为无限",
+							"description": "允许占用的最大资源量\n在超出此值时会尝试关闭一些实例空出资源\nstop由实例本身管理, 不能保证效果\n在需要加载多个配置的情况下, 第一个配置的max_resource会被用作全局最大资源量\n默认 Infinity",
+							"type": "number"
+						},
+						"hold_time": {
+							"description": "实例的最小存活时间/秒\n在此时间内不会因资源调度而尝试关闭\n小于等于0则不限制\n默认 0",
+							"type": "number"
+						},
+						"idle_timeout": {
+							"description": "实例的最大允许空闲时间/秒\n超过此时间后会被关闭\n小于等于0则不限制\n默认 0",
 							"type": "number"
 						}
 					}
@@ -273,7 +301,7 @@
 							"type": "object",
 							"properties": {
 								"name": {
-									"description": "服务实例名",
+									"description": "服务实例名 必须为全局全配置唯一id",
 									"type": "string"
 								},
 								"rollback": {
@@ -281,7 +309,19 @@
 									"type": "string"
 								},
 								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
+									"description": "此服务的资源占用量\n小于等于0时不会尝试卸载\n默认 0",
+									"type": "number"
+								},
+								"start_on_create": {
+									"description": "在创建时会尝试启动此实例\n若有资源占用则在资源占用达到满值后不会尝试启动\n默认 true",
+									"type": "boolean"
+								},
+								"hold_time": {
+									"description": "此实例的最小存活时间/秒, 覆盖全局设置\n在此时间内不会因资源调度而尝试关闭\n小于等于0则不限制\n默认 0",
+									"type": "number"
+								},
+								"idle_timeout": {
+									"description": "此实例的最大允许空闲时间/秒, 覆盖全局设置\n超过此时间后会被关闭\n小于等于0则不限制\n默认 0",
 									"type": "number"
 								}
 							},
@@ -315,7 +355,7 @@
 							"type": "object",
 							"properties": {
 								"name": {
-									"description": "服务实例名",
+									"description": "服务实例名 必须为全局全配置唯一id",
 									"type": "string"
 								},
 								"rollback": {
@@ -323,7 +363,19 @@
 									"type": "string"
 								},
 								"resource_usage": {
-									"description": "此服务的资源占用量\n省略将视为0\n小于等于0时不会尝试卸载",
+									"description": "此服务的资源占用量\n小于等于0时不会尝试卸载\n默认 0",
+									"type": "number"
+								},
+								"start_on_create": {
+									"description": "在创建时会尝试启动此实例\n若有资源占用则在资源占用达到满值后不会尝试启动\n默认 true",
+									"type": "boolean"
+								},
+								"hold_time": {
+									"description": "此实例的最小存活时间/秒, 覆盖全局设置\n在此时间内不会因资源调度而尝试关闭\n小于等于0则不限制\n默认 0",
+									"type": "number"
+								},
+								"idle_timeout": {
+									"description": "此实例的最大允许空闲时间/秒, 覆盖全局设置\n超过此时间后会被关闭\n小于等于0则不限制\n默认 0",
 									"type": "number"
 								}
 							},

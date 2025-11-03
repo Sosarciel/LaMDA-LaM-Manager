@@ -24,7 +24,7 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
             SLogger.warn("DeepseekChatOptions 无效 messages为null");
             return;
         }
-        if(opt.messages.length==0){
+        if(opt.messages.list.length==0){
             SLogger.warn("DeepseekChatOptions 无效 messages长度不足");
             return;
         }
@@ -53,30 +53,30 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
         const narr:DeepseekAPIEntry[] = [];
 
         //处理主消息列表
-        for(const item of messageList){
+        for(const item of messageList.list){
             if(item.type=='desc'){
                 narr.push({
                     role:DeepseekAPIRole.System,
                     content:item.content
                 });
             }else{
-                if(item.name==chatTarget){
+                if(item.senderName==chatTarget){
                     narr.push({
                         role:DeepseekAPIRole.Assistant,
-                        content:item.name+":"+item.content
+                        content:item.senderName+":"+item.content
                     });
                 }else{
                     narr.push({
                         role:DeepseekAPIRole.User,
-                        content:item.name+":"+item.content
+                        content:item.senderName+":"+item.content
                     });
                 }
             }
         }
 
         //处理临时提示
-        if(messageList.getTemporaryPrompt().length>0)
-            narr[narr.length-1].content += messageList.getTemporaryPrompt();
+        if(messageList.tempPrompt!=null && messageList.tempPrompt.length>0)
+            narr[narr.length-1].content += messageList.tempPrompt;
 
         return narr;
     },

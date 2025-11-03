@@ -34,10 +34,10 @@ export const chatTaskCtor = (drive:TestModule) => {
         },
         async countToken(messageList: LaMChatMessages): Promise<number> {
             let ntext:string="";
-            for(const item of messageList){
+            for(const item of messageList.list){
                 ntext=item.type=='desc'
                 ? `${ntext}\n${item.content}`
-                : `${ntext}\n${item.name}:${item.content}`;
+                : `${ntext}\n${item.senderName}:${item.content}`;
             }
             const turboMessage = ntext.trim();
             return (await drive.encodeToken(turboMessage)).length;

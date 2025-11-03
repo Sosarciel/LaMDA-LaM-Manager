@@ -14,7 +14,7 @@ export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCom
             SLogger.warn("GoogleChatCompatOption 无效 messages为null");
             return;
         }
-        if(opt.messages.length==0){
+        if(opt.messages.list.length==0){
             SLogger.warn("GoogleChatCompatOption 无效 messages长度不足");
             return;
         }
@@ -51,7 +51,7 @@ export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCom
         const narr:GeminiGptgeCompatAPIEntry[] = [];
 
         //处理主消息列表
-        for(const item of messageList){
+        for(const item of messageList.list){
             if(item.type=='desc'){
                 /**应对以下转换方式 需合并system
                  *  for _, message := range textRequest.Messages {
@@ -78,11 +78,11 @@ export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCom
                 inDesc = false;
                 narr.push({
                     role:OpenAIConversationAPIRole.User,
-                    content:item.name+":"
+                    content:item.senderName+":"
                 });
 
                 //为目标则视为模型输出
-                if(item.name==chatTarget){
+                if(item.senderName==chatTarget){
                     narr.push({
                         role:OpenAIConversationAPIRole.Assistant,
                         content:item.content
@@ -99,8 +99,8 @@ export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCom
         }
 
         //处理临时提示
-        if(messageList.getTemporaryPrompt().length>0)
-            narr[narr.length-1].content += messageList.getTemporaryPrompt();
+        if(messageList.tempPrompt!=null && messageList.tempPrompt.length>0)
+            narr[narr.length-1].content += messageList.tempPrompt;
 
         return [{role:OpenAIConversationAPIRole.System,content:desc.trim()},...narr];
     },
