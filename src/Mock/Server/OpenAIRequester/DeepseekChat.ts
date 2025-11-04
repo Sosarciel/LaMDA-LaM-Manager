@@ -1,5 +1,5 @@
 import { OpenAIConversationOption } from "RequestFormat";
-import { DeepseekRespFormat, OpenAIConversationRespFormat, TemplateDeepseekResponse, TemplateOpenAIConversationResponse } from "ResponseFormat";
+import { DeepseekRespFormat, TemplateDeepseekResponse } from "ResponseFormat";
 import { buildResp } from "../../Utils";
 
 

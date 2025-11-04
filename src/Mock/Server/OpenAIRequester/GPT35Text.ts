@@ -1,7 +1,7 @@
 import { OpenAITextOption } from "RequestFormat";
 import { OpenAITextRespFormat, TemplateOpenAITextResponse } from "ResponseFormat";
 import { buildResp } from "../../Utils";
-import { MOCK_CHAR, MOCK_USER } from "@/jest/Constant";
+import { MOCK_CHAR, MOCK_USER } from "../../Constant";
 
 
 
