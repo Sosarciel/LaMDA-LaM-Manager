@@ -39,8 +39,6 @@ export type CharMessageEntry={
     senderName:string;
     /**消息内容 */
     content:string;
-    /**消息id 未定义代表未记录的临时消息或系统消息*/
-    id?:string;
 }
 /**旁白消息对象 */
 export type SystemMessageEntry={
