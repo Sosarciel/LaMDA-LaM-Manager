@@ -32,15 +32,15 @@ export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCom
             frequency_penalty : opt.frequency_penalty       ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
             stop              : opt.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
         };
-        if(opt.think_budget!=null){
-            obj.extra_body??={};
-
-            obj.extra_body.google = {
-                thinking_config:{
-                    thinking_budget: opt.think_budget
-                }
-            };
-        }
+        //GptGe的思考参数无效
+        //if(opt.think_budget!=null){
+        //    obj.extra_body??={};
+        //    obj.extra_body.google = {
+        //        thinking_config:{
+        //            thinking_budget: opt.think_budget
+        //        }
+        //    };
+        //}
         return obj;
     },
     formatResult:lazyFunction(()=>commonFormatResp(GeminiGptgeCompatChatTaskFormatter)),
@@ -112,4 +112,4 @@ export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCom
         return chatList;
     },
     formatResp:OpenAIConversationChatTaskFormatter.formatResp,
-}
+};
