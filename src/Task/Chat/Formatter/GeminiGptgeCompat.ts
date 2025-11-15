@@ -32,7 +32,9 @@ export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCom
             frequency_penalty : opt.frequency_penalty       ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
             stop              : opt.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
         };
-        //GptGe的思考参数无效
+        //GptGe的思考参数无效 对于 thinking 模型直接改变模型id实现
+        if(obj.model?.endsWith('thinking') && opt.think_budget!=null)
+            obj.model = `${obj.model}-${Math.floor(opt.think_budget)}`;
         //if(opt.think_budget!=null){
         //    obj.extra_body??={};
         //    obj.extra_body.google = {
