@@ -3,9 +3,9 @@ import { match, SLogger } from "@zwa73/utils";
 import { createServer } from "http";
 import { parse } from 'url';
 import { procOpenAIChat } from "./OpenAIRequester";
+import { LaMManagerMock } from "../Utils";
 
 
-export const MockServerPort = 3000;
 const server = createServer((req, res) => {
     const { pathname } = parse(req.url || '', true);
     // 设置响应头
@@ -31,7 +31,14 @@ const server = createServer((req, res) => {
     });
 });
 
-export const startServer = ()=> server.listen(MockServerPort, () => {
-    console.log(`Mock server running at http://localhost:${MockServerPort}`);
-});
-export const stopServer = ()=> server.close();
+/**启动测试服务器 */
+export const startServer = async (port?:number)=> new Promise((resolve)=>server.listen(port??LaMManagerMock.MOCK_PORT, () => {
+    console.log(`测试服务器开始运行于 http://localhost:${port??LaMManagerMock.MOCK_PORT}`);
+    resolve(server);
+}));
+
+/**停止服务器 */
+export const stopServer = async ()=> new Promise((resolve)=>server.close(() => {
+    console.log(`测试服务器已停止`);
+    resolve(server);
+}));

@@ -21,6 +21,7 @@
 			"Interactor"              : ["./src/Interactor"],
 			"ModelDrive"              : ["./src/ModelDrive"],
 			"CredService"             : ["./src/CredService"],
+			"Mock"                    : ["./src/Mock"],
 			"@/src/*"                 : ["./src/*"],
 			"@/*"                     : ["./*"],
 			"@"                       : ["./src/index"]

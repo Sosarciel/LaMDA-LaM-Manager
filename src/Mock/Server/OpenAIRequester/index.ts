@@ -18,9 +18,9 @@ export const procOpenAIChat = (data:JObject)=>{
             'deepseek-chat':()=>procDeepseekChat(data),
         },()=>{
             SLogger.warn(`procOpenAIChat 错误 不支持的模型 data:`,data);
-            return {}
+            return {};
         });
     }
     SLogger.warn(`procOpenAIChat 错误 不支持的数据格式 data:`,data);
     return {};
-}
+};
