@@ -20,7 +20,7 @@ const getMockresp = ()=>{
         "object": "text_completion",
         "usage": {"completion_tokens":4248,"prompt_tokens":1849,"total_tokens":6097}
     } satisfies OpenAITextRespFormat;
-}
+};
 
 export const chatTaskCtor = (drive:TestModule) => {
     return {
@@ -43,4 +43,4 @@ export const chatTaskCtor = (drive:TestModule) => {
             return (await drive.encodeToken(turboMessage)).length;
         }
     } satisfies ChatTaskInterface;
-}
+};

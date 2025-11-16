@@ -92,8 +92,8 @@ const retry2PromiseRetries = (retry:AccountCategoryData['retry']):PromiseRetries
         expBackoffMax:retry?.exp_backoff_max,
         logFlag:retry?.logFlag,
         logLevel:retry?.logLevel
-    }
-}
+    };
+};
 
 /**账号数据 */
 export type AccountData = {

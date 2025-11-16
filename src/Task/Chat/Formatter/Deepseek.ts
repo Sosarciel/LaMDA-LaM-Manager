@@ -44,4 +44,4 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
     transReq:OpenAIConversationChatTaskFormatter.transReq,
     formatReq:OpenAIConversationChatTaskFormatter.formatReq,
     formatResp:OpenAIConversationChatTaskFormatter.formatResp,
-}
+};

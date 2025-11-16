@@ -92,4 +92,4 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
         return out;
     },
     formatResp:OpenAIConversationChatTaskFormatter.formatResp,
-}
+};

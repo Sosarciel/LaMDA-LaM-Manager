@@ -86,7 +86,7 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
             choices:"array"
         })){
             SLogger.warn(`OpenAIConversationChatTaskFormatter.formatResp 错误, resp不符合格式, resp: `,resp);
-            return { choices:[], vaild:false }
+            return { choices:[], vaild:false };
         }
 
         const choices = resp.choices
@@ -95,7 +95,7 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
         return {
             choices,
             vaild:choices.length>0
-        }
+        };
     }
-}
+};
 

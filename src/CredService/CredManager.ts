@@ -124,5 +124,5 @@ export const CredManager = UtilFunc.createInjectable({
     initInject:(opt:PresetOption<typeof CredsManagerOption>)=>{
         return new _CredManager(opt);
     }
-})
+});
 export type CredManager = typeof CredManager;

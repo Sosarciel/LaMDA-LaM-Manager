@@ -13,5 +13,5 @@ export const getProxy = (type:'http'|'https',url:string)=>{
     return match(type,{
         http:()=>ProxyPool.http[url] ?? (ProxyPool.http[url] = createHttpProxyAgent(url)),
         https:()=>ProxyPool.https[url] ?? (ProxyPool.https[url] = createHttpsProxyAgent(url)),
-    })
-}
+    });
+};

@@ -12,7 +12,7 @@ export class TestModule extends DefaultDrive implements LaMDrive{
     async isRuning(){return true;}
     async getData(){return {};}
     getDefaultOption(): TextCompletionOption {
-        return {}
+        return {};
     }
 
     async encodeToken(str: string) {
