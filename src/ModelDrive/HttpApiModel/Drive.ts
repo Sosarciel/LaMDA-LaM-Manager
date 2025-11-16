@@ -39,7 +39,6 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
         //路由api key 获取有效keyname
         const vaildAccount = this.data.config.valid_account;
         const accountData = await CredManager.getAvailableAccount(
-            "MockCredCategory",
             ...(opt.preferred_account??[]).filter(v=>vaildAccount.includes(v)),
             ...vaildAccount
         );

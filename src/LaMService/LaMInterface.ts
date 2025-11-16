@@ -36,4 +36,4 @@ export const expandDrive = <T extends LaMDrive>(d:T):ExpandDrive<T> => {
                 return (...args:any)=> taskObj[func](...args);
         }
     });
-}
+};

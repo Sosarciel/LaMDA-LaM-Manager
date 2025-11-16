@@ -4,7 +4,7 @@ import { AccountCategoryData } from "./Interface";
 
 
 
-type CredServiceJsonTable =  ServiceManagerBaseConfig & {
+export type CredServiceJsonTable =  ServiceManagerBaseConfig & {
     instance_table: {
         [key: string]: ServiceConfig<CredCtorTable>;
     };

@@ -29,6 +29,9 @@ export type TextCompletionOption=Partial<{
     preferred_account:CredCategoryID[];
     /**log等级 */
     log_level:LogLevel|'none';
+
+    /**控制最大历史记录的额外参数 */
+    max_hist?:number;
 }>;
 
 /**文本完成通用回复 */

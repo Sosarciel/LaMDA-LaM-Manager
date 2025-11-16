@@ -16,4 +16,4 @@ export const chatTaskCtor = (drive:HttpAPIModelDrive) => {
             return drive.commonTask(fopt,drive.chatFormater);
         }
     } satisfies ChatTaskInterface;
-}
+};

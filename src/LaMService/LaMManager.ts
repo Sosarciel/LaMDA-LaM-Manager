@@ -3,7 +3,6 @@ import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig, ServiceManager
 import { ChatTaskOptionPreset, LaMChatMessages,DefChatLaMResult, TextCompletionOption, TextCompletionResult, TaskType, TaskInterface } from "Task";
 import { HttpAPIModelDrive, HttpAPIModelData, TestModule } from "ModelDrive";
 import { expandDrive } from "./LaMInterface";
-import { LaMDrive } from "../ModelDrive/Interface";
 import { DefaultDrive } from "../ModelDrive/DefaultDrive";
 
 
@@ -13,7 +12,7 @@ const CtorTable = {
     Test         : async ()=> expandDrive(new TestModule()),
 };
 /**用于实例加载 */
-type LaMServiceJsonTable = ServiceManagerBaseConfig & {
+export type LaMServiceJsonTable = ServiceManagerBaseConfig & {
     instance_table: {
         [key: string]: ServiceConfig<typeof CtorTable>;
     };
@@ -87,7 +86,7 @@ const proxyCtor = (mgr:_LaMManager)=>{
                             return (defDrive as any)[prop1][prop2](instanceName,...args);
                         }
                         return await mgr.sm.invoke(instanceName,`${prop1}-${prop2}` as any,...args);
-                    }
+                    };
                 },
             });
         }
@@ -98,7 +97,7 @@ const proxyCtor = (mgr:_LaMManager)=>{
                 : never
         }
     };
-}
+};
 
 type LaMManagerOption = {
     /**配置文件路径 */
