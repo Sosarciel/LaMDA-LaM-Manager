@@ -1,3 +1,4 @@
+// MODULE:响应格式 API的原始响应格式 #LaMManager
 import { DeepseekRespFormat } from './Deepseek';
 import { GeminiRespFormat } from './Gemini';
 import { OpenAIConversationRespFormat } from './OpenAIConversation';
