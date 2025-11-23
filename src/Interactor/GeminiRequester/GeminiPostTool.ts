@@ -38,11 +38,17 @@ class _GeminiPostTool implements Interactor {
             }).once({json:postJson});
 
         const respObj = respData?.data as GeminiRespFormat|undefined;
+
         //post错误
         if(respObj==undefined){
             SLogger.warn(`GeminiPostTool.postLaM 错误 未能接收resp`);
             return undefined;
         }
+
+        //错误检测
+        if("error" in respObj)
+            return respObj;
+
 
         const respcode = respData?.statusCode ?? 0;
         const respStat = respcode>=200 && respcode<300;
@@ -50,9 +56,6 @@ class _GeminiPostTool implements Interactor {
             SLogger.warn(`GeminiPostTool.postLaM 错误 不成功的状态码`);
             return undefined;
         }
-
-        //错误检测
-        if ("error" in respObj) return respObj;
 
         //记录使用量
         const usageObj = respObj.usageMetadata;

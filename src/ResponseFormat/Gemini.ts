@@ -47,8 +47,16 @@ type Quoya = {
         status: "RESOURCE_EXHAUSTED";
     };
 };
+type Block = {
+    error: {
+        message: "request blocked by Gemini API: PROHIBITED_CONTENT  (request id: 2025112323102079161323703192322)";
+        type: "v_api_error";
+        param: "";
+        code: "prompt_blocked";
+    };
+};
 
-export type AnyGoogleErrorRespFormat = Quoya;
+export type AnyGoogleErrorRespFormat = Quoya|Block;
 
 
 type Candidate = {
