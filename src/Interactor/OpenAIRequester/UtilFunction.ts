@@ -119,6 +119,12 @@ export const checkError = async (
                 return Failed;
             } else SLogger.error("未定义的错误子类型");
             return Terminated;
+        case "v_api_error":
+            if(error.code=='prompt_blocked'){
+                SLogger.warn("提示词被阻拦");
+                return Terminated;
+            } else SLogger.error("未定义的错误子类型");
+            return Terminated;
         case "":
             if (error.message.includes("The response was filtered due to the prompt triggering Azure OpenAI's content management policy")) {
                 SLogger.warn("内容过滤");

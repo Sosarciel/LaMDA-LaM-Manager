@@ -166,7 +166,16 @@ type ContentFilter = ErrorRespFormat&{
     }
 }
 
+type PromptBlock = ErrorRespFormat&{
+    error: {
+        message: "request blocked by Gemini API: PROHIBITED_CONTENT  (request id: 2025112323102079161323703192322)";
+        type: "v_api_error";
+        param: "";
+        code: "prompt_blocked";
+    };
+};
+
 /**所有错误格式的合集 */
 export type OpenAIErrorFormat = OverloadedError|OverloadedError2|RateLimitError1|QuotaError|
 InvalidKeyError|AuthSubrequestError|OtherError1|OtherError2|AccessTerminatedError|
-AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|NewApiErr|ContentFilter;
+AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|NewApiErr|ContentFilter|PromptBlock;

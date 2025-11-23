@@ -2,11 +2,11 @@ import { PresetOption, SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
 import { verifyResp } from './UtilFunction';
 import { Interactor, PostLaMOptionPreset } from '@/src/Interactor';
 import { APIPriceResp, CredManager } from 'CredService';
-import { GeminiRespFormat } from 'ResponseFormat';
+import type { GeminiRespFormat } from 'ResponseFormat';
 import { getProxy } from '../ProxyPool';
 
 /**适用与 openai 鉴权方式的post工具 */
-class _GeminiPostTool implements Interactor {
+class _GeminiPostTool implements Interactor<GeminiRespFormat> {
     constructor(){}
 
     /**向 openai模型 发送一个POST请求并接受数据
@@ -68,7 +68,7 @@ class _GeminiPostTool implements Interactor {
             await CredManager.calcPrice(accountData,modelData.price,usageResp);
             //打印理论的当前使用量
             await CredManager.currUsedUSD(accountData);
-        }else SLogger.error(`OpenAILaMClient.postLaM 警告 无法计费 未找到 usage, respObj:\n${respObj}`);
+        }else SLogger.error(`GeminiPostTool.postLaM 警告 无法计费 未找到 usage, respObj:\n${respObj}`);
 
         return respObj;
     }

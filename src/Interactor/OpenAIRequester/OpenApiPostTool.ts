@@ -2,12 +2,12 @@ import { PresetOption, SLogger, UtilFunc, UtilHttp} from '@zwa73/utils';
 import { verifyResp } from './UtilFunction';
 import { Interactor, PostLaMOptionPreset } from '@/src/Interactor/Interface';
 import { APIPriceResp, CredManager } from 'CredService';
-import { AnyOpenAIConversationLikeRespFormat } from 'ResponseFormat';
+import type { AnyOpenAIConversationLikeRespFormat, AnyOpenAIRespFormat } from 'ResponseFormat';
 import { getProxy } from '../ProxyPool';
 
 
 /**适用与 openai 鉴权方式的post工具 */
-class _OpenApiPostTool implements Interactor {
+class _OpenApiPostTool implements Interactor<AnyOpenAIRespFormat> {
     constructor(){}
 
     /**向 openai模型 发送一个POST请求并接受数据
@@ -43,15 +43,16 @@ class _OpenApiPostTool implements Interactor {
             return undefined;
         }
 
+        //错误检测
+        if ("error" in respObj)
+            return respObj;
+
         const respcode = respData?.statusCode ?? 0;
         const respStat = respcode>=200 && respcode<300;
         if(respStat===false){
             SLogger.warn(`OpenApiPostTool.postLaM 错误 不成功的状态码`);
             return undefined;
         }
-
-        //错误检测
-        if ("error" in respObj) return respObj;
 
         //记录使用量
         const usageObj = respObj.usage;

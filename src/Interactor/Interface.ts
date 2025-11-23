@@ -7,19 +7,19 @@ import { AnyTextCompletionRespFormat } from "ResponseFormat";
 
 
 /**请求格式化工具 */
-export type Interactor = {
+export type Interactor<FMT extends AnyTextCompletionRespFormat = AnyTextCompletionRespFormat> = {
     /**向 openai模型 发送一个POST请求并接受数据
      * @async
      * @param partialOpt - 可选的参数
      * @returns 结果 undefined 为未能成功接收
      */
-    postLaM(partialOpt:PresetOption<typeof PostLaMOptionPreset>):Promise<AnyTextCompletionRespFormat|undefined>
+    postLaM(partialOpt:PresetOption<typeof PostLaMOptionPreset>):Promise<FMT|undefined>
     /**向 openai模型 重复请求发送POST请求并接受数据
      * @async
      * @param partialOpt - 可选的参数
      * @returns 结果 undefined 为未能成功接收
      */
-    postLaMRepeat(partialOpt:PresetOption<typeof PostLaMOptionPreset>): Promise<PromiseRetryResult<AnyTextCompletionRespFormat|undefined>>
+    postLaMRepeat(partialOpt:PresetOption<typeof PostLaMOptionPreset>): Promise<PromiseRetryResult<FMT|undefined>>
 }
 
 

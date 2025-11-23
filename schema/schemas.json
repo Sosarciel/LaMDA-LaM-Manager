@@ -503,6 +503,10 @@
 						"warn"
 					],
 					"type": "string"
+				},
+				"max_hist": {
+					"description": "控制最大历史记录的额外参数",
+					"type": "number"
 				}
 			}
 		},

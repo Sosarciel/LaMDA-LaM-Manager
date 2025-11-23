@@ -14,5 +14,9 @@ export * from './OpenAIError';
 
 /**任何 OpenAI对话风格 API 接口的回复格式 */
 export type AnyOpenAIConversationLikeRespFormat = OpenAIConversationRespFormat|DeepseekRespFormat;
+
+/**任何 OpenAI API 接口的回复格式*/
+export type AnyOpenAIRespFormat = AnyOpenAIConversationLikeRespFormat|OpenAITextRespFormat;
+
 /**任何 文本完成 API 接口的回复格式 */
-export type AnyTextCompletionRespFormat = AnyOpenAIConversationLikeRespFormat|OpenAITextRespFormat|GeminiRespFormat;
+export type AnyTextCompletionRespFormat = AnyOpenAIRespFormat|GeminiRespFormat;

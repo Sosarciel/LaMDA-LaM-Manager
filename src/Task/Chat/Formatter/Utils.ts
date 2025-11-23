@@ -21,7 +21,7 @@ export const commonCalcToken = (tool:ChatTaskFormatter<any,any,any>)=>async (mes
 };
 
 /**通用的Resp转换函数 */
-export const commonFormatResp = <Fmt extends AnyTextCompletionRespFormat>(tool:ChatTaskFormatter<any,any,Fmt>)=>async (resp:PromiseRetryResult<Fmt | undefined> | undefined):Promise<TextCompletionResult>=>{
+export const commonFormatResp = <FMT extends AnyTextCompletionRespFormat>(tool:ChatTaskFormatter<any,any,FMT>)=>async (resp:PromiseRetryResult<FMT | undefined> | undefined):Promise<TextCompletionResult>=>{
     if(resp==null) return DefChatLaMResult;
     return {
         completed:resp.completed ? tool.formatResp(resp.completed) : undefined,
