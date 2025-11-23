@@ -175,7 +175,16 @@ type PromptBlock = ErrorRespFormat&{
     };
 };
 
+type BadCode = ErrorRespFormat & {
+    error: {
+        message: " (request id: 2025112400181067620006657649561)";
+        type: "upstream_error";
+        param: "524";
+        code: "bad_response_status_code";
+    };
+};
+
 /**所有错误格式的合集 */
 export type OpenAIErrorFormat = OverloadedError|OverloadedError2|RateLimitError1|QuotaError|
 InvalidKeyError|AuthSubrequestError|OtherError1|OtherError2|AccessTerminatedError|
-AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|NewApiErr|ContentFilter|PromptBlock;
+AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|NewApiErr|ContentFilter|PromptBlock|BadCode;

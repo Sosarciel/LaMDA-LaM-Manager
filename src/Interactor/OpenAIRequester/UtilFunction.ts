@@ -125,6 +125,12 @@ export const checkError = async (
                 return Terminated;
             } else SLogger.error("未定义的错误子类型");
             return Terminated;
+        case "upstream_error":
+            if(error.code=='bad_response_status_code'){
+                SLogger.warn("Cloudflare网关超时");
+                return Failed;
+            } else SLogger.error("未定义的错误子类型");
+            return Terminated;
         case "":
             if (error.message.includes("The response was filtered due to the prompt triggering Azure OpenAI's content management policy")) {
                 SLogger.warn("内容过滤");
