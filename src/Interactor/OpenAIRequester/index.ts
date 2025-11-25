@@ -1,1 +1,1 @@
-export * from './OpenApiPostTool';
+export * from './PostTool';

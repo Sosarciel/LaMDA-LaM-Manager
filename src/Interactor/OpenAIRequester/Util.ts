@@ -1,6 +1,40 @@
 import { Failed, PromiseStatus, SLogger, Success, Terminated } from "@zwa73/utils";
-import { OpenAIErrorFormat } from "ResponseFormat";
-import { CredsData } from "CredService";
+import { AnyOpenAIRespFormat, OpenAIErrorFormat } from "ResponseFormat";
+import { APIPrice, APIPriceResp, CredManager, CredsData } from "CredService";
+
+
+
+/**记录用量
+ * @param rawResp    - 未做处理的回复
+ * @param apiKeyName - 本次回复的APIkey
+ */
+export const recordPrice = async(
+    respObj: AnyOpenAIRespFormat | undefined,
+    price: APIPrice,
+    accountData: CredsData,
+)=>{
+    if (respObj == undefined) return;
+    const usageObj = respObj.usage;
+
+    if(usageObj == undefined)
+        return void SLogger.error(`OpenAILaMClient.postLaM 警告 无法计费 未找到 usage, respObj:\n`,respObj);
+
+    const usageResp:APIPriceResp = {
+        completion_tokens :usageObj.completion_tokens??0,
+        prompt_tokens     :usageObj.prompt_tokens??0,
+    };
+
+    if('prompt_cache_hit_tokens' in usageObj)
+    usageResp.prompt_cache_hit_tokens = usageObj.prompt_cache_hit_tokens;
+    if('prompt_cache_miss_tokens' in usageObj)
+    usageResp.prompt_cache_miss_tokens = usageObj.prompt_cache_miss_tokens;
+
+    //增加token数据
+    await CredManager.calcPrice(accountData,price,usageResp);
+    //打印理论的当前使用量
+    await CredManager.currUsedUSD(accountData);
+    return;
+};
 
 /**验证回复可用性并处理错误
  * @async
@@ -8,19 +42,19 @@ import { CredsData } from "CredService";
  * @param apiKeyName - 本次回复的APIkey
  * @returns 可用性
  */
-export const verifyResp = async <T>(
-    rawResp: T | undefined,
+export const verifyResp = async(
+    rawResp: AnyOpenAIRespFormat | OpenAIErrorFormat | undefined,
     accountData: CredsData
 ): Promise<PromiseStatus> => {
-    if (rawResp == null) return Failed;
+    if (rawResp == undefined) return Failed;
 
-    const error = (rawResp as any).error;
-    if (error == null) return Success;
+    if('error' in rawResp){
+        SLogger.warn(`verifyResp 开始处理错误:\n${JSON.stringify(rawResp)}`);
+        return checkError(rawResp.error, accountData);
+    }
+    return Success;
 
-    SLogger.warn(`verifyResp 开始处理错误:\n${JSON.stringify(rawResp)}`);
-    return checkError(error, accountData);
 };
-
 
 /**验证回复可用性并处理错误
  * @async

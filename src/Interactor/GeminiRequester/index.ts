@@ -1,1 +1,1 @@
-export * from './GeminiPostTool';
+export * from './PostTool';

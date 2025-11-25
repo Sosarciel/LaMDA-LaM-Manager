@@ -1,12 +1,12 @@
-import { PresetOption, SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
-import { verifyResp } from './UtilFunction';
+import { chain, failed, pipe, PresetOption, SLogger, success, tap, UtilFP, UtilFunc, UtilHttp } from '@zwa73/utils';
+import { recordPrice, verifyResp } from './Util';
 import { Interactor, PostLaMOptionPreset } from '@/src/Interactor';
-import { APIPriceResp, CredManager } from 'CredService';
-import type { GeminiRespFormat } from 'ResponseFormat';
+import type { AnyGeminiRespFormat } from 'ResponseFormat';
 import { getProxy } from '../ProxyPool';
+import { checkRespCode } from '../InteractorUtil';
 
 /**适用与 openai 鉴权方式的post工具 */
-class _GeminiPostTool implements Interactor<GeminiRespFormat> {
+class _GeminiPostTool implements Interactor<AnyGeminiRespFormat> {
     constructor(){}
 
     /**向 openai模型 发送一个POST请求并接受数据
@@ -37,7 +37,20 @@ class _GeminiPostTool implements Interactor<GeminiRespFormat> {
                 timeout:timeLimit,
             }).once({json:postJson});
 
-        const respObj = respData?.data as GeminiRespFormat|undefined;
+        const respObj = respData?.data as AnyGeminiRespFormat|undefined;
+
+        //return await pipe(respObj,
+        //    v=>v==undefined
+        //        ? (SLogger.warn(`GeminiPostTool.postLaM 错误 未能接收resp`), failed(v))
+        //        : success(v), //post错误
+        //    chain(({result})=>'error' in result
+        //        ? failed(result) : success(result)), //错误检测
+        //    chain(({result})=>checkRespCode(respData)===false
+        //        ? (SLogger.warn(`GeminiPostTool.postLaM 错误 不成功的状态码`), failed(result))
+        //        : success(result)), //状态码检查
+        //    tap(chain(async ({result})=>recordPrice(result,modelData.price,accountData)),true), //记录用量
+        //    v=>v.result,
+        //);
 
         //post错误
         if(respObj==undefined){
@@ -49,26 +62,13 @@ class _GeminiPostTool implements Interactor<GeminiRespFormat> {
         if("error" in respObj)
             return respObj;
 
-
-        const respcode = respData?.statusCode ?? 0;
-        const respStat = respcode>=200 && respcode<300;
-        if(respStat===false){
+        if(checkRespCode(respData)===false){
             SLogger.warn(`GeminiPostTool.postLaM 错误 不成功的状态码`);
             return undefined;
         }
 
         //记录使用量
-        const usageObj = respObj.usageMetadata;
-        if(usageObj!=null){
-            const usageResp:APIPriceResp = {
-                completion_tokens:(usageObj.candidatesTokenCount??0) + (usageObj.thoughtsTokenCount??0),
-                prompt_tokens    :usageObj.promptTokenCount??0,
-            };
-            //增加token数据
-            await CredManager.calcPrice(accountData,modelData.price,usageResp);
-            //打印理论的当前使用量
-            await CredManager.currUsedUSD(accountData);
-        }else SLogger.error(`GeminiPostTool.postLaM 警告 无法计费 未找到 usage, respObj:\n${respObj}`);
+        await recordPrice(respObj,modelData.price,accountData);
 
         return respObj;
     }

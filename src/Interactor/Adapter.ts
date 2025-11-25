@@ -1,8 +1,8 @@
 import { GeminiPostTool } from "./GeminiRequester";
-import { OpenApiPostTool } from "./OpenAIRequester";
+import { OpenAiPostTool } from "./OpenAIRequester";
 
 export const InteractorTable = {
-    openai:OpenApiPostTool,
+    openai:OpenAiPostTool,
     gemini:GeminiPostTool,
 };
 export type InteractorType = keyof typeof InteractorTable;

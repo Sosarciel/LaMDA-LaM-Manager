@@ -18,5 +18,8 @@ export type AnyOpenAIConversationLikeRespFormat = OpenAIConversationRespFormat|D
 /**任何 OpenAI API 接口的回复格式*/
 export type AnyOpenAIRespFormat = AnyOpenAIConversationLikeRespFormat|OpenAITextRespFormat;
 
+/**任何 Gemini API 接口的回复格式 */
+export type AnyGeminiRespFormat = GeminiRespFormat;
+
 /**任何 文本完成 API 接口的回复格式 */
 export type AnyTextCompletionRespFormat = AnyOpenAIRespFormat|GeminiRespFormat;
