@@ -1,7 +1,10 @@
 import type { OpenAITextOption } from "RequestFormat";
-import type { OpenAITextRespFormat} from "ResponseFormat";
+import type { OpenAITextRespFormat } from "ResponseFormat";
 import { TemplateOpenAITextResponse } from "ResponseFormat";
-import { LaMManagerMockTool } from "Mock";
+
+import { LaMManagerMockTool } from "Mock/Utils";
+
+
 
 
 

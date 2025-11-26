@@ -1,7 +1,10 @@
 import type { OpenAIConversationOption } from "RequestFormat";
-import type { DeepseekRespFormat} from "ResponseFormat";
+import type { DeepseekRespFormat } from "ResponseFormat";
 import { TemplateDeepseekResponse } from "ResponseFormat";
-import { LaMManagerMockTool } from "Mock";
+
+import { LaMManagerMockTool } from "Mock/Utils";
+
+
 
 
 

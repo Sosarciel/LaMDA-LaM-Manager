@@ -1,11 +1,15 @@
 import type { PromiseRetryResult } from "@zwa73/js-utils";
+
+import type { AnyTextCompletionRespFormat } from "ResponseFormat";
 import type { TokensizerType } from "Tokensizer";
 import { getTokensizer } from "Tokensizer";
-import type { LaMChatMessages } from "../Interface";
-import type { TextCompletionResult } from "../../Interface";
-import { DefChatLaMResult } from "../../Interface";
-import type { AnyTextCompletionRespFormat } from "ResponseFormat";
-import type { ChatTaskFormatter } from "../Adapter";
+
+import type { ChatTaskFormatter } from "Task/Chat/Adapter";
+import type { LaMChatMessages } from "Task/Chat/Interface";
+import type { TextCompletionResult } from "Task/Interface";
+import { DefChatLaMResult } from "Task/Interface";
+
+
 
 
 /**标准的 stringify 后计算tokens的高阶函数 */

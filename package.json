@@ -36,6 +36,16 @@
 		"@zwa73/utils": "^1.0.266",
 		"tiktoken": "^1.0.7"
 	},
+	"peerDependencies": {
+		"pathe": "*",
+		"http-proxy-agent": "*",
+		"https-proxy-agent": "*"
+	},
+	"peerDependenciesMeta": {
+		"pathe": { "optional": true },
+		"http-proxy-agent": { "optional": true },
+		"https-proxy-agent": { "optional": true }
+	},
 	"devDependencies": {
 		"@types/jest": "^30.0.0"
 	}

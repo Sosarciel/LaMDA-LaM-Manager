@@ -1,9 +1,13 @@
+import fs from 'fs';
+
+import { Tokenizer } from "@anush008/tokenizers";
 import type { NeedInit} from "@zwa73/utils";
 import { AwaitInited, ivk, UtilCodec } from "@zwa73/utils";
-import { Tokenizer } from "@anush008/tokenizers";
 import path from 'pathe';
+
 import { DATA_PATH } from "Constant";
-import fs from 'fs';
+
+
 import type { TokensizerInterface } from "./Interface";
 
 class Cl100kBase implements TokensizerInterface{

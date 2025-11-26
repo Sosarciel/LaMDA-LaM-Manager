@@ -1,9 +1,12 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import type { GeminiRespFormat } from "ResponseFormat";
-import type { ChatTaskFormatter } from "../Adapter";
-import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import type { GeminiOption, GeminiApiData, GeminiAPIEntry} from "RequestFormat";
+
+import type { GeminiOption, GeminiApiData, GeminiAPIEntry } from "RequestFormat";
 import { GeminiAPIRole } from "RequestFormat";
+import type { GeminiRespFormat } from "ResponseFormat";
+
+import type { ChatTaskFormatter } from "Task/Chat/Adapter";
+
+import { commonFormatResp, stringifyCalcToken } from "./Utils";
 
 
 export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOption,GeminiRespFormat> = {

@@ -1,14 +1,19 @@
-import { CredManager } from "CredService";
-import { getTokensizer } from "Tokensizer";
 import { ivk, None, SLogger, UtilFunc } from "@zwa73/utils";
-import type { Interactor} from "Interactor";
+
+import { CredManager } from "CredService";
+import type { Interactor } from "Interactor";
 import { InteractorTable } from "Interactor";
-import type { ChatTaskFormatter, TextCompletionOption, TextCompletionTaskFormatter} from "Task";
-import { ChatTaskFormaterTable, LaMChatMessages, DefChatLaMResult, ChatTaskInterface } from "Task";
-import type { HttpAPIModelData } from "./Interface";
-import type { LaMDrive } from "../Interface";
+import type { ChatTaskFormatter, TextCompletionOption, TextCompletionTaskFormatter } from "Task";
+import { ChatTaskFormaterTable, DefChatLaMResult } from "Task";
+import { getTokensizer } from "Tokensizer";
+
+import { DefaultDrive } from "ModelDrive/DefaultDrive";
+import type { HttpAPIModelData } from "ModelDrive/HttpApiModel/Interface";
+import type { LaMDrive } from "ModelDrive/Interface";
+
+
 import { chatTaskCtor } from "./ChatTask";
-import { DefaultDrive } from "../DefaultDrive";
+
 
 
 /**适用于网络API的文本完成模型驱动器 */

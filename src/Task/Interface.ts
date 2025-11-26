@@ -1,9 +1,11 @@
 import type { LogLevel, MPromise, PromiseRetryResult } from "@zwa73/utils";
 import { assertType } from "@zwa73/utils";
+
 import type { CredCategoryID } from "CredService";
-import type { ChatTaskInterface } from "./Chat";
 import type { AnyTextCompletionOption } from "RequestFormat";
 import type { AnyTextCompletionRespFormat } from "ResponseFormat";
+
+import type { ChatTaskInterface } from "./Chat";
 
 
 /**文本完成模型通用配置 */

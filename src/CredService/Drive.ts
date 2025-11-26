@@ -1,4 +1,5 @@
 import { SLogger } from "@zwa73/utils";
+
 import type { AccountData, AccountManager, AccountCategoryData } from "./Interface";
 
 /**基本的账户管理器 */

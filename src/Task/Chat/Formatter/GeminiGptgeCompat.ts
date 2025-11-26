@@ -1,10 +1,13 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import type { ChatTaskFormatter } from "../Adapter";
-import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import type {GeminiGptgeCompatAPIEntry, GeminiGptgeCompatOption } from "RequestFormat";
+
+import type { GeminiGptgeCompatAPIEntry, GeminiGptgeCompatOption } from "RequestFormat";
 import { OpenAIConversationAPIRole } from "RequestFormat";
 import type { OpenAIConversationRespFormat } from "ResponseFormat";
+
+import type { ChatTaskFormatter } from "Task/Chat/Adapter";
+
 import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
+import { commonFormatResp, stringifyCalcToken } from "./Utils";
 
 
 /**gptge兼容api格式化工具 */

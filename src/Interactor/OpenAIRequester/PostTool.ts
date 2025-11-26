@@ -1,11 +1,16 @@
-import type { PresetOption} from '@zwa73/utils';
-import { SLogger, UtilFunc, UtilHttp} from '@zwa73/utils';
-import { recordPrice, verifyResp } from './Util';
-import type { Interactor} from '@/src/Interactor/Interface';
-import { PostLaMOptionPreset } from '@/src/Interactor/Interface';
+import type { PresetOption } from '@zwa73/utils';
+import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
+
 import type { AnyOpenAIRespFormat } from 'ResponseFormat';
-import { getProxy } from '../ProxyPool';
-import { checkRespCode } from '../InteractorUtil';
+
+
+import { checkRespCode } from 'Interactor/InteractorUtil';
+import type { Interactor } from 'Interactor/Interface';
+import { PostLaMOptionPreset } from 'Interactor/Interface';
+import { getProxy } from 'Interactor/ProxyPool';
+
+import { recordPrice, verifyResp } from './Util';
+
 
 
 /**适用与 openai 鉴权方式的post工具 */

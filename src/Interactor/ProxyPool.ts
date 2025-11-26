@@ -1,10 +1,10 @@
 
-import type {HttpsProxyAgent} from 'https-proxy-agent';
-import createHttpsProxyAgent from 'https-proxy-agent';
-import type { HttpProxyAgent } from 'http-proxy-agent';
-import createHttpProxyAgent from 'http-proxy-agent';
 import type { PRecord } from '@zwa73/utils';
 import { match } from '@zwa73/utils';
+import type { HttpProxyAgent } from 'http-proxy-agent';
+import createHttpProxyAgent from 'http-proxy-agent';
+import type { HttpsProxyAgent } from 'https-proxy-agent';
+import createHttpsProxyAgent from 'https-proxy-agent';
 
 
 

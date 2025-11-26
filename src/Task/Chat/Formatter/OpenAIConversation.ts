@@ -1,10 +1,13 @@
 import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
-import type { ChatTaskFormatter } from '../Adapter';
-import { commonFormatResp, stringifyCalcToken } from "./Utils";
-import type { AnyOpenAIConversationLikeRespFormat } from "ResponseFormat";
-import { ChatTaskOption, MessageType } from "../Interface";
+
 import type { OpenAIConversationAPIEntry, OpenAIConversationOption } from "RequestFormat";
 import { OpenAIConversationAPIRole } from "RequestFormat";
+import type { AnyOpenAIConversationLikeRespFormat } from "ResponseFormat";
+
+import type { ChatTaskFormatter } from 'Task/Chat/Adapter';
+
+import { commonFormatResp, stringifyCalcToken } from "./Utils";
+
 
 export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConversationAPIEntry[],OpenAIConversationOption,AnyOpenAIConversationLikeRespFormat>={
     formatOption(opt,model){

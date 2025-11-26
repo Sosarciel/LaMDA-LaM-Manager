@@ -1,8 +1,9 @@
-import type { PromiseStatus} from "@zwa73/utils";
+import type { PromiseStatus } from "@zwa73/utils";
 import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
-import type { AnyOpenAIRespFormat, OpenAIErrorFormat } from "ResponseFormat";
+
 import type { APIPrice, APIPriceResp, CredsData } from "CredService";
 import { CredManager } from "CredService";
+import type { AnyOpenAIRespFormat, OpenAIErrorFormat } from "ResponseFormat";
 
 
 
