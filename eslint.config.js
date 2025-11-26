@@ -2,8 +2,7 @@ const { parser: tsparser, plugin: tsplugin } = require("typescript-eslint");
 const importPlugin = require("eslint-plugin-import");
 const globals = require("globals");
 
-/**
- * 根据传入的目录路径生成 ESLint 配置规则
+/**根据传入的目录路径生成 ESLint 配置规则
  * @param {string} dirPath - 例如 "src/ModelDrive"
  * @returns {object} ESLint 配置块
  */
