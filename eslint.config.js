@@ -34,6 +34,7 @@ function genRestrictedImportRule(dirPath) {
 module.exports = [
     { ignores: ["*.js","*.cjs","*.mjs", "dist/**", "node_modules/**", "backup/**", "scripts/**", "src/test/**"] },
     {
+        files: ['src/**/*.ts','src/**/*.tsx'],
         plugins: {
             "@typescript-eslint": tsplugin,
             import: importPlugin,
