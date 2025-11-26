@@ -14,15 +14,19 @@ function genRestrictedImportRule(dirPath) {
     return {
         files: [`${dirPath}/**/*.ts`],
         rules: {
-            "no-restricted-imports": [
-                "error",
-                {
-                    paths: [
-                        `@/${dirPath}`, // "@/src/ModelDrive"
-                        name, // "ModelDrive"
-                    ],
-                },
-            ],
+            "no-restricted-imports": [ "error", {
+                patterns: [
+                    "../**", // 禁止跨级
+                    "./*/**", // 禁止多级同级子目录
+                    "./index", // 禁止引用自身
+                    "@/dist/**", // 禁止引用自身
+                ],
+                paths: [
+                    '.', '..', "@",
+                    `@/${dirPath}`, // "@/src/ModelDrive"
+                    name, // "ModelDrive"
+                ],
+            }],
         },
     };
 }
@@ -88,7 +92,7 @@ module.exports = [
                     "./index", // 禁止引用自身
                     "@/dist/**", // 禁止引用自身
                 ],
-                paths:[ "@" ]
+                paths:[ '.', '..',"@" ]
             }],
         },
     },
