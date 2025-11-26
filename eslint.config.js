@@ -32,8 +32,8 @@ function genRestrictedImportRule(dirPath) {
 }
 
 module.exports = [
+    { ignores: ["*.js","*.cjs","*.mjs", "dist/**", "node_modules/**", "backup/**", "scripts/**", "src/test/**"] },
     {
-        ignores: ["*.js", "dist/**", "backup/**", "scripts/**"],
         plugins: {
             "@typescript-eslint": tsplugin,
             import: importPlugin,
@@ -59,10 +59,6 @@ module.exports = [
                 ...globals.commonjs,
             },
         },
-    },
-    {
-        files: ["src/**/*.ts"],
-        ignores: ["src/test/**"],
         rules: {
             semi: ["error", "always"],
             "@typescript-eslint/promise-function-async": "error",
