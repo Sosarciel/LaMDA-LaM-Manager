@@ -1,7 +1,11 @@
-import { AnyFunc, None, PRecord, PresetOption, SLogger, UtilFunc } from "@zwa73/utils";
-import { ServiceConfig, ServiceManager, ServiceManagerBaseConfig, ServiceManagerOption } from "@zwa73/service-manager";
-import { ChatTaskOptionPreset, LaMChatMessages,DefChatLaMResult, TextCompletionOption, TextCompletionResult, TaskType, TaskInterface } from "Task";
-import { HttpAPIModelDrive, HttpAPIModelData, TestModule } from "ModelDrive";
+import type { AnyFunc, PRecord} from "@zwa73/utils";
+import { None, PresetOption, SLogger, UtilFunc } from "@zwa73/utils";
+import type { ServiceConfig, ServiceManagerBaseConfig} from "@zwa73/service-manager";
+import { ServiceManager, ServiceManagerOption } from "@zwa73/service-manager";
+import type { TextCompletionOption, TaskType, TaskInterface } from "Task";
+import { ChatTaskOptionPreset, LaMChatMessages,DefChatLaMResult, TextCompletionResult } from "Task";
+import type { HttpAPIModelData} from "ModelDrive";
+import { HttpAPIModelDrive, TestModule } from "ModelDrive";
 import { expandDrive } from "./LaMInterface";
 import { DefaultDrive } from "../ModelDrive/DefaultDrive";
 

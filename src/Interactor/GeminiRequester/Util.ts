@@ -1,8 +1,8 @@
-import { APIPrice, APIPriceResp, CredManager, CredsData } from "CredService";
-import { Failed, PromiseStatus, SLogger, Success, Terminated } from "@zwa73/utils";
-import { AnyGeminiRespFormat, AnyGoogleErrorRespFormat } from "ResponseFormat";
-
-
+import type { APIPrice, APIPriceResp, CredsData } from "CredService";
+import { CredManager } from "CredService";
+import type { PromiseStatus } from "@zwa73/utils";
+import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
+import type { AnyGeminiRespFormat, AnyGoogleErrorRespFormat } from "ResponseFormat";
 
 
 /**记录用量

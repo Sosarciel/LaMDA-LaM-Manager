@@ -1,8 +1,9 @@
-import { AnyLaMOption } from "LaMService";
-import { preset,PresetOption,PromiseRetries,PromiseRetryResult } from "@zwa73/utils";
-import { HttpApiModelCategory } from "ModelDrive";
-import { CredsData } from "CredService";
-import { AnyTextCompletionRespFormat } from "ResponseFormat";
+import type { AnyLaMOption } from "LaMService";
+import type {PresetOption,PromiseRetries,PromiseRetryResult } from "@zwa73/utils";
+import { preset } from "@zwa73/utils";
+import type { HttpApiModelCategory } from "ModelDrive";
+import type { CredsData } from "CredService";
+import type { AnyTextCompletionRespFormat } from "ResponseFormat";
 
 
 

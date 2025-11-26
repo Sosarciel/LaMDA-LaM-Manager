@@ -1,8 +1,9 @@
-import { ServiceInterface } from "@zwa73/service-manager";
-import { TaskType, TaskTypeList } from "Task";
-import { AnyTextCompletionOption } from "RequestFormat";
-import { LaMDrive } from "../ModelDrive/Interface";
-import { UnionToIntersection } from "@zwa73/js-utils";
+import type { ServiceInterface } from "@zwa73/service-manager";
+import type { TaskType} from "Task";
+import { TaskTypeList } from "Task";
+import type { AnyTextCompletionOption } from "RequestFormat";
+import type { LaMDrive } from "../ModelDrive/Interface";
+import type { UnionToIntersection } from "@zwa73/js-utils";
 
 
 /**语言模型接口

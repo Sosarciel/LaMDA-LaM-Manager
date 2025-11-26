@@ -1,5 +1,6 @@
-import { OpenAIConversationOption } from "RequestFormat";
-import { OpenAIConversationRespFormat, TemplateOpenAIConversationResponse } from "ResponseFormat";
+import type { OpenAIConversationOption } from "RequestFormat";
+import type { OpenAIConversationRespFormat} from "ResponseFormat";
+import { TemplateOpenAIConversationResponse } from "ResponseFormat";
 import { LaMManagerMockTool } from "Mock";
 
 

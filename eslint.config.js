@@ -28,6 +28,8 @@ module.exports = [
             semi: ['error', 'always'],
             '@typescript-eslint/promise-function-async': 'error',
             '@typescript-eslint/no-floating-promises': 'error',
+            '@typescript-eslint/consistent-type-imports': 'error',
+            'import/no-duplicates': 'error',
         },
     }
 ];

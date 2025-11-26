@@ -1,6 +1,7 @@
 // mock-server.ts
 import { match, SLogger } from "@zwa73/utils";
-import { createServer, Server } from "http";
+import type { Server } from "http";
+import { createServer } from "http";
 import { parse } from 'url';
 import { procOpenAIChat } from "./OpenAIRequester";
 

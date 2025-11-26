@@ -1,8 +1,8 @@
 import { getTokensizer } from "Tokensizer";
-import { TextCompletionOption } from "Task";
+import type { TextCompletionOption } from "Task";
 import { chatTaskCtor } from "./ChatTask";
 import { DefaultDrive } from "../DefaultDrive";
-import { LaMDrive } from "../Interface";
+import type { LaMDrive } from "../Interface";
 
 
 /**测试模型 */

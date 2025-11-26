@@ -1,10 +1,10 @@
-import { MPromise } from "@zwa73/utils";
-import { TextCompletionResp, TextCompletionTaskFormatter } from "../Interface";
-import { TokensizerType } from "Tokensizer";
-import { AnyTextCompletionRespFormat } from "ResponseFormat";
-import { ChatTaskOption, LaMChatMessages } from "./Interface";
+import type { MPromise } from "@zwa73/utils";
+import type { TextCompletionResp, TextCompletionTaskFormatter } from "../Interface";
+import type { TokensizerType } from "Tokensizer";
+import type { AnyTextCompletionRespFormat } from "ResponseFormat";
+import type { ChatTaskOption, LaMChatMessages } from "./Interface";
 import { DeepseekBetaChatTaskFormatter, DeepseekChatTaskFormatter, GeminiGptgeCompatChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter,GeminiChatTaskFormatter } from "./Formatter";
-import { AnyTextCompletionOption } from "RequestFormat";
+import type { AnyTextCompletionOption } from "RequestFormat";
 
 /** 聊天任务格式化工具 */
 export type ChatTaskFormatter<MSG,

@@ -1,8 +1,8 @@
 // MODULE:请求格式 API的原始请求格式 #LaMManager
-import { DeepseekOption } from './Deepseek';
-import { GeminiOption } from './Gemini';
-import { OpenAIConversationOption } from './OpenAIConversation';
-import { OpenAITextOption } from './OpenAIText';
+import type { DeepseekOption } from './Deepseek';
+import type { GeminiOption } from './Gemini';
+import type { OpenAIConversationOption } from './OpenAIConversation';
+import type { OpenAITextOption } from './OpenAIText';
 
 export * from './Deepseek';
 export * from './OpenAIConversation';

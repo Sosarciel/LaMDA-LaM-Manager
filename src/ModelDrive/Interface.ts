@@ -1,4 +1,4 @@
-import { TaskInterface, TextCompletionInterface } from "Task";
+import type { TaskInterface, TextCompletionInterface } from "Task";
 
 
 

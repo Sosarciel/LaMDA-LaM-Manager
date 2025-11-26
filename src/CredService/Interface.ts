@@ -1,5 +1,5 @@
-import { ServiceInterface } from "@zwa73/service-manager";
-import { LogLevel, PromiseRetries } from "@zwa73/js-utils";
+import type { ServiceInterface } from "@zwa73/service-manager";
+import type { LogLevel, PromiseRetries } from "@zwa73/js-utils";
 
 /**账户管理器接口 */
 export type AccountManager = ServiceInterface<{

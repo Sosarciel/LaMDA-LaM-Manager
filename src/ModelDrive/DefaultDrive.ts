@@ -1,5 +1,6 @@
 import { SLogger } from "@zwa73/utils";
-import { ChatTaskInterface, DefChatLaMResult, TaskInterface } from "Task";
+import type { ChatTaskInterface, TaskInterface } from "Task";
+import { DefChatLaMResult } from "Task";
 
 
 

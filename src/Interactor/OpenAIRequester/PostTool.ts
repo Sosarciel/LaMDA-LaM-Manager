@@ -1,6 +1,8 @@
-import { PresetOption, SLogger, UtilFunc, UtilHttp} from '@zwa73/utils';
+import type { PresetOption} from '@zwa73/utils';
+import { SLogger, UtilFunc, UtilHttp} from '@zwa73/utils';
 import { recordPrice, verifyResp } from './Util';
-import { Interactor, PostLaMOptionPreset } from '@/src/Interactor/Interface';
+import type { Interactor} from '@/src/Interactor/Interface';
+import { PostLaMOptionPreset } from '@/src/Interactor/Interface';
 import type { AnyOpenAIRespFormat } from 'ResponseFormat';
 import { getProxy } from '../ProxyPool';
 import { checkRespCode } from '../InteractorUtil';

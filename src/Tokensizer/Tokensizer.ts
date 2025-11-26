@@ -1,9 +1,10 @@
-import { AwaitInited, ivk, NeedInit, UtilCodec } from "@zwa73/utils";
+import type { NeedInit} from "@zwa73/utils";
+import { AwaitInited, ivk, UtilCodec } from "@zwa73/utils";
 import { Tokenizer } from "@anush008/tokenizers";
 import path from 'pathe';
 import { DATA_PATH } from "Constant";
 import fs from 'fs';
-import { TokensizerInterface } from "./Interface";
+import type { TokensizerInterface } from "./Interface";
 
 class Cl100kBase implements TokensizerInterface{
     async encode(str: string){

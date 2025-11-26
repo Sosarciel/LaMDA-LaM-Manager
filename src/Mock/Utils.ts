@@ -1,7 +1,7 @@
 import { DATA_PATH } from 'Constant';
 import path from 'pathe';
-import { CredCategoryJsonTable, CredServiceJsonTable } from 'CredService';
-import { LaMServiceJsonTable } from 'LaMService';
+import type { CredCategoryJsonTable, CredServiceJsonTable } from 'CredService';
+import type { LaMServiceJsonTable } from 'LaMService';
 
 
 export namespace LaMManagerMockTool{

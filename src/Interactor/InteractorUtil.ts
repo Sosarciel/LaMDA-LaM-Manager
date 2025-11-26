@@ -1,5 +1,5 @@
 
-import { RequestResult,JToken } from "@zwa73/utils";
+import type { RequestResult,JToken } from "@zwa73/utils";
 
 
 

@@ -1,4 +1,4 @@
-import { JObject } from "@zwa73/js-utils";
+import type { JObject } from "@zwa73/js-utils";
 import { match, SLogger, UtilFunc } from "@zwa73/utils";
 import { procGPT35Chat } from "./GPT35Chat";
 import { procGPT35Text } from "./GPT35Text";

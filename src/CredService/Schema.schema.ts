@@ -1,6 +1,6 @@
-import { CredCtorTable } from "./CredManager";
-import { ServiceManagerBaseConfig, ServiceConfig } from "@zwa73/service-manager";
-import { AccountCategoryData } from "./Interface";
+import type { CredCtorTable } from "./CredManager";
+import type { ServiceManagerBaseConfig, ServiceConfig } from "@zwa73/service-manager";
+import type { AccountCategoryData } from "./Interface";
 
 
 

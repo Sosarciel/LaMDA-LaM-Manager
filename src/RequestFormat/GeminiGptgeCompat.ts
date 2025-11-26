@@ -1,4 +1,4 @@
-import { OpenAIConversationAPIRole } from "./OpenAIConversation";
+import type { OpenAIConversationAPIRole } from "./OpenAIConversation";
 
 
 

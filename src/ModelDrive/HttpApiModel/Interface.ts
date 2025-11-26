@@ -1,7 +1,7 @@
-import { APIPrice, CredCategoryID } from "CredService";
-import { ChatFormaterType,TextCompletionOption } from "Task";
-import { InteractorType } from "Requester";
-import { TokensizerType } from "Tokensizer";
+import type { APIPrice, CredCategoryID } from "CredService";
+import type { ChatFormaterType,TextCompletionOption } from "Task";
+import type { InteractorType } from "Requester";
+import type { TokensizerType } from "Tokensizer";
 
 
 

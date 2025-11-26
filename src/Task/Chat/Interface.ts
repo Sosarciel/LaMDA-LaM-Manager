@@ -1,5 +1,5 @@
 import { preset } from "@zwa73/utils";
-import { TextCompletionOption, TextCompletionResult } from "../Interface";
+import type { TextCompletionOption, TextCompletionResult } from "../Interface";
 
 
 /**聊天任务配置 */

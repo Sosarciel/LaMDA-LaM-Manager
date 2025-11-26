@@ -1,10 +1,12 @@
 import { CredManager } from "CredService";
 import { getTokensizer } from "Tokensizer";
 import { ivk, None, SLogger, UtilFunc } from "@zwa73/utils";
-import { Interactor, InteractorTable } from "Interactor";
-import { ChatTaskFormaterTable, ChatTaskFormatter, LaMChatMessages, DefChatLaMResult, TextCompletionOption, TextCompletionTaskFormatter, ChatTaskInterface } from "Task";
-import { HttpAPIModelData } from "./Interface";
-import { LaMDrive } from "../Interface";
+import type { Interactor} from "Interactor";
+import { InteractorTable } from "Interactor";
+import type { ChatTaskFormatter, TextCompletionOption, TextCompletionTaskFormatter} from "Task";
+import { ChatTaskFormaterTable, LaMChatMessages, DefChatLaMResult, ChatTaskInterface } from "Task";
+import type { HttpAPIModelData } from "./Interface";
+import type { LaMDrive } from "../Interface";
 import { chatTaskCtor } from "./ChatTask";
 import { DefaultDrive } from "../DefaultDrive";
 

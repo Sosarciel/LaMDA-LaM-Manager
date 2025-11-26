@@ -1,6 +1,8 @@
-import { PresetOption, SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
+import type { PresetOption} from '@zwa73/utils';
+import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
 import { recordPrice, verifyResp } from './Util';
-import { Interactor, PostLaMOptionPreset } from '@/src/Interactor';
+import type { Interactor} from '@/src/Interactor';
+import { PostLaMOptionPreset } from '@/src/Interactor';
 import type { AnyGeminiRespFormat } from 'ResponseFormat';
 import { getProxy } from '../ProxyPool';
 import { checkRespCode } from '../InteractorUtil';
@@ -39,17 +41,19 @@ class _GeminiPostTool implements Interactor<AnyGeminiRespFormat> {
 
         const respObj = respData?.data as AnyGeminiRespFormat|undefined;
 
+        //const err = (res:string)=>outcome(Terminated,res);
         //return await pipe(respObj,
         //    v=>v==undefined
-        //        ? (SLogger.warn(`GeminiPostTool.postLaM 错误 未能接收resp`), failed(v))
+        //        ? err('GeminiPostTool.postLaM 错误 未能接收resp')
         //        : success(v), //post错误
         //    chain(({result})=>'error' in result
-        //        ? failed(result) : success(result)), //错误检测
+        //        ? failed(result) : success(result)), //错误检测 交由verfyResp函数
         //    chain(({result})=>checkRespCode(respData)===false
-        //        ? (SLogger.warn(`GeminiPostTool.postLaM 错误 不成功的状态码`), failed(result))
+        //        ? err('GeminiPostTool.postLaM 错误 不成功的状态码')
         //        : success(result)), //状态码检查
         //    tap(chain(async ({result})=>recordPrice(result,modelData.price,accountData)),true), //记录用量
-        //    v=>v.result,
+        //    when(Terminated,val=>void SLogger.warn(val)),
+        //    chain(v=>v.result), alt(v=>v.result),
         //);
 
         //post错误

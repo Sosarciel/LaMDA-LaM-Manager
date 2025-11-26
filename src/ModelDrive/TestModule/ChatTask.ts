@@ -1,7 +1,9 @@
-import { PresetOption, SLogger, UtilFunc } from "@zwa73/utils";
-import { TestModule } from "./Drive";
-import { ChatTaskInterface, ChatTaskOption, ChatTaskOptionPreset, LaMChatMessages, MessageType, OpenAITextChatTaskFormatter } from "Task";
-import { OpenAITextRespFormat } from "ResponseFormat";
+import type { PresetOption} from "@zwa73/utils";
+import { SLogger, UtilFunc } from "@zwa73/utils";
+import type { TestModule } from "./Drive";
+import type { ChatTaskInterface, LaMChatMessages} from "Task";
+import { ChatTaskOption, ChatTaskOptionPreset, MessageType, OpenAITextChatTaskFormatter } from "Task";
+import type { OpenAITextRespFormat } from "ResponseFormat";
 
 
 

@@ -1,8 +1,9 @@
-import { assertType, LogLevel, MPromise, PromiseRetryResult } from "@zwa73/utils";
-import { CredCategoryID } from "CredService";
-import { ChatTaskInterface } from "./Chat";
-import { AnyTextCompletionOption } from "RequestFormat";
-import { AnyTextCompletionRespFormat } from "ResponseFormat";
+import type { LogLevel, MPromise, PromiseRetryResult } from "@zwa73/utils";
+import { assertType } from "@zwa73/utils";
+import type { CredCategoryID } from "CredService";
+import type { ChatTaskInterface } from "./Chat";
+import type { AnyTextCompletionOption } from "RequestFormat";
+import type { AnyTextCompletionRespFormat } from "ResponseFormat";
 
 
 /**文本完成模型通用配置 */
