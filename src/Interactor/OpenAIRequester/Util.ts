@@ -168,6 +168,12 @@ export const checkError = async (
                 return Failed;
             } else SLogger.error("未定义的错误子类型");
             return Terminated;
+        case "one_api_error":
+            if(error.code=='do_request_failed'){
+                SLogger.warn("请求转发错误");
+                return Failed;
+            } else SLogger.error("未定义的错误子类型");
+            return Terminated;
         case "":
             if (error.message.includes("The response was filtered due to the prompt triggering Azure OpenAI's content management policy")) {
                 SLogger.warn("内容过滤");

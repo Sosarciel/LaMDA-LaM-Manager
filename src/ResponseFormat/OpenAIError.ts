@@ -184,7 +184,16 @@ type BadCode = ErrorRespFormat & {
     };
 };
 
+type OneApiError = ErrorRespFormat & {
+    error: {
+        message: 'do request failed: Post "https://api.open-proxy.cn/v1/chat/completions": unexpected EOF (request id: 2025120200210529140123796977233)';
+        type: "one_api_error";
+        param: "";
+        code: "do_request_failed";
+    };
+};
+
 /**所有错误格式的合集 */
 export type OpenAIErrorFormat = OverloadedError|OverloadedError2|RateLimitError1|QuotaError|
 InvalidKeyError|AuthSubrequestError|OtherError1|OtherError2|AccessTerminatedError|
-AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|NewApiErr|ContentFilter|PromptBlock|BadCode;
+AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|NewApiErr|ContentFilter|PromptBlock|BadCode|OneApiError;
