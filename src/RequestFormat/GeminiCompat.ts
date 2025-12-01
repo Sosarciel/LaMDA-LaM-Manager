@@ -4,10 +4,10 @@ import type { OpenAIConversationAPIRole } from "./OpenAIConversation";
 
 //https://ai.google.dev/gemini-api/docs/openai?hl=zh-cn#extra-body
 //https://api-gpt-ge.apifox.cn/210339408e0
-/**gptge兼容api选项 */
-export type GeminiGptgeCompatOption=Partial<{
+/**openai兼容选项 */
+export type GeminiCompatOption=Partial<{
     model: string;
-    messages: GeminiGptgeCompatAPIEntry[];
+    messages: GeminiCompatAPIEntry[];
     max_tokens: number;
     temperature: number;
     top_p: number;
@@ -26,8 +26,8 @@ export type GeminiGptgeCompatOption=Partial<{
     reasoning_effort:"low"|"medium"|"high";
 }>;
 
-/**gptge兼容api消息段 */
-export type GeminiGptgeCompatAPIEntry={
+/**兼容api消息段 */
+export type GeminiCompatAPIEntry={
     role: OpenAIConversationAPIRole;
     content:string;
 }

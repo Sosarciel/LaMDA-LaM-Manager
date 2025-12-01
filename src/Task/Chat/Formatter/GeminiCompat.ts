@@ -1,6 +1,6 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import type { GeminiGptgeCompatAPIEntry, GeminiGptgeCompatOption } from "RequestFormat";
+import type { GeminiCompatAPIEntry, GeminiCompatOption } from "RequestFormat";
 import { OpenAIConversationAPIRole } from "RequestFormat";
 import type { OpenAIConversationRespFormat } from "ResponseFormat";
 
@@ -11,22 +11,22 @@ import { commonFormatResp, stringifyCalcToken } from "./Utils";
 
 
 /**gptge兼容api格式化工具 */
-export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCompatAPIEntry[],GeminiGptgeCompatOption,OpenAIConversationRespFormat> = {
+export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatOption,OpenAIConversationRespFormat> = {
     formatOption(opt,model){
         //验证参数
         if(opt.messages==null){
-            SLogger.warn("GoogleChatCompatOption 无效 messages为null");
+            SLogger.warn("GeminiCompat 无效 messages为null");
             return;
         }
         if(opt.messages.list.length==0){
-            SLogger.warn("GoogleChatCompatOption 无效 messages长度不足");
+            SLogger.warn("GeminiCompat 无效 messages长度不足");
             return;
         }
 
-        let msg = GeminiGptgeCompatChatTaskFormatter.transReq(opt.target,opt.messages);
-        msg = GeminiGptgeCompatChatTaskFormatter.formatReq(opt.target,msg);
+        let msg = GeminiCompatChatTaskFormatter.transReq(opt.target,opt.messages);
+        msg = GeminiCompatChatTaskFormatter.formatReq(opt.target,msg);
 
-        const obj:GeminiGptgeCompatOption = {
+        const obj:GeminiCompatOption = {
             model             : model                       ,//模型id
             messages          : msg                         ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
@@ -36,25 +36,29 @@ export const GeminiGptgeCompatChatTaskFormatter:ChatTaskFormatter<GeminiGptgeCom
             frequency_penalty : opt.frequency_penalty       ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
             stop              : opt.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
         };
-        //GptGe的思考参数无效 对于 thinking 模型直接改变模型id实现
-        if(obj.model?.endsWith('thinking') && opt.think_budget!=null)
-            obj.model = `${obj.model}-${Math.floor(opt.think_budget)}`;
-        //if(opt.think_budget!=null){
-        //    obj.extra_body??={};
-        //    obj.extra_body.google = {
-        //        thinking_config:{
-        //            thinking_budget: opt.think_budget
-        //        }
-        //    };
-        //}
+
+        if(opt.think_budget!=null){
+            //thinking为gptge特殊模型 GptGe的思考参数无效 对于 thinking 模型直接改变模型id实现
+            if(obj.model?.endsWith('thinking'))
+                obj.model = `${obj.model}-${Math.floor(opt.think_budget)}`;
+            else{
+                obj.extra_body??={};
+                obj.extra_body.google = {
+                    thinking_config:{
+                        thinking_budget: opt.think_budget
+                    }
+                };
+            }
+        }
+
         return obj;
     },
-    formatResult:lazyFunction(()=>commonFormatResp(GeminiGptgeCompatChatTaskFormatter)),
-    calcToken:lazyFunction(()=>stringifyCalcToken(GeminiGptgeCompatChatTaskFormatter)),
+    formatResult:lazyFunction(()=>commonFormatResp(GeminiCompatChatTaskFormatter)),
+    calcToken:lazyFunction(()=>stringifyCalcToken(GeminiCompatChatTaskFormatter)),
     transReq(chatTarget,messageList){
         let desc = "";
         let inDesc = true;
-        const narr:GeminiGptgeCompatAPIEntry[] = [];
+        const narr:GeminiCompatAPIEntry[] = [];
 
         //处理主消息列表
         for(const item of messageList.list){

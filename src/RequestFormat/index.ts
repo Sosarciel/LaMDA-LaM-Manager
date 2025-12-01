@@ -8,7 +8,7 @@ export * from './Deepseek';
 export * from './OpenAIConversation';
 export * from './OpenAIText';
 export * from './Gemini';
-export * from './GeminiGptgeCompat';
+export * from './GeminiCompat';
 
 
 export type AnyDeepseekOption = DeepseekOption;

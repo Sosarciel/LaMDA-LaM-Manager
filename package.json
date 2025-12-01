@@ -1,6 +1,6 @@
 {
 	"name": "@sosraciel-lamda/lam-manager",
-	"version": "1.0.88",
+	"version": "1.0.90",
 	"exports": {
 		".": {
 			"require": "./dist/index.js",
@@ -42,9 +42,15 @@
 		"https-proxy-agent": "*"
 	},
 	"peerDependenciesMeta": {
-		"pathe": { "optional": true },
-		"http-proxy-agent": { "optional": true },
-		"https-proxy-agent": { "optional": true }
+		"pathe": {
+			"optional": true
+		},
+		"http-proxy-agent": {
+			"optional": true
+		},
+		"https-proxy-agent": {
+			"optional": true
+		}
 	},
 	"devDependencies": {
 		"@types/jest": "^30.0.0"

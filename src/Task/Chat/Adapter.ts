@@ -6,7 +6,7 @@ import type { TokensizerType } from "Tokensizer";
 
 import type { TextCompletionResp, TextCompletionTaskFormatter } from "Task/Interface";
 
-import { DeepseekBetaChatTaskFormatter, DeepseekChatTaskFormatter, GeminiGptgeCompatChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter, GeminiChatTaskFormatter } from "./Formatter";
+import { DeepseekBetaChatTaskFormatter, DeepseekChatTaskFormatter, GeminiCompatChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter, GeminiChatTaskFormatter } from "./Formatter";
 import type { ChatTaskOption, LaMChatMessages } from "./Interface";
 
 
@@ -37,7 +37,7 @@ export const ChatTaskFormaterTable = {
     openai_chat              : OpenAIConversationChatTaskFormatter,
     openai_text              : OpenAITextChatTaskFormatter,
     google_chat              : GeminiChatTaskFormatter,
-    google_chat_gptge_compat : GeminiGptgeCompatChatTaskFormatter,
+    google_chat_compat       : GeminiCompatChatTaskFormatter,
 };
 export type ChatFormaterType = keyof typeof ChatTaskFormaterTable;
 

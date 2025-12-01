@@ -610,7 +610,7 @@
 				"deepseek_chat",
 				"deepseek_chat_beta",
 				"google_chat",
-				"google_chat_gptge_compat",
+				"google_chat_compat",
 				"openai_chat",
 				"openai_text"
 			],
