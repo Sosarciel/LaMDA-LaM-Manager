@@ -144,18 +144,6 @@ type InvalidOutputError = ErrorRespFormat&{
     };
 }
 
-/**钻发API过载 */
-type NewApiErr = ErrorRespFormat&{
-    error: {
-        message: "当前分组上游负载已饱和，请稍后再试",
-        type: "new_api_error",
-        param: "",
-        code: "service_err"
-    }
-}
-
-
-
 //内容过滤
 type ContentFilter = ErrorRespFormat&{
     error: {
@@ -166,15 +154,6 @@ type ContentFilter = ErrorRespFormat&{
     }
 }
 
-type PromptBlock = ErrorRespFormat&{
-    error: {
-        message: "request blocked by Gemini API: PROHIBITED_CONTENT  (request id: 2025112323102079161323703192322)";
-        type: "v_api_error";
-        param: "";
-        code: "prompt_blocked";
-    };
-};
-
 type BadCode = ErrorRespFormat & {
     error: {
         message: " (request id: 2025112400181067620006657649561)";
@@ -184,7 +163,16 @@ type BadCode = ErrorRespFormat & {
     };
 };
 
-type OneApiError = ErrorRespFormat & {
+type PromptBlock = ErrorRespFormat&{
+    error: {
+        message: "request blocked by Gemini API: PROHIBITED_CONTENT  (request id: 2025112323102079161323703192322)";
+        type: "v_api_error";
+        param: "";
+        code: "prompt_blocked";
+    };
+};
+
+type OneApiRequestFailed = ErrorRespFormat & {
     error: {
         message: 'do request failed: Post "https://api.open-proxy.cn/v1/chat/completions": unexpected EOF (request id: 2025120200210529140123796977233)';
         type: "one_api_error";
@@ -193,7 +181,27 @@ type OneApiError = ErrorRespFormat & {
     };
 };
 
+/**转发API过载 */
+type NewApiError = ErrorRespFormat&{
+    error: {
+        message: "当前分组上游负载已饱和，请稍后再试",
+        type: "new_api_error",
+        param: "",
+        code: "service_err"
+    }
+}
+
+type NewApiQuota = ErrorRespFormat & {
+    error: {
+        message: "用户额度不足, 剩余额度: ＄-0.003902 (request id: 202512131514256181461144rZFXvw3) (request id: 2025121315142517238973603614606)";
+        type: "new_api_error";
+        param: "";
+        code: "insufficient_user_quota";
+    };
+};
+
 /**所有错误格式的合集 */
 export type OpenAIErrorFormat = OverloadedError|OverloadedError2|RateLimitError1|QuotaError|
 InvalidKeyError|AuthSubrequestError|OtherError1|OtherError2|AccessTerminatedError|
-AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|NewApiErr|ContentFilter|PromptBlock|BadCode|OneApiError;
+AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|ContentFilter|PromptBlock|BadCode|
+OneApiRequestFailed|NewApiError|NewApiQuota;

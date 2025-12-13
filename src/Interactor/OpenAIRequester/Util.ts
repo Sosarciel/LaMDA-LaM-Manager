@@ -150,27 +150,32 @@ export const checkError = async (
                 return Terminated;
             } else SLogger.error("未定义的错误子类型");
             return Terminated;
-        case "new_api_error":
-            if (error.message.includes("当前分组上游负载已饱和，请稍后再试")) {
-                SLogger.warn("转发API过载");
-                return Failed;
-            } else SLogger.error("未定义的错误子类型");
-            return Terminated;
-        case "v_api_error":
-            if(error.code=='prompt_blocked'){
-                SLogger.warn("提示词被阻拦");
-                return Terminated;
-            } else SLogger.error("未定义的错误子类型");
-            return Terminated;
         case "upstream_error":
             if(error.code=='bad_response_status_code'){
                 SLogger.warn("Cloudflare网关超时");
                 return Failed;
             } else SLogger.error("未定义的错误子类型");
             return Terminated;
+        case "new_api_error":
+            if(error.code=='insufficient_user_quota'){
+                SLogger.warn("NewApi限额");
+                //直接设置为不可用
+                await accountData.instance.setInavailable();
+                return Terminated;
+            } else if (error.message.includes("当前分组上游负载已饱和，请稍后再试")) {
+                SLogger.warn("NewApi转发过载");
+                return Failed;
+            } else SLogger.error("未定义的错误子类型");
+            return Terminated;
+        case "v_api_error":
+            if(error.code=='prompt_blocked'){
+                SLogger.warn("VApi提示词被阻拦");
+                return Terminated;
+            } else SLogger.error("未定义的错误子类型");
+            return Terminated;
         case "one_api_error":
             if(error.code=='do_request_failed'){
-                SLogger.warn("请求转发错误");
+                SLogger.warn("OneApi转发请求错误");
                 return Failed;
             } else SLogger.error("未定义的错误子类型");
             return Terminated;
