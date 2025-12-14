@@ -10,7 +10,7 @@ import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 
 
-/**gptge兼容api格式化工具 */
+/**gemini的openai兼容api格式化工具 */
 export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatOption,OpenAIConversationRespFormat> = {
     formatOption(opt,model){
         //验证参数
@@ -23,7 +23,13 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
             return;
         }
 
-        let msg = GeminiCompatChatTaskFormatter.transReq(opt.target,opt.messages);
+
+        //gemini在hist超过一定长度后think_budget参数在无额外提示的情况下会被忽略
+        const fxmsg = {...opt.messages};
+        if(opt.think_budget!=undefined)
+            fxmsg.tempPrompt = `(think_of_reason_tokens_briefly_no_more_than_${opt.think_budget}_words)${fxmsg.tempPrompt??''}`;
+
+        let msg = GeminiCompatChatTaskFormatter.transReq(opt.target,fxmsg);
         msg = GeminiCompatChatTaskFormatter.formatReq(opt.target,msg);
 
         const obj:GeminiCompatOption = {

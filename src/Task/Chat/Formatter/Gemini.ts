@@ -21,7 +21,12 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
             return;
         }
 
-        let turboMessahge = GeminiChatTaskFormatter.transReq(opt.target,opt.messages);
+        //gemini在hist超过一定长度后think_budget参数在无额外提示的情况下会被忽略
+        const fxmsg = {...opt.messages};
+        if(opt.think_budget!=undefined)
+            fxmsg.tempPrompt = `(think_of_reason_tokens_briefly_no_more_than_${opt.think_budget}_words)${fxmsg.tempPrompt??''}`;
+
+        let turboMessahge = GeminiChatTaskFormatter.transReq(opt.target,fxmsg);
         turboMessahge = GeminiChatTaskFormatter.formatReq(opt.target,turboMessahge);
 
         return {
