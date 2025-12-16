@@ -1,7 +1,6 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
 import type { GeminiCompatAPIEntry, GeminiCompatOption } from "RequestFormat";
-import { OpenAIConversationAPIRole } from "RequestFormat";
 import type { OpenAIConversationRespFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
@@ -60,71 +59,7 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
     },
     formatResult:lazyFunction(()=>commonFormatResp(GeminiCompatChatTaskFormatter)),
     calcToken:lazyFunction(()=>stringifyCalcToken(GeminiCompatChatTaskFormatter)),
-    transReq(chatTarget,messageList){
-        let desc = "";
-        let inDesc = true;
-        const narr:GeminiCompatAPIEntry[] = [];
-
-        //处理主消息列表
-        for(const item of messageList.list){
-            if(item.type=='desc'){
-                /**应对以下转换方式 需合并system
-                 *  for _, message := range textRequest.Messages {
-                 *      if messageLink.Role == "system" {
-                 *          geminiRequest.Systeminstruction = &ChatContent{
-                 *              Parts: []Part{ { Text: messageLink.StringContent() } }
-                 *          }
-                 *          continue
-                 *      }
-                 *  }
-                 */
-                //头部说明直接合并 gptge兼容仅支持一条system提示
-                if(inDesc){
-                    desc += `${item.content}\n`;
-                }
-                //其他作为用户输入
-                else{
-                    narr.push({
-                        role:OpenAIConversationAPIRole.User,
-                        content:item.content
-                    });
-                }
-            }else{
-                inDesc = false;
-                narr.push({
-                    role:OpenAIConversationAPIRole.User,
-                    content:item.senderName+":"
-                });
-
-                //为目标则视为模型输出
-                if(item.senderName==chatTarget){
-                    narr.push({
-                        role:OpenAIConversationAPIRole.Assistant,
-                        content:item.content
-                    });
-                }
-                //其他视为用户输入
-                else{
-                    narr.push({
-                        role:OpenAIConversationAPIRole.User,
-                        content:item.content
-                    });
-                }
-            }
-        }
-
-        //处理临时提示
-        if(messageList.tempPrompt!=null && messageList.tempPrompt.length>0)
-            narr[narr.length-1].content += messageList.tempPrompt;
-
-        return [{role:OpenAIConversationAPIRole.System,content:desc.trim()},...narr];
-    },
-    formatReq(chatTarget,chatList){
-        chatList.push({
-            role:OpenAIConversationAPIRole.User,
-            content:`${chatTarget}:`,
-        });
-        return chatList;
-    },
+    transReq:OpenAIConversationChatTaskFormatter.transReq,
+    formatReq:OpenAIConversationChatTaskFormatter.formatReq,
     formatResp:OpenAIConversationChatTaskFormatter.formatResp,
 };
