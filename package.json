@@ -11,6 +11,7 @@
 			"types": "./dist/mock/index.d.ts"
 		}
 	},
+	"repository": "https://github.com/Sosarciel/LaMDA-LaM-Manager.git",
 	"scripts": {
 		"test": "jest",
 		"build": "powershell scripts/pack",
@@ -18,7 +19,8 @@
 		"watch": "powershell scripts/watch",
 		"build-schema": "powershell scripts/build-schema",
         "pack": "powershell scripts/pack",
-		"expand-macro": "powershell scripts/expand-macro"
+		"expand-macro": "powershell scripts/expand-macro",
+		"release-github": "powershell scripts/release-github"
 	},
 	"author": "",
 	"license": "ISC",

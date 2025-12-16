@@ -1,0 +1,138 @@
+﻿function NormalizeUrl([string]$url) {
+    if (-not $url) { throw "package.json 中缺少 repository.url" }
+    # 去掉常见前缀
+    $u = $url.Trim()
+    $u = $u -replace '^git\+', ''
+    $u = $u -replace '^git@github\.com:(.+)$', 'https://github.com/$1'
+    # 确保结尾有 .git 以便克隆
+    if ($u -notmatch '\.git$') { $u = $u + '.git' }
+    return $u
+}
+
+function GetUrl($pkg) {
+    if ($pkg.repository -is [string]) {
+        return NormalizeUrl $pkg.repository
+    }
+    elseif ($pkg.repository -and $pkg.repository.url) {
+        return NormalizeUrl $pkg.repository.url
+    }
+    else {
+        throw "package.json 中缺少 repository 字段，请确保为字符串或 { url } 格式对象"
+    }
+}
+
+function GetFiles($pkg) {
+    if ($pkg.files) {
+        # 确保 package.json 一定在列表里
+        $list = @($pkg.files)
+        if ($list -notcontains "package.json") {
+            $list += "package.json"
+            $list += "README.md"
+        }
+        return $list
+    }else{
+        # 如果未指定 files 字段，使用常见默认值
+        throw "package.json 中缺少 files 字段"
+    }
+}
+
+# 1) 读取 package.json
+Write-Host "== 读取 package.json =="
+if (-not (Test-Path "./package.json")) { throw "当前目录下未找到 package.json" }
+
+$pkg = Get-Content "./package.json" -Raw | ConvertFrom-Json
+
+$ProjectName = $pkg.name
+if (-not $ProjectName) { throw "package.json 中缺少 name 字段" }
+
+$version = $pkg.version
+if (-not $version) { throw "package.json 中缺少 version 字段" }
+
+$RepoUrl = GetUrl $pkg
+$files = GetFiles $pkg
+
+# 可选：从 package.json.publishConfig.releaseBranch 读取自定义分支
+$ReleaseBranch = "release"
+if ($pkg.publishConfig -and $pkg.publishConfig.releaseBranch) {
+    $ReleaseBranch = $pkg.publishConfig.releaseBranch
+}
+
+$tagName   = "$version"
+$latestTag = "latest"
+
+Write-Host "项目名称: $ProjectName"
+Write-Host "版本号:   $version"
+Write-Host "仓库地址: $RepoUrl"
+Write-Host "分支:     $ReleaseBranch"
+Write-Host "标签:     $tagName"
+Write-Host "文件列表: $($files -join ', ')"
+
+# 3) 克隆仓库
+Write-Host "== 检查 release 目录 =="
+if (-not (Test-Path "./release")) {
+    Write-Host "release 目录不存在，开始克隆仓库..."
+    git clone $RepoUrl release --depth=1 | Write-Host
+}
+else {
+    # 检查是否为有效的 git 仓库
+    if (-not (Test-Path "./release/.git")) {
+        Write-Host "release 目录存在但不是有效的 git 仓库，删除后重新克隆..."
+        Remove-Item -Recurse -Force "./release"
+        git clone $RepoUrl release --depth=1 | Write-Host
+    }
+    else {
+        Write-Host "release 目录已存在且是有效仓库，跳过克隆步骤"
+    }
+}
+Set-Location release
+
+# 4) 切换或创建 release 分支
+Write-Host "== 切换到 release 分支 =="
+$checkoutOutput = git checkout $ReleaseBranch 2>&1
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "release 分支不存在，正在创建..."
+    git checkout -b $ReleaseBranch | Write-Host
+}
+
+# 5) 清空分支内容
+Write-Host "== 清空 release 分支内容 =="
+# 删除文件
+Get-ChildItem -Force | ForEach-Object {
+    if ($_.Name -notin @(".git")) {
+        try { Remove-Item -Recurse -Force $_.FullName } catch {}
+    }
+}
+
+# 6) 复制 package.json 中 files 列表的文件
+Write-Host "== 复制 package.json 中 files 列表的文件 =="
+foreach ($f in $files) {
+    $src = Join-Path ".." $f
+    if (Test-Path $src) {
+        Write-Host "复制: $src"
+        Copy-Item $src -Recurse -Force -Destination "."
+    } else {
+        Write-Host "$src 不存在，跳过"
+    }
+}
+
+# 7) 添加、提交并推送
+Write-Host "== 添加并提交 =="
+git add .
+$commitOutput = git commit -m "release" 2>&1
+if ($LASTEXITCODE -ne 0 -and ($commitOutput -match "nothing to commit")) {
+    Write-Host "没有需要提交的变更，继续后续步骤"
+} else {
+    Write-Host $commitOutput
+}
+git push origin $ReleaseBranch | Write-Host
+
+# 8) 创建版本标签并推送
+Write-Host "== 创建版本标签 =="
+git tag -f $tagName | Write-Host
+git push -f origin $tagName | Write-Host
+
+# 9) 检查/创建 latest 标签
+Write-Host "== 更新 latest 标签指向当前版本 =="
+git tag -f $latestTag $tagName | Write-Host
+git push -f origin $latestTag | Write-Host
+Set-Location ".."
