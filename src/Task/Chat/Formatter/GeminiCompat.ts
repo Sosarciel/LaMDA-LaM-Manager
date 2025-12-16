@@ -44,7 +44,7 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
 
         if(opt.think_budget!=null){
             //thinking为gptge特殊模型 GptGe的思考参数无效 对于 thinking 模型直接改变模型id实现
-            if(obj.model?.endsWith('thinking'))
+            if(obj.model?.endsWith('-thinking'))
                 obj.model = `${obj.model}-${Math.floor(opt.think_budget)}`;
             else{
                 obj.extra_body??={};
