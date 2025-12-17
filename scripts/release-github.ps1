@@ -13,6 +13,9 @@
     }
 }
 
+$ReleaseBranch = "release"
+$ReleaseDir = "release"
+
 # 1) 读取 package.json
 Write-Host "== 读取 package.json =="
 if (-not (Test-Path "./package.json")) { throw "当前目录下未找到 package.json" }
@@ -30,12 +33,6 @@ $RepoUrl = git remote get-url origin
 if (-not $RepoUrl) { throw "未找到 Git 远端 origin" }
 $files = GetFiles $pkg
 
-# 可选：从 package.json.publishConfig.releaseBranch 读取自定义分支
-$ReleaseBranch = "release"
-if ($pkg.publishConfig -and $pkg.publishConfig.releaseBranch) {
-    $ReleaseBranch = $pkg.publishConfig.releaseBranch
-}
-
 $tagName   = "$version"
 $latestTag = "latest"
 
@@ -48,29 +45,31 @@ Write-Host "文件列表: $($files -join ', ')"
 
 # 3) 克隆仓库
 Write-Host "== 检查 release 目录 =="
-if (-not (Test-Path "./release")) {
-    Write-Host "release 目录不存在，开始克隆仓库..."
-    git clone $RepoUrl release --depth=1 | Write-Host
+if (-not (Test-Path "./$ReleaseDir")) {
+    Write-Host "$ReleaseDir 目录不存在，开始克隆仓库..."
+    git clone $RepoUrl $ReleaseDir --depth=1 | Write-Host
+    if ($LASTEXITCODE -ne 0) { throw "git clone 失败" }
 }
-else {
-    # 检查是否为有效的 git 仓库
-    if (-not (Test-Path "./release/.git")) {
-        Write-Host "release 目录存在但不是有效的 git 仓库，删除后重新克隆..."
-        Remove-Item -Recurse -Force "./release"
-        git clone $RepoUrl release --depth=1 | Write-Host
-    }
-    else {
-        Write-Host "release 目录已存在且是有效仓库，跳过克隆步骤"
-    }
-}
-Set-Location release
+
+Push-Location $ReleaseDir -ErrorAction Stop
+
+# 获取当前物理路径，并统一转化为 Unix 风格的正斜杠
+# 使用 FullName 确保获取到的是绝对路径，并通过 Replace 转换
+$currentPath = (Get-Location).Path.Replace('\', '/').TrimEnd('/')
+
+# 获取 Git 认为的根目录
+$gitRoot = (git rev-parse --show-toplevel 2>$null).TrimEnd('/')
+
+# 检查是否为有效的 git 仓库
+if ($currentPath -ne $gitRoot) { throw "$ReleaseDir 目录存在但不是有效的 git 仓库" }
 
 # 4) 切换或创建 release 分支
 Write-Host "== 切换到 release 分支 =="
 $checkoutOutput = git checkout $ReleaseBranch 2>&1
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "release 分支不存在，正在创建..."
+    Write-Host "$ReleaseBranch 分支不存在，正在创建..."
     git checkout -b $ReleaseBranch | Write-Host
+    if ($LASTEXITCODE -ne 0) { throw "无法创建 $ReleaseBranch 分支" }
 }
 
 # 5) 清空分支内容
@@ -78,7 +77,9 @@ Write-Host "== 清空 release 分支内容 =="
 # 删除文件
 Get-ChildItem -Force | ForEach-Object {
     if ($_.Name -notin @(".git")) {
-        try { Remove-Item -Recurse -Force $_.FullName } catch {}
+        try { Remove-Item -Recurse -Force $_.FullName } catch {
+            throw "无法删除文件: $($_.FullName)"
+        }
     }
 }
 
@@ -114,4 +115,4 @@ git push -f origin $tagName | Write-Host
 Write-Host "== 更新 latest 标签指向当前版本 =="
 git tag -f $latestTag $tagName | Write-Host
 git push -f origin $latestTag | Write-Host
-Set-Location ".."
+Pop-Location
