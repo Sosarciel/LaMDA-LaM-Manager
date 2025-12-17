@@ -1,6 +1,6 @@
 {
 	"name": "@sosraciel-lamda/lam-manager",
-	"version": "1.0.94",
+	"version": "1.0.95",
 	"exports": {
 		".": {
 			"require": "./dist/index.js",
@@ -19,7 +19,7 @@
 		"watch": "powershell scripts/watch",
 		"build-schema": "powershell scripts/build-schema",
 		"expand-macro": "powershell scripts/expand-macro",
-		"release": "powershell scripts/release-tag"
+		"release": "powershell scripts/release"
 	},
 	"author": "",
 	"license": "ISC",

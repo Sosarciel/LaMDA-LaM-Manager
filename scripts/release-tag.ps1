@@ -67,7 +67,7 @@ if ($currentPath -ne $gitRoot) { throw "$ReleaseDir 目录存在但不是有效�
 
 # 4) 切换或创建 release 分支
 Write-Host "== 切换到 release 分支 =="
-git checkout $ReleaseBranch 2>&1
+git checkout $ReleaseBranch 2>$null
 if ($LASTEXITCODE -ne 0) {
     Write-Host "$ReleaseBranch 分支不存在，正在创建..."
     git checkout -b $ReleaseBranch | Write-Host
