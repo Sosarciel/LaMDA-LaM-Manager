@@ -50,15 +50,16 @@ type Quoya = {
 
 export type AnyGoogleErrorRespFormat = Quoya;
 
-
+type TextContent = {text: string,thoughtSignature?:string,thought?:boolean};
 type Candidate = {
     content: {
-        parts: [{text: string,},],
+        parts: (TextContent)[],
         role: "model",
     },
-    finishReason: string,
+    finishReason: "STOP"|string,
     avgLogprobs: number,
 }
+
 type UsageMetadata = {
     promptTokenCount: number,
     candidatesTokenCount: number,

@@ -84,7 +84,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
                 }
             }
         }
-    
+
         //处理临时提示
         if(messageList.tempPrompt!=null && messageList.tempPrompt.length>0)
             narr[narr.length-1].parts[0].text += messageList.tempPrompt;
@@ -101,9 +101,10 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
         return chatList;
     },
     formatResp:(resp)=>{
+        const cond = (v:GeminiRespFormat['candidates'][number]['content']['parts'][number])=>v.text && !v.thought;
         const choices = resp.candidates
-            .filter(choice => choice?.content?.parts?.[0]?.text != undefined)
-            .map(choice => ({ content: choice.content.parts[0].text }));
+            .filter(choice => choice?.content?.parts?.some(cond))
+            .map(choice => ({ content: choice.content.parts.find(cond)?.text! }));
 
         return {
             choices,
