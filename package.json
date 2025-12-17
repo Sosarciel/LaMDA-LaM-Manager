@@ -18,9 +18,8 @@
 		"compile": "powershell scripts/compile",
 		"watch": "powershell scripts/watch",
 		"build-schema": "powershell scripts/build-schema",
-        "pack": "powershell scripts/pack",
 		"expand-macro": "powershell scripts/expand-macro",
-		"release-github": "powershell scripts/release-github"
+		"release": "powershell scripts/release-github"
 	},
 	"author": "",
 	"license": "ISC",
