@@ -19,7 +19,7 @@
 		"watch": "powershell scripts/watch",
 		"build-schema": "powershell scripts/build-schema",
 		"expand-macro": "powershell scripts/expand-macro",
-		"release": "powershell scripts/release-github"
+		"release": "powershell scripts/release-tag"
 	},
 	"author": "",
 	"license": "ISC",
