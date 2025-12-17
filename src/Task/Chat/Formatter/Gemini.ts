@@ -37,7 +37,10 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
                 temperature     :opt.temperature  ?? undefined,
                 maxOutputTokens :opt.max_tokens   ?? undefined,
                 topP            :opt.top_p        ?? undefined,
-                thinkingBudget  :opt.think_budget ?? undefined,
+                thinkingConfig: {
+                    thinkingBudget:opt.think_budget ?? undefined,
+                    includeThoughts:true,
+                }
             }
         } satisfies GeminiOption;
     },

@@ -11,6 +11,11 @@ export type GeminiOption={
         topP?: number|undefined;
         topK?: number|undefined;
         thinkingBudget?: number|undefined;
+        thinkingConfig?: {
+            thinkingBudget:number|undefined;
+            /**是否返回明文思考过程 默认false 返回思考key */
+            includeThoughts:boolean|undefined;
+        }
     }
 }
 
