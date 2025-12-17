@@ -101,6 +101,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
         return chatList;
     },
     formatResp:(resp)=>{
+        //挑出非思考的文本内容
         const cond = (v:GeminiRespFormat['candidates'][number]['content']['parts'][number])=>v.text && !v.thought;
         const choices = resp.candidates
             .filter(choice => choice?.content?.parts?.some(cond))
