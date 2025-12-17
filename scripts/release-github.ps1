@@ -1,27 +1,4 @@
-﻿function NormalizeUrl([string]$url) {
-    if (-not $url) { throw "package.json 中缺少 repository.url" }
-    # 去掉常见前缀
-    $u = $url.Trim()
-    $u = $u -replace '^git\+', ''
-    $u = $u -replace '^git@github\.com:(.+)$', 'https://github.com/$1'
-    # 确保结尾有 .git 以便克隆
-    if ($u -notmatch '\.git$') { $u = $u + '.git' }
-    return $u
-}
-
-function GetUrl($pkg) {
-    if ($pkg.repository -is [string]) {
-        return NormalizeUrl $pkg.repository
-    }
-    elseif ($pkg.repository -and $pkg.repository.url) {
-        return NormalizeUrl $pkg.repository.url
-    }
-    else {
-        throw "package.json 中缺少 repository 字段，请确保为字符串或 { url } 格式对象"
-    }
-}
-
-function GetFiles($pkg) {
+﻿function GetFiles($pkg) {
     if ($pkg.files) {
         # 确保 package.json 一定在列表里
         $list = @($pkg.files)
@@ -40,7 +17,7 @@ function GetFiles($pkg) {
 Write-Host "== 读取 package.json =="
 if (-not (Test-Path "./package.json")) { throw "当前目录下未找到 package.json" }
 
-$pkg = Get-Content "./package.json" -Raw | ConvertFrom-Json
+$pkg = Get-Content "./package.json" -Raw -Encoding UTF8 | ConvertFrom-Json
 
 $ProjectName = $pkg.name
 if (-not $ProjectName) { throw "package.json 中缺少 name 字段" }
@@ -48,7 +25,9 @@ if (-not $ProjectName) { throw "package.json 中缺少 name 字段" }
 $version = $pkg.version
 if (-not $version) { throw "package.json 中缺少 version 字段" }
 
-$RepoUrl = GetUrl $pkg
+# 获取远端 URL
+$RepoUrl = git remote get-url origin
+if (-not $RepoUrl) { throw "未找到 Git 远端 origin" }
 $files = GetFiles $pkg
 
 # 可选：从 package.json.publishConfig.releaseBranch 读取自定义分支
