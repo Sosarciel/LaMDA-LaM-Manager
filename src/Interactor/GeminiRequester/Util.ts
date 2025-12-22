@@ -45,7 +45,7 @@ export const verifyResp = async (
     if(!("error" in respObj))
         return Success;
 
-    const errorObj = respObj.error as AnyGoogleErrorRespFormat;
+    const errorObj = respObj as AnyGoogleErrorRespFormat;
     const error = errorObj.error;
 
     SLogger.warn(`GeminiRequester.verifyResp 开始处理错误`);
