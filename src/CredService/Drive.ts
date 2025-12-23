@@ -76,7 +76,4 @@ export class AccountManagerDrive implements AccountManager{
     async setInavailable(){
         this._accountTable.is_available=false;
     }
-    saveToJson(){
-        return this._accountTable;
-    }
 }
