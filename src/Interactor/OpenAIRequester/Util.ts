@@ -159,8 +159,8 @@ export const checkError = async (
         case "new_api_error":
             if(error.code=='insufficient_user_quota'){
                 SLogger.warn("NewApi限额");
-                //直接设置为不可用
-                await accountData.instance.setInavailable();
+                ////直接设置为不可用
+                //await accountData.instance.setInavailable();
                 return Terminated;
             } else if (error.message.includes("当前分组上游负载已饱和，请稍后再试")) {
                 SLogger.warn("NewApi转发过载");
@@ -186,7 +186,6 @@ export const checkError = async (
             } else SLogger.error("未定义的错误子类型");
             return Terminated;
         default:
-            const e: any = error;
             SLogger.error("未定义的错误类型");
             return Terminated;
     }
