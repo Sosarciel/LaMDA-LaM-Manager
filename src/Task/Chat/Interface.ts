@@ -19,7 +19,7 @@ export const ChatTaskOptionPreset = preset<ChatTaskOption>()({
     frequency_penalty: 0   ,
     n                : 1   ,
     logit_bias       : null,
-    think_budget     : 'min',
+    think_budget     : 'non',
     preferred_account: [] as [],
     log_level        : "none",
 });
