@@ -5,7 +5,7 @@ import type { OpenAIConversationRespFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 
-import { GeminiThinkMap } from "./Gemini";
+import { transGeminiThinkBudget } from "./Gemini";
 import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 
@@ -25,8 +25,10 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
 
         //gemini-3-pro在hist超过一定长度后think_budget参数在无额外提示的情况下会被忽略
         const fxmsg = {...opt.messages};
+        const think_budget = transGeminiThinkBudget(model,opt.think_budget);
+
         if(opt.think_budget!=undefined && /gemini-3-pro/.test(model))
-            fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(limit_thought_tokens_to_under_${GeminiThinkMap[opt.think_budget]}_words)`;
+            fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(limit_thought_tokens_to_under_${think_budget}_words)`;
             //fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(think_of_reason_tokens_briefly_no_more_than_${opt.think_budget}_words)`;
 
         let msg = GeminiCompatChatTaskFormatter.transReq(opt.target,fxmsg);
@@ -43,15 +45,15 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
             stop              : opt.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
         };
 
-        if(opt.think_budget!=null){
+        if(think_budget!=null){
             //thinking为gptge特殊模型 GptGe的思考参数无效 对于 thinking 模型直接改变模型id实现
             if(obj.model?.endsWith('-thinking'))
-                obj.model = `${obj.model}-${Math.floor(GeminiThinkMap[opt.think_budget])}`;
+                obj.model = `${obj.model}-${Math.floor(think_budget)}`;
             else{
                 obj.extra_body??={};
                 obj.extra_body.google = {
                     thinking_config:{
-                        thinking_budget: GeminiThinkMap[opt.think_budget]
+                        thinking_budget: think_budget
                     }
                 };
             }

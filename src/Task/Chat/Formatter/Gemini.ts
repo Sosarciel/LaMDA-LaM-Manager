@@ -5,6 +5,7 @@ import { GeminiAPIRole } from "RequestFormat";
 import type { GeminiRespFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
+import type { ThingBudget } from "Task/Interface";
 
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 
@@ -15,6 +16,11 @@ export const GeminiThinkMap = {
     low:256,
     min:128,
     max:2048,
+};
+
+export const transGeminiThinkBudget =  (modid:string,budget?:ThingBudget|null)=>{
+    if(budget==undefined) return undefined;
+    return GeminiThinkMap[budget];
 };
 
 export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOption,GeminiRespFormat> = {
@@ -32,8 +38,10 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
 
         //gemini-3-pro在hist超过一定长度后think_budget参数在无额外提示的情况下会被忽略
         const fxmsg = {...opt.messages};
-        if(opt.think_budget!=undefined && /gemini-3-pro/.test(model))
-            fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(limit_thought_tokens_to_under_${GeminiThinkMap[opt.think_budget]}_words)`;
+        const think_budget = transGeminiThinkBudget(model,opt.think_budget);
+
+        if(think_budget!=undefined && /gemini-3-pro/.test(model))
+            fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(limit_thought_tokens_to_under_${think_budget}_words)`;
             //fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(think_of_reason_tokens_briefly_no_more_than_${opt.think_budget}_words)`;
 
         let turboMessahge = GeminiChatTaskFormatter.transReq(opt.target,fxmsg);
@@ -48,7 +56,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
                 maxOutputTokens :opt.max_tokens   ?? undefined,
                 topP            :opt.top_p        ?? undefined,
                 thinkingConfig: {
-                    thinkingBudget:opt.think_budget ? GeminiThinkMap[opt.think_budget] : undefined,
+                    thinkingBudget:opt.think_budget ? think_budget : undefined,
                     includeThoughts:true,
                 }
             }
