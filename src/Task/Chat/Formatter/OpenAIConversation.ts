@@ -35,8 +35,8 @@ const transOpenAIThinkBudget = (modid:string,budget?:ThingBudget|null)=>{
     return OpenAIThinkMapHasNone[budget];
 };
 const hasStop = (modid:string)=>{
-    const ver = getVersion(modid);
-    if(/^o/.test(modid) || (ver!=undefined && ver>=5 && !modid.includes('chat')))
+    //o系列与5+非chat都不支持stop
+    if(/^o/.test(modid) || (/gpt-5(\.\d)?-/.test(modid) && !modid.includes('chat')))
         return false;
     return true;
 };
