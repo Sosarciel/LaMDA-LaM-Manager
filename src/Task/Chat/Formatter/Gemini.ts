@@ -14,6 +14,7 @@ export const GeminiThinkMap = {
     hig:1024,
     mid:512,
     low:256,
+    non:128,
     min:128,
     max:2048,
 };
