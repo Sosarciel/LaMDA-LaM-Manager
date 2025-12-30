@@ -9,7 +9,7 @@ import type { AnyTextCompletionRespFormat } from "ResponseFormat";
 import type { ChatTaskInterface } from "./Chat";
 
 /**思考预算枚举 */
-export type ThingBudget = 'min'|'low'|'mid'|'hig'|'max';
+export type ThingBudget = 'non'|'min'|'low'|'mid'|'hig'|'max';
 /**文本完成模型通用配置 */
 export type TextCompletionOption=Partial<{
     /**最大token数 */

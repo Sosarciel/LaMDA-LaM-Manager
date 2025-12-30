@@ -11,6 +11,7 @@ import { commonFormatResp, stringifyCalcToken } from "./Utils";
 
 
 export const OpenAIThinkMap = {
+    non:'minimal',
     hig:'high',
     mid:'medium',
     low:'low',
@@ -18,19 +19,32 @@ export const OpenAIThinkMap = {
     max:'xhigh',
 } as const;
 export const OpenAIThinkMapHasNone = {
+    non:'none',
     hig:'high',
     mid:'medium',
     low:'low',
-    min:'none',
+    min:'minimal',
     max:'xhigh',
 } as const;
-export const transOpenAIThinkBudger = (modid:string,budget?:ThingBudget|null)=>{
+
+const transOpenAIThinkBudget = (modid:string,budget?:ThingBudget|null)=>{
     if(budget==undefined) return undefined;
-    const match = modid.match(/gpt-(\d+)/);
-    if(match==null) return OpenAIThinkMap[budget];
-    if(parseFloat(match[1])<5.1)
+    const ver = getVersion(modid);
+    if(ver==undefined || ver<5.1)
         return OpenAIThinkMap[budget];
     return OpenAIThinkMapHasNone[budget];
+};
+const hasStop = (modid:string)=>{
+    const ver = getVersion(modid);
+    if(/^o/.test(modid) || (ver!=undefined && ver>=5 && !modid.includes('chat')))
+        return false;
+    return true;
+};
+const getVersion = (modid:string)=>{
+    const match = modid.match(/gpt-(\d+)/);
+    if(match==null) return undefined;
+    const result = parseFloat(match[1]);
+    return isNaN(result) ? undefined : result;
 };
 
 export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConversationAPIEntry[],OpenAIConversationOption,AnyOpenAIConversationLikeRespFormat>={
@@ -52,7 +66,7 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
             model                  : model                   ,//模型id
             messages               : turboMessahge           ,//提示
             max_completion_tokens  : opt.max_tokens          ,//最大生成令牌数
-            reasoning_effort       : transOpenAIThinkBudger(model,opt.think_budget),
+            reasoning_effort       : transOpenAIThinkBudget(model,opt.think_budget),
             temperature            : opt.temperature         ,//temperature 权重控制 0为最准确 越大越偏离主题
             top_p                  : opt.top_p               ,//top_p       权重控制 0为最准确 越大越偏离主题
             n                      : opt.n                   ,//产生n条消息
@@ -60,7 +74,7 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
             frequency_penalty      : opt.frequency_penalty   ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
             logit_bias             : opt.logit_bias          ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
             //best_of              : best_of                 ,//产生n条候选消息，根据n返回n条最佳消息
-            stop                   : opt.stop                ,//调整某token出现的概率 {"tokenid":-100~100}
+            stop                   : hasStop(model) ? opt.stop : undefined,//调整某token出现的概率 {"tokenid":-100~100} 不支持4以上思考模型
         } satisfies OpenAIConversationOption;
 
         //频率惩罚计算函数
