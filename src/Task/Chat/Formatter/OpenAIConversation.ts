@@ -28,6 +28,8 @@ export const transOpenAIThinkBudger = (modid:string,budget?:ThingBudget|null)=>{
     if(budget==undefined) return undefined;
     const match = modid.match(/gpt-(\d+)/);
     if(match==null) return OpenAIThinkMap[budget];
+    if(parseFloat(match[1])<5.1)
+        return OpenAIThinkMap[budget];
     return OpenAIThinkMapHasNone[budget];
 };
 
