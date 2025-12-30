@@ -9,6 +9,14 @@ import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 
 
+export const GeminiThinkMap = {
+    hig:1024,
+    mid:512,
+    low:256,
+    min:128,
+    max:2048,
+};
+
 export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOption,GeminiRespFormat> = {
     formatOption(opt,model){
         //验证参数
@@ -21,10 +29,11 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
             return;
         }
 
+
         //gemini-3-pro在hist超过一定长度后think_budget参数在无额外提示的情况下会被忽略
         const fxmsg = {...opt.messages};
         if(opt.think_budget!=undefined && /gemini-3-pro/.test(model))
-            fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(limit_thought_tokens_to_under_${opt.think_budget}_words)`;
+            fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(limit_thought_tokens_to_under_${GeminiThinkMap[opt.think_budget]}_words)`;
             //fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(think_of_reason_tokens_briefly_no_more_than_${opt.think_budget}_words)`;
 
         let turboMessahge = GeminiChatTaskFormatter.transReq(opt.target,fxmsg);
@@ -39,7 +48,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
                 maxOutputTokens :opt.max_tokens   ?? undefined,
                 topP            :opt.top_p        ?? undefined,
                 thinkingConfig: {
-                    thinkingBudget:opt.think_budget ?? undefined,
+                    thinkingBudget:opt.think_budget ? GeminiThinkMap[opt.think_budget] : undefined,
                     includeThoughts:true,
                 }
             }

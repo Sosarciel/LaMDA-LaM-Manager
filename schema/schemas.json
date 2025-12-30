@@ -477,9 +477,20 @@
 				},
 				"think_budget": {
 					"description": "思考token预算 模型将尽量保证思考链长度为此值",
-					"type": [
-						"null",
-						"number"
+					"anyOf": [
+						{
+							"enum": [
+								"hig",
+								"low",
+								"max",
+								"mid",
+								"min"
+							],
+							"type": "string"
+						},
+						{
+							"type": "null"
+						}
 					]
 				},
 				"preferred_account": {

@@ -1,10 +1,16 @@
 
 
+export type OpenAIReasoningEffort = 'none'|'minimal'|'low'|'medium'|'high'|'xhigh';
 /**turbo模型配置 */
 export type OpenAIConversationOption=Partial<{
     model: string;
     messages: OpenAIConversationAPIEntry[];
+    /**最大生成令牌数 弃用转为max_completion_tokens */
     max_tokens: number;
+    /**最大生成令牌数 */
+    max_completion_tokens: number;
+    /**思考预算 */
+    reasoning_effort: OpenAIReasoningEffort;
     temperature: number;
     top_p: number;
     stop: string[]|null;

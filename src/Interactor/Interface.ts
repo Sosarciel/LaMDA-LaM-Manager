@@ -1,4 +1,5 @@
-import type { PresetOption, PromiseRetries, PromiseRetryResult } from "@zwa73/utils";
+import type { PromiseRetries, PromiseRetryResult } from "@zwa73/js-utils";
+import type { PresetOption } from "@zwa73/utils";
 import { preset } from "@zwa73/utils";
 
 import type { CredsData } from "CredService";

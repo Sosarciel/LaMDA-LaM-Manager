@@ -1,6 +1,6 @@
 {
 	"name": "@sosraciel-lamda/lam-manager",
-	"version": "1.0.102",
+	"version": "1.0.104",
 	"exports": {
 		".": {
 			"require": "./dist/index.js",
@@ -35,11 +35,11 @@
 		"@zwa73/modular-mixer": "^1.0.4",
 		"@zwa73/service-manager": "^1.0.25",
 		"@zwa73/utils": "^1.0.281",
+		"http-proxy-agent": "^5.0.0",
+		"https-proxy-agent": "^5.0.1",
 		"tiktoken": "^1.0.7"
 	},
 	"peerDependencies": {
-		"http-proxy-agent": "*",
-		"https-proxy-agent": "*",
 		"pathe": "*"
 	},
 	"peerDependenciesMeta": {

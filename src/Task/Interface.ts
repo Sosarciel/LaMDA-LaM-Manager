@@ -1,4 +1,5 @@
-import type { LogLevel, MPromise, PromiseRetryResult } from "@zwa73/utils";
+import type { PromiseRetryResult } from "@zwa73/js-utils";
+import type { LogLevel, MPromise } from "@zwa73/utils";
 import { assertType } from "@zwa73/utils";
 
 import type { CredCategoryID } from "CredService";
@@ -7,7 +8,8 @@ import type { AnyTextCompletionRespFormat } from "ResponseFormat";
 
 import type { ChatTaskInterface } from "./Chat";
 
-
+/**思考预算枚举 */
+export type ThingBudget = 'min'|'low'|'mid'|'hig'|'max';
 /**文本完成模型通用配置 */
 export type TextCompletionOption=Partial<{
     /**最大token数 */
@@ -27,7 +29,8 @@ export type TextCompletionOption=Partial<{
     /**产生回复的数量 */
     n: number;
     /**思考token预算 模型将尽量保证思考链长度为此值 */
-    think_budget: number|null;
+    //think_budget: number|null;
+    think_budget: ThingBudget|null;
     /**首选账户 需要填入 CredCategoryJsonTable 定义的 CredCategory */
     preferred_account:CredCategoryID[];
     /**log等级 */
