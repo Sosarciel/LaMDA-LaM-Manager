@@ -10,6 +10,9 @@ import type { ThingBudget } from "Task/Interface";
 import { commonFormatResp, commonProcReq, stringifyCalcToken } from "./Utils";
 
 
+/**OpenAI 推理预算映射表
+ * 将内部预算标识映射到 OpenAI API 的 reasoning_effort 参数
+ */
 export const OpenAIThinkMap = {
     non:'minimal',
     hig:'high',
@@ -18,6 +21,10 @@ export const OpenAIThinkMap = {
     min:'minimal',
     max:'xhigh',
 } as const;
+
+/**OpenAI 推理预算映射表 (支持 none)
+ * 将内部预算标识映射到 OpenAI API 的 reasoning_effort 参数
+ */
 export const OpenAIThinkMapHasNone = {
     non:'none',
     hig:'high',
@@ -27,31 +34,45 @@ export const OpenAIThinkMapHasNone = {
     max:'xhigh',
 } as const;
 
-const transOpenAIThinkBudget = (modid:string,budget?:ThingBudget|null)=>{
+/**转换 OpenAI 推理预算
+ * 根据模型版本选择合适的映射表,将内部预算标识转换为 OpenAI API 参数
+ * @param model - 模型标识符,用于确定模型版本
+ * @param budget - 内部预算标识
+ */
+const transOpenAIThinkBudget = (model:string,budget?:ThingBudget|null)=>{
     if(budget==undefined) return undefined;
-    const ver = getVersion(modid);
+    const ver = getVersion(model);
     if(ver==undefined || ver<5.1)
         return OpenAIThinkMap[budget];
     return OpenAIThinkMapHasNone[budget];
 };
-const hasStop = (modid:string)=>{
+
+/**检查模型是否支持 stop 参数
+ *o 系列模型和 GPT-5 非聊天模型不支持 stop 参数
+ * @param model - 模型标识符
+ */
+const hasStop = (model:string)=>{
     //o系列与5+非chat都不支持stop
-    if(/^o/.test(modid) || (/gpt-5(\.\d)?-/.test(modid) && !modid.includes('chat')))
+    if(/^o/.test(model) || (/gpt-5(\.\d)?-/.test(model) && !model.includes('chat')))
         return false;
     return true;
 };
-const getVersion = (modid:string)=>{
-    const match = modid.match(/gpt-(\d+)/);
+
+/**从模型标识符中提取版本号
+ * @param model - 模型标识符,如 "gpt-4", "gpt-3.5-turbo"
+ */
+const getVersion = (model:string)=>{
+    const match = model.match(/gpt-(\d+)/);
     if(match==null) return undefined;
     const result = parseFloat(match[1]);
     return isNaN(result) ? undefined : result;
 };
 
 
+/**OpenAI 对话聊天任务格式化器类型定义 */
 type OpenAIConversationChatTaskFormatter = ChatTaskFormatter<
     OpenAIConversationAPIEntry[],OpenAIConversationOption,AnyOpenAIConversationLikeRespFormat>;
 
-/**聊天完成接口的基本配置 */
 export const OpenAIChatCompleteBase = {
     transReq(chatTarget,messageList){
         const narr:OpenAIConversationAPIEntry[] = [];
@@ -132,15 +153,14 @@ export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskForma
             model                  : model                   ,//模型id
             messages               : messages                ,//提示
             max_completion_tokens  : opt.max_tokens          ,//最大生成令牌数
-            reasoning_effort       : transOpenAIThinkBudget(model,opt.think_budget),
+            reasoning_effort       : transOpenAIThinkBudget(model,opt.think_budget),//推理预算
             temperature            : opt.temperature         ,//temperature 权重控制 0为最准确 越大越偏离主题
             top_p                  : opt.top_p               ,//top_p       权重控制 0为最准确 越大越偏离主题
             n                      : opt.n                   ,//产生n条消息
-            presence_penalty       : opt.presence_penalty    ,//遭遇时将会停止生成的最多4个字符串 "1234"
-            frequency_penalty      : opt.frequency_penalty   ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
-            logit_bias             : opt.logit_bias          ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
-            //best_of              : best_of                 ,//产生n条候选消息，根据n返回n条最佳消息
-            stop                   : hasStop(model) ? opt.stop : undefined,//调整某token出现的概率 {"tokenid":-100~100} 不支持4以上思考模型
+            presence_penalty       : opt.presence_penalty    ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
+            frequency_penalty      : opt.frequency_penalty   ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
+            logit_bias             : opt.logit_bias          ,//调整某token出现的概率 {"tokenid":-100~100}
+            stop                   : hasStop(model) ? opt.stop : undefined,//停止序列,遭遇时将会停止生成的最多4个字符串,不支持某些思考模型
         } satisfies OpenAIConversationOption;
 
         //频率惩罚计算函数
