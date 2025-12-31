@@ -6,12 +6,13 @@ import type { OpenAIConversationRespFormat } from "ResponseFormat";
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 
 import { combineMessage, transGeminiThinkBudget } from "./Gemini";
-import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
+import { OpenAIChatCompleteBase } from "./OpenAIConversation";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 
 
 /**gemini的openai兼容api格式化工具 */
 export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatOption,OpenAIConversationRespFormat> = {
+    ...OpenAIChatCompleteBase,
     formatOption(opt,model){
         //验证参数
         if(opt.messages==null){
@@ -58,7 +59,4 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
     },
     formatResult:lazyFunction(()=>commonFormatResp(GeminiCompatChatTaskFormatter)),
     calcToken:lazyFunction(()=>stringifyCalcToken(GeminiCompatChatTaskFormatter)),
-    transReq:OpenAIConversationChatTaskFormatter.transReq,
-    formatReq:OpenAIConversationChatTaskFormatter.formatReq,
-    formatResp:OpenAIConversationChatTaskFormatter.formatResp,
 };

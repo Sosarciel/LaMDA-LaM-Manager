@@ -5,7 +5,7 @@ import type { DeepseekRespFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 
-import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
+import { OpenAIChatCompleteBase } from "./OpenAIConversation";
 import { commonFormatResp, commonProcReq, stringifyCalcToken } from "./Utils";
 
 
@@ -13,6 +13,7 @@ import { commonFormatResp, commonProcReq, stringifyCalcToken } from "./Utils";
 
 /**传统OpenAI系统提示模式的Formater */
 export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekOption,DeepseekRespFormat> = {
+    ...OpenAIChatCompleteBase,
     formatOption(opt,model){
         //验证参数
         if(opt.messages==null){
@@ -42,7 +43,4 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
     },
     formatResult:lazyFunction(()=>commonFormatResp(DeepseekChatTaskFormatter)),
     calcToken:lazyFunction(()=>stringifyCalcToken(DeepseekChatTaskFormatter)),
-    transReq:OpenAIConversationChatTaskFormatter.transReq,
-    formatReq:OpenAIConversationChatTaskFormatter.formatReq,
-    formatResp:OpenAIConversationChatTaskFormatter.formatResp,
 };
