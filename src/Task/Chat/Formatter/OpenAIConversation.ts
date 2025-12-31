@@ -51,7 +51,7 @@ const transOpenAIThinkBudget = (model:string,budget?:ThingBudget|null)=>{
  *o 系列模型和 GPT-5 非聊天模型不支持 stop 参数
  * @param model - 模型标识符
  */
-const hasStop = (model:string)=>{
+const hasReasoning = (model:string)=>{
     //o系列与5+非chat都不支持stop
     if(/^o/.test(model) || (/gpt-5(\.\d)?-/.test(model) && !model.includes('chat')))
         return false;
@@ -158,10 +158,10 @@ export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskForma
             temperature            : opt.temperature         ,//temperature 权重控制 0为最准确 越大越偏离主题
             top_p                  : opt.top_p               ,//top_p       权重控制 0为最准确 越大越偏离主题
             n                      : opt.n                   ,//产生n条消息
-            presence_penalty       : opt.presence_penalty    ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
-            frequency_penalty      : opt.frequency_penalty   ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
+            presence_penalty       : hasReasoning(model) ? opt.presence_penalty : undefined  ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
+            frequency_penalty      : hasReasoning(model) ? opt.frequency_penalty: undefined  ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
             logit_bias             : opt.logit_bias          ,//调整某token出现的概率 {"tokenid":-100~100}
-            stop                   : hasStop(model) ? opt.stop : undefined,//停止序列,遭遇时将会停止生成的最多4个字符串,不支持某些思考模型
+            stop                   : hasReasoning(model) ? opt.stop : undefined,//停止序列,遭遇时将会停止生成的最多4个字符串,不支持某些思考模型
         } satisfies OpenAIConversationOption;
 
         //频率惩罚计算函数
