@@ -26,6 +26,7 @@ class _GeminiPostTool implements Interactor<AnyGeminiRespFormat> {
         const postOpt = accountData.instance.categoryData;
         const postJson = opt.postJson;
 
+        //gemini的model_id影响post请求路径, 必需由交互器处理
         const fixModelId = accountData.instance.categoryData.model_id_map?.[modelData.id] ?? modelData.id;
         const postPath = `${modelData.endpoint}/${fixModelId}:generateContent?key=${accountData.instance.getKey()}`;
 

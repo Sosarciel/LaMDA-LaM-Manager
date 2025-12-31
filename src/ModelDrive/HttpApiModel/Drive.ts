@@ -58,9 +58,12 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
 
         const chatOption = await formatter.formatOption(opt,this.data.config.id);
         if(chatOption===undefined) return DefChatLaMResult;
+
+        //预处理option
         const fixedOption = ivk(()=>{
             const out:unknown = {...chatOption};
             if(UtilFunc.checkSharpSchema(out,{model:"string"})){
+                //如果存在id映射则直接替换opt的model
                 const mapname = accountData.instance.categoryData.model_id_map?.[out.model];
                 if(mapname!=null) out.model = mapname;
             }
