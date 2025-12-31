@@ -73,6 +73,7 @@ const getVersion = (model:string)=>{
 type OpenAIConversationChatTaskFormatter = ChatTaskFormatter<
     OpenAIConversationAPIEntry[],OpenAIConversationOption,AnyOpenAIConversationLikeRespFormat>;
 
+/**OpenAI 对话聊天任务基础定义 */
 export const OpenAIChatCompleteBase = {
     transReq(chatTarget,messageList){
         const narr:OpenAIConversationAPIEntry[] = [];
@@ -132,7 +133,7 @@ export const OpenAIChatCompleteBase = {
             vaild:choices.length>0
         };
     }
-} satisfies Partial<OpenAIConversationChatTaskFormatter>;
+} as const satisfies Partial<OpenAIConversationChatTaskFormatter>;
 
 export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskFormatter={
     ...OpenAIChatCompleteBase,
