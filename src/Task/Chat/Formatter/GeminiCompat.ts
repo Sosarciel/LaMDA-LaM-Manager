@@ -5,7 +5,7 @@ import type { OpenAIConversationRespFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 
-import { transGeminiThinkBudget } from "./Gemini";
+import { combineMessage, transGeminiThinkBudget } from "./Gemini";
 import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 
@@ -23,20 +23,15 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
             return;
         }
 
-        //gemini-3-pro在hist超过一定长度后think_budget参数在无额外提示的情况下会被忽略
-        const fxmsg = {...opt.messages};
+        const fxmsg = combineMessage(model,opt);
         const think_budget = transGeminiThinkBudget(model,opt.think_budget);
 
-        if(opt.think_budget!=undefined && /gemini-3-pro/.test(model))
-            fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(limit_thought_tokens_to_under_${think_budget}_words)`;
-            //fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(think_of_reason_tokens_briefly_no_more_than_${opt.think_budget}_words)`;
-
-        let msg = GeminiCompatChatTaskFormatter.transReq(opt.target,fxmsg);
-        msg = GeminiCompatChatTaskFormatter.formatReq(opt.target,msg);
+        let messages = GeminiCompatChatTaskFormatter.transReq(opt.target,fxmsg);
+        messages = GeminiCompatChatTaskFormatter.formatReq(opt.target,messages);
 
         const obj:GeminiCompatOption = {
             model             : model                       ,//模型id
-            messages          : msg                         ,//提示
+            messages          : messages                         ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
             temperature       : opt.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题
             top_p             : opt.top_p                   ,//top_p       权重控制 0为最准确 越大越偏离主题

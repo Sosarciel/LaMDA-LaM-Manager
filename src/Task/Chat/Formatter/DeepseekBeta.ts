@@ -7,7 +7,7 @@ import type { DeepseekRespFormat } from "ResponseFormat";
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 
 import { OpenAIConversationChatTaskFormatter } from "./OpenAIConversation";
-import { commonFormatResp, stringifyCalcToken } from "./Utils";
+import { commonFormatResp, commonProcReq, stringifyCalcToken } from "./Utils";
 
 
 
@@ -34,13 +34,11 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
             return;
         }
 
-        let msg = DeepseekBetaChatTaskFormatter.transReq(opt.target,opt.messages);
-        msg = DeepseekBetaChatTaskFormatter.formatReq(opt.target,msg);
-
+        const messages = commonProcReq(DeepseekBetaChatTaskFormatter,opt);
 
         return {
             model             : model                       ,//模型id
-            messages          : msg                         ,//提示
+            messages          : messages                    ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
             temperature       : opt.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题
             top_p             : opt.top_p                   ,//top_p       权重控制 0为最准确 越大越偏离主题

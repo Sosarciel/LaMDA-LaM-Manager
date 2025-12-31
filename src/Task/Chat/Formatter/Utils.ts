@@ -5,7 +5,7 @@ import type { TokensizerType } from "Tokensizer";
 import { getTokensizer } from "Tokensizer";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
-import type { LaMChatMessages } from "Task/Chat/Interface";
+import type { ChatTaskOption, LaMChatMessages } from "Task/Chat/Interface";
 import type { TextCompletionResult } from "Task/Interface";
 import { DefChatLaMResult } from "Task/Interface";
 
@@ -37,6 +37,12 @@ export const commonFormatResp = <FMT extends AnyTextCompletionRespFormat>(tool:C
             return tool.formatResp(res);
         })
     };
+};
+
+/**标准的请求文本转换工具 */
+export const commonProcReq = <T>(tool:ChatTaskFormatter<T,any,any>,opt:ChatTaskOption)=>{
+    const msg = tool.transReq(opt.target,opt.messages);
+    return tool.formatReq(opt.target,msg);
 };
 
 

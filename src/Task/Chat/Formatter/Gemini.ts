@@ -5,11 +5,14 @@ import { GeminiAPIRole } from "RequestFormat";
 import type { GeminiRespFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
+import type { ChatTaskOption } from "Task/Chat/Interface";
 import type { ThingBudget } from "Task/Interface";
+
+
 
 import { commonFormatResp, stringifyCalcToken } from "./Utils";
 
-
+/** Gemini的think_budget参数映射表*/
 export const GeminiThinkMap = {
     hig:1024,
     mid:512,
@@ -19,9 +22,29 @@ export const GeminiThinkMap = {
     max:2048,
 };
 
+/**转换Gemini的think_budget参数
+ * @param modid  - 模型ID
+ * @param budget - 预算
+ */
 export const transGeminiThinkBudget =  (modid:string,budget?:ThingBudget|null)=>{
     if(budget==undefined) return undefined;
     return GeminiThinkMap[budget];
+};
+
+/**修正gemini的message
+ * gemini-3-pro与2.5在hist超过一定长度后think_budget参数在无额外提示的情况下会被忽略
+ * @param model - 模型ID
+ * @param opt   - 任务参数
+ */
+export const combineMessage = (model:string,opt:ChatTaskOption)=>{
+    const fxmsg = {...opt.messages};
+    const think_budget = transGeminiThinkBudget(model,opt.think_budget);
+    if(think_budget!=undefined && (
+        /gemini-3-pro/.test(model) ||
+        /gemini-2.5-pro/.test(model)
+    )) fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(limit_thought_tokens_to_under_${think_budget}_words)`;
+        //fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(think_of_reason_tokens_briefly_no_more_than_${opt.think_budget}_words)`;
+    return fxmsg;
 };
 
 export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOption,GeminiRespFormat> = {
@@ -38,12 +61,8 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
 
 
         //gemini-3-pro在hist超过一定长度后think_budget参数在无额外提示的情况下会被忽略
-        const fxmsg = {...opt.messages};
+        const fxmsg = combineMessage(model,opt);
         const think_budget = transGeminiThinkBudget(model,opt.think_budget);
-
-        if(think_budget!=undefined && /gemini-3-pro/.test(model))
-            fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(limit_thought_tokens_to_under_${think_budget}_words)`;
-            //fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(think_of_reason_tokens_briefly_no_more_than_${opt.think_budget}_words)`;
 
         let turboMessahge = GeminiChatTaskFormatter.transReq(opt.target,fxmsg);
         turboMessahge = GeminiChatTaskFormatter.formatReq(opt.target,turboMessahge);

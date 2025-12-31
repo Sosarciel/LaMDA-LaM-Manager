@@ -5,7 +5,7 @@ import type { OpenAITextRespFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 
-import { commonCalcToken, commonFormatResp } from "./Utils";
+import { commonCalcToken, commonFormatResp, commonProcReq } from "./Utils";
 
 
 
@@ -20,14 +20,13 @@ export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOpti
             SLogger.warn("TurboOptions 无效 messages长度不足");
             return;
         }
-        //转换文本
-        let turboMessahge = OpenAITextChatTaskFormatter.transReq(opt.target,opt.messages);
-        turboMessahge = OpenAITextChatTaskFormatter.formatReq(opt.target,turboMessahge);
 
+        //转换文本
+        const messages = commonProcReq(OpenAITextChatTaskFormatter,opt);
 
         return {
             model             : model                    ,//模型id
-            prompt            : turboMessahge            ,//提示
+            prompt            : messages                 ,//提示
             max_tokens        : opt.max_tokens           ,//最大生成令牌数
             temperature       : opt.temperature          ,//temperature 权重控制 0为最准确 越大越偏离主题
             top_p             : opt.top_p                ,//top_p       权重控制 0为最准确 越大越偏离主题

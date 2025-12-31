@@ -7,7 +7,7 @@ import type { AnyOpenAIConversationLikeRespFormat } from "ResponseFormat";
 import type { ChatTaskFormatter } from 'Task/Chat/Adapter';
 import type { ThingBudget } from "Task/Interface";
 
-import { commonFormatResp, stringifyCalcToken } from "./Utils";
+import { commonFormatResp, commonProcReq, stringifyCalcToken } from "./Utils";
 
 
 export const OpenAIThinkMap = {
@@ -59,12 +59,11 @@ export const OpenAIConversationChatTaskFormatter:ChatTaskFormatter<OpenAIConvers
             return;
         }
 
-        let turboMessahge = OpenAIConversationChatTaskFormatter.transReq(opt.target,opt.messages);
-        turboMessahge = OpenAIConversationChatTaskFormatter.formatReq(opt.target,turboMessahge);
+        const messages = commonProcReq(OpenAIConversationChatTaskFormatter,opt);
 
         return {
             model                  : model                   ,//模型id
-            messages               : turboMessahge           ,//提示
+            messages               : messages                ,//提示
             max_completion_tokens  : opt.max_tokens          ,//最大生成令牌数
             reasoning_effort       : transOpenAIThinkBudget(model,opt.think_budget),
             temperature            : opt.temperature         ,//temperature 权重控制 0为最准确 越大越偏离主题
