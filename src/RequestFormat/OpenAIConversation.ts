@@ -2,6 +2,7 @@ import type { AnyString } from "@zwa73/utils";
 
 
 
+/** OpenAI 模型 ID 类型 */
 export type OpenAIModelID = AnyString
     | "gpt-5" | "gpt-5-mini" | "gpt-5-nano" | "gpt-5-pro" | `gpt-5-${number}-${number}-${number}` | `gpt-5-chat-${number}-${number}-${number}`
     | "gpt-5.1" | "gpt-5.1-chat-latest"
@@ -17,35 +18,51 @@ export type OpenAIModelID = AnyString
 
 
 
+/** OpenAI 推理努力程度 */
 export type OpenAIReasoningEffort = 'none'|'minimal'|'low'|'medium'|'high'|'xhigh';
-/**turbo模型配置 */
+/** OpenAI 对话请求格式 */
 export type OpenAIConversationRequestFormat=Partial<{
+    /** 模型名称 */
     model: string;
+    /** 消息列表 */
     messages: OpenAIConversationAPIEntry[];
-    /**最大生成令牌数 弃用转为max_completion_tokens */
+    /** 最大生成令牌数(已弃用，请使用 max_completion_tokens) */
     max_tokens: number;
-    /**最大生成令牌数 */
+    /** 最大完成令牌数 */
     max_completion_tokens: number;
-    /**思考预算 */
+    /** 推理努力程度 */
     reasoning_effort: OpenAIReasoningEffort;
+    /** 温度参数 */
     temperature: number;
+    /** Top-P 采样参数 */
     top_p: number;
+    /** 停止序列 */
     stop: string[]|null;
+    /** 存在惩罚 */
     presence_penalty: number;
+    /** 频率惩罚 */
     frequency_penalty: number;
+    /** Logit 偏置 */
     logit_bias: Record<string, number>|null;
+    /** 生成数量 */
     n: number;
 }>;
 
-/**用于Turbo模型的消息Entry */
+/** OpenAI 对话 API 消息条目 */
 export type OpenAIConversationAPIEntry={
+    /** 角色 */
     role: OpenAIConversationAPIRole;
+    /** 消息内容 */
     content:string;
 }
 
+/** OpenAI 对话 API 角色枚举 */
 export const OpenAIConversationAPIRole = {
+    /** 用户 */
     User:"user",
+    /** 助手 */
     Assistant:"assistant",
+    /** 系统 */
     System:"system",
 } as const;
 export type OpenAIConversationAPIRole = typeof OpenAIConversationAPIRole[keyof typeof OpenAIConversationAPIRole];

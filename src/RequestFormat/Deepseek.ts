@@ -2,23 +2,33 @@ import { OpenAIConversationAPIRole } from "./OpenAIConversation";
 
 
 
-/**Deepseek模型配置 */
+/** Deepseek 模型请求格式 */
 export type DeepseekRequestFormat=Partial<{
+    /** 模型名称 */
     model: string;
+    /** 消息列表 */
     messages: DeepseekAPIEntry[];
+    /** 最大生成 token 数 */
     max_tokens: number;
+    /** 温度参数 */
     temperature: number;
+    /** Top-P 采样参数 */
     top_p: number;
+    /** 停止序列 */
     stop: string[]|null;
+    /** 存在惩罚 */
     presence_penalty: number;
+    /** 频率惩罚 */
     frequency_penalty: number;
 }>;
 
-/**用于Deepseek模型的消息Entry */
+/** Deepseek API 消息条目 */
 export type DeepseekAPIEntry={
+    /** 角色 */
     role: OpenAIConversationAPIRole;
+    /** 消息内容 */
     content:string;
-    /**指定为前缀补全模式 */
+    /** 指定为前缀补全模式 */
     prefix?:boolean;
 }
 
