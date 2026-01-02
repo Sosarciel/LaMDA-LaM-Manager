@@ -1,21 +1,34 @@
-/**文本API回复格式 */
+/** OpenAI 文本 API 回复格式 */
 export type OpenAITextResponseFormat = {
+    /** 响应 ID */
     id: `cmpl-${string}`;
+    /** 对象类型 */
     object: "text_completion";
+    /** 创建时间戳 */
     created: number;
+    /** 模型名称 */
     model: string;
+    /** 选项列表 */
     choices: TextChoiceFormat[];
+    /** 用量统计 */
     usage: {
+        /** 提示 token 数量 */
         prompt_tokens: number;
+        /** 完成 token 数量 */
         completion_tokens: number;
+        /** 总 token 数量 */
         total_tokens: number;
     };
 };
-/**文本API选项格式 */
+/** 文本 API 选项格式 */
 type TextChoiceFormat = {
+    /** 文本内容 */
     text: string;
+    /** 索引 */
     index: number;
+    /** 对数概率 */
     logprobs: any;
+    /** 完成原因 */
     finish_reason: "stop" | "length";
 };
 
