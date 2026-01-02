@@ -1,12 +1,12 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import type { GeminiOption, GeminiApiData, GeminiAPIEntry } from "RequestFormat";
+import type { GeminiRequestFormat, GeminiApiData, GeminiAPIEntry } from "RequestFormat";
 import { GeminiAPIRole } from "RequestFormat";
-import type { GeminiRespFormat } from "ResponseFormat";
+import type { GeminiResponseFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import type { ChatTaskOption } from "Task/Chat/Interface";
-import type { ThingBudget } from "Task/Interface";
+import type { ThingBudget } from "Task/DataInterface";
 
 
 
@@ -47,7 +47,7 @@ export const combineMessage = (model:string,opt:ChatTaskOption)=>{
     return fxmsg;
 };
 
-export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOption,GeminiRespFormat> = {
+export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiRequestFormat,GeminiResponseFormat> = {
     formatOption(opt,model){
         //验证参数
         if(opt.messages==null){
@@ -64,8 +64,8 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
         const fxmsg = combineMessage(model,opt);
         const think_budget = transGeminiThinkBudget(model,opt.think_budget);
 
-        let turboMessahge = GeminiChatTaskFormatter.transReq(opt.target,fxmsg);
-        turboMessahge = GeminiChatTaskFormatter.formatReq(opt.target,turboMessahge);
+        let turboMessahge = GeminiChatTaskFormatter.buildMessage(opt.target,fxmsg);
+        turboMessahge = GeminiChatTaskFormatter.formatMessage(opt.target,turboMessahge);
 
         return {
             system_instruction:{parts:{text:turboMessahge.define}},
@@ -80,11 +80,11 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
                     includeThoughts:true,
                 }
             }
-        } satisfies GeminiOption;
+        } satisfies GeminiRequestFormat;
     },
     calcToken:lazyFunction(()=>stringifyCalcToken(GeminiChatTaskFormatter)),
     formatResult:lazyFunction(()=>commonFormatResp(GeminiChatTaskFormatter)),
-    transReq(chatTarget,messageList){
+    buildMessage(chatTarget,messageList){
         let desc = "";
         let inDesc = true;
         const narr:GeminiAPIEntry[] = [];
@@ -131,7 +131,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
             define:desc.trim(),
         };
     },
-    formatReq(chatTarget,chatList){
+    formatMessage(chatTarget,chatList){
         chatList.message.push({
             role:GeminiAPIRole.User,
             parts:[{text:`${chatTarget}:`}],
@@ -140,7 +140,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiOptio
     },
     formatResp:(resp)=>{
         //挑出非思考的文本内容
-        const cond = (v:GeminiRespFormat['candidates'][number]['content']['parts'][number])=>v.text && !v.thought;
+        const cond = (v:GeminiResponseFormat['candidates'][number]['content']['parts'][number])=>v.text && !v.thought;
         const choices = resp.candidates
             .filter(choice => choice?.content?.parts?.some(cond))
             .map(choice => ({ content: choice.content.parts.find(cond)?.text! }));

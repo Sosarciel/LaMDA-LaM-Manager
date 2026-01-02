@@ -1,7 +1,7 @@
 
 
 /**turbo模型配置 */
-export type OpenAITextOption = Partial<{
+export type OpenAITextRequestFormat = Partial<{
     model: string;
     prompt: string;
     max_tokens: number;

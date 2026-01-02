@@ -1,10 +1,8 @@
 import type { PromiseRetryResult } from "@zwa73/js-utils";
-import type { LogLevel, MPromise } from "@zwa73/utils";
+import type { LogLevel } from "@zwa73/utils";
 import { assertType } from "@zwa73/utils";
 
 import type { CredCategoryID } from "CredService";
-import type { AnyTextCompletionOption } from "RequestFormat";
-import type { AnyTextCompletionRespFormat } from "ResponseFormat";
 
 import type { ChatTaskInterface } from "./Chat";
 
@@ -56,34 +54,6 @@ export const DefChatLaMResult:TextCompletionResult = {completed:undefined,pendin
 
 /**文本完成通用结果 */
 export type TextCompletionResult = PromiseRetryResult<TextCompletionResp>;
-
-/**文本完成通用接口 */
-export type TextCompletionInterface = {
-    /**token编码
-     * @async
-     * @param str - 待编码的字符串
-     * @returns Token数组
-     */
-    encodeToken(str:string):Promise<number[]>
-    /**token解码
-      * @param arr = Token数组
-      * @returns 消息字符串
-      */
-    decodeToken(arr:number[]):Promise<string>
-    /**获取默认选项 */
-    getDefaultOption():TextCompletionOption;
-}
-
-/**文本完成任务通用格式化工具 */
-export type TextCompletionTaskFormatter<IOPT,
-OOPT extends AnyTextCompletionOption,
-FMT extends AnyTextCompletionRespFormat> = {
-     /**检查配置是否有效, 斌返回用于post的JObject */
-    formatOption:(opt:IOPT,model:string)=>MPromise<undefined|OOPT>;
-    /**转换结果为通用Resp包装 */
-    formatResult:(resp:PromiseRetryResult<FMT | undefined> | undefined)=>MPromise<TextCompletionResult>;
-}
-
 
 /**task接口 */
 export type TaskInterface = {

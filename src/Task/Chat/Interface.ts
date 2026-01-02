@@ -1,6 +1,6 @@
 import { preset } from "@zwa73/utils";
 
-import type { TextCompletionOption, TextCompletionResult } from "Task/Interface";
+import type { TextCompletionOption, TextCompletionResult } from "Task/DataInterface";
 
 
 /**聊天任务配置 */

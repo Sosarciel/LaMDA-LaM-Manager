@@ -1,9 +1,9 @@
-import type { PresetOption} from "@zwa73/utils";
+import type { PresetOption } from "@zwa73/utils";
 import { SLogger, UtilFunc } from "@zwa73/utils";
 
-import type { OpenAITextRespFormat } from "ResponseFormat";
-import type { ChatTaskInterface, LaMChatMessages} from "Task";
-import { ChatTaskOption, ChatTaskOptionPreset, MessageType, OpenAITextChatTaskFormatter } from "Task";
+import type { OpenAITextResponseFormat } from "ResponseFormat";
+import type { ChatTaskInterface, LaMChatMessages } from "Task";
+import { ChatTaskOptionPreset, OpenAITextChatTaskFormatter } from "Task";
 
 import type { TestModule } from "./Drive";
 
@@ -23,7 +23,7 @@ const getMockresp = ()=>{
         "model": "gpt-3.5-turbo-instruct" as any,
         "object": "text_completion",
         "usage": {"completion_tokens":4248,"prompt_tokens":1849,"total_tokens":6097}
-    } satisfies OpenAITextRespFormat;
+    } satisfies OpenAITextResponseFormat;
 };
 
 export const chatTaskCtor = (drive:TestModule) => {

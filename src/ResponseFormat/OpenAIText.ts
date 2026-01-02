@@ -1,5 +1,5 @@
 /**文本API回复格式 */
-export type OpenAITextRespFormat = {
+export type OpenAITextResponseFormat = {
     id: `cmpl-${string}`;
     object: "text_completion";
     created: number;
@@ -40,4 +40,4 @@ export const TemplateOpenAITextResponse = {
     model: "gpt-3.5-turbo-instruct",
     object: "text_completion",
     usage: { completion_tokens: 3289, prompt_tokens: 1849, total_tokens: 5138 },
-} satisfies OpenAITextRespFormat;
+} satisfies OpenAITextResponseFormat;

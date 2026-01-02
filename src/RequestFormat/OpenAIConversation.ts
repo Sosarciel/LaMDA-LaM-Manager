@@ -19,7 +19,7 @@ export type OpenAIModelID = AnyString
 
 export type OpenAIReasoningEffort = 'none'|'minimal'|'low'|'medium'|'high'|'xhigh';
 /**turbo模型配置 */
-export type OpenAIConversationOption=Partial<{
+export type OpenAIConversationRequestFormat=Partial<{
     model: string;
     messages: OpenAIConversationAPIEntry[];
     /**最大生成令牌数 弃用转为max_completion_tokens */

@@ -1,13 +1,13 @@
 import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
 
-import type { OpenAIConversationAPIEntry, OpenAIConversationOption } from "RequestFormat";
+import type { OpenAIConversationAPIEntry, OpenAIConversationRequestFormat } from "RequestFormat";
 import { OpenAIConversationAPIRole } from "RequestFormat";
-import type { AnyOpenAIConversationLikeRespFormat } from "ResponseFormat";
+import type { AnyOpenAIConversationLikeResponseFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from 'Task/Chat/Adapter';
-import type { ThingBudget } from "Task/Interface";
+import type { ThingBudget } from "Task/DataInterface";
 
-import { commonFormatResp, commonProcReq, stringifyCalcToken } from "./Utils";
+import { commonFormatResp, commonProcessMessage, stringifyCalcToken } from "./Utils";
 
 
 /**OpenAI 推理预算映射表
@@ -71,11 +71,11 @@ const getVersion = (model:string)=>{
 
 /**OpenAI 对话聊天任务格式化器类型定义 */
 type OpenAIConversationChatTaskFormatter = ChatTaskFormatter<
-    OpenAIConversationAPIEntry[],OpenAIConversationOption,AnyOpenAIConversationLikeRespFormat>;
+    OpenAIConversationAPIEntry[],OpenAIConversationRequestFormat,AnyOpenAIConversationLikeResponseFormat>;
 
 /**OpenAI 对话聊天任务基础定义 */
 export const OpenAIChatCompleteBase = {
-    transReq(chatTarget,messageList){
+    buildMessage(chatTarget,messageList){
         const narr:OpenAIConversationAPIEntry[] = [];
 
         //处理主消息列表
@@ -110,7 +110,7 @@ export const OpenAIChatCompleteBase = {
 
         return narr;
     },
-    formatReq(chatTarget,chatList){
+    formatMessage(chatTarget,chatList){
         chatList.push({
             role:OpenAIConversationAPIRole.System,
             content:`${chatTarget}:`,
@@ -148,7 +148,7 @@ export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskForma
             return;
         }
 
-        const messages = commonProcReq(OpenAIConversationChatTaskFormatter,opt);
+        const messages = commonProcessMessage(OpenAIConversationChatTaskFormatter,opt);
 
         return {
             model                  : model                   ,//模型id
@@ -162,7 +162,7 @@ export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskForma
             frequency_penalty      : hasReasoning(model) ? opt.frequency_penalty: undefined  ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
             logit_bias             : opt.logit_bias          ,//调整某token出现的概率 {"tokenid":-100~100}
             stop                   : hasReasoning(model) ? opt.stop : undefined,//停止序列,遭遇时将会停止生成的最多4个字符串,不支持某些思考模型
-        } satisfies OpenAIConversationOption;
+        } satisfies OpenAIConversationRequestFormat;
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence

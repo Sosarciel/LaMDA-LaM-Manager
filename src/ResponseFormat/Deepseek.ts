@@ -1,4 +1,4 @@
-export type DeepseekRespFormat = {
+export type DeepseekResponseFormat = {
     id: string;
     choices: ChatChoice[];
     created: number;
@@ -49,4 +49,4 @@ export const TemplateDeepseekResponse = {
         prompt_cache_miss_tokens: 2115,
     },
     system_fingerprint: "fp_8333852bec_prod0820_fp8_kvcache",
-} satisfies DeepseekRespFormat;
+} satisfies DeepseekResponseFormat;

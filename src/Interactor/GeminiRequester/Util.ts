@@ -3,7 +3,7 @@ import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
 
 import type { APIPrice, APIPriceResp, CredsData } from "CredService";
 import { CredManager } from "CredService";
-import type { AnyGeminiRespFormat, AnyGoogleErrorRespFormat } from "ResponseFormat";
+import type { AnyGeminiResponseFormat, AnyGoogleErrorResponseFormat } from "ResponseFormat";
 
 
 /**记录用量
@@ -11,7 +11,7 @@ import type { AnyGeminiRespFormat, AnyGoogleErrorRespFormat } from "ResponseForm
  * @param apiKeyName - 本次回复的APIkey
  */
 export const recordPrice = async(
-    respObj: AnyGeminiRespFormat | undefined,
+    respObj: AnyGeminiResponseFormat | undefined,
     price: APIPrice,
     accountData: CredsData,
 )=>{
@@ -37,7 +37,7 @@ export const recordPrice = async(
  * @returns 可用性
  */
 export const verifyResp = async (
-    respObj: AnyGeminiRespFormat|undefined,
+    respObj: AnyGeminiResponseFormat|undefined,
     accountData: CredsData
 ): Promise<PromiseStatus> => {
     if (respObj == undefined) return Failed;
@@ -45,7 +45,7 @@ export const verifyResp = async (
     if(!("error" in respObj))
         return Success;
 
-    const errorObj = respObj as AnyGoogleErrorRespFormat;
+    const errorObj = respObj as AnyGoogleErrorResponseFormat;
     const error = errorObj.error;
 
     SLogger.warn(`GeminiRequester.verifyResp 开始处理错误`);

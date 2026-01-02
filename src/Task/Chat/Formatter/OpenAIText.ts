@@ -1,15 +1,15 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import type { OpenAITextOption } from "RequestFormat";
-import type { OpenAITextRespFormat } from "ResponseFormat";
+import type { OpenAITextRequestFormat } from "RequestFormat";
+import type { OpenAITextResponseFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 
-import { commonCalcToken, commonFormatResp, commonProcReq } from "./Utils";
+import { commonCalcToken, commonFormatResp, commonProcessMessage } from "./Utils";
 
 
 
-export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOption,OpenAITextRespFormat>={
+export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextRequestFormat,OpenAITextResponseFormat>={
     formatOption(opt,model){
         //验证参数
         if(opt.messages==null){
@@ -22,7 +22,7 @@ export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOpti
         }
 
         //转换文本
-        const messages = commonProcReq(OpenAITextChatTaskFormatter,opt);
+        const messages = commonProcessMessage(OpenAITextChatTaskFormatter,opt);
 
         return {
             model             : model                    ,//模型id
@@ -36,14 +36,14 @@ export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOpti
             logit_bias        : opt.logit_bias           ,//调整某token出现的概率 {"tokenid":-100~100}
             //best_of         : best_of                  ,//产生n条候选消息，根据n返回n条最佳消息
             stop              : opt.stop                 ,//遭遇时将会停止生成的最多4个字符串 "1234"
-        } satisfies OpenAITextOption;
+        } satisfies OpenAITextRequestFormat;
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
     formatResult:lazyFunction(()=>commonFormatResp(OpenAITextChatTaskFormatter)),
     calcToken:lazyFunction(()=>commonCalcToken(OpenAITextChatTaskFormatter)),
-    transReq(chatTarget,messageList){
+    buildMessage(chatTarget,messageList){
         let ntext="";
 
         //处理主消息列表
@@ -59,7 +59,7 @@ export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextOpti
 
         return ntext.trim();
     },
-    formatReq(chatTarget,chatText){
+    formatMessage(chatTarget,chatText){
         return `${chatText}\n${chatTarget}:`;
     },
     formatResp:(resp)=>{

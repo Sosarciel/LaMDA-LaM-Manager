@@ -1,5 +1,5 @@
 /**聊天API回复格式 */
-export type OpenAIConversationRespFormat = {
+export type OpenAIConversationResponseFormat = {
     id: `chatcmpl-${string}`;
     object: "chat.completion";
     created: number;
@@ -52,4 +52,4 @@ export const TemplateOpenAIConversationResponse = {
             index: 1,
         },
     ],
-} satisfies OpenAIConversationRespFormat;
+} satisfies OpenAIConversationResponseFormat;

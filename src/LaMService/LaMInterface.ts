@@ -1,7 +1,6 @@
 import type { UnionToIntersection } from "@zwa73/js-utils";
 import type { ServiceInterface } from "@zwa73/service-manager";
 
-import type { AnyTextCompletionOption } from "RequestFormat";
 import type { TaskType } from "Task";
 import { TaskTypeList } from "Task";
 
@@ -13,8 +12,6 @@ import type { LaMDrive } from "@/src/ModelDrive/Interface";
  * 实现接口以供 LaMManager 统一调用
  */
 export type LaMInterface = ServiceInterface<ExpandDrive<LaMDrive>>;
-
-export type AnyLaMOption = AnyTextCompletionOption;
 
 /**添加前缀 */
 type PrefixObject<Prefix extends string, T extends {}> = {

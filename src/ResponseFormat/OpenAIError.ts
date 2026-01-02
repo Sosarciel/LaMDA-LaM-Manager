@@ -201,7 +201,7 @@ type NewApiQuota = ErrorRespFormat & {
 };
 
 /**所有错误格式的合集 */
-export type OpenAIErrorFormat = OverloadedError|OverloadedError2|RateLimitError1|QuotaError|
+export type OpenAIErrorResponseFormat = OverloadedError|OverloadedError2|RateLimitError1|QuotaError|
 InvalidKeyError|AuthSubrequestError|OtherError1|OtherError2|AccessTerminatedError|
 AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|ContentFilter|PromptBlock|BadCode|
 OneApiRequestFailed|NewApiError|NewApiQuota;

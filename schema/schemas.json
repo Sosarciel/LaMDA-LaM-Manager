@@ -169,7 +169,7 @@
 						"instance_table": {
 							"type": "object",
 							"additionalProperties": {
-								"$ref": "#/definitions/ServiceConfig<{HttpAPIModel:(d:HttpAPIModelData)=>Promise<ExpandDrive<HttpAPIModelDrive>>;Test:()=>Promise<ExpandDrive<TestModule>>;}>"
+								"$ref": "#/definitions/ServiceConfig%3C%7BHttpAPIModel%3A(d%3AHttpAPIModelData)%3D%3EPromise%3CExpandDrive%3CHttpAPIModelDrive%3E%3E%3BTest%3A()%3D%3EPromise%3CExpandDrive%3CTestModule%3E%3E%3B%7D%3E"
 							}
 						}
 					},
@@ -484,7 +484,8 @@
 								"low",
 								"max",
 								"mid",
-								"min"
+								"min",
+								"non"
 							],
 							"type": "string"
 						},

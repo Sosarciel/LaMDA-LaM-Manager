@@ -1,18 +1,18 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import type { DeepseekAPIEntry, DeepseekOption } from "RequestFormat";
-import type { DeepseekRespFormat } from "ResponseFormat";
+import type { DeepseekAPIEntry, DeepseekRequestFormat } from "RequestFormat";
+import type { DeepseekResponseFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 
 import { OpenAIChatCompleteBase } from "./OpenAIConversation";
-import { commonFormatResp, commonProcReq, stringifyCalcToken } from "./Utils";
+import { commonFormatResp, commonProcessMessage, stringifyCalcToken } from "./Utils";
 
 
 
 
 /**传统OpenAI系统提示模式的Formater */
-export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekOption,DeepseekRespFormat> = {
+export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequestFormat,DeepseekResponseFormat> = {
     ...OpenAIChatCompleteBase,
     formatOption(opt,model){
         //验证参数
@@ -25,7 +25,7 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
             return;
         }
 
-        const messages = commonProcReq(DeepseekChatTaskFormatter,opt);
+        const messages = commonProcessMessage(DeepseekChatTaskFormatter,opt);
 
         return {
             model             : model                       ,//模型id
@@ -36,7 +36,7 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
             presence_penalty  : opt.presence_penalty        ,//遭遇时将会停止生成的最多4个字符串 "1234"
             frequency_penalty : opt.frequency_penalty       ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
             stop              : opt.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
-        } satisfies DeepseekOption;
+        } satisfies DeepseekRequestFormat;
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence

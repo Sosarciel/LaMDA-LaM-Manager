@@ -1,8 +1,8 @@
 // MODULE:请求格式 API的原始请求格式 #LaMManager
-import type { DeepseekOption } from './Deepseek';
-import type { GeminiOption } from './Gemini';
-import type { OpenAIConversationOption } from './OpenAIConversation';
-import type { OpenAITextOption } from './OpenAIText';
+import type { DeepseekRequestFormat } from './Deepseek';
+import type { GeminiRequestFormat } from './Gemini';
+import type { OpenAIConversationRequestFormat } from './OpenAIConversation';
+import type { OpenAITextRequestFormat } from './OpenAIText';
 
 export * from './Deepseek';
 export * from './OpenAIConversation';
@@ -11,9 +11,9 @@ export * from './Gemini';
 export * from './GeminiCompat';
 
 
-export type AnyDeepseekOption = DeepseekOption;
-export type AnyOpenaiOption = OpenAIConversationOption|OpenAITextOption;
-export type AnyGeminiOption = GeminiOption;
+export type AnyDeepseekRequestFormat = DeepseekRequestFormat;
+export type AnyOpenaiRequestFormat = OpenAIConversationRequestFormat|OpenAITextRequestFormat;
+export type AnyGeminiRequestFormat = GeminiRequestFormat;
 
 /**任何文本完成模型的配置 */
-export type AnyTextCompletionOption = AnyDeepseekOption|AnyOpenaiOption|AnyGeminiOption;
+export type AnyTextCompletionRequestFormat = AnyDeepseekRequestFormat|AnyOpenaiRequestFormat|AnyGeminiRequestFormat;

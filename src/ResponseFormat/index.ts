@@ -1,8 +1,8 @@
 // MODULE:响应格式 API的原始响应格式 #LaMManager
-import type { DeepseekRespFormat } from './Deepseek';
-import type { GeminiRespFormat } from './Gemini';
-import type { OpenAIConversationRespFormat } from './OpenAIConversation';
-import type { OpenAITextRespFormat } from './OpenAIText';
+import type { DeepseekResponseFormat } from './Deepseek';
+import type { GeminiResponseFormat } from './Gemini';
+import type { OpenAIConversationResponseFormat } from './OpenAIConversation';
+import type { OpenAITextResponseFormat } from './OpenAIText';
 
 
 export * from './Deepseek';
@@ -13,13 +13,13 @@ export * from './OpenAIError';
 
 
 /**任何 OpenAI对话风格 API 接口的回复格式 */
-export type AnyOpenAIConversationLikeRespFormat = OpenAIConversationRespFormat|DeepseekRespFormat;
+export type AnyOpenAIConversationLikeResponseFormat = OpenAIConversationResponseFormat|DeepseekResponseFormat;
 
 /**任何 OpenAI API 接口的回复格式*/
-export type AnyOpenAIRespFormat = AnyOpenAIConversationLikeRespFormat|OpenAITextRespFormat;
+export type AnyOpenAIResponseFormat = AnyOpenAIConversationLikeResponseFormat|OpenAITextResponseFormat;
 
 /**任何 Gemini API 接口的回复格式 */
-export type AnyGeminiRespFormat = GeminiRespFormat;
+export type AnyGeminiResponseFormat = GeminiResponseFormat;
 
 /**任何 文本完成 API 接口的回复格式 */
-export type AnyTextCompletionRespFormat = AnyOpenAIRespFormat|GeminiRespFormat;
+export type AnyTextCompletionResponseFormat = AnyOpenAIResponseFormat|AnyGeminiResponseFormat;

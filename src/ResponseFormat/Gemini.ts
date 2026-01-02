@@ -48,7 +48,7 @@ type Quoya = {
     };
 };
 
-export type AnyGoogleErrorRespFormat = Quoya;
+export type AnyGoogleErrorResponseFormat = Quoya;
 
 type TextContent = {text: string,thoughtSignature?:string,thought?:boolean};
 type Candidate = {
@@ -79,7 +79,7 @@ type UsageMetadata = {
     thoughtsTokenCount: number
 }
 
-export type GeminiRespFormat = {
+export type GeminiResponseFormat = {
     candidates:Candidate[],
     usageMetadata:UsageMetadata,
     modelVersion:string,

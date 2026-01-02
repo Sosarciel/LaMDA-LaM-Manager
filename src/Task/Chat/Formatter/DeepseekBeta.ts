@@ -1,13 +1,13 @@
 import { SLogger, lazyFunction } from "@zwa73/utils";
 
-import type { DeepseekAPIEntry, DeepseekOption } from "RequestFormat";
+import type { DeepseekAPIEntry, DeepseekRequestFormat } from "RequestFormat";
 import { DeepseekAPIRole } from "RequestFormat";
-import type { DeepseekRespFormat } from "ResponseFormat";
+import type { DeepseekResponseFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 
 import { OpenAIChatCompleteBase } from "./OpenAIConversation";
-import { commonFormatResp, commonProcReq, stringifyCalcToken } from "./Utils";
+import { commonFormatResp, commonProcessMessage, stringifyCalcToken } from "./Utils";
 
 
 
@@ -22,7 +22,7 @@ function formatMessage(message?:string):string|undefined{
 }
 
 /**前缀续写模式的Formater */
-export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekOption,DeepseekRespFormat> = {
+export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequestFormat,DeepseekResponseFormat> = {
     formatOption(opt,model){
         //验证参数
         if(opt.messages==null){
@@ -34,7 +34,7 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
             return;
         }
 
-        const messages = commonProcReq(DeepseekBetaChatTaskFormatter,opt);
+        const messages = commonProcessMessage(DeepseekBetaChatTaskFormatter,opt);
 
         return {
             model             : model                       ,//模型id
@@ -45,14 +45,14 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
             presence_penalty  : opt.presence_penalty        ,//遭遇时将会停止生成的最多4个字符串 "1234"
             frequency_penalty : opt.frequency_penalty       ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
             stop              : opt.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
-        } satisfies DeepseekOption;
+        } satisfies DeepseekRequestFormat;
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
     formatResult:lazyFunction(()=>commonFormatResp(DeepseekBetaChatTaskFormatter)),
     calcToken:lazyFunction(()=>stringifyCalcToken(DeepseekBetaChatTaskFormatter)),
-    transReq(chatTarget,messageList){
+    buildMessage(chatTarget,messageList){
         const narr:DeepseekAPIEntry[] = [];
 
         //处理主消息列表
@@ -83,7 +83,7 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
 
         return narr;
     },
-    formatReq(chatTarget,chatList){
+    formatMessage(chatTarget,chatList){
         const out:DeepseekAPIEntry[] = [
             ...chatList,
             {

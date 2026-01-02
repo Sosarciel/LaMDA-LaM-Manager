@@ -3,7 +3,7 @@ import { OpenAIConversationAPIRole } from "./OpenAIConversation";
 
 
 /**Deepseek模型配置 */
-export type DeepseekOption=Partial<{
+export type DeepseekRequestFormat=Partial<{
     model: string;
     messages: DeepseekAPIEntry[];
     max_tokens: number;

@@ -1,7 +1,7 @@
 
 
 
-export type GeminiOption={
+export type GeminiRequestFormat={
     system_instruction:{parts:{text: string}},
     contents:GeminiAPIEntry[];
     generationConfig:{

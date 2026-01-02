@@ -3,14 +3,14 @@ import type { PresetOption } from "@zwa73/utils";
 import { preset } from "@zwa73/utils";
 
 import type { CredsData } from "CredService";
-import type { AnyLaMOption } from "LaMService";
 import type { HttpApiModelCategory } from "ModelDrive";
-import type { AnyTextCompletionRespFormat } from "ResponseFormat";
+import type { AnyTextCompletionRequestFormat } from "RequestFormat";
+import type { AnyTextCompletionResponseFormat } from "ResponseFormat";
 
 
 
 /**请求格式化工具 */
-export type Interactor<FMT extends AnyTextCompletionRespFormat = AnyTextCompletionRespFormat> = {
+export type Interactor<FMT extends AnyTextCompletionResponseFormat = AnyTextCompletionResponseFormat> = {
     /**向 openai模型 发送一个POST请求并接受数据
      * @async
      * @param partialOpt - 可选的参数
@@ -33,7 +33,7 @@ export type Interactor<FMT extends AnyTextCompletionRespFormat = AnyTextCompleti
 /**PostLaM参数 */
 export type PostLaMOption={
     /**传入的参数对象 */
-    postJson:AnyLaMOption;
+    postJson:AnyTextCompletionRequestFormat;
     /**账户数据 */
     accountData:CredsData;
     /**api价格 */

@@ -1,7 +1,7 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import type { GeminiCompatAPIEntry, GeminiCompatOption } from "RequestFormat";
-import type { OpenAIConversationRespFormat } from "ResponseFormat";
+import type { GeminiCompatAPIEntry, GeminiCompatRequestFormat } from "RequestFormat";
+import type { OpenAIConversationResponseFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 
@@ -11,7 +11,7 @@ import { commonFormatResp, stringifyCalcToken } from "./Utils";
 
 
 /**gemini的openai兼容api格式化工具 */
-export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatOption,OpenAIConversationRespFormat> = {
+export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatRequestFormat,OpenAIConversationResponseFormat> = {
     ...OpenAIChatCompleteBase,
     formatOption(opt,model){
         //验证参数
@@ -27,10 +27,10 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
         const fxmsg = combineMessage(model,opt);
         const think_budget = transGeminiThinkBudget(model,opt.think_budget);
 
-        let messages = GeminiCompatChatTaskFormatter.transReq(opt.target,fxmsg);
-        messages = GeminiCompatChatTaskFormatter.formatReq(opt.target,messages);
+        let messages = GeminiCompatChatTaskFormatter.buildMessage(opt.target,fxmsg);
+        messages = GeminiCompatChatTaskFormatter.formatMessage(opt.target,messages);
 
-        const obj:GeminiCompatOption = {
+        const obj:GeminiCompatRequestFormat = {
             model             : model                       ,//模型id
             messages          : messages                         ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
