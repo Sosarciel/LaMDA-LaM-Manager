@@ -379,7 +379,7 @@
 			"data": {
 				"config": {
 					"endpoint": "/v1/chat/completions",
-					"chat_formater": "google_chat_gptge_compat",
+					"chat_formater": "google_chat_compat",
 					"tokensizer": "cl100k_base",
 					"interactor": "openai",
 					"id": "gemini-2.5-pro-thinking",

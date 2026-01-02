@@ -39,6 +39,7 @@ export class LaMManagerMockServer{
         });
         return new Promise((resolve)=>server.listen(this.port, () => {
             console.log(`测试服务器开始运行于 http://localhost:${this.port}`);
+            this.server = server;
             resolve(server);
         }));
     }
