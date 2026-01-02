@@ -4,10 +4,11 @@ import type { GeminiCompatAPIEntry, GeminiCompatRequestFormat } from "RequestFor
 import type { OpenAIConversationResponseFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
+import { commonFormatResp } from "Task/Util";
 
 import { combineMessage, transGeminiThinkBudget } from "./Gemini";
 import { OpenAIChatCompleteBase } from "./OpenAIConversation";
-import { commonFormatResp, stringifyCalcToken } from "./Utils";
+import { stringifyCalcToken } from "./Utils";
 
 
 /**gemini的openai兼容api格式化工具 */

@@ -4,8 +4,9 @@ import type { OpenAITextRequestFormat } from "RequestFormat";
 import type { OpenAITextResponseFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
+import { commonFormatResp } from "Task/Util";
 
-import { commonCalcToken, commonFormatResp, commonProcessMessage } from "./Utils";
+import { commonCalcToken, commonProcessMessage } from "./Utils";
 
 
 

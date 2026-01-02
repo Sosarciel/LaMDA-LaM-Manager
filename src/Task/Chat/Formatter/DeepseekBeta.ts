@@ -5,9 +5,10 @@ import { DeepseekAPIRole } from "RequestFormat";
 import type { DeepseekResponseFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
+import { commonFormatResp } from "Task/Util";
 
 import { OpenAIChatCompleteBase } from "./OpenAIConversation";
-import { commonFormatResp, commonProcessMessage, stringifyCalcToken } from "./Utils";
+import { commonProcessMessage, stringifyCalcToken } from "./Utils";
 
 
 

@@ -7,10 +7,9 @@ import type { GeminiResponseFormat } from "ResponseFormat";
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import type { ChatTaskOption } from "Task/Chat/Interface";
 import type { ThingBudget } from "Task/DataInterface";
+import { commonFormatResp } from "Task/Util";
 
-
-
-import { commonFormatResp, stringifyCalcToken } from "./Utils";
+import { stringifyCalcToken } from "./Utils";
 
 /** Gemini的think_budget参数映射表*/
 export const GeminiThinkMap = {

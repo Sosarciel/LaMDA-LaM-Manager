@@ -6,8 +6,9 @@ import type { AnyOpenAIConversationLikeResponseFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from 'Task/Chat/Adapter';
 import type { ThingBudget } from "Task/DataInterface";
+import { commonFormatResp } from "Task/Util";
 
-import { commonFormatResp, commonProcessMessage, stringifyCalcToken } from "./Utils";
+import { commonProcessMessage, stringifyCalcToken } from "./Utils";
 
 
 /**OpenAI 推理预算映射表
