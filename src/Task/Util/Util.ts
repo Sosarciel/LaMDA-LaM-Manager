@@ -1,7 +1,8 @@
 import type { PromiseRetryResult } from "@zwa73/js-utils";
 
 import type { AnyTextCompletionResponseFormat } from "ResponseFormat";
-
+import type { TokensizerType } from "Tokensizer";
+import { getTokensizer } from "Tokensizer";
 
 import type { TextCompletionResult } from "Task/DataInterface";
 import { DefChatLaMResult } from "Task/DataInterface";
@@ -24,4 +25,10 @@ export const commonFormatResp = <FMT extends AnyTextCompletionResponseFormat>(
             return tool.formatResp(res);
         })
     };
+};
+
+/**通用的token计算函数 */
+export const commonCalcToken = async (message:string,tokensizerType:TokensizerType):Promise<number>=>{
+    const tokenizer = getTokensizer(tokensizerType);
+    return (await tokenizer.encode(message)).length;
 };

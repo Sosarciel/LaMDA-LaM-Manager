@@ -26,9 +26,9 @@ export type TextCompletionInterface = {
 export type TextCompletionTaskFormatter<IN,
 OUT extends AnyTextCompletionRequestFormat,
 FMT extends AnyTextCompletionResponseFormat> = {
-     /**检查配置是否有效, 斌返回用于post的JObject */
+     /**检查配置是否有效, 斌返回用于请求的JObject */
     formatOption:(opt:IN,model:string)=>MPromise<undefined|OUT>;
-    /**转换结果为通用Resp包装 */
+    /**转换结果为通用响应包装 */
     formatResult:(resp:PromiseRetryResult<FMT | undefined> | undefined)=>MPromise<TextCompletionResult>;
 }
 

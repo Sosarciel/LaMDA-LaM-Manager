@@ -6,7 +6,7 @@ import type { OpenAITextResponseFormat } from "ResponseFormat";
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";
 
-import { commonCalcToken, commonProcessMessage } from "./Utils";
+import { commonCalcTokenFactory, commonProcessMessage } from "./Utils";
 
 
 
@@ -43,7 +43,7 @@ export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextRequ
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
     formatResult:lazyFunction(()=>commonFormatResp(OpenAITextChatTaskFormatter)),
-    calcToken:lazyFunction(()=>commonCalcToken(OpenAITextChatTaskFormatter)),
+    calcToken:lazyFunction(()=>commonCalcTokenFactory(OpenAITextChatTaskFormatter)),
     buildMessage(chatTarget,messageList){
         let ntext="";
 

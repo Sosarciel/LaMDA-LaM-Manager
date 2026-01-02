@@ -12,10 +12,10 @@ import type { ChatTaskOption, LaMChatMessages } from "./Interface";
 
 /** 聊天任务格式化工具 */
 export type ChatTaskFormatter<MSG,
-OPT extends AnyTextCompletionRequestFormat,
-FMT extends AnyTextCompletionResponseFormat> =
-TextCompletionTaskFormatter<ChatTaskOption,OPT,FMT>&
-RespFormatter<FMT>&{
+REQ extends AnyTextCompletionRequestFormat,
+RES extends AnyTextCompletionResponseFormat> =
+TextCompletionTaskFormatter<ChatTaskOption,REQ,RES>&
+RespFormatter<RES>&{
     /**计算token */
     calcToken:(message:LaMChatMessages,tokensizerType:TokensizerType)=>MPromise<number>;
     /**转换一个模型所用的messageEntry

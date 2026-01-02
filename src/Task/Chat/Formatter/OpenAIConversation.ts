@@ -8,7 +8,7 @@ import type { ChatTaskFormatter } from 'Task/Chat/Adapter';
 import type { ThingBudget } from "Task/DataInterface";
 import { commonFormatResp } from "Task/Util";
 
-import { commonProcessMessage, stringifyCalcToken } from "./Utils";
+import { commonProcessMessage, stringifyCalcTokenFactory } from "./Utils";
 
 
 /**OpenAI 推理预算映射表
@@ -169,6 +169,6 @@ export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskForma
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
     formatResult:lazyFunction(()=>commonFormatResp(OpenAIConversationChatTaskFormatter)),
-    calcToken:lazyFunction(()=>stringifyCalcToken(OpenAIConversationChatTaskFormatter)),
+    calcToken:lazyFunction(()=>stringifyCalcTokenFactory(OpenAIConversationChatTaskFormatter)),
 };
 
