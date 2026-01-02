@@ -7,7 +7,7 @@ import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";
 
 import { OpenAIChatCompleteBase } from "./OpenAIConversation";
-import { commonProcessMessage, stringifyCalcTokenFactory } from "./Utils";
+import { commonProcessMessageWithOpt, stringifyCalcTokenFactory } from "./Utils";
 
 
 
@@ -26,7 +26,7 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
             return;
         }
 
-        const messages = commonProcessMessage(DeepseekChatTaskFormatter,opt);
+        const messages = commonProcessMessageWithOpt(DeepseekChatTaskFormatter,opt);
 
         return {
             model             : model                       ,//模型id

@@ -8,7 +8,7 @@ import type { ChatTaskFormatter } from 'Task/Chat/Adapter';
 import type { ThingBudget } from "Task/DataInterface";
 import { commonFormatResp } from "Task/Util";
 
-import { commonProcessMessage, stringifyCalcTokenFactory } from "./Utils";
+import { commonProcessMessageWithOpt, stringifyCalcTokenFactory } from "./Utils";
 
 
 /**OpenAI 推理预算映射表
@@ -149,7 +149,7 @@ export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskForma
             return;
         }
 
-        const messages = commonProcessMessage(OpenAIConversationChatTaskFormatter,opt);
+        const messages = commonProcessMessageWithOpt(OpenAIConversationChatTaskFormatter,opt);
 
         return {
             model                  : model                   ,//模型id

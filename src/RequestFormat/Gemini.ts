@@ -30,7 +30,7 @@ export const GeminiAPIRole = {
 } as const;
 export type GeminiAPIRole = typeof GeminiAPIRole[keyof typeof GeminiAPIRole];
 
-
+/**用于gemini api 的消息 */
 export type GeminiApiData = {
     message:GeminiAPIEntry[];
     define :string;

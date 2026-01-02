@@ -22,10 +22,17 @@ export const commonCalcTokenFactory = (tool:ChatTaskFormatter<string,any,any>)=>
         return await commonCalcToken(turboMessage,tokensizerType);
     };
 
+/**标准的请求文本转换工具 使用配置 */
+export const commonProcessMessageWithOpt = <T>(tool:ChatTaskFormatter<T,any,any>,opt:ChatTaskOption)=>{
+    return commonProcessMessage(tool,opt.target,opt.messages);
+};
+
 /**标准的请求文本转换工具 */
-export const commonProcessMessage = <T>(tool:ChatTaskFormatter<T,any,any>,opt:ChatTaskOption)=>{
-    const msg = tool.buildMessage(opt.target,opt.messages);
-    return tool.formatMessage(opt.target,msg);
+export const commonProcessMessage = <T>(
+    tool:ChatTaskFormatter<T,any,any>,target:string,message:LaMChatMessages
+)=>{
+    const buildMsg = tool.buildMessage(target,message);
+    return tool.formatMessage(target,buildMsg);
 };
 
 

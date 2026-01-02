@@ -8,7 +8,7 @@ import { commonFormatResp } from "Task/Util";
 
 import { combineMessage, transGeminiThinkBudget } from "./Gemini";
 import { OpenAIChatCompleteBase } from "./OpenAIConversation";
-import { stringifyCalcTokenFactory } from "./Utils";
+import { commonProcessMessage, stringifyCalcTokenFactory } from "./Utils";
 
 
 /**gemini的openai兼容api格式化工具 */
@@ -28,8 +28,7 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
         const fxmsg = combineMessage(model,opt);
         const think_budget = transGeminiThinkBudget(model,opt.think_budget);
 
-        let messages = GeminiCompatChatTaskFormatter.buildMessage(opt.target,fxmsg);
-        messages = GeminiCompatChatTaskFormatter.formatMessage(opt.target,messages);
+        const messages = commonProcessMessage(GeminiCompatChatTaskFormatter,opt.target,fxmsg);
 
         const obj:GeminiCompatRequestFormat = {
             model             : model                       ,//模型id

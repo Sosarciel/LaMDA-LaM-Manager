@@ -6,7 +6,7 @@ import type { OpenAITextResponseFormat } from "ResponseFormat";
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";
 
-import { commonCalcTokenFactory, commonProcessMessage } from "./Utils";
+import { commonCalcTokenFactory, commonProcessMessageWithOpt } from "./Utils";
 
 
 
@@ -23,7 +23,7 @@ export const OpenAITextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextRequ
         }
 
         //转换文本
-        const messages = commonProcessMessage(OpenAITextChatTaskFormatter,opt);
+        const messages = commonProcessMessageWithOpt(OpenAITextChatTaskFormatter,opt);
 
         return {
             model             : model                    ,//模型id

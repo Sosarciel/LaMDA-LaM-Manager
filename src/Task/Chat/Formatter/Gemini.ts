@@ -9,7 +9,7 @@ import type { ChatTaskOption } from "Task/Chat/Interface";
 import type { ThingBudget } from "Task/DataInterface";
 import { commonFormatResp } from "Task/Util";
 
-import { stringifyCalcTokenFactory } from "./Utils";
+import { commonProcessMessage, stringifyCalcTokenFactory } from "./Utils";
 
 /** Gemini的think_budget参数映射表*/
 export const GeminiThinkMap = {
@@ -63,12 +63,11 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiReque
         const fxmsg = combineMessage(model,opt);
         const think_budget = transGeminiThinkBudget(model,opt.think_budget);
 
-        let turboMessahge = GeminiChatTaskFormatter.buildMessage(opt.target,fxmsg);
-        turboMessahge = GeminiChatTaskFormatter.formatMessage(opt.target,turboMessahge);
+        const messages = commonProcessMessage(GeminiChatTaskFormatter,opt.target,fxmsg);
 
         return {
-            system_instruction:{parts:{text:turboMessahge.define}},
-            contents:turboMessahge.message,
+            system_instruction:{parts:{text:messages.define}},
+            contents:messages.message,
             generationConfig:{
                 stopSequences   :opt.stop         ?? undefined,
                 temperature     :opt.temperature  ?? undefined,
