@@ -29,10 +29,10 @@ export type LaMServiceJsonTable = ServiceManagerBaseConfig & {
 class _LaMManager{
     readonly sm;
     constructor(opt:LaMManagerOption){
-        const {tablePath} = opt;
+        const {serviceTable} = opt;
         this.sm = ServiceManager.from({
-            cfgPath:tablePath,
-            ctorTable:CtorTable
+            configTable:serviceTable,
+            ctorTable  :CtorTable
         });
     }
     /**获取指定实例的默认选项 */
@@ -109,7 +109,7 @@ const proxyCtor = (mgr:_LaMManager)=>{
 
 type LaMManagerOption = {
     /**配置文件路径 */
-    tablePath:string;
+    serviceTable:string|LaMServiceJsonTable;
 }
 /**语言模型管理器 需先调用init */
 export const LaMManager = UtilFunc.createInjectable({

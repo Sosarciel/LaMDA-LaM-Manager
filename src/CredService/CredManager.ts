@@ -5,7 +5,7 @@ import { AwaitInited, None, preset, SLogger, throwError, UtilFT, UtilFunc } from
 
 import { AccountManagerDrive } from "./Drive";
 import type { APIPriceResp, APIPrice, AccountData } from "./Interface";
-import type { CredCategoryJsonTable } from "./Schema.schema";
+import type { CredCategoryJsonTable, CredServiceJsonTable } from "./Schema.schema";
 
 
 
@@ -24,9 +24,9 @@ export type CredsData = ServiceInsPack<CredCtorTable>;
 
 const CredsManagerOption = preset<{
     /**配置表单路径 */
-    tablePath:string;
+    serviceTable:string|CredServiceJsonTable;
     /**类别表单路径 */
-    categoryTablePath:string;
+    categoryTable:string|CredCategoryJsonTable;
     /**自动保存间隔 毫秒 <10_000 时不自动保存 默认-1 */
     saveInterval:number;
 }>()({
@@ -40,11 +40,13 @@ class _CredManager implements NeedInit{
     inited;
     //#region 构造函数
     constructor(opt:PresetOption<typeof CredsManagerOption>){
-        const {categoryTablePath,tablePath,saveInterval} = CredsManagerOption.assign(opt);
-        this._categoryTable = UtilFT.loadJSONFile(categoryTablePath) as Promise<CredCategoryJsonTable>;
+        const {serviceTable,categoryTable,saveInterval} = CredsManagerOption.assign(opt);
+        this._categoryTable = typeof categoryTable == 'string'
+            ? UtilFT.loadJSONFile(categoryTable) as Promise<CredCategoryJsonTable>
+            : Promise.resolve(categoryTable);
         this.sm = ServiceManager.from({
-            cfgPath:tablePath,
-            ctorTable:CtorTable
+            configTable:serviceTable,
+            ctorTable  :CtorTable
         });
         this.inited = this.sm.inited;
         //自动保存
