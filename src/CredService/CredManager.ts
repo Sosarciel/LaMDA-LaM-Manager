@@ -1,7 +1,7 @@
 import type { ServiceInsPack } from "@zwa73/service-manager";
 import { ServiceManager } from "@zwa73/service-manager";
-import type { NeedInit, PresetOption } from "@zwa73/utils";
-import { AwaitInited, None, preset, SLogger, throwError, UtilFT, UtilFunc } from "@zwa73/utils";
+import type { DataStore, MPromise, NeedInit, PresetOption } from "@zwa73/utils";
+import { AwaitInited, None, preset, SLogger, throwError, UtilFunc } from "@zwa73/utils";
 
 import { AccountManagerDrive } from "./Drive";
 import type { APIPriceResp, APIPrice, AccountData } from "./Interface";
@@ -24,9 +24,9 @@ export type CredsData = ServiceInsPack<CredCtorTable>;
 
 const CredsManagerOption = preset<{
     /**配置表单路径 */
-    serviceTable:string|CredServiceJsonTable;
+    serviceTable:DataStore<CredServiceJsonTable>;
     /**类别表单路径 */
-    categoryTable:string|CredCategoryJsonTable;
+    categoryTable:DataStore<CredCategoryJsonTable>;
     /**自动保存间隔 毫秒 <10_000 时不自动保存 默认-1 */
     saveInterval:number;
 }>()({
@@ -41,9 +41,7 @@ class _CredManager implements NeedInit{
     //#region 构造函数
     constructor(opt:PresetOption<typeof CredsManagerOption>){
         const {serviceTable,categoryTable,saveInterval} = CredsManagerOption.assign(opt);
-        this._categoryTable = typeof categoryTable == 'string'
-            ? UtilFT.loadJSONFile(categoryTable) as Promise<CredCategoryJsonTable>
-            : Promise.resolve(categoryTable);
+        this._categoryTable = categoryTable.getData() as MPromise<CredCategoryJsonTable>;
         this.sm = ServiceManager.from({
             configTable:serviceTable,
             ctorTable  :CtorTable

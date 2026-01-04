@@ -1,6 +1,6 @@
 import type { ServiceConfig, ServiceManagerBaseConfig } from "@zwa73/service-manager";
 import { ServiceManager } from "@zwa73/service-manager";
-import type { AnyFunc, PRecord } from "@zwa73/utils";
+import type { AnyFunc, DataStore, PRecord } from "@zwa73/utils";
 import { None, SLogger, UtilFunc } from "@zwa73/utils";
 
 import type { HttpAPIModelData } from "ModelDrive";
@@ -109,7 +109,7 @@ const proxyCtor = (mgr:_LaMManager)=>{
 
 type LaMManagerOption = {
     /**配置文件路径 */
-    serviceTable:string|LaMServiceJsonTable;
+    serviceTable:DataStore<LaMServiceJsonTable>;
 }
 /**语言模型管理器 需先调用init */
 export const LaMManager = UtilFunc.createInjectable({
