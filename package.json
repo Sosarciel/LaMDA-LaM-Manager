@@ -1,6 +1,6 @@
 {
 	"name": "@sosraciel-lamda/lam-manager",
-	"version": "1.0.114",
+	"version": "1.0.115",
 	"exports": {
 		".": {
 			"require": "./dist/index.js",
@@ -31,10 +31,10 @@
 	],
 	"dependencies": {
 		"@anush008/tokenizers": "^0.0.0",
-		"@zwa73/js-utils": "^1.0.74",
+		"@zwa73/js-utils": "^1.0.77",
 		"@zwa73/modular-mixer": "^1.0.4",
-		"@zwa73/service-manager": "^1.0.27",
-		"@zwa73/utils": "^1.0.282",
+		"@zwa73/service-manager": "^1.0.28",
+		"@zwa73/utils": "^1.0.286",
 		"http-proxy-agent": "^5.0.0",
 		"https-proxy-agent": "^5.0.1",
 		"tiktoken": "^1.0.7"
