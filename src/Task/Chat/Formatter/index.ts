@@ -4,3 +4,4 @@ export * from './GeminiCompat';
 export * from './Gemini';
 export * from './OpenAIConversation';
 export * from './OpenAIText';
+export * from './DeepseekText';

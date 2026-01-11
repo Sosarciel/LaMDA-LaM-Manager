@@ -621,6 +621,7 @@
 			"enum": [
 				"deepseek_chat",
 				"deepseek_chat_beta",
+				"deepseek_text",
 				"google_chat",
 				"google_chat_compat",
 				"openai_chat",
