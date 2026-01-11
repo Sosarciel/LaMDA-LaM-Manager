@@ -1,7 +1,7 @@
 import type { ServiceInsPack } from "@zwa73/service-manager";
 import { ServiceManager } from "@zwa73/service-manager";
 import type { MPromise, NeedInit, ParseableDataStore, PresetOption } from "@zwa73/utils";
-import { AwaitInited, None, preset, SLogger, throwError, UtilDataStore, UtilFunc } from "@zwa73/utils";
+import { AwaitInited, None, preset, SLogger, throwError, UtilFunc } from "@zwa73/utils";
 
 import { AccountManagerDrive } from "./Drive";
 import type { APIPriceResp, APIPrice, AccountData } from "./Interface";
@@ -41,7 +41,7 @@ class _CredManager implements NeedInit{
     //#region 构造函数
     constructor(opt:PresetOption<typeof CredsManagerOption>){
         const {serviceTable,categoryTable,saveInterval} = CredsManagerOption.assign(opt);
-        this._categoryTable = UtilDataStore.parseDataStore(categoryTable).getData() as MPromise<CredCategoryJsonTable>;
+        this._categoryTable = UtilFunc.resolveDataStore(categoryTable).getData() as MPromise<CredCategoryJsonTable>;
         this.sm = ServiceManager.from({
             configTable:serviceTable,
             ctorTable  :CtorTable
