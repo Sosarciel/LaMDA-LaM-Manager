@@ -6,7 +6,7 @@ import type { AnyOpenAIConversationLikeResponseFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from 'Task/Chat/Adapter';
 import type { ThingBudget } from "Task/DataInterface";
-import { commonFormatResp } from "Task/Util";
+import { commonFormatResp, tokenifyLogitBias } from "Task/Util";
 
 import { commonProcessMessageWithOpt, stringifyCalcTokenFactory } from "./Utils";
 
@@ -49,14 +49,14 @@ const transOpenAIThinkBudget = (model:string,budget?:ThingBudget|null)=>{
 };
 
 /**检查模型是否支持 stop 参数
- *o 系列模型和 GPT-5 非聊天模型不支持 stop 参数
+ * o系列模型和 GPT-5 非聊天模型不支持 stop 参数
  * @param model - 模型标识符
  */
 const hasReasoning = (model:string)=>{
     //o系列与5+非chat都不支持stop
     if(/^o/.test(model) || (/gpt-5(\.\d)?-/.test(model) && !model.includes('chat')))
-        return false;
-    return true;
+        return true;
+    return false;
 };
 
 /**从模型标识符中提取版本号
@@ -138,7 +138,7 @@ export const OpenAIChatCompleteBase = {
 
 export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskFormatter={
     ...OpenAIChatCompleteBase,
-    formatOption(opt,model){
+    async formatOption(opt,{modelId,tokensizerType}){
         //验证参数
         if(opt.messages==null){
             SLogger.warn("TurboOptions 无效 messages为null");
@@ -151,18 +151,19 @@ export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskForma
 
         const messages = commonProcessMessageWithOpt(OpenAIConversationChatTaskFormatter,opt);
 
+        const isReasoning = hasReasoning(modelId);
         return {
-            model                  : model                   ,//模型id
+            model                  : modelId                 ,//模型id
             messages               : messages                ,//提示
             max_completion_tokens  : opt.max_tokens          ,//最大生成令牌数
-            reasoning_effort       : transOpenAIThinkBudget(model,opt.think_budget),//推理预算
+            reasoning_effort       : transOpenAIThinkBudget(modelId,opt.think_budget),//推理预算
             temperature            : opt.temperature         ,//temperature 权重控制 0为最准确 越大越偏离主题
             top_p                  : opt.top_p               ,//top_p       权重控制 0为最准确 越大越偏离主题
             n                      : opt.n                   ,//产生n条消息
-            presence_penalty       : hasReasoning(model) ? opt.presence_penalty : undefined  ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
-            frequency_penalty      : hasReasoning(model) ? opt.frequency_penalty: undefined  ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
-            logit_bias             : opt.logit_bias          ,//调整某token出现的概率 {"tokenid":-100~100}
-            stop                   : hasReasoning(model) ? opt.stop : undefined,//停止序列,遭遇时将会停止生成的最多4个字符串,不支持某些思考模型
+            presence_penalty       : isReasoning ? undefined : opt.presence_penalty   ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
+            frequency_penalty      : isReasoning ? undefined : opt.frequency_penalty  ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
+            logit_bias             : isReasoning ? undefined : await tokenifyLogitBias(opt.logit_bias,tokensizerType),//调整某token出现的概率 {"tokenid":-100~100}
+            stop                   : isReasoning ? undefined : opt.stop,//停止序列,遭遇时将会停止生成的最多4个字符串,不支持某些思考模型
         } satisfies OpenAIConversationRequestFormat;
 
         //频率惩罚计算函数

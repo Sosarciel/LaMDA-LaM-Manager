@@ -22,8 +22,12 @@ export type TextCompletionOption=Partial<{
     presence_penalty: number;
     /**频率惩罚 token每出现一次,出现概率就会受到一次惩罚 */
     frequency_penalty: number;
-    /**逻辑对数偏置 {"token":偏置值} 对特定token的出现率调整 */
-    logit_bias: Record<string, number>|null;
+    /**逻辑对数偏置 {"文本":偏置值} 对特定 文本 的出现率调整  
+     * 注意, 无需对文本tokenize  
+     * @example
+     * {"微笑":-10}
+     */
+    logit_bias: Record<string, number>|Record<string, number>[]|null;
     /**产生回复的数量 */
     n: number;
     /**思考token预算 模型将尽量保证思考链长度为此值 */

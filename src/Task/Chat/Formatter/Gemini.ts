@@ -47,7 +47,7 @@ export const combineMessage = (model:string,opt:ChatTaskOption)=>{
 };
 
 export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiRequestFormat,GeminiResponseFormat> = {
-    formatOption(opt,model){
+    formatOption(opt,{modelId,tokensizerType}){
         //验证参数
         if(opt.messages==null){
             SLogger.warn("GoogleChatOption 无效 messages为null");
@@ -60,8 +60,8 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiReque
 
 
         //gemini-3-pro在hist超过一定长度后think_budget参数在无额外提示的情况下会被忽略
-        const fxmsg = combineMessage(model,opt);
-        const think_budget = transGeminiThinkBudget(model,opt.think_budget);
+        const fxmsg = combineMessage(modelId,opt);
+        const think_budget = transGeminiThinkBudget(modelId,opt.think_budget);
 
         const messages = commonProcessMessage(GeminiChatTaskFormatter,opt.target,fxmsg);
 

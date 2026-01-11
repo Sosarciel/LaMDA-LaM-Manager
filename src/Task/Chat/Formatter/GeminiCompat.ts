@@ -14,7 +14,7 @@ import { commonProcessMessage, stringifyCalcTokenFactory } from "./Utils";
 /**gemini的openai兼容api格式化工具 */
 export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatRequestFormat,OpenAIConversationResponseFormat> = {
     ...OpenAIChatCompleteBase,
-    formatOption(opt,model){
+    formatOption(opt,{modelId,tokensizerType}){
         //验证参数
         if(opt.messages==null){
             SLogger.warn("GeminiCompat 无效 messages为null");
@@ -25,14 +25,14 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
             return;
         }
 
-        const fxmsg = combineMessage(model,opt);
-        const think_budget = transGeminiThinkBudget(model,opt.think_budget);
+        const fxmsg = combineMessage(modelId,opt);
+        const think_budget = transGeminiThinkBudget(modelId,opt.think_budget);
 
         const messages = commonProcessMessage(GeminiCompatChatTaskFormatter,opt.target,fxmsg);
 
         const obj:GeminiCompatRequestFormat = {
-            model             : model                       ,//模型id
-            messages          : messages                         ,//提示
+            model             : modelId                     ,//模型id
+            messages          : messages                    ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
             temperature       : opt.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题
             top_p             : opt.top_p                   ,//top_p       权重控制 0为最准确 越大越偏离主题

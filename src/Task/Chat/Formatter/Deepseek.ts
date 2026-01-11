@@ -15,7 +15,7 @@ import { commonProcessMessageWithOpt, stringifyCalcTokenFactory } from "./Utils"
 /**传统OpenAI系统提示模式的Formater */
 export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequestFormat,DeepseekResponseFormat> = {
     ...OpenAIChatCompleteBase,
-    formatOption(opt,model){
+    formatOption(opt,{modelId,tokensizerType}){
         //验证参数
         if(opt.messages==null){
             SLogger.warn("DeepseekChatOptions 无效 messages为null");
@@ -29,7 +29,7 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
         const messages = commonProcessMessageWithOpt(DeepseekChatTaskFormatter,opt);
 
         return {
-            model             : model                       ,//模型id
+            model             : modelId                     ,//模型id
             messages          : messages                    ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
             temperature       : opt.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题

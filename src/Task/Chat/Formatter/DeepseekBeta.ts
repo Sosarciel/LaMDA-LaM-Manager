@@ -24,7 +24,7 @@ function formatMessage(message?:string):string|undefined{
 
 /**前缀续写模式的Formater */
 export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequestFormat,DeepseekResponseFormat> = {
-    formatOption(opt,model){
+    formatOption(opt,{modelId,tokensizerType}){
         //验证参数
         if(opt.messages==null){
             SLogger.warn("DeepseekChatOptions 无效 messages为null");
@@ -38,7 +38,7 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
         const messages = commonProcessMessageWithOpt(DeepseekBetaChatTaskFormatter,opt);
 
         return {
-            model             : model                       ,//模型id
+            model             : modelId                     ,//模型id
             messages          : messages                    ,//提示
             max_tokens        : opt.max_tokens              ,//最大生成令牌数
             temperature       : opt.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题

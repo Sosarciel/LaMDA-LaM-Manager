@@ -56,7 +56,10 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
         }
         SLogger.info(`当前 account_category: ${accountData.instance.getData().cred_category} account_name: ${accountData.name}`);
 
-        const chatOption = await formatter.formatOption(opt,this.data.config.id);
+        const chatOption = await formatter.formatOption(opt,{
+            modelId:this.data.config.id,
+            tokensizerType:this.data.config.tokensizer
+        });
         if(chatOption===undefined) return DefChatLaMResult;
 
         //预处理option
