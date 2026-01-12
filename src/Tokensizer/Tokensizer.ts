@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 import { Tokenizer } from "@anush008/tokenizers";
-import type { NeedInit} from "@zwa73/utils";
+import type { NeedInit } from "@zwa73/utils";
 import { AwaitInited, ivk, UtilCodec } from "@zwa73/utils";
 import path from 'pathe';
 
