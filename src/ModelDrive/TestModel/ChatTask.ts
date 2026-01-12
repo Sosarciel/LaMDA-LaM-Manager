@@ -5,7 +5,7 @@ import type { OpenAITextResponseFormat } from "ResponseFormat";
 import type { ChatTaskInterface, LaMChatMessages } from "Task";
 import { ChatTaskOptionPreset, OpenAITextChatTaskFormatter } from "Task";
 
-import type { TestModule } from "./Drive";
+import type { TestModel } from "./Drive";
 
 
 
@@ -26,7 +26,7 @@ const getMockresp = ()=>{
     } satisfies OpenAITextResponseFormat;
 };
 
-export const chatTaskCtor = (drive:TestModule) => {
+export const chatTaskCtor = (drive:TestModel) => {
     return {
         async execute(opt: PresetOption<typeof ChatTaskOptionPreset>) {
             const fopt = ChatTaskOptionPreset.assign(opt);

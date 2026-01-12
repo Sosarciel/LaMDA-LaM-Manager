@@ -4,7 +4,7 @@ import type { AnyFunc, ParseableDataStore, PRecord } from "@zwa73/utils";
 import { None, SLogger, UtilFunc } from "@zwa73/utils";
 
 import type { HttpAPIModelData } from "ModelDrive";
-import { HttpAPIModelDrive, TestModule } from "ModelDrive";
+import { HttpAPIModelDrive, TestModel } from "ModelDrive";
 import type { TextCompletionOption, TaskType, TaskInterface } from "Task";
 
 import { DefaultDrive } from "@/src/ModelDrive/DefaultDrive";
@@ -17,7 +17,7 @@ import { expandDrive } from "./LaMInterface";
 
 const CtorTable = {
     HttpAPIModel : async (d:HttpAPIModelData)=> expandDrive(new HttpAPIModelDrive(d)),
-    Test         : async ()=> expandDrive(new TestModule()),
+    Test         : async ()=> expandDrive(new TestModel()),
 };
 /**用于实例加载 */
 export type LaMServiceJsonTable = ServiceManagerBaseConfig & {

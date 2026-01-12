@@ -9,7 +9,7 @@ import { chatTaskCtor } from "./ChatTask";
 
 
 /**测试模型 */
-export class TestModule extends DefaultDrive implements LaMDrive{
+export class TestModel extends DefaultDrive implements LaMDrive{
     chat = chatTaskCtor(this);
 
     async isRuning(){return true;}
