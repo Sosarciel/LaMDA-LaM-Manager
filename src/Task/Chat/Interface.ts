@@ -7,7 +7,7 @@ import type { TextCompletionOption, TextCompletionResult } from "Task/DataInterf
 export type ChatTaskOption = TextCompletionOption&{
     /**聊天的历史记录 */
     messages: LaMChatMessages;
-    /**聊天的目标名称 */
+    /**聊天的目标名称 用于判断消息role */
     target:string;
 }
 /**默认的聊天设置 */
