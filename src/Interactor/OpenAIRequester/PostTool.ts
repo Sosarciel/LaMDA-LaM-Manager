@@ -72,7 +72,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponseFormat> {
     async postLaMRepeat(partialOpt:PresetOption<typeof PostLaMOptionPreset>){
         //解构参数
         const opt = PostLaMOptionPreset.assign(partialOpt);
-        const retryOption = Object.assign({},
+        const retryOption = UtilFunc.assignOption({},
             PostLaMOptionPreset.default().retryOption,
             partialOpt.retryOption);
 
