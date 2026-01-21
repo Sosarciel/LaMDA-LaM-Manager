@@ -27,9 +27,10 @@ export type TextCompletionInterface = {
 export type TextCompletionTaskFormatter<IN,
 OUT extends AnyTextCompletionRequestFormat,
 FMT extends AnyTextCompletionResponseFormat> = {
-     /**检查配置是否有效, 斌返回用于请求的JObject */
-    formatOption:(opt:IN,modelData:{
-        modelId    :string;
+     /**检查配置是否有效, 并返回用于请求的JObject */
+    formatOption:(arg:{
+        option        :IN;
+        modelId       :string;
         tokensizerType:TokensizerType;
     })=>MPromise<undefined|OUT>;
     /**转换结果为通用响应包装 */

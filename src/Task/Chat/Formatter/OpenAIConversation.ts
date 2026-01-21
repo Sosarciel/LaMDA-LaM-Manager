@@ -76,11 +76,11 @@ type OpenAIConversationChatTaskFormatter = ChatTaskFormatter<
 
 /**OpenAI 对话聊天任务基础定义 */
 export const OpenAIChatCompleteBase = {
-    buildMessage(chatTarget,messageList){
+    buildMessage({target,messages,hint}){
         const narr:OpenAIConversationAPIEntry[] = [];
 
         //处理主消息列表
-        for(const item of messageList.list){
+        for(const item of messages){
             if(item.type=='desc'){
                 narr.push({
                     role:OpenAIConversationAPIRole.System,
@@ -91,7 +91,7 @@ export const OpenAIChatCompleteBase = {
                     role:OpenAIConversationAPIRole.System,
                     content:item.senderName+":"
                 });
-                if(item.senderName==chatTarget){
+                if(item.senderName==target){
                     narr.push({
                         role:OpenAIConversationAPIRole.Assistant,
                         content:item.content
@@ -106,17 +106,17 @@ export const OpenAIChatCompleteBase = {
         }
 
         //处理临时提示
-        if(messageList.tempPrompt!=null && messageList.tempPrompt.length>0)
-            narr[narr.length-1].content += messageList.tempPrompt;
+        if(hint!=null && hint.length>0)
+            narr[narr.length-1].content += hint;
 
         return narr;
     },
-    formatMessage(chatTarget,chatList){
-        chatList.push({
+    formatMessage({messages,target}){
+        messages.push({
             role:OpenAIConversationAPIRole.System,
-            content:`${chatTarget}:`,
+            content:`${target}:`,
         });
-        return chatList;
+        return messages;
     },
     formatResp:(resp)=>{
         if(!UtilFunc.checkSharpSchema(resp,{
@@ -138,32 +138,32 @@ export const OpenAIChatCompleteBase = {
 
 export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskFormatter={
     ...OpenAIChatCompleteBase,
-    async formatOption(opt,{modelId,tokensizerType}){
+    async formatOption({option,modelId,tokensizerType}){
         //验证参数
-        if(opt.messages==null){
+        if(option.messages==null){
             SLogger.warn("TurboOptions 无效 messages为null");
             return;
         }
-        if(opt.messages.list.length==0){
+        if(option.messages.length==0){
             SLogger.warn("TurboOptions 无效 messages长度不足");
             return;
         }
 
-        const messages = commonProcessMessageWithOpt(OpenAIConversationChatTaskFormatter,opt);
+        const messages = commonProcessMessageWithOpt({tool:OpenAIConversationChatTaskFormatter,option});
 
         const isReasoning = hasReasoning(modelId);
         return {
             model                  : modelId                 ,//模型id
             messages               : messages                ,//提示
-            max_completion_tokens  : opt.max_tokens          ,//最大生成令牌数
-            reasoning_effort       : transOpenAIThinkBudget(modelId,opt.think_budget),//推理预算
-            temperature            : opt.temperature         ,//temperature 权重控制 0为最准确 越大越偏离主题
-            top_p                  : opt.top_p               ,//top_p       权重控制 0为最准确 越大越偏离主题
-            n                      : opt.n                   ,//产生n条消息
-            presence_penalty       : isReasoning ? undefined : opt.presence_penalty   ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
-            frequency_penalty      : isReasoning ? undefined : opt.frequency_penalty  ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
-            logit_bias             : isReasoning ? undefined : await tokenifyLogitBias(opt.logit_bias,tokensizerType),//调整某token出现的概率 {"tokenid":-100~100}
-            stop                   : isReasoning ? undefined : opt.stop,//停止序列,遭遇时将会停止生成的最多4个字符串,不支持某些思考模型
+            max_completion_tokens  : option.max_tokens          ,//最大生成令牌数
+            reasoning_effort       : transOpenAIThinkBudget(modelId,option.think_budget),//推理预算
+            temperature            : option.temperature         ,//temperature 权重控制 0为最准确 越大越偏离主题
+            top_p                  : option.top_p               ,//top_p       权重控制 0为最准确 越大越偏离主题
+            n                      : option.n                   ,//产生n条消息
+            presence_penalty       : isReasoning ? undefined : option.presence_penalty   ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
+            frequency_penalty      : isReasoning ? undefined : option.frequency_penalty  ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
+            logit_bias             : isReasoning ? undefined : await tokenifyLogitBias(option.logit_bias,tokensizerType),//调整某token出现的概率 {"tokenid":-100~100}
+            stop                   : isReasoning ? undefined : option.stop,//停止序列,遭遇时将会停止生成的最多4个字符串,不支持某些思考模型
         } satisfies OpenAIConversationRequestFormat;
 
         //频率惩罚计算函数

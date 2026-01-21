@@ -9,6 +9,8 @@ export type ChatTaskOption = TextCompletionOption&{
     messages: LaMChatMessages;
     /**聊天的目标名称 用于判断消息role */
     target:string;
+    /**临时提示 */
+    hint?:string;
 }
 /**默认的聊天设置 */
 export const ChatTaskOptionPreset = preset<ChatTaskOption>()({
@@ -25,12 +27,7 @@ export const ChatTaskOptionPreset = preset<ChatTaskOption>()({
 });
 
 /**通用消息表 */
-export type LaMChatMessages = {
-    /**临时提示 */
-    tempPrompt?:string;
-    /**对话消息 */
-    list:(CharMessageEntry|SystemMessageEntry)[];
-}
+export type LaMChatMessages = (CharMessageEntry|SystemMessageEntry)[];
 
 /**角色消息对象 */
 export type CharMessageEntry={

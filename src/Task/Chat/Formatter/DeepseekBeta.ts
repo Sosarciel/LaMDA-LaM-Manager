@@ -24,28 +24,28 @@ function formatMessage(message?:string):string|undefined{
 
 /**前缀续写模式的Formater */
 export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequestFormat,DeepseekResponseFormat> = {
-    formatOption(opt,{modelId,tokensizerType}){
+    formatOption({option,modelId}){
         //验证参数
-        if(opt.messages==null){
+        if(option.messages==null){
             SLogger.warn("DeepseekChatOptions 无效 messages为null");
             return;
         }
-        if(opt.messages.list.length==0){
+        if(option.messages.length==0){
             SLogger.warn("DeepseekChatOptions 无效 messages长度不足");
             return;
         }
 
-        const messages = commonProcessMessageWithOpt(DeepseekBetaChatTaskFormatter,opt);
+        const messages = commonProcessMessageWithOpt({tool:DeepseekBetaChatTaskFormatter,option});
 
         return {
             model             : modelId                     ,//模型id
             messages          : messages                    ,//提示
-            max_tokens        : opt.max_tokens              ,//最大生成令牌数
-            temperature       : opt.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题
-            top_p             : opt.top_p                   ,//top_p       权重控制 0为最准确 越大越偏离主题
-            presence_penalty  : opt.presence_penalty        ,//遭遇时将会停止生成的最多4个字符串 "1234"
-            frequency_penalty : opt.frequency_penalty       ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
-            stop              : opt.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
+            max_tokens        : option.max_tokens              ,//最大生成令牌数
+            temperature       : option.temperature             ,//temperature 权重控制 0为最准确 越大越偏离主题
+            top_p             : option.top_p                   ,//top_p       权重控制 0为最准确 越大越偏离主题
+            presence_penalty  : option.presence_penalty        ,//遭遇时将会停止生成的最多4个字符串 "1234"
+            frequency_penalty : option.frequency_penalty       ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
+            stop              : option.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
         } satisfies DeepseekRequestFormat;
 
         //频率惩罚计算函数
@@ -53,18 +53,18 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
     },
     formatResult:lazyFunction(()=>commonFormatResp(DeepseekBetaChatTaskFormatter)),
     computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(DeepseekBetaChatTaskFormatter)),
-    buildMessage(chatTarget,messageList){
+    buildMessage({messages,target,hint}){
         const narr:DeepseekAPIEntry[] = [];
 
         //处理主消息列表
-        for(const item of messageList.list){
+        for(const item of messages){
             if(item.type=='desc'){
                 narr.push({
                     role:DeepseekAPIRole.System,
                     content:item.content
                 });
             }else{
-                if(item.senderName==chatTarget){
+                if(item.senderName==target){
                     narr.push({
                         role:DeepseekAPIRole.Assistant,
                         content:item.senderName+":"+item.content
@@ -79,17 +79,17 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
         }
 
         //处理临时提示
-        if(messageList.tempPrompt!=null && messageList.tempPrompt.length>0)
-            narr[narr.length-1].content += messageList.tempPrompt;
+        if(hint!=null && hint.length>0)
+            narr[narr.length-1].content += hint;
 
         return narr;
     },
-    formatMessage(chatTarget,chatList){
+    formatMessage({messages,target}){
         const out:DeepseekAPIEntry[] = [
-            ...chatList,
+            ...messages,
             {
                 role:DeepseekAPIRole.Assistant,
-                content:chatTarget+":",
+                content:target+":",
                 prefix:true
             }
         ];

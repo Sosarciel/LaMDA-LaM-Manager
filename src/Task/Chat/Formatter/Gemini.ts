@@ -35,46 +35,49 @@ export const transGeminiThinkBudget =  (modid:string,budget?:ThingBudget|null)=>
  * @param model - 模型ID
  * @param opt   - 任务参数
  */
-export const combineMessage = (model:string,opt:ChatTaskOption)=>{
-    const fxmsg = {...opt.messages};
+export const combineHint = (model:string,opt:ChatTaskOption)=>{
     const think_budget = transGeminiThinkBudget(model,opt.think_budget);
     if(think_budget!=undefined && (
         /gemini-3-pro/.test(model) ||
         /gemini-2.5-pro/.test(model)
-    )) fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(limit_thought_tokens_to_under_${think_budget}_words)`;
-        //fxmsg.tempPrompt = `${fxmsg.tempPrompt??''}(think_of_reason_tokens_briefly_no_more_than_${opt.think_budget}_words)`;
-    return fxmsg;
+    )) return `${opt.hint??''}(limit_thought_tokens_to_under_${think_budget}_words)`;
+    return opt.hint;
 };
 
 export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiRequestFormat,GeminiResponseFormat> = {
-    formatOption(opt,{modelId,tokensizerType}){
+    formatOption({option,modelId}){
         //验证参数
-        if(opt.messages==null){
+        if(option.messages==null){
             SLogger.warn("GoogleChatOption 无效 messages为null");
             return;
         }
-        if(opt.messages.list.length==0){
+        if(option.messages.length==0){
             SLogger.warn("GoogleChatOption 无效 messages长度不足");
             return;
         }
 
 
         //gemini-3-pro在hist超过一定长度后think_budget参数在无额外提示的情况下会被忽略
-        const fxmsg = combineMessage(modelId,opt);
-        const think_budget = transGeminiThinkBudget(modelId,opt.think_budget);
+        const fxhint = combineHint(modelId,option);
+        const think_budget = transGeminiThinkBudget(modelId,option.think_budget);
 
-        const messages = commonProcessMessage(GeminiChatTaskFormatter,opt.target,fxmsg);
+        const messages = commonProcessMessage({
+            tool:GeminiChatTaskFormatter,
+            target:option.target,
+            hint:fxhint,
+            messages:option.messages,
+        });
 
         return {
             system_instruction:{parts:{text:messages.define}},
             contents:messages.message,
             generationConfig:{
-                stopSequences   :opt.stop         ?? undefined,
-                temperature     :opt.temperature  ?? undefined,
-                maxOutputTokens :opt.max_tokens   ?? undefined,
-                topP            :opt.top_p        ?? undefined,
+                stopSequences   :option.stop         ?? undefined,
+                temperature     :option.temperature  ?? undefined,
+                maxOutputTokens :option.max_tokens   ?? undefined,
+                topP            :option.top_p        ?? undefined,
                 thinkingConfig: {
-                    thinkingBudget:opt.think_budget ? think_budget : undefined,
+                    thinkingBudget:option.think_budget ? think_budget : undefined,
                     includeThoughts:true,
                 }
             }
@@ -82,13 +85,13 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiReque
     },
     computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(GeminiChatTaskFormatter)),
     formatResult:lazyFunction(()=>commonFormatResp(GeminiChatTaskFormatter)),
-    buildMessage(chatTarget,messageList){
+    buildMessage({target,messages,hint}){
         let desc = "";
         let inDesc = true;
         const narr:GeminiAPIEntry[] = [];
 
         //处理主消息列表
-        for(const item of messageList.list){
+        for(const item of messages){
             if(item.type=='desc'){
                 //头部说明直接合并
                 if(inDesc){
@@ -107,7 +110,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiReque
                     role:GeminiAPIRole.User,
                     parts:[{text:item.senderName+":"}]
                 });
-                if(item.senderName==chatTarget){
+                if(item.senderName==target){
                     narr.push({
                         role:GeminiAPIRole.Model,
                         parts:[{text:item.content}]
@@ -122,19 +125,19 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiReque
         }
 
         //处理临时提示
-        if(messageList.tempPrompt!=null && messageList.tempPrompt.length>0)
-            narr[narr.length-1].parts[0].text += messageList.tempPrompt;
+        if(hint!=null && hint.length>0)
+            narr[narr.length-1].parts[0].text += hint;
         return {
             message:narr,
             define:desc.trim(),
         };
     },
-    formatMessage(chatTarget,chatList){
-        chatList.message.push({
+    formatMessage({target,messages}){
+        messages.message.push({
             role:GeminiAPIRole.User,
-            parts:[{text:`${chatTarget}:`}],
+            parts:[{text:`${target}:`}],
         });
-        return chatList;
+        return messages;
     },
     formatResp:(resp)=>{
         //挑出非思考的文本内容

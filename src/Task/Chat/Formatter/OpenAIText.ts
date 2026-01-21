@@ -15,24 +15,24 @@ type OpenAITextChatTaskFormatter = ChatTaskFormatter<string,OpenAITextRequestFor
 
 /**OpenAI 文本聊天任务基础定义 */
 export const OpenAITextCompleteBase = {
-    buildMessage(chatTarget,messageList){
+    buildMessage({messages,target,hint}){
         let ntext="";
 
         //处理主消息列表
-        for(const item of messageList.list){
+        for(const item of messages){
             ntext=item.type=='desc'
             ? `${ntext}\n${item.content}`
             : `${ntext}\n${item.senderName}:${item.content}`;
         }
 
         //处理临时提示
-        if(messageList.tempPrompt!=null && messageList.tempPrompt.length>0)
-            ntext += messageList.tempPrompt;
+        if(hint!=null && hint.length>0)
+            ntext += hint;
 
         return ntext.trim();
     },
-    formatMessage(chatTarget,chatText){
-        return `${chatText}\n${chatTarget}:`;
+    formatMessage({messages,target}){
+        return `${messages}\n${target}:`;
     },
     formatResp:(resp)=>{
         // 提取 choices 列表
@@ -49,32 +49,32 @@ export const OpenAITextCompleteBase = {
 
 export const OpenAITextChatTaskFormatter:OpenAITextChatTaskFormatter={
     ...OpenAITextCompleteBase,
-    async formatOption(opt,{modelId,tokensizerType}){
+    async formatOption({option,modelId,tokensizerType}){
         //验证参数
-        if(opt.messages==null){
+        if(option.messages==null){
             SLogger.warn("OpenAITextChatTaskFormatter Options 无效 messages为null");
             return;
         }
-        if(opt.messages.list.length==0){
+        if(option.messages.length==0){
             SLogger.warn("OpenAITextChatTaskFormatter Options 无效 messages长度不足");
             return;
         }
 
         //转换文本
-        const messages = commonProcessMessageWithOpt(OpenAITextChatTaskFormatter,opt);
+        const messages = commonProcessMessageWithOpt({tool:OpenAITextChatTaskFormatter,option});
 
         return {
             model             : modelId                  ,//模型id
             prompt            : messages                 ,//提示
-            max_tokens        : opt.max_tokens           ,//最大生成令牌数
-            temperature       : opt.temperature          ,//temperature 权重控制 0为最准确 越大越偏离主题
-            top_p             : opt.top_p                ,//top_p       权重控制 0为最准确 越大越偏离主题
-            n                 : opt.n                    ,//产生n条消息
-            presence_penalty  : opt.presence_penalty     ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
-            frequency_penalty : opt.frequency_penalty    ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
-            logit_bias        : await tokenifyLogitBias(opt.logit_bias,tokensizerType) ,//调整某token出现的概率 {"tokenid":-100~100}
+            max_tokens        : option.max_tokens           ,//最大生成令牌数
+            temperature       : option.temperature          ,//temperature 权重控制 0为最准确 越大越偏离主题
+            top_p             : option.top_p                ,//top_p       权重控制 0为最准确 越大越偏离主题
+            n                 : option.n                    ,//产生n条消息
+            presence_penalty  : option.presence_penalty     ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
+            frequency_penalty : option.frequency_penalty    ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
+            logit_bias        : await tokenifyLogitBias(option.logit_bias,tokensizerType) ,//调整某token出现的概率 {"tokenid":-100~100}
             //best_of         : best_of                  ,//产生n条候选消息，根据n返回n条最佳消息
-            stop              : opt.stop                 ,//遭遇时将会停止生成的最多4个字符串 "1234"
+            stop              : option.stop                 ,//遭遇时将会停止生成的最多4个字符串 "1234"
         } satisfies OpenAITextRequestFormat;
 
         //频率惩罚计算函数

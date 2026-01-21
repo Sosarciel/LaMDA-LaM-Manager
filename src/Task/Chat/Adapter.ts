@@ -19,16 +19,17 @@ RespFormatter<RES>&{
     /**计算token */
     computeTokenCount:(message:LaMChatMessages,tokensizerType:TokensizerType)=>MPromise<number>;
     /**转换一个模型所用的messageEntry
-     * @param chatTarget      - 聊天目标名
-     * @param messageList     - 待转换的通用消息列表
+     * @param target      - 聊天目标名
+     * @param messages    - 待转换的通用消息列表
+     * @param hint        - 临时提示
      */
-    buildMessage(chatTarget:string,messageList:LaMChatMessages): MSG;
+    buildMessage(params:{target:string,messages:LaMChatMessages,hint?:string}): MSG;
     /**给聊天信息加上询问格式, 让模型稳定输出
-     * @param chatTarget - 聊天目标
-     * @param chatList   - 待格式化的聊天信息
+     * @param target    - 聊天目标
+     * @param messages  - 待格式化的聊天信息
      * @returns 完成格式化 可以进行post的聊天信息
      */
-    formatMessage(chatTarget:string,chatList:MSG):MSG;
+    formatMessage(params:{target:string,messages:MSG}):MSG;
 };
 
 export const ChatTaskFormaterTable = {
