@@ -23,13 +23,13 @@ RespFormatter<RES>&{
      * @param messages    - 待转换的通用消息列表
      * @param hint        - 临时提示
      */
-    buildMessage(params:{target:string,messages:LaMChatMessages,hint?:string}): MSG;
+    buildMessage(param:{target:string,messages:LaMChatMessages,hint?:string}): MSG;
     /**给聊天信息加上询问格式, 让模型稳定输出
      * @param target    - 聊天目标
      * @param messages  - 待格式化的聊天信息
      * @returns 完成格式化 可以进行post的聊天信息
      */
-    formatMessage(params:{target:string,messages:MSG}):MSG;
+    formatMessage(param:{target:string,messages:MSG}):MSG;
 };
 
 export const ChatTaskFormaterTable = {
