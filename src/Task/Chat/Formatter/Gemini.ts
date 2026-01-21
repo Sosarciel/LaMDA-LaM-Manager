@@ -1,7 +1,7 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
 import type { GeminiRequestFormat, GeminiApiData, GeminiAPIEntry } from "RequestFormat";
-import { GeminiAPIRole } from "RequestFormat";
+import { GeminiAPIRole, GeminiHarmCategoryList } from "RequestFormat";
 import type { GeminiResponseFormat } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
@@ -10,6 +10,8 @@ import type { ThingBudget } from "Task/DataInterface";
 import { commonFormatResp } from "Task/Util";
 
 import { commonProcessMessage, stringifyComputeTokenCountFactory } from "./Utils";
+
+
 
 /** Gemini的think_budget参数映射表*/
 export const GeminiThinkMap = {
@@ -43,6 +45,8 @@ export const combineHint = (model:string,opt:ChatTaskOption)=>{
     )) return `${opt.hint??''}(limit_thought_tokens_to_under_${think_budget}_words)`;
     return opt.hint;
 };
+
+const AllOff = GeminiHarmCategoryList.map(v=>({category:v,threshold:"OFF"}) as const);
 
 export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiRequestFormat,GeminiResponseFormat> = {
     formatOption({option,modelId}){
@@ -80,7 +84,8 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiReque
                     thinkingBudget:option.think_budget ? think_budget : undefined,
                     includeThoughts:true,
                 }
-            }
+            },
+            //safetySettings:AllOff
         } satisfies GeminiRequestFormat;
     },
     computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(GeminiChatTaskFormatter)),

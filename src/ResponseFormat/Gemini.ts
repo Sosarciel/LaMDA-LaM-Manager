@@ -43,7 +43,7 @@ const resap = {
 
 
 /** Google 错误响应格式 */
-type Quoya = {
+type Quota = {
     /** 错误信息 */
     error: {
         /** 错误代码 */
@@ -55,7 +55,17 @@ type Quoya = {
     };
 };
 
-export type AnyGoogleErrorResponseFormat = Quoya;
+/** VApi */
+type VApiPromptBlock = {
+    error: {
+        message: "request blocked by Gemini API: PROHIBITED_CONTENT (request id: 2026012206320433752195474186362)";
+        type: "v_api_error";
+        param: "";
+        code: "prompt_blocked";
+    };
+};
+
+export type AnyGoogleErrorResponseFormat = Quota|VApiPromptBlock;
 
 /** 文本内容 */
 type TextContent = {

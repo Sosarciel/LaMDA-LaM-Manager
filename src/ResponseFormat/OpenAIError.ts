@@ -163,7 +163,8 @@ type BadCode = ErrorRespFormat & {
     };
 };
 
-type PromptBlock = ErrorRespFormat&{
+/** gptge提示词阻拦 */
+type VApiPromptBlock = ErrorRespFormat&{
     error: {
         message: "request blocked by Gemini API: PROHIBITED_CONTENT  (request id: 2025112323102079161323703192322)";
         type: "v_api_error";
@@ -172,6 +173,7 @@ type PromptBlock = ErrorRespFormat&{
     };
 };
 
+/** 转发api请求失败 */
 type OneApiRequestFailed = ErrorRespFormat & {
     error: {
         message: 'do request failed: Post "https://api.open-proxy.cn/v1/chat/completions": unexpected EOF (request id: 2025120200210529140123796977233)';
@@ -191,6 +193,7 @@ type NewApiError = ErrorRespFormat&{
     }
 }
 
+/**转发API限额 通常非真实限额而是系统故障 */
 type NewApiQuota = ErrorRespFormat & {
     error: {
         message: "用户额度不足, 剩余额度: ＄-0.003902 (request id: 202512131514256181461144rZFXvw3) (request id: 2025121315142517238973603614606)";
@@ -203,5 +206,5 @@ type NewApiQuota = ErrorRespFormat & {
 /**所有错误格式的合集 */
 export type OpenAIErrorResponseFormat = OverloadedError|OverloadedError2|RateLimitError1|QuotaError|
 InvalidKeyError|AuthSubrequestError|OtherError1|OtherError2|AccessTerminatedError|
-AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|ContentFilter|PromptBlock|BadCode|
+AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|ContentFilter|VApiPromptBlock|BadCode|
 OneApiRequestFailed|NewApiError|NewApiQuota;

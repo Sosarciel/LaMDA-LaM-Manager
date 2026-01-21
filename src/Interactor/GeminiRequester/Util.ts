@@ -53,6 +53,9 @@ export const verifyResp = async (
         case 429:
             SLogger.warn("达到限额");
             return Terminated;
+        case "prompt_blocked":
+            SLogger.warn("VApi提示词被阻拦");
+            return Terminated;
         default:
             SLogger.error("未定义的错误类型");
             return Terminated;
