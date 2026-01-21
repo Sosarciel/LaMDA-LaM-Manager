@@ -7,7 +7,7 @@ import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";
 
 import { OpenAITextCompleteBase } from "./OpenAIText";
-import { commonCalcTokenFactory, commonProcessMessageWithOpt } from "./Utils";
+import { commonComputeTokenCountFactory, commonProcessMessageWithOpt } from "./Utils";
 
 
 
@@ -42,11 +42,11 @@ export const DeepseekTextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextRe
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
     formatResult:lazyFunction(()=>commonFormatResp(DeepseekTextChatTaskFormatter)),
-    calcToken:lazyFunction(()=>commonCalcTokenFactory(DeepseekTextChatTaskFormatter)),
+    computeTokenCount:lazyFunction(()=>commonComputeTokenCountFactory(DeepseekTextChatTaskFormatter)),
 };
 
 //void (async ()=>{
-//    console.log(await OpenAITextChatFormater.calcToken(new LaMChatMessages({
+//    console.log(await OpenAITextChatFormater.computeToken(new LaMChatMessages({
 //        type:MessageType.DESC,
 //        content:"你好，我的民资是"
 //    }),"deepseek"))

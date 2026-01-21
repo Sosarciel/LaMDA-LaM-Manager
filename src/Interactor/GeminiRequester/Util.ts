@@ -23,7 +23,7 @@ export const recordPrice = async(
             prompt_tokens    :usageObj.promptTokenCount??0,
         };
         //增加token数据
-        await CredManager.calcPrice(accountData,price,usageResp);
+        await CredManager.computePrice(accountData,price,usageResp);
         //打印理论的当前使用量
         await CredManager.currUsedUSD(accountData);
     }else SLogger.error(`GeminiPostTool.postLaM 警告 无法计费 未找到 usage, respObj:\n${respObj}`);

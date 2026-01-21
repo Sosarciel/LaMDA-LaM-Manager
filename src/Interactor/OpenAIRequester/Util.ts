@@ -33,7 +33,7 @@ export const recordPrice = async(
     usageResp.prompt_cache_miss_tokens = usageObj.prompt_cache_miss_tokens;
 
     //增加token数据
-    await CredManager.calcPrice(accountData,price,usageResp);
+    await CredManager.computePrice(accountData,price,usageResp);
     //打印理论的当前使用量
     await CredManager.currUsedUSD(accountData);
     return;

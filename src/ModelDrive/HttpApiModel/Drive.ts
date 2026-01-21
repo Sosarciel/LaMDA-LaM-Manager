@@ -75,7 +75,7 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
         if(fixedOption===undefined) return DefChatLaMResult;
 
         if(opt.log_level!='none'){
-            SLogger.log(opt.log_level,`参数: ${UtilFunc.stringifyJToken(fixedOption,{compress:true,space:2})}`);
+            SLogger.log(opt.log_level??'none',`参数: ${UtilFunc.stringifyJToken(fixedOption,{compress:true,space:2})}`);
         }
 
         //重复请求

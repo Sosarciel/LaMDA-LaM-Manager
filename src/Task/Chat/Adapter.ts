@@ -17,7 +17,7 @@ RES extends AnyTextCompletionResponseFormat> =
 TextCompletionTaskFormatter<ChatTaskOption,REQ,RES>&
 RespFormatter<RES>&{
     /**计算token */
-    calcToken:(message:LaMChatMessages,tokensizerType:TokensizerType)=>MPromise<number>;
+    computeTokenCount:(message:LaMChatMessages,tokensizerType:TokensizerType)=>MPromise<number>;
     /**转换一个模型所用的messageEntry
      * @param chatTarget      - 聊天目标名
      * @param messageList     - 待转换的通用消息列表

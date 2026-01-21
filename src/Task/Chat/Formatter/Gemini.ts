@@ -9,7 +9,7 @@ import type { ChatTaskOption } from "Task/Chat/Interface";
 import type { ThingBudget } from "Task/DataInterface";
 import { commonFormatResp } from "Task/Util";
 
-import { commonProcessMessage, stringifyCalcTokenFactory } from "./Utils";
+import { commonProcessMessage, stringifyComputeTokenCountFactory } from "./Utils";
 
 /** Gemini的think_budget参数映射表*/
 export const GeminiThinkMap = {
@@ -80,7 +80,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiReque
             }
         } satisfies GeminiRequestFormat;
     },
-    calcToken:lazyFunction(()=>stringifyCalcTokenFactory(GeminiChatTaskFormatter)),
+    computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(GeminiChatTaskFormatter)),
     formatResult:lazyFunction(()=>commonFormatResp(GeminiChatTaskFormatter)),
     buildMessage(chatTarget,messageList){
         let desc = "";

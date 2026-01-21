@@ -36,7 +36,7 @@ export const chatTaskCtor = (drive:TestModel) => {
                 pending:[]
             };
         },
-        async countToken(messageList: LaMChatMessages): Promise<number> {
+        async computeTokenCount(messageList: LaMChatMessages): Promise<number> {
             let ntext:string="";
             for(const item of messageList.list){
                 ntext=item.type=='desc'

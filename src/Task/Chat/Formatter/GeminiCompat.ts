@@ -8,7 +8,7 @@ import { commonFormatResp } from "Task/Util";
 
 import { combineMessage, transGeminiThinkBudget } from "./Gemini";
 import { OpenAIChatCompleteBase } from "./OpenAIConversation";
-import { commonProcessMessage, stringifyCalcTokenFactory } from "./Utils";
+import { commonProcessMessage, stringifyComputeTokenCountFactory } from "./Utils";
 
 
 /**gemini的openai兼容api格式化工具 */
@@ -58,5 +58,5 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
         return obj;
     },
     formatResult:lazyFunction(()=>commonFormatResp(GeminiCompatChatTaskFormatter)),
-    calcToken:lazyFunction(()=>stringifyCalcTokenFactory(GeminiCompatChatTaskFormatter)),
+    computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(GeminiCompatChatTaskFormatter)),
 };

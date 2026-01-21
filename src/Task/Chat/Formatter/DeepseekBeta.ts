@@ -8,7 +8,7 @@ import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";
 
 import { OpenAIChatCompleteBase } from "./OpenAIConversation";
-import { commonProcessMessageWithOpt, stringifyCalcTokenFactory } from "./Utils";
+import { commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "./Utils";
 
 
 
@@ -52,7 +52,7 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
     formatResult:lazyFunction(()=>commonFormatResp(DeepseekBetaChatTaskFormatter)),
-    calcToken:lazyFunction(()=>stringifyCalcTokenFactory(DeepseekBetaChatTaskFormatter)),
+    computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(DeepseekBetaChatTaskFormatter)),
     buildMessage(chatTarget,messageList){
         const narr:DeepseekAPIEntry[] = [];
 

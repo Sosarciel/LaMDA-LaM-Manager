@@ -75,7 +75,7 @@ class _CredManager implements NeedInit{
      * @param completionCount - 输出/completion_tokens
      */
     @AwaitInited
-    async calcPrice(accountData:CredsData,price:APIPrice,usage:APIPriceResp){
+    async computePrice(accountData:CredsData,price:APIPrice,usage:APIPriceResp){
         const promptCount = usage.prompt_cache_miss_tokens ?? usage.prompt_tokens;
         const cachedPromptCount = usage.prompt_cache_hit_tokens ?? 0;
         const completionCount = usage.completion_tokens;
@@ -84,7 +84,7 @@ class _CredManager implements NeedInit{
             (completionCount*price.completionPrice)+
             (cachedPromptCount*(price.cacheHitPromptPrice??0));
         if(isNaN(totalPrice)){
-            SLogger.error(`CredManager.calcPrice 错误 无法计算价格`);
+            SLogger.error(`CredManager.computePrice 错误 无法计算价格`);
             SLogger.error(usage);
             return;
         }

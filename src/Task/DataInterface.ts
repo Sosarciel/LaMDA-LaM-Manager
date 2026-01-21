@@ -35,8 +35,8 @@ export type TextCompletionOption=Partial<{
     think_budget: ThingBudget|null;
     /**首选账户 需要填入 CredCategoryJsonTable 定义的 CredCategory */
     preferred_account:CredCategoryID[];
-    /**log等级 */
-    log_level:LogLevel|'none';
+    /**log等级 忽略则不打印 */
+    log_level:LogLevel;
 
     /**控制最大历史记录的额外参数 */
     max_hist?:number;

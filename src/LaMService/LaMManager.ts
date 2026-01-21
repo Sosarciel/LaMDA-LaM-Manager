@@ -68,7 +68,7 @@ class _LaMManager{
     async decodeToken(instanceName:string,arr:number[]):Promise<string|undefined>{
         const res = await this.sm.invoke(instanceName,'decodeToken',arr);
         if(res===None){
-            SLogger.warn(`LaMManager.calcToken 错误 instanceName:${instanceName} 不存在`);
+            SLogger.warn(`LaMManager.computeToken 错误 instanceName:${instanceName} 不存在`);
             return undefined;
         }
         return res;

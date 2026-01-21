@@ -29,7 +29,7 @@ export const commonFormatResp = <FMT extends AnyTextCompletionResponseFormat>(
 };
 
 /**通用的token计算函数 */
-export const commonCalcToken = async (message:string,tokensizerType:TokensizerType):Promise<number>=>{
+export const commonComputeTokenCount = async (message:string,tokensizerType:TokensizerType):Promise<number>=>{
     const tokenizer = getTokensizer(tokensizerType);
     return (await tokenizer.encode(message)).length;
 };

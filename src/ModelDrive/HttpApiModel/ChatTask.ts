@@ -7,8 +7,8 @@ import type { HttpAPIModelDrive } from "./Drive";
 
 export const chatTaskCtor = (drive:HttpAPIModelDrive) => {
     return {
-        async countToken(message: LaMChatMessages) {
-            return drive.chatFormater.calcToken(message,drive.getData().config.tokensizer);
+        async computeTokenCount(message: LaMChatMessages) {
+            return drive.chatFormater.computeTokenCount(message,drive.getData().config.tokensizer);
         },
         async execute(opt: PresetOption<typeof ChatTaskOptionPreset>) {
             const fopt = ChatTaskOptionPreset.assign(opt);
