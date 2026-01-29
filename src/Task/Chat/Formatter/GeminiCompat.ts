@@ -1,6 +1,6 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import type { GeminiCompatAPIEntry, GeminiCompatRequestFormat } from "RequestFormat";
+import type { GeminiCompatAPIEntry, GeminiCompatRequest } from "RequestFormat";
 import type { OpenAIConversationResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
@@ -12,7 +12,7 @@ import { commonProcessMessage, stringifyComputeTokenCountFactory } from "./Utils
 
 
 /**gemini的openai兼容api格式化工具 */
-export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatRequestFormat,OpenAIConversationResponse> = {
+export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatRequest,OpenAIConversationResponse> = {
     ...OpenAIChatCompleteBase,
     formatOption({option,modelId}){
         //验证参数
@@ -35,7 +35,7 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
             messages:option.messages,
         });
 
-        const obj:GeminiCompatRequestFormat = {
+        const obj:GeminiCompatRequest = {
             model             : modelId                     ,//模型id
             messages          : messages                    ,//提示
             max_tokens        : option.max_tokens              ,//最大生成令牌数

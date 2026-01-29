@@ -1,6 +1,6 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import type { OpenAITextRequestFormat } from "RequestFormat";
+import type { OpenAITextRequest } from "RequestFormat";
 import type { OpenAITextResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
@@ -11,7 +11,7 @@ import { commonComputeTokenCountFactory, commonProcessMessageWithOpt } from "./U
 
 
 
-export const DeepseekTextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextRequestFormat,OpenAITextResponse>={
+export const DeepseekTextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextRequest,OpenAITextResponse>={
     ...OpenAITextCompleteBase,
     formatOption({option,modelId}){
         //验证参数
@@ -36,7 +36,7 @@ export const DeepseekTextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextRe
             presence_penalty  : option.presence_penalty     ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
             frequency_penalty : option.frequency_penalty    ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
             stop              : option.stop                 ,//遭遇时将会停止生成的最多4个字符串 "1234"
-        } satisfies OpenAITextRequestFormat;
+        } satisfies OpenAITextRequest;
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence

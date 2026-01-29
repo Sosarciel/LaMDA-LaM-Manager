@@ -3,7 +3,7 @@ import { OpenAIConversationAPIRole } from "./OpenAIConversation";
 
 
 /** Deepseek 模型请求格式 */
-export type DeepseekRequestFormat=Partial<{
+export type DeepseekRequest=Partial<{
     /** 模型名称 */
     model: string;
     /** 消息列表 */

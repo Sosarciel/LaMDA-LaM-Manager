@@ -1,6 +1,6 @@
 import type { MPromise } from "@zwa73/utils";
 
-import type { AnyTextCompletionRequestFormat } from "RequestFormat";
+import type { AnyTextCompletionRequest } from "RequestFormat";
 import type { AnyTextCompletionResponse } from "ResponseFormat";
 import type { TokensizerType } from "Tokensizer";
 
@@ -12,7 +12,7 @@ import type { ChatTaskOption, LaMChatMessages } from "./Interface";
 
 /** 聊天任务格式化工具 */
 export type ChatTaskFormatter<MSG,
-REQ extends AnyTextCompletionRequestFormat,
+REQ extends AnyTextCompletionRequest,
 RES extends AnyTextCompletionResponse> =
 TextCompletionTaskFormatter<ChatTaskOption,REQ,RES>&
 RespFormatter<RES>&{

@@ -1,6 +1,6 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import type { OpenAITextRequestFormat } from "RequestFormat";
+import type { OpenAITextRequest } from "RequestFormat";
 import type { OpenAITextResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
@@ -11,7 +11,7 @@ import { commonComputeTokenCountFactory, commonProcessMessageWithOpt } from "./U
 
 
 /**OpenAI 文本聊天任务格式化器类型定义 */
-type OpenAITextChatTaskFormatter = ChatTaskFormatter<string,OpenAITextRequestFormat,OpenAITextResponse>;
+type OpenAITextChatTaskFormatter = ChatTaskFormatter<string,OpenAITextRequest,OpenAITextResponse>;
 
 /**OpenAI 文本聊天任务基础定义 */
 export const OpenAITextCompleteBase = {
@@ -75,7 +75,7 @@ export const OpenAITextChatTaskFormatter:OpenAITextChatTaskFormatter={
             logit_bias        : await tokenifyLogitBias(option.logit_bias,tokensizerType) ,//调整某token出现的概率 {"tokenid":-100~100}
             //best_of         : best_of                  ,//产生n条候选消息，根据n返回n条最佳消息
             stop              : option.stop                 ,//遭遇时将会停止生成的最多4个字符串 "1234"
-        } satisfies OpenAITextRequestFormat;
+        } satisfies OpenAITextRequest;
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence

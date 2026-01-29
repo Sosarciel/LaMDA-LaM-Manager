@@ -1,7 +1,7 @@
 
 
 /** Gemini API 请求格式 */
-export type GeminiRequestFormat={
+export type GeminiRequest={
     /** 系统指令 */
     system_instruction:{parts:{text: string}};
     /** 对话内容列表 */

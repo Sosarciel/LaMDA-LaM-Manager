@@ -5,7 +5,7 @@ import type { OpenAIConversationAPIRole } from "./OpenAIConversation";
 //https://ai.google.dev/gemini-api/docs/openai?hl=zh-cn#extra-body
 //https://api-gpt-ge.apifox.cn/210339408e0
 /** Gemini OpenAI 兼容请求格式 */
-export type GeminiCompatRequestFormat=Partial<{
+export type GeminiCompatRequest=Partial<{
     /** 模型名称 */
     model: string;
     /** 消息列表 */

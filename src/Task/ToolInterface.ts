@@ -1,6 +1,6 @@
 import type { MPromise, PromiseRetryResult } from "@zwa73/js-utils";
 
-import type { AnyTextCompletionRequestFormat } from "RequestFormat";
+import type { AnyTextCompletionRequest } from "RequestFormat";
 import type { AnyTextCompletionResponse } from "ResponseFormat";
 import type { TokensizerType } from "Tokensizer";
 
@@ -25,7 +25,7 @@ export type TextCompletionInterface = {
 
 /**文本完成任务通用格式化工具 */
 export type TextCompletionTaskFormatter<IN,
-OUT extends AnyTextCompletionRequestFormat,
+OUT extends AnyTextCompletionRequest,
 FMT extends AnyTextCompletionResponse> = {
      /**检查配置是否有效, 并返回用于请求的JObject */
     formatOption:(arg:{

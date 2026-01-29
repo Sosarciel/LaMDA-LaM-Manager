@@ -3,7 +3,7 @@
 
 
 /** OpenAI 文本补全请求格式 */
-export type OpenAITextRequestFormat = Partial<{
+export type OpenAITextRequest = Partial<{
     /** 模型名称 */
     model: string;
     /** 提示词 */

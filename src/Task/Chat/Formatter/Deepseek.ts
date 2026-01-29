@@ -1,6 +1,6 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import type { DeepseekAPIEntry, DeepseekRequestFormat } from "RequestFormat";
+import type { DeepseekAPIEntry, DeepseekRequest } from "RequestFormat";
 import type { DeepseekResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
@@ -13,7 +13,7 @@ import { commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "
 
 
 /**传统OpenAI系统提示模式的Formater */
-export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequestFormat,DeepseekResponse> = {
+export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequest,DeepseekResponse> = {
     ...OpenAIChatCompleteBase,
     formatOption({option,modelId}){
         //验证参数
@@ -37,7 +37,7 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
             presence_penalty  : option.presence_penalty        ,//遭遇时将会停止生成的最多4个字符串 "1234"
             frequency_penalty : option.frequency_penalty       ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
             stop              : option.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
-        } satisfies DeepseekRequestFormat;
+        } satisfies DeepseekRequest;
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence

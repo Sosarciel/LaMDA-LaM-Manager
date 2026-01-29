@@ -1,6 +1,6 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import type { GeminiRequestFormat, GeminiApiData, GeminiAPIEntry } from "RequestFormat";
+import type { GeminiRequest, GeminiApiData, GeminiAPIEntry } from "RequestFormat";
 import { GeminiAPIRole, GeminiHarmCategoryList } from "RequestFormat";
 import type { GeminiResponse } from "ResponseFormat";
 
@@ -48,7 +48,7 @@ export const combineHint = (model:string,opt:ChatTaskOption)=>{
 
 const AllOff = GeminiHarmCategoryList.map(v=>({category:v,threshold:"OFF"}) as const);
 
-export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiRequestFormat,GeminiResponse> = {
+export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiRequest,GeminiResponse> = {
     formatOption({option,modelId}){
         //验证参数
         if(option.messages==null){
@@ -86,7 +86,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiReque
                 }
             },
             //safetySettings:AllOff
-        } satisfies GeminiRequestFormat;
+        } satisfies GeminiRequest;
     },
     computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(GeminiChatTaskFormatter)),
     formatResult:lazyFunction(()=>commonFormatResp(GeminiChatTaskFormatter)),

@@ -21,7 +21,7 @@ export type OpenAIModelID = AnyString
 /** OpenAI 推理努力程度 */
 export type OpenAIReasoningEffort = 'none'|'minimal'|'low'|'medium'|'high'|'xhigh';
 /** OpenAI 对话请求格式 */
-export type OpenAIConversationRequestFormat=Partial<{
+export type OpenAIConversationRequest=Partial<{
     /** 模型名称 */
     model: string;
     /** 消息列表 */

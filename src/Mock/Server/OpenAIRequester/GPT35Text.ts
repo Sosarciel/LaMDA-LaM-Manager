@@ -1,4 +1,4 @@
-import type { OpenAITextRequestFormat } from "RequestFormat";
+import type { OpenAITextRequest } from "RequestFormat";
 import type { OpenAITextResponse } from "ResponseFormat";
 import { TemplateOpenAITextResponse } from "ResponseFormat";
 
@@ -10,7 +10,7 @@ import { LaMManagerMockTool } from "Mock/Utils";
 
 
 
-export const procGPT35Text = (data:OpenAITextRequestFormat)=>{
+export const procGPT35Text = (data:OpenAITextRequest)=>{
     const req = data?.prompt??"";
     const match = req.match(RegExp(`${LaMManagerMockTool.MOCK_USER}:(.+)\\n${LaMManagerMockTool.MOCK_CHAR}:`))!;
     const msg = match[1];

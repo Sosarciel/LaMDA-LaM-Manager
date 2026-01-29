@@ -4,7 +4,7 @@ import { preset } from "@zwa73/utils";
 
 import type { CredsData } from "CredService";
 import type { HttpApiModelCategory } from "ModelDrive";
-import type { AnyTextCompletionRequestFormat } from "RequestFormat";
+import type { AnyTextCompletionRequest } from "RequestFormat";
 import type { AnyTextCompletionResponse } from "ResponseFormat";
 
 
@@ -33,7 +33,7 @@ export type Interactor<FMT extends AnyTextCompletionResponse = AnyTextCompletion
 /**PostLaM参数 */
 export type PostLaMOption={
     /**传入的参数对象 */
-    postJson:AnyTextCompletionRequestFormat;
+    postJson:AnyTextCompletionRequest;
     /**账户数据 */
     accountData:CredsData;
     /**api价格 */

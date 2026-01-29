@@ -1,4 +1,4 @@
-import type { OpenAIConversationRequestFormat } from "RequestFormat";
+import type { OpenAIConversationRequest } from "RequestFormat";
 import type { OpenAIConversationResponse } from "ResponseFormat";
 import { TemplateOpenAIConversationResponse } from "ResponseFormat";
 
@@ -10,7 +10,7 @@ import { LaMManagerMockTool } from "Mock/Utils";
 
 
 
-export const procGPT35Chat = (data:OpenAIConversationRequestFormat)=>{
+export const procGPT35Chat = (data:OpenAIConversationRequest)=>{
     const length = data?.messages?.length??2;
     const msg = data?.messages?.[length-2]?.content ?? "";
     return {
