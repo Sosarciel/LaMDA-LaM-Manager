@@ -2,7 +2,7 @@ import { lazyFunction, SLogger } from "@zwa73/utils";
 
 import type { GeminiRequestFormat, GeminiApiData, GeminiAPIEntry } from "RequestFormat";
 import { GeminiAPIRole, GeminiHarmCategoryList } from "RequestFormat";
-import type { GeminiResponseFormat } from "ResponseFormat";
+import type { GeminiResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import type { ChatTaskOption } from "Task/Chat/Interface";
@@ -48,7 +48,7 @@ export const combineHint = (model:string,opt:ChatTaskOption)=>{
 
 const AllOff = GeminiHarmCategoryList.map(v=>({category:v,threshold:"OFF"}) as const);
 
-export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiRequestFormat,GeminiResponseFormat> = {
+export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiRequestFormat,GeminiResponse> = {
     formatOption({option,modelId}){
         //验证参数
         if(option.messages==null){
@@ -146,7 +146,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiReque
     },
     formatResp:(resp)=>{
         //挑出非思考的文本内容
-        const cond = (v:GeminiResponseFormat['candidates'][number]['content']['parts'][number])=>v.text && !v.thought;
+        const cond = (v:GeminiResponse['candidates'][number]['content']['parts'][number])=>v.text && !v.thought;
         const choices = resp.candidates
             .filter(choice => choice?.content?.parts?.some(cond))
             .map(choice => ({ content: choice.content.parts.find(cond)?.text! }));

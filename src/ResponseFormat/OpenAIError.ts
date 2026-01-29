@@ -1,13 +1,6 @@
-type ErrorRespFormat={
-    error: {
-        message: string;
-        type: string;
-        param: null|string;
-        code: null|string|number;
-    }
-}
+
 /**模型过载 */
-type OverloadedError = ErrorRespFormat&{
+type Overloaded1 = {
     /**模型过载 */
     error: {
         /**模型过载 */
@@ -18,7 +11,7 @@ type OverloadedError = ErrorRespFormat&{
     }
 }
 /**模型过载 */
-type OverloadedError2 = ErrorRespFormat&{
+type Overloaded2 = {
     /**模型过载 */
     error:{
         /**模型过载 */
@@ -29,7 +22,7 @@ type OverloadedError2 = ErrorRespFormat&{
     }
 }
 /**速率限额 不重试 */
-type RateLimitError1 = ErrorRespFormat&{
+type RateLimit1 = {
     /**速率限额 不重试 */
     error: {
         /**速率限额 不重试 */
@@ -40,7 +33,7 @@ type RateLimitError1 = ErrorRespFormat&{
     }
 }
 /**速率限制 不重试 */
-type RateLimitError2 = ErrorRespFormat&{
+type RateLimit2 = {
     error: {
         message: "Rate limit reached for organization org-nikDF6baa2PTHsxYchL650mZ on requests per min (RPM): Limit 3, Used 3, Requested 1. Please try again in 20s. Visit https://platform.openai.com/account/rate-limits to learn more. You can increase your rate limit by adding a payment method to your account at https://platform.openai.com/account/billing.";
         type: "requests";
@@ -49,7 +42,7 @@ type RateLimitError2 = ErrorRespFormat&{
     };
 }
 /**用量限额 不重试 设置无效 */
-type QuotaError = ErrorRespFormat&{
+type Quota = {
     /**用量限额 不重试 设置无效 */
     error: {
         /**用量限额 不重试 设置无效 */
@@ -60,7 +53,7 @@ type QuotaError = ErrorRespFormat&{
     }
 }
 /**无效Key 不重试 设置无效 */
-type InvalidKeyError = ErrorRespFormat&{
+type InvalidKey = {
     /**无效Key 不重试 设置无效 */
     error: {
         /**无效Key 不重试 设置无效 */
@@ -71,7 +64,7 @@ type InvalidKeyError = ErrorRespFormat&{
     }
 }
 /**授权/网络错误 */
-type AuthSubrequestError = ErrorRespFormat&{
+type AuthSubrequest = {
     /**授权/网络错误 */
     error:{
         /**授权/网络错误 */
@@ -82,7 +75,7 @@ type AuthSubrequestError = ErrorRespFormat&{
     }
 }
 /**其他错误 */
-type OtherError1 = ErrorRespFormat&{
+type OtherError1 = {
     /**其他错误 */
     error:{
         /**其他错误 */
@@ -92,7 +85,7 @@ type OtherError1 = ErrorRespFormat&{
         code:null
     }
 }
-type OtherError2 = ErrorRespFormat&{
+type OtherError2 = {
     /**其他错误 */
     error: {
         message: "The server had an error processing your request. Sorry about that! You can retry your request, or contact us through our help center at help.openai.com if you keep seeing this error. (Please include the request ID 45378566e30c8891d41f7c6d7e1cf159 in your email.)",
@@ -102,7 +95,7 @@ type OtherError2 = ErrorRespFormat&{
     }
 }
 /**违反规则被封号 不重试 设置无效 */
-type AccessTerminatedError = ErrorRespFormat&{
+type AccessTerminated = {
     /**违反规则被封号 不重试 设置无效 */
     error:{
         /**违反规则被封号 不重试 设置无效 */
@@ -113,7 +106,7 @@ type AccessTerminatedError = ErrorRespFormat&{
     }
 }
 /**账号停用 不重试 设置无效 */
-type AccountDeactivatedError = ErrorRespFormat&{
+type AccountDeactivated = {
     /**账号停用 不重试 设置无效 */
     error:{
         /**账号停用 不重试 设置无效 */
@@ -124,7 +117,7 @@ type AccountDeactivatedError = ErrorRespFormat&{
     }
 }
 /**cf服务器错误 */
-type CFTokenError = ErrorRespFormat&{
+type CFTokenError = {
     /**cf服务器错误 */
     error: {
         code: 503,
@@ -135,7 +128,7 @@ type CFTokenError = ErrorRespFormat&{
     }
 }
 /**模型输出错误 */
-type InvalidOutputError = ErrorRespFormat&{
+type InvalidOutput = {
     error: {
         message: "Failed to create completion as the model generated invalid Unicode output. Unfortunately, this can happen in rare situations. Consider reviewing your prompt or reducing the temperature of your request. You can retry your request, or contact us through our help center at help.openai.com if the error persists. (Please include the request ID req_cdcdcbd29bffddf43aa8f87d60185201 in your message.)";
         type: "server_error";
@@ -145,7 +138,7 @@ type InvalidOutputError = ErrorRespFormat&{
 }
 
 //内容过滤
-type ContentFilter = ErrorRespFormat&{
+type ContentFilter = {
     error: {
         message: "The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation: https://go.microsoft.com/fwlink/?linkid=2198766",
         type: "",
@@ -154,7 +147,7 @@ type ContentFilter = ErrorRespFormat&{
     }
 }
 
-type BadCode = ErrorRespFormat & {
+type BadCode = {
     error: {
         message: " (request id: 2025112400181067620006657649561)";
         type: "upstream_error";
@@ -163,8 +156,9 @@ type BadCode = ErrorRespFormat & {
     };
 };
 
+//#region Gptge
 /** gptge提示词阻拦 */
-type VApiPromptBlock = ErrorRespFormat&{
+type VApiPromptBlock = {
     error: {
         message: "request blocked by Gemini API: PROHIBITED_CONTENT  (request id: 2025112323102079161323703192322)";
         type: "v_api_error";
@@ -172,9 +166,11 @@ type VApiPromptBlock = ErrorRespFormat&{
         code: "prompt_blocked";
     };
 };
+//#endregion
 
+//#region Eylink
 /** 转发api请求失败 */
-type OneApiRequestFailed = ErrorRespFormat & {
+type OneApiRequestFailed =  {
     error: {
         message: 'do request failed: Post "https://api.open-proxy.cn/v1/chat/completions": unexpected EOF (request id: 2025120200210529140123796977233)';
         type: "one_api_error";
@@ -184,7 +180,7 @@ type OneApiRequestFailed = ErrorRespFormat & {
 };
 
 /**转发API过载 */
-type NewApiError = ErrorRespFormat&{
+type NewApiError = {
     error: {
         message: "当前分组上游负载已饱和，请稍后再试",
         type: "new_api_error",
@@ -194,7 +190,7 @@ type NewApiError = ErrorRespFormat&{
 }
 
 /**转发API限额 通常非真实限额而是系统故障 */
-type NewApiQuota = ErrorRespFormat & {
+type NewApiQuota = {
     error: {
         message: "用户额度不足, 剩余额度: ＄-0.003902 (request id: 202512131514256181461144rZFXvw3) (request id: 2025121315142517238973603614606)";
         type: "new_api_error";
@@ -202,9 +198,11 @@ type NewApiQuota = ErrorRespFormat & {
         code: "insufficient_user_quota";
     };
 };
+//#endregion
+
 
 /**所有错误格式的合集 */
-export type OpenAIErrorResponseFormat = OverloadedError|OverloadedError2|RateLimitError1|QuotaError|
-InvalidKeyError|AuthSubrequestError|OtherError1|OtherError2|AccessTerminatedError|
-AccountDeactivatedError|CFTokenError|RateLimitError2|InvalidOutputError|ContentFilter|VApiPromptBlock|BadCode|
+export type OpenAIErrorResponse = Overloaded1|Overloaded2|RateLimit1|Quota|
+InvalidKey|AuthSubrequest|OtherError1|OtherError2|AccessTerminated|
+AccountDeactivated|CFTokenError|RateLimit2|InvalidOutput|ContentFilter|VApiPromptBlock|BadCode|
 OneApiRequestFailed|NewApiError|NewApiQuota;

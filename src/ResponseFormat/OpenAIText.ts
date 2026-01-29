@@ -1,5 +1,5 @@
 /** OpenAI 文本 API 回复格式 */
-export type OpenAITextResponseFormat = {
+export type OpenAITextResponse = {
     /** 响应 ID */
     id: `cmpl-${string}`;
     /** 对象类型 */
@@ -9,7 +9,7 @@ export type OpenAITextResponseFormat = {
     /** 模型名称 */
     model: string;
     /** 选项列表 */
-    choices: TextChoiceFormat[];
+    choices: TextChoice[];
     /** 用量统计 */
     usage: {
         /** 提示 token 数量 */
@@ -21,7 +21,7 @@ export type OpenAITextResponseFormat = {
     };
 };
 /** 文本 API 选项格式 */
-type TextChoiceFormat = {
+type TextChoice = {
     /** 文本内容 */
     text: string;
     /** 索引 */
@@ -53,4 +53,4 @@ export const TemplateOpenAITextResponse = {
     model: "gpt-3.5-turbo-instruct",
     object: "text_completion",
     usage: { completion_tokens: 3289, prompt_tokens: 1849, total_tokens: 5138 },
-} satisfies OpenAITextResponseFormat;
+} satisfies OpenAITextResponse;

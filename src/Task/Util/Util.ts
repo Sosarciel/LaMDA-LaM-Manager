@@ -1,7 +1,7 @@
 import type { PromiseRetryResult } from "@zwa73/js-utils";
 import { memoize } from "@zwa73/utils";
 
-import type { AnyTextCompletionResponseFormat } from "ResponseFormat";
+import type { AnyTextCompletionResponse } from "ResponseFormat";
 import type { TokensizerType } from "Tokensizer";
 import { getTokensizer } from "Tokensizer";
 
@@ -14,7 +14,7 @@ import type { RespFormatter } from "Task/ToolInterface";
 
 
 /**通用的Resp转换函数 */
-export const commonFormatResp = <FMT extends AnyTextCompletionResponseFormat>(
+export const commonFormatResp = <FMT extends AnyTextCompletionResponse>(
     tool:RespFormatter<FMT>
 )=>async (resp:PromiseRetryResult<FMT | undefined> | undefined):Promise<TextCompletionResult>=>{
     if(resp==null) return DefChatLaMResult;

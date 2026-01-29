@@ -1,7 +1,7 @@
 import type { MPromise, PromiseRetryResult } from "@zwa73/js-utils";
 
 import type { AnyTextCompletionRequestFormat } from "RequestFormat";
-import type { AnyTextCompletionResponseFormat } from "ResponseFormat";
+import type { AnyTextCompletionResponse } from "ResponseFormat";
 import type { TokensizerType } from "Tokensizer";
 
 import type { TextCompletionOption, TextCompletionResp, TextCompletionResult } from "./DataInterface";
@@ -26,7 +26,7 @@ export type TextCompletionInterface = {
 /**文本完成任务通用格式化工具 */
 export type TextCompletionTaskFormatter<IN,
 OUT extends AnyTextCompletionRequestFormat,
-FMT extends AnyTextCompletionResponseFormat> = {
+FMT extends AnyTextCompletionResponse> = {
      /**检查配置是否有效, 并返回用于请求的JObject */
     formatOption:(arg:{
         option        :IN;
@@ -38,7 +38,7 @@ FMT extends AnyTextCompletionResponseFormat> = {
 }
 
 /**响应包装器 */
-export type RespFormatter<FMT extends AnyTextCompletionResponseFormat> = {
+export type RespFormatter<FMT extends AnyTextCompletionResponse> = {
     /**将响应包装为通用文本完成回复 */
     formatResp(resp:FMT):TextCompletionResp;
 }

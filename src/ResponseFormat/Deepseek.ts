@@ -1,5 +1,5 @@
 /** Deepseek 响应格式 */
-export type DeepseekResponseFormat = {
+export type DeepseekResponse = {
     /** 响应 ID */
     id: string;
     /** 选项列表 */
@@ -70,4 +70,4 @@ export const TemplateDeepseekResponse = {
         prompt_cache_miss_tokens: 2115,
     },
     system_fingerprint: "fp_8333852bec_prod0820_fp8_kvcache",
-} satisfies DeepseekResponseFormat;
+} satisfies DeepseekResponse;

@@ -2,7 +2,7 @@ import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
 
 import type { OpenAIConversationAPIEntry, OpenAIConversationRequestFormat } from "RequestFormat";
 import { OpenAIConversationAPIRole } from "RequestFormat";
-import type { AnyOpenAIConversationLikeResponseFormat } from "ResponseFormat";
+import type { AnyOpenAIConversationLikeResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from 'Task/Chat/Adapter';
 import type { ThingBudget } from "Task/DataInterface";
@@ -72,7 +72,7 @@ const getVersion = (model:string)=>{
 
 /**OpenAI 对话聊天任务格式化器类型定义 */
 type OpenAIConversationChatTaskFormatter = ChatTaskFormatter<
-    OpenAIConversationAPIEntry[],OpenAIConversationRequestFormat,AnyOpenAIConversationLikeResponseFormat>;
+    OpenAIConversationAPIEntry[],OpenAIConversationRequestFormat,AnyOpenAIConversationLikeResponse>;
 
 /**OpenAI 对话聊天任务基础定义 */
 export const OpenAIChatCompleteBase = {

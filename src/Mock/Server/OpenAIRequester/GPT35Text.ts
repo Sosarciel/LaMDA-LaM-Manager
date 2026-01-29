@@ -1,5 +1,5 @@
 import type { OpenAITextRequestFormat } from "RequestFormat";
-import type { OpenAITextResponseFormat } from "ResponseFormat";
+import type { OpenAITextResponse } from "ResponseFormat";
 import { TemplateOpenAITextResponse } from "ResponseFormat";
 
 import { LaMManagerMockTool } from "Mock/Utils";
@@ -22,5 +22,5 @@ export const procGPT35Text = (data:OpenAITextRequestFormat)=>{
             finish_reason:'stop',
             logprobs:null
         }]
-    } satisfies OpenAITextResponseFormat;
+    } satisfies OpenAITextResponse;
 };

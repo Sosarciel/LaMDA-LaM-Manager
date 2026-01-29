@@ -1,7 +1,7 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
 import type { OpenAITextRequestFormat } from "RequestFormat";
-import type { OpenAITextResponseFormat } from "ResponseFormat";
+import type { OpenAITextResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";
@@ -11,7 +11,7 @@ import { commonComputeTokenCountFactory, commonProcessMessageWithOpt } from "./U
 
 
 
-export const DeepseekTextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextRequestFormat,OpenAITextResponseFormat>={
+export const DeepseekTextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextRequestFormat,OpenAITextResponse>={
     ...OpenAITextCompleteBase,
     formatOption({option,modelId}){
         //验证参数

@@ -2,7 +2,7 @@ import { SLogger, lazyFunction } from "@zwa73/utils";
 
 import type { DeepseekAPIEntry, DeepseekRequestFormat } from "RequestFormat";
 import { DeepseekAPIRole } from "RequestFormat";
-import type { DeepseekResponseFormat } from "ResponseFormat";
+import type { DeepseekResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";
@@ -23,7 +23,7 @@ function formatMessage(message?:string):string|undefined{
 }
 
 /**前缀续写模式的Formater */
-export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequestFormat,DeepseekResponseFormat> = {
+export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequestFormat,DeepseekResponse> = {
     formatOption({option,modelId}){
         //验证参数
         if(option.messages==null){

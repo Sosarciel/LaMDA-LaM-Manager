@@ -1,7 +1,7 @@
 import type { PresetOption } from '@zwa73/utils';
 import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
 
-import type { AnyGeminiResponseFormat } from 'ResponseFormat';
+import type { AnyGeminiResponse } from 'ResponseFormat';
 
 import { checkRespCode } from 'Interactor/InteractorUtil';
 import type { Interactor } from 'Interactor/Interface';
@@ -12,7 +12,7 @@ import { getProxy } from 'Interactor/ProxyPool';
 import { recordPrice, verifyResp } from './Util';
 
 /**适用与 openai 鉴权方式的post工具 */
-class _GeminiPostTool implements Interactor<AnyGeminiResponseFormat> {
+class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
     constructor(){}
 
     /**向 openai模型 发送一个POST请求并接受数据
@@ -44,7 +44,7 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponseFormat> {
                 timeout:timeLimit,
             }).once({json:postJson});
 
-        const respObj = respData?.data as AnyGeminiResponseFormat|undefined;
+        const respObj = respData?.data as AnyGeminiResponse|undefined;
 
         //const err = (res:string)=>outcome(Terminated,res);
         //return await pipe(respObj,

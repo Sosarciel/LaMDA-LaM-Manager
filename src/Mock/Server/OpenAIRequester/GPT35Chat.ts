@@ -1,5 +1,5 @@
 import type { OpenAIConversationRequestFormat } from "RequestFormat";
-import type { OpenAIConversationResponseFormat } from "ResponseFormat";
+import type { OpenAIConversationResponse } from "ResponseFormat";
 import { TemplateOpenAIConversationResponse } from "ResponseFormat";
 
 import { LaMManagerMockTool } from "Mock/Utils";
@@ -20,5 +20,5 @@ export const procGPT35Chat = (data:OpenAIConversationRequestFormat)=>{
             message:{role:"assistant",content:LaMManagerMockTool.buildResp('GPT35Chat', msg)},
             finish_reason:'stop'
         }]
-    } satisfies OpenAIConversationResponseFormat;
+    } satisfies OpenAIConversationResponse;
 };

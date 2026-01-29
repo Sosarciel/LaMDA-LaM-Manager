@@ -3,7 +3,7 @@ import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
 
 import type { APIPrice, APIPriceResp, CredsData } from "CredService";
 import { CredManager } from "CredService";
-import type { AnyOpenAIResponseFormat, OpenAIErrorResponseFormat } from "ResponseFormat";
+import type { AnyOpenAIResponse, OpenAIErrorResponse } from "ResponseFormat";
 
 
 
@@ -12,7 +12,7 @@ import type { AnyOpenAIResponseFormat, OpenAIErrorResponseFormat } from "Respons
  * @param apiKeyName - 本次回复的APIkey
  */
 export const recordPrice = async(
-    respObj: AnyOpenAIResponseFormat | undefined,
+    respObj: AnyOpenAIResponse | undefined,
     price: APIPrice,
     accountData: CredsData,
 )=>{
@@ -46,7 +46,7 @@ export const recordPrice = async(
  * @returns 可用性
  */
 export const verifyResp = async(
-    rawResp: AnyOpenAIResponseFormat | OpenAIErrorResponseFormat | undefined,
+    rawResp: AnyOpenAIResponse | OpenAIErrorResponse | undefined,
     accountData: CredsData
 ): Promise<PromiseStatus> => {
     if (rawResp == undefined) return Failed;
@@ -66,7 +66,7 @@ export const verifyResp = async(
  * @returns 可用性
  */
 export const checkError = async (
-    error: OpenAIErrorResponseFormat['error'],
+    error: OpenAIErrorResponse['error'],
     accountData: CredsData
 ): Promise<PromiseStatus> => {
 

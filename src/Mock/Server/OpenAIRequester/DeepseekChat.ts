@@ -1,5 +1,5 @@
 import type { OpenAIConversationRequestFormat } from "RequestFormat";
-import type { DeepseekResponseFormat } from "ResponseFormat";
+import type { DeepseekResponse } from "ResponseFormat";
 import { TemplateDeepseekResponse } from "ResponseFormat";
 
 import { LaMManagerMockTool } from "Mock/Utils";
@@ -21,5 +21,5 @@ export const procDeepseekChat = (data:OpenAIConversationRequestFormat)=>{
             finish_reason:'stop',
             logprobs:null
         }]
-    } satisfies DeepseekResponseFormat;
+    } satisfies DeepseekResponse;
 };

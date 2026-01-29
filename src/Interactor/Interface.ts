@@ -5,12 +5,12 @@ import { preset } from "@zwa73/utils";
 import type { CredsData } from "CredService";
 import type { HttpApiModelCategory } from "ModelDrive";
 import type { AnyTextCompletionRequestFormat } from "RequestFormat";
-import type { AnyTextCompletionResponseFormat } from "ResponseFormat";
+import type { AnyTextCompletionResponse } from "ResponseFormat";
 
 
 
 /**请求格式化工具 */
-export type Interactor<FMT extends AnyTextCompletionResponseFormat = AnyTextCompletionResponseFormat> = {
+export type Interactor<FMT extends AnyTextCompletionResponse = AnyTextCompletionResponse> = {
     /**向 openai模型 发送一个POST请求并接受数据
      * @async
      * @param partialOpt - 可选的参数

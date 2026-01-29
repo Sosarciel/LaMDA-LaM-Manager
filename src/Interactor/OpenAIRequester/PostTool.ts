@@ -1,7 +1,7 @@
 import type { PresetOption } from '@zwa73/utils';
 import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
 
-import type { AnyOpenAIResponseFormat } from 'ResponseFormat';
+import type { AnyOpenAIResponse } from 'ResponseFormat';
 
 
 import { checkRespCode } from 'Interactor/InteractorUtil';
@@ -14,7 +14,7 @@ import { recordPrice, verifyResp } from './Util';
 
 
 /**适用与 openai 鉴权方式的post工具 */
-class _OpenAiPostTool implements Interactor<AnyOpenAIResponseFormat> {
+class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
     constructor(){}
 
     /**向 openai模型 发送一个POST请求并接受数据
@@ -43,7 +43,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponseFormat> {
                 timeout:timeLimit,
             }).once({json:postJson});
 
-        const respObj = respData?.data as AnyOpenAIResponseFormat|undefined;
+        const respObj = respData?.data as AnyOpenAIResponse|undefined;
         //post错误
         if(respObj==undefined){
             SLogger.warn(`OpenApiPostTool.postLaM 错误 未能接收resp`);

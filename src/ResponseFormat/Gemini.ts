@@ -65,7 +65,7 @@ type VApiPromptBlock = {
     };
 };
 
-export type AnyGoogleErrorResponseFormat = Quota|VApiPromptBlock;
+export type AnyGoogleErrorResponse = Quota|VApiPromptBlock;
 
 /** 文本内容 */
 type TextContent = {
@@ -122,7 +122,7 @@ type UsageMetadata = {
 }
 
 /** Gemini 响应格式 */
-export type GeminiResponseFormat = {
+export type GeminiResponse = {
     /** 候选结果列表 */
     candidates:Candidate[],
     /** 用量元数据 */

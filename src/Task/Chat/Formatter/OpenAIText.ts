@@ -1,7 +1,7 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
 import type { OpenAITextRequestFormat } from "RequestFormat";
-import type { OpenAITextResponseFormat } from "ResponseFormat";
+import type { OpenAITextResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp, tokenifyLogitBias } from "Task/Util";
@@ -11,7 +11,7 @@ import { commonComputeTokenCountFactory, commonProcessMessageWithOpt } from "./U
 
 
 /**OpenAI 文本聊天任务格式化器类型定义 */
-type OpenAITextChatTaskFormatter = ChatTaskFormatter<string,OpenAITextRequestFormat,OpenAITextResponseFormat>;
+type OpenAITextChatTaskFormatter = ChatTaskFormatter<string,OpenAITextRequestFormat,OpenAITextResponse>;
 
 /**OpenAI 文本聊天任务基础定义 */
 export const OpenAITextCompleteBase = {
