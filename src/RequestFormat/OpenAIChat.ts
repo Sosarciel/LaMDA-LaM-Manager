@@ -21,11 +21,11 @@ export type OpenAIModelID = AnyString
 /** OpenAI 推理努力程度 */
 export type OpenAIReasoningEffort = 'none'|'minimal'|'low'|'medium'|'high'|'xhigh';
 /** OpenAI 对话请求格式 */
-export type OpenAIConversationRequest=Partial<{
+export type OpenAIChatRequest=Partial<{
     /** 模型名称 */
     model: string;
     /** 消息列表 */
-    messages: OpenAIConversationAPIEntry[];
+    messages: OpenAIChatAPIEntry[];
     /** 最大生成令牌数(已弃用，请使用 max_completion_tokens) */
     max_tokens: number;
     /** 最大完成令牌数 */
@@ -49,15 +49,15 @@ export type OpenAIConversationRequest=Partial<{
 }>;
 
 /** OpenAI 对话 API 消息条目 */
-export type OpenAIConversationAPIEntry={
+export type OpenAIChatAPIEntry={
     /** 角色 */
-    role: OpenAIConversationAPIRole;
+    role: OpenAIChatAPIRole;
     /** 消息内容 */
     content:string;
 }
 
 /** OpenAI 对话 API 角色枚举 */
-export const OpenAIConversationAPIRole = {
+export const OpenAIChatAPIRole = {
     /** 用户 */
     User:"user",
     /** 助手 */
@@ -65,5 +65,5 @@ export const OpenAIConversationAPIRole = {
     /** 系统 */
     System:"system",
 } as const;
-export type OpenAIConversationAPIRole = typeof OpenAIConversationAPIRole[keyof typeof OpenAIConversationAPIRole];
+export type OpenAIChatAPIRole = typeof OpenAIChatAPIRole[keyof typeof OpenAIChatAPIRole];
 

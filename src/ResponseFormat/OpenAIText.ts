@@ -33,7 +33,7 @@ type TextChoice = {
 };
 
 
-export const TemplateOpenAITextResponse = {
+export const OpenAITextResponseExample = {
     choices: [
         {
             finish_reason: "stop",

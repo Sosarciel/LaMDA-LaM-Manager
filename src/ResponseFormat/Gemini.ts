@@ -1,7 +1,7 @@
 
 
 
-const resap = {
+const GeminiResponseExample = {
     candidates: [
         {
             content: {

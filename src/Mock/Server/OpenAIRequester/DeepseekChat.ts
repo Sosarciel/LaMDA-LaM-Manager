@@ -1,6 +1,6 @@
-import type { OpenAIConversationRequest } from "RequestFormat";
+import type { OpenAIChatRequest } from "RequestFormat";
 import type { DeepseekResponse } from "ResponseFormat";
-import { TemplateDeepseekResponse } from "ResponseFormat";
+import { DeepseekResponseExample } from "ResponseFormat";
 
 import { LaMManagerMockTool } from "Mock/Utils";
 
@@ -10,11 +10,11 @@ import { LaMManagerMockTool } from "Mock/Utils";
 
 
 
-export const procDeepseekChat = (data:OpenAIConversationRequest)=>{
+export const procDeepseekChat = (data:OpenAIChatRequest)=>{
     const length = data?.messages?.length??2;
     const msg = data?.messages?.[length-2]?.content ?? "";
     return {
-        ...TemplateDeepseekResponse,
+        ...DeepseekResponseExample,
         choices:[{
             index:0,
             message:{role:"assistant",content:LaMManagerMockTool.buildResp('DeepseekChat', msg)},

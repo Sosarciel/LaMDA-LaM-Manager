@@ -1,4 +1,4 @@
-import { OpenAIConversationAPIRole } from "./OpenAIConversation";
+import { OpenAIChatAPIRole } from "./OpenAIChat";
 
 
 
@@ -25,12 +25,12 @@ export type DeepseekRequest=Partial<{
 /** Deepseek API 消息条目 */
 export type DeepseekAPIEntry={
     /** 角色 */
-    role: OpenAIConversationAPIRole;
+    role: OpenAIChatAPIRole;
     /** 消息内容 */
     content:string;
     /** 指定为前缀补全模式 */
     prefix?:boolean;
 }
 
-export const DeepseekAPIRole = OpenAIConversationAPIRole;
-export type DeepseekAPIRole = OpenAIConversationAPIRole;
+export const DeepseekAPIRole = OpenAIChatAPIRole;
+export type DeepseekAPIRole = OpenAIChatAPIRole;

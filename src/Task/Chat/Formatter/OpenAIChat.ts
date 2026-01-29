@@ -1,8 +1,8 @@
 import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
 
-import type { OpenAIConversationAPIEntry, OpenAIConversationRequest } from "RequestFormat";
-import { OpenAIConversationAPIRole } from "RequestFormat";
-import type { AnyOpenAIConversationLikeResponse } from "ResponseFormat";
+import type { OpenAIChatAPIEntry, OpenAIChatRequest } from "RequestFormat";
+import { OpenAIChatAPIRole } from "RequestFormat";
+import type { AnyOpenAIChatLikeResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from 'Task/Chat/Adapter';
 import type { ThingBudget } from "Task/DataInterface";
@@ -72,33 +72,33 @@ const getVersion = (model:string)=>{
 
 /**OpenAI 对话聊天任务格式化器类型定义 */
 type OpenAIConversationChatTaskFormatter = ChatTaskFormatter<
-    OpenAIConversationAPIEntry[],OpenAIConversationRequest,AnyOpenAIConversationLikeResponse>;
+    OpenAIChatAPIEntry[],OpenAIChatRequest,AnyOpenAIChatLikeResponse>;
 
 /**OpenAI 对话聊天任务基础定义 */
 export const OpenAIChatCompleteBase = {
     buildMessage({target,messages,hint}){
-        const narr:OpenAIConversationAPIEntry[] = [];
+        const narr:OpenAIChatAPIEntry[] = [];
 
         //处理主消息列表
         for(const item of messages){
             if(item.type=='desc'){
                 narr.push({
-                    role:OpenAIConversationAPIRole.System,
+                    role:OpenAIChatAPIRole.System,
                     content:item.content
                 });
             }else{
                 narr.push({
-                    role:OpenAIConversationAPIRole.System,
+                    role:OpenAIChatAPIRole.System,
                     content:item.senderName+":"
                 });
                 if(item.senderName==target){
                     narr.push({
-                        role:OpenAIConversationAPIRole.Assistant,
+                        role:OpenAIChatAPIRole.Assistant,
                         content:item.content
                     });
                 }else{
                     narr.push({
-                        role:OpenAIConversationAPIRole.User,
+                        role:OpenAIChatAPIRole.User,
                         content:item.content
                     });
                 }
@@ -113,7 +113,7 @@ export const OpenAIChatCompleteBase = {
     },
     formatMessage({messages,target}){
         messages.push({
-            role:OpenAIConversationAPIRole.System,
+            role:OpenAIChatAPIRole.System,
             content:`${target}:`,
         });
         return messages;
@@ -164,7 +164,7 @@ export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskForma
             frequency_penalty      : isReasoning ? undefined : option.frequency_penalty  ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
             logit_bias             : isReasoning ? undefined : await tokenifyLogitBias(option.logit_bias,tokensizerType),//调整某token出现的概率 {"tokenid":-100~100}
             stop                   : isReasoning ? undefined : option.stop,//停止序列,遭遇时将会停止生成的最多4个字符串,不支持某些思考模型
-        } satisfies OpenAIConversationRequest;
+        } satisfies OpenAIChatRequest;
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence

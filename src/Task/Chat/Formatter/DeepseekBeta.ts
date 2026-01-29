@@ -7,7 +7,7 @@ import type { DeepseekResponse } from "ResponseFormat";
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";
 
-import { OpenAIChatCompleteBase } from "./OpenAIConversation";
+import { OpenAIChatCompleteBase } from "./OpenAIChat";
 import { commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "./Utils";
 
 

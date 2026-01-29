@@ -1,18 +1,18 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
 import type { GeminiCompatAPIEntry, GeminiCompatRequest } from "RequestFormat";
-import type { OpenAIConversationResponse } from "ResponseFormat";
+import type { OpenAIChatResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";
 
 import { combineHint, transGeminiThinkBudget } from "./Gemini";
-import { OpenAIChatCompleteBase } from "./OpenAIConversation";
+import { OpenAIChatCompleteBase } from "./OpenAIChat";
 import { commonProcessMessage, stringifyComputeTokenCountFactory } from "./Utils";
 
 
 /**gemini的openai兼容api格式化工具 */
-export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatRequest,OpenAIConversationResponse> = {
+export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntry[],GeminiCompatRequest,OpenAIChatResponse> = {
     ...OpenAIChatCompleteBase,
     formatOption({option,modelId}){
         //验证参数

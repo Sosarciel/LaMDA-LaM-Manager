@@ -1,5 +1,5 @@
 /** OpenAI 聊天 API 回复格式 */
-export type OpenAIConversationResponse = {
+export type OpenAIChatResponse = {
     /** 响应 ID */
     id: `chatcmpl-${string}`;
     /** 对象类型 */
@@ -38,10 +38,10 @@ export type OpenAIConversationResponse = {
 		}
     };
     /** 选项列表 */
-    choices: ConversationChoice[];
+    choices: ChatChoice[];
 };
 /** 聊天 API 选项格式 */
-type ConversationChoice = {
+type ChatChoice = {
     /** 消息 */
     message: {
         /** 角色 */
@@ -55,7 +55,7 @@ type ConversationChoice = {
     index: number;
 };
 
-export const TemplateOpenAIConversationResponse = {
+export const OpenAIChatResponseExample = {
     id: "chatcmpl-An5LfoXnmT2WpgSRREQyp8tilpYRd",
     system_fingerprint: "fp_5154047bf2",
     object: "chat.completion",
@@ -74,4 +74,4 @@ export const TemplateOpenAIConversationResponse = {
             index: 1,
         },
     ],
-} satisfies OpenAIConversationResponse;
+} satisfies OpenAIChatResponse;

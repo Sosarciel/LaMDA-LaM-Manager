@@ -1,4 +1,4 @@
-import type { OpenAIConversationAPIRole } from "./OpenAIConversation";
+import type { OpenAIChatAPIRole } from "./OpenAIChat";
 
 
 
@@ -42,7 +42,7 @@ export type GeminiCompatRequest=Partial<{
 /** Gemini 兼容 API 消息条目 */
 export type GeminiCompatAPIEntry={
     /** 角色 */
-    role: OpenAIConversationAPIRole;
+    role: OpenAIChatAPIRole;
     /** 消息内容 */
     content:string;
 }

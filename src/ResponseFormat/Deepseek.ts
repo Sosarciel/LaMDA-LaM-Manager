@@ -45,7 +45,7 @@ type ChatChoice = {
     logprobs: null|number[]
 };
 
-export const TemplateDeepseekResponse = {
+export const DeepseekResponseExample = {
     id: "456a034b-6e31-4a4d-9548-e87b5d694ae0",
     object: "chat.completion",
     created: 1759123711,

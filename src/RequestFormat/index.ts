@@ -1,18 +1,18 @@
 // MODULE:请求格式 API的原始请求格式 #LaMManager
 import type { DeepseekRequest } from './Deepseek';
 import type { GeminiRequest } from './Gemini';
-import type { OpenAIConversationRequest } from './OpenAIConversation';
+import type { OpenAIChatRequest } from './OpenAIChat';
 import type { OpenAITextRequest } from './OpenAIText';
 
 export * from './Deepseek';
-export * from './OpenAIConversation';
+export * from './OpenAIChat';
 export * from './OpenAIText';
 export * from './Gemini';
 export * from './GeminiCompat';
 
 
 export type AnyDeepseekRequest = DeepseekRequest;
-export type AnyOpenaiRequest = OpenAIConversationRequest|OpenAITextRequest;
+export type AnyOpenaiRequest = OpenAIChatRequest|OpenAITextRequest;
 export type AnyGeminiRequest = GeminiRequest;
 
 /**任何文本完成模型的配置 */
