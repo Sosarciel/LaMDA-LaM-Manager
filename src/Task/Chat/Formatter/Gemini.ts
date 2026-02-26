@@ -41,7 +41,8 @@ export const combineHint = (model:string,opt:ChatTaskOption)=>{
     const think_budget = transGeminiThinkBudget(model,opt.think_budget);
     if(think_budget!=undefined && (
         /gemini-3-pro/.test(model) ||
-        /gemini-2.5-pro/.test(model)
+        /gemini-2.5-pro/.test(model) ||
+        /gemini-3.1-pro/.test(model)
     )) return `${opt.hint??''}(limit_thought_tokens_to_under_${think_budget}_words)`;
     return opt.hint;
 };
