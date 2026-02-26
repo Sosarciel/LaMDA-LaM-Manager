@@ -85,7 +85,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiReque
                     includeThoughts:true,
                 }
             },
-            //safetySettings:AllOff
+            safetySettings:AllOff
         } satisfies GeminiRequest;
     },
     computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(GeminiChatTaskFormatter)),
