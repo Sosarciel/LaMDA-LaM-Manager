@@ -128,6 +128,32 @@
 							"model_id_map": {
 								"$ref": "#/definitions/Record",
 								"description": "modelid 映射  \n用于处理类似SiliconFlow的模型id不一致问题"
+							},
+							"valid_model": {
+								"description": "支持的模型\nname 为别名 * 为所有模型\nweight 为优先度, 优先使用高优先度的有效账号 单字符串时为1",
+								"type": "array",
+								"items": {
+									"anyOf": [
+										{
+											"type": "object",
+											"properties": {
+												"name": {
+													"type": "string"
+												},
+												"weight": {
+													"type": "number"
+												}
+											},
+											"required": [
+												"name",
+												"weight"
+											]
+										},
+										{
+											"type": "string"
+										}
+									]
+								}
 							}
 						},
 						"required": [
@@ -169,7 +195,7 @@
 						"instance_table": {
 							"type": "object",
 							"additionalProperties": {
-								"$ref": "#/definitions/ServiceConfig%3C%7BHttpAPIModel%3A(d%3AHttpAPIModelData)%3D%3EPromise%3CExpandDrive%3CHttpAPIModelDrive%3E%3E%3BTest%3A()%3D%3EPromise%3CExpandDrive%3CTestModule%3E%3E%3B%7D%3E"
+								"$ref": "#/definitions/ServiceConfig%3C%7BHttpAPIModel%3A(d%3AHttpAPIModelData)%3D%3EPromise%3CExpandDrive%3CHttpAPIModelDrive%3E%3E%3BTest%3A()%3D%3EPromise%3CExpandDrive%3CTestModel%3E%3E%3B%7D%3E"
 							}
 						}
 					},
@@ -266,13 +292,14 @@
 			}
 		},
 		"LogLevel": {
-			"description": "log等级 undefined相当于 silly",
+			"description": "log等级",
 			"enum": [
 				"debug",
 				"error",
 				"fatal",
 				"http",
 				"info",
+				"none",
 				"silly",
 				"verbose",
 				"warn"
@@ -291,7 +318,7 @@
 		"Record_1": {
 			"$ref": "#/definitions/__type_2"
 		},
-		"ServiceConfig<{HttpAPIModel:(d:HttpAPIModelData)=>Promise<ExpandDrive<HttpAPIModelDrive>>;Test:()=>Promise<ExpandDrive<TestModule>>;}>": {
+		"ServiceConfig<{HttpAPIModel:(d:HttpAPIModelData)=>Promise<ExpandDrive<HttpAPIModelDrive>>;Test:()=>Promise<ExpandDrive<TestModel>>;}>": {
 			"description": "服务构造函数表所对应的单个服务的配置表\n将 类型:工厂函数 映射 转换为完整配置文件",
 			"anyOf": [
 				{
@@ -461,10 +488,16 @@
 					"type": "number"
 				},
 				"logit_bias": {
-					"description": "逻辑对数偏置 {\"token\":偏置值} 对特定token的出现率调整",
+					"description": "逻辑对数偏置 {\"文本\":偏置值} 对特定 文本 的出现率调整  \n注意, 无需对文本tokenize",
 					"anyOf": [
 						{
 							"$ref": "#/definitions/Record_2"
+						},
+						{
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/__type_5"
+							}
 						},
 						{
 							"type": "null"
@@ -502,19 +535,8 @@
 					}
 				},
 				"log_level": {
-					"description": "log等级",
-					"enum": [
-						"debug",
-						"error",
-						"fatal",
-						"http",
-						"info",
-						"none",
-						"silly",
-						"verbose",
-						"warn"
-					],
-					"type": "string"
+					"$ref": "#/definitions/LogLevel",
+					"description": "log等级 忽略则不打印"
 				},
 				"max_hist": {
 					"description": "控制最大历史记录的额外参数",
@@ -557,13 +579,6 @@
 					"description": "此模型api的标准路径",
 					"type": "string"
 				},
-				"valid_account": {
-					"description": "支持此模型的账号, 优先度排序",
-					"type": "array",
-					"items": {
-						"type": "string"
-					}
-				},
 				"price": {
 					"$ref": "#/definitions/APIPrice",
 					"description": "此模型的官方价格"
@@ -588,8 +603,7 @@
 				"id",
 				"interactor",
 				"price",
-				"tokensizer",
-				"valid_account"
+				"tokensizer"
 			]
 		},
 		"__type_7": {

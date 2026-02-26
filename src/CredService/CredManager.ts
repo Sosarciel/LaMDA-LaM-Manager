@@ -98,6 +98,23 @@ class _CredManager implements NeedInit{
         const credit = (accountData.instance.getData().used_credit??0)/1000;
         SLogger.info(`${accountData.type}: ${accountData.name} 当前理论使用量: ${credit} USD`);
     }
+    /**获取允许此模型的账号 */
+    @AwaitInited
+    async getVaildModelAccount(alias:string|string[]){
+        const fixedalias = typeof alias == 'string' ? [alias] : alias;
+        return Object.entries((await this._categoryTable).category_table)
+            .map(([k,v])=>{
+                const match = (v.valid_model??[]).find(opt=>{
+                    const fixed = typeof opt == 'string' ? opt : opt.name;
+                    return fixed=="*" || fixedalias.includes(fixed);
+                });
+                if(match==undefined) return undefined;
+                return typeof match == 'string' ? {category:k,weight:1} : {category:k,weight:match.weight};
+            })
+            .filter(v=>v!=undefined)
+            .sort((a,b)=>b.weight-a.weight)
+            .map(v=>v.category);
+    }
 
     //#region 保存
     /**自动保存设定 秒

@@ -1,4 +1,4 @@
-import type { APIPrice, CredCategoryID } from "CredService";
+import type { APIPrice } from "CredService";
 import type { InteractorType } from "Interactor";
 import type { ChatFormaterType, TextCompletionOption } from "Task";
 import type { TokensizerType } from "Tokensizer";
@@ -22,8 +22,6 @@ export type HttpApiModelCategory = {
     alias: string[]|string;
     /**此模型api的标准路径 */
     endpoint:string;
-    /**支持此模型的账号, 优先度排序 */
-    valid_account:CredCategoryID[];
     /**此模型的官方价格 */
     price:APIPrice;
     /**此模型的聊天任务格式化工具 */

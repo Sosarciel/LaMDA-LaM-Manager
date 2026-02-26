@@ -44,7 +44,7 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
     /**task共用请求 */
     async commonTask(opt:TextCompletionOption,formatter:TextCompletionTaskFormatter<any,any,any>){
         //路由api key 获取有效keyname
-        const vaildAccount = this.data.config.valid_account;
+        const vaildAccount = await CredManager.getVaildModelAccount(this.data.config.alias);
         const accountData = await CredManager.getAvailableAccount(
             ...(opt.preferred_account??[]).filter(v=>vaildAccount.includes(v)),
             ...vaildAccount

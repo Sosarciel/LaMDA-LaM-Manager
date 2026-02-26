@@ -43,6 +43,7 @@ export type APIPriceResp = {
 }
 
 export type CredCategoryID = string;
+
 /**账户类型数据 */
 export type AccountCategoryData = {
     /**此账户类型的id */
@@ -81,6 +82,11 @@ export type AccountCategoryData = {
      * 用于处理类似SiliconFlow的模型id不一致问题
      */
     model_id_map?:Record<string,string>;
+    /**支持的模型
+     * name 为别名 * 为所有模型
+     * weight 为优先度, 优先使用高优先度的有效账号 单字符串时为1
+     */
+    valid_model?:(string|{name:string,weight:number})[];
 }
 
 const retry2PromiseRetries = (retry:AccountCategoryData['retry']):PromiseRetries=>{

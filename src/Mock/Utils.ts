@@ -22,6 +22,7 @@ export namespace LaMManagerMockTool{
                 hostname: "localhost",
                 port: 3000,
                 protocol: "http",
+                valid_model:["*"],
             },
         },
     } as const satisfies CredCategoryJsonTable;
@@ -59,7 +60,6 @@ export namespace LaMManagerMockTool{
                             promptPrice: 0.0005,
                             completionPrice: 0.0015,
                         },
-                        valid_account: [MOCK_CRED_CATEGORY],
                     },
                     default_option: {
                         max_hist: 6000,
@@ -81,7 +81,6 @@ export namespace LaMManagerMockTool{
                             promptPrice: 0.0015,
                             completionPrice: 0.002,
                         },
-                        valid_account: [MOCK_CRED_CATEGORY],
                     },
                     default_option: {
                         temperature: 0.9,
@@ -105,7 +104,6 @@ export namespace LaMManagerMockTool{
                             promptPrice: 0.002,
                             completionPrice: 0.008,
                         },
-                        valid_account: [MOCK_CRED_CATEGORY],
                     },
                     default_option: {
                         temperature: 1.5,
