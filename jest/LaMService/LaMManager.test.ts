@@ -1,16 +1,16 @@
 import { CredManager, LaMManager } from "@";
-import { MOCK_CHAR, MOCK_PATH, MOCK_USER } from "@/src/Mock";
+import { LaMManagerMockTool } from "@/src/Mock";
 import path from "pathe";
-import { buildResp } from "@/src/Mock";
+const {buildResp} = LaMManagerMockTool;
 
 beforeAll(()=>{
     LaMManager.initInject({
-        tablePath:path.join(MOCK_PATH,'LaMService.json'),
+        serviceTable:path.join(LaMManagerMockTool.MOCK_PATH,'LaMService.json'),
     });
 
     CredManager.initInject({
-        tablePath        :path.join(MOCK_PATH,'CredService.json'),
-        categoryTablePath:path.join(MOCK_PATH,'CredCategory.json'),
+        serviceTable     :path.join(LaMManagerMockTool.MOCK_PATH,'CredService.json'),
+        categoryTable    :path.join(LaMManagerMockTool.MOCK_PATH,'CredCategory.json'),
     });
 })
 
@@ -18,12 +18,12 @@ describe("LaMService", () => {
     describe("ChatTask", () => {
         const chatFn = async (instanceName:string,message:string) => {
             return LaMManager.chat.execute(instanceName,{
-                target:MOCK_CHAR,
-                messages:{list:[{
+                target:LaMManagerMockTool.MOCK_CHAR,
+                messages:[{
                     content:message,
                     type:'chat',
-                    senderName:MOCK_USER,
-                }]},
+                    senderName:LaMManagerMockTool.MOCK_USER,
+                }],
                 log_level:"debug",
                 n:1,
                 max_tokens:100,
