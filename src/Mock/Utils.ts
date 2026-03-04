@@ -110,6 +110,29 @@ export namespace LaMManagerMockTool{
                         max_hist: 3000,
                     },
                 },
+            },
+            Gemini3Pro: {
+                name: "Gemini3Pro",
+                type: "HttpAPIModel",
+                data: {
+                    config: {
+                        tokensizer: "cl100k_base",
+                        interactor: "gemini",
+                        chat_formater: "google_chat",
+                        endpoint: "/v1beta/models",
+                        id: "gemini-3-pro-preview",
+                        alias: "Gemini3Pro",
+                        price: {
+                            promptPrice: 0.00125,
+                            completionPrice: 0.01,
+                        },
+                    },
+                    default_option: {
+                        temperature: 1,
+                        max_hist: 4000,
+                        think_budget: "min",
+                    },
+                },
             }
         },
     } as const satisfies LaMServiceJsonTable;

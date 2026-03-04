@@ -14,9 +14,9 @@ export const procOpenAIChat = (data:JObject)=>{
         model:"string",
     })){
         return match(data.model,{
-            'gpt-3.5-turbo':()=>procGPT35Chat(data),
+            'gpt-3.5-turbo'         :()=>procGPT35Chat(data),
             'gpt-3.5-turbo-instruct':()=>procGPT35Text(data),
-            'deepseek-chat':()=>procDeepseekChat(data),
+            'deepseek-chat'         :()=>procDeepseekChat(data),
         },()=>{
             SLogger.warn(`procOpenAIChat 错误 不支持的模型 data:`,data);
             return {};

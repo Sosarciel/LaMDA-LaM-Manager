@@ -5,6 +5,7 @@ import { parse } from 'url';
 
 import { match, SLogger } from "@zwa73/utils";
 
+import { procGemini } from "./GeminiRequester";
 import { procOpenAIChat } from "./OpenAIRequester";
 
 
@@ -26,13 +27,23 @@ export class LaMManagerMockServer{
                 SLogger.info('pathname',pathname);
                 SLogger.info('body',body);
                 const data = JSON.parse(body || "{}");
-                const result = await match(pathname??'',{
-                    '/v1/chat/completions':()=>procOpenAIChat(data),
-                    '/v1/completions':()=>procOpenAIChat(data),
-                },()=>{
-                    SLogger.warn(`req 错误 不支持的pathname`);
-                    return {};
-                });
+                let result = {};
+                const path = pathname ?? '';
+
+                // 检查是否是 Gemini API 路径 (例如: /v1beta/models/gemini-3-pro-preview:generateContent)
+                const geminiMatch = path.match(/^\/v1beta\/models\/([^\/:]+)(?::generateContent)?/);
+                if (geminiMatch) {
+                    const modelId = geminiMatch[1]; // 提取模型ID
+                    result = procGemini(modelId, data);
+                } else {
+                    result = await match(path,{
+                        '/v1/chat/completions':()=>procOpenAIChat(data),
+                        '/v1/completions':()=>procOpenAIChat(data),
+                    },()=>{
+                        SLogger.warn(`req 错误 不支持的pathname`);
+                        return {};
+                    });
+                }
                 res.writeHead(200);
                 res.end(JSON.stringify(result));
             });
