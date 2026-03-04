@@ -34,7 +34,7 @@
 		"@zwa73/js-utils": "^1.0.78",
 		"@zwa73/modular-mixer": "^1.0.4",
 		"@zwa73/service-manager": "^1.0.30",
-		"@zwa73/utils": "^1.0.288",
+		"@zwa73/utils": "^1.0.292",
 		"http-proxy-agent": "^5.0.0",
 		"https-proxy-agent": "^5.0.1",
 		"tiktoken": "^1.0.7"
