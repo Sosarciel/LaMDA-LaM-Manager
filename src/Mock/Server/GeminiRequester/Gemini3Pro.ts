@@ -9,7 +9,7 @@ import { LaMManagerMockTool } from "Mock/Utils";
 
 export const procGemini3Pro = (data:GeminiRequest)=>{
     const msg = data.contents[1].parts[0].text
-        .match(/^([^()]+)/)![0];//排除自动的hint
+        .match(/^([^()]+)/)![0];//排除自动的hint (limit_thought_tokens_to_under_128_words)
     return {
         ...GeminiResponseExample,
         candidates: [{
