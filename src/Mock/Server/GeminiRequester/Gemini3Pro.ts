@@ -8,23 +8,18 @@ import { LaMManagerMockTool } from "Mock/Utils";
 
 
 export const procGemini3Pro = (data:GeminiRequest)=>{
-    const msg = data.contents[0].parts[0].text;
+    const msg = data.contents[1].parts[0].text
+        .match(/^([^()]+)/)![0];//排除自动的hint
     return {
         ...GeminiResponseExample,
-        candidates: [
-        {
+        candidates: [{
             content: {
-                parts: [
-                    {
-                        text: LaMManagerMockTool.buildResp('Gemini3Pro', msg),
-                    },
-                ],
+                parts: [ { text: LaMManagerMockTool.buildResp('Gemini3Pro', msg) } ],
                 role: "model",
             },
             finishReason: "STOP",
             avgLogprobs: -0.20637991370224371,
-        },
-    ],
-    modelVersion: "gemini-3-pro-preview",
+        }],
+        modelVersion: "gemini-3-pro-preview",
     } satisfies GeminiResponse;
 };
