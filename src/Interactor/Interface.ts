@@ -49,7 +49,7 @@ export const PostLaMOptionPreset = preset<PostLaMOption>()({
     retryOption:{
         count:3,
         tryInterval: 300_000,
-        tryDelay: 3,
+        tryDelay: 3000,
     }
 });
 //#endregion

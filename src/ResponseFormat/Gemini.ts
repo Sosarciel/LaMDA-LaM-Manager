@@ -1,3 +1,4 @@
+import type { AnyForwardErrorResponse } from "./ForwardError";
 
 
 
@@ -19,17 +20,8 @@ type Quota = {
     };
 };
 
-/** VApi */
-type VApiPromptBlock = {
-    error: {
-        message: "request blocked by Gemini API: PROHIBITED_CONTENT (request id: 2026012206320433752195474186362)";
-        type: "v_api_error";
-        param: "";
-        code: "prompt_blocked";
-    };
-};
 
-export type AnyGoogleErrorResponse = Quota|VApiPromptBlock;
+export type AnyGoogleErrorResponse = Quota|AnyForwardErrorResponse;
 
 /** 文本内容 */
 type TextContent = {

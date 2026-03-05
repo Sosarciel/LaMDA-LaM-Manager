@@ -154,6 +154,9 @@ export const checkError = async (
             if(error.code=='bad_response_status_code'){
                 SLogger.warn("Cloudflare网关超时");
                 return Failed;
+            } else if (error.message.includes("当前分组上游负载已饱和，请稍后再试")) {
+                SLogger.warn("转发分组过载");
+                return Failed;
             } else SLogger.error("未定义的错误子类型");
             return Terminated;
         case "new_api_error":
