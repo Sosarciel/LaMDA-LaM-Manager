@@ -1,0 +1,15 @@
+// MODULE:InstructTask 格式化器集合 #LaMManager
+
+/**
+ * Instruct 任务格式化器集合
+ *
+ * 设计考虑：
+ * 1. 每个格式化器对应特定的模型或 API 模式
+ * 2. 保持与 Chat 任务格式化器相似的结构
+ * 3. 支持动态扩展，新格式化器只需添加导出即可
+ */
+
+// 导出所有 Instruct 任务格式化器
+// export * from './OpenAIInstruct';
+export * from './DeepseekFIM';
+// export * from './PrefixCompletion';

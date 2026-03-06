@@ -1,0 +1,147 @@
+import { preset } from "@zwa73/utils";
+
+import type { TextCompletionOption, TextCompletionResult } from "Task/DataInterface";
+
+/**
+ * Instruct（指导式文本生成）任务配置
+ *
+ * 设计考虑：
+ * 1. 与 Chat 任务不同，Instruct 任务专注于纯文本生成，避免聊天端点的副作用
+ * 2. 不支持 messages、target、hint 等 chat-specific 字段，保持接口简洁
+ * 3. 支持 FIM（Fill-in-the-Middle）模式，通过 prefix 和 suffix 参数
+ * 4. 保留 TextCompletionOption 的所有通用参数，但某些参数（如 think_budget）可能不被所有模型支持
+ * 5. 强制要求 prompt 字段，这是文本生成的核心输入
+ */
+export type InstructTaskOption = TextCompletionOption & {
+  /**
+   * 主要提示文本（必需）
+   * 对于非 FIM 模式，这是完整的生成提示
+   * 对于 FIM 模式，当只有 prefix 时，prompt 可作为 suffix 的替代或附加文本
+   */
+  prompt: string;
+
+  /**
+   * FIM 模式：前缀文本
+   * 当提供时，表示使用填充中间模式，模型将在 prefix 和 suffix 之间生成内容
+   * 如果只提供 prefix，则是前缀续写模式
+   */
+  prefix?: string;
+
+  /**
+   * FIM 模式：后缀文本
+   * 当与 prefix 一起提供时，表示完整的 FIM 模式
+   * 如果只提供 suffix（不常见），则是后缀补全模式
+   */
+  suffix?: string;
+
+  /**
+   * 停止词列表
+   * 覆盖 TextCompletionOption 中的 stop 字段，提供更明确的类型
+   */
+  stop?: string[];
+
+  // 注意：故意不包含以下 chat-specific 字段：
+  // - messages: 无消息历史
+  // - target: 无对话目标
+  // - hint: 无临时提示
+  // - think_budget: 虽然继承自 TextCompletionOption，但多数 instruct 模型不支持
+};
+
+/**
+ * 默认的 Instruct 任务设置
+ *
+ * 设计考虑：
+ * 1. 使用与 Chat 任务相同的预设值，保持一致性
+ * 2. 但 think_budget 设为 'non'，因为大多数 instruct 模型不支持思考链
+ * 3. max_tokens 设为 16，作为安全默认值，用户通常需要根据具体任务调整
+ */
+export const InstructTaskOptionPreset = preset<InstructTaskOption>()({
+  max_tokens       : 16  ,
+  temperature      : 1   ,
+  top_p            : 1   ,
+  presence_penalty : 0   ,
+  frequency_penalty: 0   ,
+  n                : 1   ,
+  logit_bias       : null,
+  think_budget     : 'non', // 大多数 instruct 模型不支持，设为最低值
+  preferred_account: [] as [],
+  log_level        : "none",
+  // prompt 是必需字段，不在预设中设置
+});
+
+/**
+ * Instruct 任务接口
+ *
+ * 设计考虑：
+ * 1. 与 ChatTaskInterface 结构相似，保持 Task 系统的一致性
+ * 2. computeTokenCount 接收 prompt 字符串，而不是消息列表
+ * 3. execute 方法接收 InstructTaskOption，处理各种生成模式
+ * 4. 接口设计为可扩展，未来支持批量生成、流式输出等
+ */
+export type InstructTaskInterface = {
+  /**
+   * 计算提示文本的 Token 数量
+   * @async
+   * @param prompt - 待计算的提示文本（可能包含 prefix 和 suffix 的组合）
+   * @returns token 数
+   *
+   * 设计考虑：
+   * - 参数简化为单个 prompt 字符串，因为 Instruct 任务不需要复杂的历史消息
+   * - 实际实现中，格式化器可能需要考虑 FIM 模式下的特殊 token
+   */
+  computeTokenCount(prompt: string): Promise<number>;
+
+  /**
+   * 执行指导式文本生成
+   * @param opt - 生成选项
+   * @returns 生成结果
+   *
+   * 设计考虑：
+   * - 支持多种模式：普通提示、前缀续写、FIM 填充
+   * - 内部由格式化器处理不同模型的特定格式
+   * - 返回标准 TextCompletionResult，保持系统统一
+   */
+  execute(opt: InstructTaskOption): Promise<TextCompletionResult>;
+};
+
+/**
+ * FIM 模式类型
+ *
+ * 设计考虑：
+ * 1. 明确区分三种 FIM 相关模式，便于格式化器处理
+ * 2. 使用字面量类型，提高类型安全性
+ */
+export type FIMMode =
+  | 'prompt-only'      // 仅使用 prompt，普通文本生成
+  | 'prefix-only'      // 仅 prefix，前缀续写模式
+  | 'suffix-only'      // 仅 suffix，后缀补全模式（不常见）
+  | 'prefix-suffix'    // prefix + suffix，完整 FIM 模式
+  | 'prefix-prompt'    // prefix + prompt，将 prompt 作为 suffix 的替代
+  | 'prompt-suffix';   // prompt + suffix，将 prompt 作为 prefix 的替代
+
+/**
+ * 检测 FIM 模式
+ *
+ * 设计考虑：
+ * 1. 工具函数，帮助格式化器确定当前选项对应的 FIM 模式
+ * 2. 处理边界情况，如空字符串、undefined 等
+ */
+export function detectFIMMode(opt: InstructTaskOption): FIMMode {
+  const hasPrefix = opt.prefix !== undefined && opt.prefix.trim() !== '';
+  const hasSuffix = opt.suffix !== undefined && opt.suffix.trim() !== '';
+  const hasPrompt = opt.prompt !== undefined && opt.prompt.trim() !== '';
+
+  if (hasPrefix && hasSuffix) {
+    return 'prefix-suffix';
+  } else if (hasPrefix && hasPrompt) {
+    return 'prefix-prompt';
+  } else if (hasPrompt && hasSuffix) {
+    return 'prompt-suffix';
+  } else if (hasPrefix) {
+    return 'prefix-only';
+  } else if (hasSuffix) {
+    return 'suffix-only';
+  } else {
+    return 'prompt-only';
+  }
+}
