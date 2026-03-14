@@ -2,3 +2,4 @@
 export * from './DataInterface';
 export * from './ToolInterface';
 export * from './Chat';
+export * from './Instruct';

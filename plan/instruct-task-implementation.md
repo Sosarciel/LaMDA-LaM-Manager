@@ -41,16 +41,19 @@ type InstructTaskOption = TextCompletionOption & {
   /** 主要提示文本（必需） */
   prompt: string;
 
-  /** FIM 模式：前缀文本 */
-  prefix?: string;
-
   /** FIM 模式：后缀文本 */
   suffix?: string;
 
   /** 停止词列表 */
   stop?: string[];
 
-  // 注意：不包含 messages、target、think_budget 等 chat 特定字段
+  /** 是否返回 logprobs。
+   * 传统 Instruct/Completion 任务常用于代码评估，此字段很有用。
+   */
+  logprobs?: number;
+
+  /** 是否在返回结果中包含原始 prompt */
+  echo?: boolean;
 };
 ```
 
@@ -124,9 +127,24 @@ type InstructTaskFormatter<
    - 响应处理：提取 `choices[0].text`
 
 4. **实现 DeepSeek FIM 格式化器**
-   - 适配 DeepSeek 的 FIM 模式
-   - 处理 `prefix`、`suffix` 参数映射
-   - 支持 `middle` 位置标记
+   - 适配 DeepSeek 的 FIM 模式 与 gpt-3.5-turbo-instruct 等价, 但要单独写一个文件以供可能的扩展
+   - DeepSeek / OpenAI FIM 请求体样例
+REST API 请求示例 (POST)
+Endpoint: https://api.deepseek.com/beta/completions (或兼容 OpenAI 的 /v1/completions)
+```
+{
+  "model": "deepseek-chat",
+  "prompt": "def calculate_area(radius):\n    import math\n   ",
+  "suffix": "\n    return area",
+  "max_tokens": 64,
+  "temperature": 0,
+  "top_p": 1,
+  "n": 1,
+  "stream": false,
+  "stop": ["\n\n", "def "],
+  "logprobs": null
+}
+```
 
 5. **实现通用前缀续写格式化器**
    - 适配多种支持前缀续写的 API
@@ -155,16 +173,15 @@ type InstructTaskFormatter<
 ### 挑战 1: FIM 模式标准化
 - **问题**: 不同 API 的 FIM 格式不同（特殊 token、位置标记等）
 - **解决方案**:
-  - 抽象通用 FIM 接口：`{ prefix, suffix, middle? }`
+  - 抽象通用 FIM 接口：`{ prompt, suffix }`
+  - 对于前缀续写模式直接忽略suffix, 并给出警告
   - 在格式化器内进行 API 特定转换
   - 提供配置映射表
 
 ### 挑战 2: 模型兼容性
 - **问题**: 并非所有模型都支持 instruct 或 FIM 模式
 - **解决方案**:
-  - 在格式化器中验证模型 ID
-  - 提供降级策略（如使用 chat 端点模拟）
-  - 清晰的错误提示
+  - 不对这些模型支持
 
 ### 挑战 3: Token 计算差异
 - **问题**: FIM 模式的 Token 计算复杂

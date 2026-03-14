@@ -5,7 +5,7 @@ import { constrainType } from "@zwa73/utils";
 import type { CredCategoryID } from "CredService";
 
 import type { ChatTaskInterface } from "./Chat";
-//import type { InstructTaskInterface } from "./Instruct";
+import type { InstructTaskInterface } from "./Instruct";
 
 /**思考预算枚举 */
 export type ThingBudget = 'non'|'min'|'low'|'mid'|'hig'|'max';
@@ -64,11 +64,11 @@ export type TextCompletionResult = PromiseRetryResult<TextCompletionResp>;
 export type TaskInterface = {
     /**chat任务, 与实体渐进式聊天 */
     chat:ChatTaskInterface;
-    ///**instruct任务, 指导式文本生成，支持传统API和FIM模式 */
-    //instruct:InstructTaskInterface;
+    /**instruct任务, 指导式文本生成，支持传统API和FIM模式 */
+    instruct:InstructTaskInterface;
 }
 /**task类型 */
 export type TaskType =  keyof TaskInterface;
 /**task类型 列表 */
-export const TaskTypeList = ['chat'] as const;
+export const TaskTypeList = ['chat', 'instruct'] as const;
 constrainType<ReadonlyArray<TaskType>>(TaskTypeList);

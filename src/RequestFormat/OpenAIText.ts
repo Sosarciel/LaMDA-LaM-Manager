@@ -8,6 +8,8 @@ export type OpenAITextRequest = Partial<{
     model: string;
     /** 提示词 */
     prompt: string;
+    /** 后缀文本（FIM模式） */
+    suffix: string;
     /** 最大生成 token 数 */
     max_tokens: number;
     /** 温度参数 */
@@ -24,4 +26,8 @@ export type OpenAITextRequest = Partial<{
     logit_bias: Record<string, number> | null;
     /** 生成数量 */
     n: number;
+    /** 是否返回 logprobs */
+    logprobs: number;
+    /** 是否在返回结果中包含原始 prompt */
+    echo: boolean;
 }>;

@@ -21,7 +21,7 @@ export type OpenAITextResponse = {
     };
 };
 /** 文本 API 选项格式 */
-type TextChoice = {
+export type TextChoice = {
     /** 文本内容 */
     text: string;
     /** 索引 */
