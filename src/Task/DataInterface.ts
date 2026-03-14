@@ -1,6 +1,6 @@
 import type { PromiseRetryResult } from "@zwa73/js-utils";
 import type { LogLevel } from "@zwa73/utils";
-import { assertType } from "@zwa73/utils";
+import { constrainType } from "@zwa73/utils";
 
 import type { CredCategoryID } from "CredService";
 
@@ -71,4 +71,4 @@ export type TaskInterface = {
 export type TaskType =  keyof TaskInterface;
 /**task类型 列表 */
 export const TaskTypeList = ['chat'] as const;
-assertType<ReadonlyArray<TaskType>>(TaskTypeList);
+constrainType<ReadonlyArray<TaskType>>(TaskTypeList);
