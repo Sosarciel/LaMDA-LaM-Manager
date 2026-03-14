@@ -1,36 +1,44 @@
+import type { PromiseRetryResult } from "@zwa73/js-utils";
+import { SLogger } from "@zwa73/utils";
+
 import type { OpenAITextRequest } from "RequestFormat";
 import type { OpenAITextResponse } from "ResponseFormat";
 import type { TokensizerType } from "Tokensizer";
 import { getTokensizer } from "Tokensizer";
 
-import type { TextCompletionResult, TextCompletionResp } from "Task/DataInterface";
+import type { TextCompletionResult } from "Task/DataInterface";
 import type { InstructTaskFormatter } from "Task/Instruct/Adapter";
-import type { InstructTaskOption } from "Task/Instruct/Interface";
+import { tokenifyLogitBias } from "Task/Util";
 
+import { validateInstructOption } from "./Utils";
+
+/**DeepSeek 前缀续写格式化器类型定义 */
+type DeepseekPrefixCompletionTaskFormatterType = InstructTaskFormatter<OpenAITextRequest, OpenAITextResponse>;
 
 /**DeepSeek 前缀续写格式化器 */
-export const DeepseekPrefixCompletion: InstructTaskFormatter<OpenAITextRequest, OpenAITextResponse> = {
-    /**计算Token数量 */
-    async computeTokenCount(prompt: string, tokensizerType: TokensizerType): Promise<number> {
-        const tokensizer = getTokensizer(tokensizerType);
-        const tokens = await tokensizer.encode(prompt);
-        return tokens.length;
+export const DeepseekPrefixCompletion: DeepseekPrefixCompletionTaskFormatterType = {
+    formatResp: (resp: OpenAITextResponse) => {
+        return {
+            choices: resp.choices.map(choice => ({
+                content: choice.text,
+            })),
+            vaild: true,
+        };
     },
 
-    /**格式化选项 */
-    async formatOption(arg: {
-        option: InstructTaskOption;
-        modelId: string;
-        tokensizerType: TokensizerType;
-    }): Promise<OpenAITextRequest | undefined> {
-        const { option, modelId } = arg;
-
-        if (option.suffix) {
-            console.warn("Suffix is not supported in prefix completion mode");
+    async formatOption({ option, modelId, tokensizerType }) {
+        if (!validateInstructOption(option)) {
+            SLogger.warn("DeepseekPrefixCompletion formatOption 无效 option");
+            return;
         }
 
-        // 前缀续写模式：使用prefix作为真实的前缀
-        const finalPrompt = option.prefix || option.prompt;
+        if (option.suffix) {
+            SLogger.warn("DeepseekPrefixCompletion 不支持 suffix 参数");
+        }
+
+        // 前缀续写模式：prefix 作为真实的前缀，prompt 作为前缀之前的提示
+        // 如果提供了 prefix，使用 prefix 作为 prompt；否则使用 prompt
+        const finalPrompt = option.prefix !== undefined ? option.prefix : option.prompt;
 
         return {
             model: modelId,
@@ -39,16 +47,15 @@ export const DeepseekPrefixCompletion: InstructTaskFormatter<OpenAITextRequest, 
             temperature: option.temperature,
             top_p: option.top_p,
             n: option.n,
-            stop: option.stop || option.stop === null ? option.stop : undefined,
+            stop: option.stop,
             logprobs: option.logprobs,
             echo: option.echo,
             presence_penalty: option.presence_penalty,
             frequency_penalty: option.frequency_penalty,
-            logit_bias: typeof option.logit_bias === 'object' && !Array.isArray(option.logit_bias) ? option.logit_bias : undefined,
-        };
+            logit_bias: await tokenifyLogitBias(option.logit_bias, tokensizerType),
+        } satisfies OpenAITextRequest;
     },
 
-    /**格式化结果 */
     async formatResult(resp: PromiseRetryResult<OpenAITextResponse | undefined> | undefined): Promise<TextCompletionResult> {
         if (!resp) {
             return { completed: undefined, pending: [] };
@@ -71,13 +78,9 @@ export const DeepseekPrefixCompletion: InstructTaskFormatter<OpenAITextRequest, 
         };
     },
 
-    /**格式化响应 */
-    formatResp(resp: OpenAITextResponse): TextCompletionResp {
-        return {
-            choices: resp.choices.map((choice: any) => ({
-                content: choice.text,
-            })),
-            vaild: true,
-        };
+    async computeTokenCount(prompt: string, tokensizerType: TokensizerType): Promise<number> {
+        const tokensizer = getTokensizer(tokensizerType);
+        const tokens = await tokensizer.encode(prompt);
+        return tokens.length;
     },
 };
