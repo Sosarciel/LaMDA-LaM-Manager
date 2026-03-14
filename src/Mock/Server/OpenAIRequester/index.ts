@@ -29,7 +29,7 @@ export const procOpenAIText = (data: JObject) => {
     })) {
         return match(data.model, {
             'gpt-3.5-turbo-instruct': () => procOpenAIInstruct(data),
-            'deepseek-code': () => procOpenAIInstruct(data),
+            'deepseek-chat': () => procOpenAIInstruct(data),
         }, () => {
             SLogger.warn(`procOpenAIText 错误 不支持的模型 data:`, data);
             return {};

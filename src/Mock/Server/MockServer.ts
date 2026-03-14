@@ -29,19 +29,34 @@ export class LaMManagerMockServer{
                 let result = {};
                 const path = pathname ?? '';
 
-                // 检查是否是 Gemini API 路径 (例如: /v1beta/models/gemini-3-pro-preview:generateContent)
-                const geminiMatch = path.match(/^\/v1beta\/models\/([^\/:]+)(?::generateContent)?/);
+                // 检查是否是 Gemini API 路径 (例如: /v1beta/models/gemini-3-pro-preview:generateContent 或 /chat/v1beta/models/gemini-3-pro-preview:generateContent)
+                const geminiMatch = path.match(/(?:^\/chat)?\/v1beta\/models\/([^\/:]+)(?::generateContent)?/);
                 if (geminiMatch) {
                     const modelId = geminiMatch[1]; // 提取模型ID
                     result = procGemini(modelId, data);
-                } else {
-                    result = await match(path,{
+                } else if (path.startsWith('/chat/')) {
+                    // 处理 chat 任务
+                    const chatPath = path.replace('/chat', '');
+                    result = await match(chatPath,{
+                        '/v1/chat/completions':()=>procOpenAIChat(data),
+                        '/v1/completions':()=>procOpenAIChat(data),
+                    },()=>{
+                        SLogger.warn(`req 错误 不支持的pathname`);
+                        return {};
+                    });
+                } else if (path.startsWith('/instruct/')) {
+                    // 处理 instruct 任务
+                    const instructPath = path.replace('/instruct', '');
+                    result = await match(instructPath,{
                         '/v1/chat/completions':()=>procOpenAIChat(data),
                         '/v1/completions':()=>procOpenAIText(data),
                     },()=>{
                         SLogger.warn(`req 错误 不支持的pathname`);
                         return {};
                     });
+                } else {
+                    SLogger.warn(`req 错误 不支持的pathname`);
+                    result = {};
                 }
                 res.writeHead(200);
                 res.end(JSON.stringify(result));

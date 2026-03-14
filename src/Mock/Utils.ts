@@ -50,7 +50,7 @@ export namespace LaMManagerMockTool{
                 type: "HttpAPIModel",
                 data: {
                     config: {
-                        endpoint: "/v1/chat/completions",
+                        endpoint: "/chat/v1/chat/completions",
                         chat_formater: "openai_chat",
                         tokensizer: "cl100k_base",
                         interactor: "openai",
@@ -71,7 +71,7 @@ export namespace LaMManagerMockTool{
                 type: "HttpAPIModel",
                 data: {
                     config: {
-                        endpoint: "/v1/completions",
+                        endpoint: "/chat/v1/completions",
                         chat_formater: "openai_text",
                         tokensizer: "cl100k_base",
                         interactor: "openai",
@@ -96,7 +96,7 @@ export namespace LaMManagerMockTool{
                         tokensizer: "deepseek",
                         interactor: "openai",
                         chat_formater: "deepseek_chat",
-                        endpoint: "/v1/chat/completions",
+                        endpoint: "/chat/v1/chat/completions",
                         id: "deepseek-chat",
                         alias: "DeepseekChat",
                         price: {
@@ -119,7 +119,7 @@ export namespace LaMManagerMockTool{
                         tokensizer: "cl100k_base",
                         interactor: "gemini",
                         chat_formater: "google_chat",
-                        endpoint: "/v1beta/models",
+                        endpoint: "/chat/v1beta/models",
                         id: "gemini-3-pro-preview",
                         alias: "Gemini3Pro",
                         price: {
@@ -140,7 +140,7 @@ export namespace LaMManagerMockTool{
                 type: "HttpAPIModel",
                 data: {
                     config: {
-                        endpoint: "/v1/completions",
+                        endpoint: "/instruct/v1/completions",
                         chat_formater: "openai_text",
                         instruct_formater: "openai_instruct",
                         tokensizer: "cl100k_base",
@@ -163,7 +163,7 @@ export namespace LaMManagerMockTool{
                 type: "HttpAPIModel",
                 data: {
                     config: {
-                        endpoint: "/v1/completions",
+                        endpoint: "/instruct/v1/completions",
                         chat_formater: "openai_text",
                         instruct_formater: "deepseek_fim",
                         tokensizer: "deepseek",
@@ -186,7 +186,7 @@ export namespace LaMManagerMockTool{
                 type: "HttpAPIModel",
                 data: {
                     config: {
-                        endpoint: "/v1/chat/completions",
+                        endpoint: "/instruct/v1/chat/completions",
                         chat_formater: "deepseek_chat",
                         instruct_formater: "deepseek_prefix_completion",
                         tokensizer: "deepseek",
