@@ -133,12 +133,98 @@ export namespace LaMManagerMockTool{
                         think_budget: "min",
                     },
                 },
-            }
+            },
+            // 指示模式测试模型
+            OpenAIInstruct: {
+                name: "OpenAIInstruct",
+                type: "HttpAPIModel",
+                data: {
+                    config: {
+                        endpoint: "/v1/completions",
+                        chat_formater: "openai_text",
+                        instruct_formater: "openai_instruct",
+                        tokensizer: "cl100k_base",
+                        interactor: "openai",
+                        id: "gpt-3.5-turbo-instruct",
+                        alias: "OpenAIInstruct",
+                        price: {
+                            promptPrice: 0.0015,
+                            completionPrice: 0.002,
+                        },
+                    },
+                    default_option: {
+                        temperature: 0.7,
+                        max_tokens: 100,
+                    },
+                },
+            },
+            DeepseekFIM: {
+                name: "DeepseekFIM",
+                type: "HttpAPIModel",
+                data: {
+                    config: {
+                        endpoint: "/v1/completions",
+                        chat_formater: "openai_text",
+                        instruct_formater: "deepseek_fim",
+                        tokensizer: "deepseek",
+                        interactor: "openai",
+                        id: "deepseek-chat",
+                        alias: "DeepseekFIM",
+                        price: {
+                            promptPrice: 0.002,
+                            completionPrice: 0.008,
+                        },
+                    },
+                    default_option: {
+                        temperature: 0.3,
+                        max_tokens: 200,
+                    },
+                },
+            },
+            DeepseekPrefixCompletion: {
+                name: "DeepseekPrefixCompletion",
+                type: "HttpAPIModel",
+                data: {
+                    config: {
+                        endpoint: "/v1/chat/completions",
+                        chat_formater: "deepseek_chat",
+                        instruct_formater: "deepseek_prefix_completion",
+                        tokensizer: "deepseek",
+                        interactor: "openai",
+                        id: "deepseek-chat",
+                        alias: "DeepseekPrefixCompletion",
+                        price: {
+                            promptPrice: 0.002,
+                            completionPrice: 0.008,
+                        },
+                    },
+                    default_option: {
+                        temperature: 0.3,
+                        max_tokens: 200,
+                    },
+                },
+            },
         },
     } as const satisfies LaMServiceJsonTable;
 
     /**构建一个响应 */
     export const buildResp = (id:string,msg?:string)=>{
         return `来自 ${id} 对 ${msg??"未定义消息"} 的响应`;
+    };
+
+    /**构建指示模式测试选项 */
+    export const buildInstructOption = (prompt: string, options?: {
+        suffix?: string;
+        prefix?: string;
+        max_tokens?: number;
+        temperature?: number;
+    }) => {
+        return {
+            prompt: prompt,
+            suffix: options?.suffix,
+            prefix: options?.prefix,
+            max_tokens: options?.max_tokens || 100,
+            temperature: options?.temperature || 0.7,
+        };
     };
 }

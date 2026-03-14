@@ -1,13 +1,13 @@
-
 import type { AnyTextCompletionRequest } from "RequestFormat";
+import type { AnyTextCompletionResponse } from "ResponseFormat";
 import type { TokensizerType } from "Tokensizer";
-import type { TextCompletionTaskFormatter, RespFormatter } from "../ToolInterface";
-import type { TextCompletionResult } from "../DataInterface";
 
-import type { InstructTaskInterface, InstructTaskOption } from "./Interface";
+import type { TextCompletionResult } from "Task/DataInterface";
+import type { TextCompletionTaskFormatter, RespFormatter } from "Task/ToolInterface";
 
 import { OpenAIInstruct, DeepseekFIM, DeepseekPrefixCompletion } from "./Formatter";
-import { AnyTextCompletionResponse } from "ResponseFormat";
+import type { InstructTaskInterface, InstructTaskOption } from "./Interface";
+
 
 /**指导式文本生成任务格式化器 */
 export type InstructTaskFormatter<
@@ -21,9 +21,9 @@ export type InstructTaskFormatter<
 
 /**指导式文本生成任务格式化器表 */
 export const InstructTaskFormaterTable = {
-    "openai-instruct": OpenAIInstruct,
-    "deepseek-fim": DeepseekFIM,
-    "deepseek-prefix-completion": DeepseekPrefixCompletion,
+    "openai_instruct": OpenAIInstruct,
+    "deepseek_fim": DeepseekFIM,
+    "deepseek_prefix_completion": DeepseekPrefixCompletion,
 };
 
 /**指导式文本生成任务格式化器类型 */

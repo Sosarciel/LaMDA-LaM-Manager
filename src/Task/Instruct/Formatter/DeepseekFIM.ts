@@ -29,7 +29,6 @@ export const DeepseekFIM: DeepseekFIMTaskFormatterType = {
             max_tokens: option.max_tokens,
             temperature: option.temperature,
             top_p: option.top_p,
-            n: option.n,
             stop: option.stop,
             logprobs: option.logprobs,
             echo: option.echo,

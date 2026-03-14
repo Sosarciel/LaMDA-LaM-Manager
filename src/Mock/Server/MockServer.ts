@@ -6,8 +6,7 @@ import { parse } from 'url';
 import { match, SLogger } from "@zwa73/utils";
 
 import { procGemini } from "./GeminiRequester";
-import { procOpenAIChat } from "./OpenAIRequester";
-
+import { procOpenAIChat, procOpenAIText } from "./OpenAIRequester";
 
 export class LaMManagerMockServer{
     server:Server|undefined;
@@ -38,7 +37,7 @@ export class LaMManagerMockServer{
                 } else {
                     result = await match(path,{
                         '/v1/chat/completions':()=>procOpenAIChat(data),
-                        '/v1/completions':()=>procOpenAIChat(data),
+                        '/v1/completions':()=>procOpenAIText(data),
                     },()=>{
                         SLogger.warn(`req 错误 不支持的pathname`);
                         return {};

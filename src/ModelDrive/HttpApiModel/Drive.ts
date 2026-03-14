@@ -1,4 +1,3 @@
-
 import { ivk, None, SLogger, UtilFunc } from "@zwa73/utils";
 
 import { CredManager } from "CredService";
@@ -27,7 +26,7 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
     constructor(private data:HttpAPIModelData){
         super();
         this.chatFormater = ChatTaskFormaterTable[this.data.config.chat_formater];
-        this.instructFormater = InstructTaskFormaterTable[this.data.config.instruct_formater || "openai-instruct"];
+        this.instructFormater = InstructTaskFormaterTable[this.data.config.instruct_formater || "openai_instruct"];
         this.interactor   = InteractorTable[this.data.config.interactor];
     }
     isRuning(){return true;}

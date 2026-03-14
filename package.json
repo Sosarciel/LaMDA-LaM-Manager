@@ -16,6 +16,7 @@
 		"test": "jest",
 		"build": "powershell scripts/pack",
 		"compile": "powershell scripts/compile",
+		"check": "tsc -noEmit",
 		"watch": "powershell scripts/watch",
 		"build-schema": "powershell scripts/build-schema",
 		"expand-macro": "powershell scripts/expand-macro",
