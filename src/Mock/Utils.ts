@@ -193,7 +193,7 @@ export namespace LaMManagerMockTool{
                         tokensizer: "deepseek",
                         interactor: "openai",
                         id: "deepseek-chat",
-                        alias: "Instruct_DeepseekPrefixCompletion",
+                        alias: "Instruct_DeepseekPrefix",
                         price: {
                             promptPrice: 0.002,
                             completionPrice: 0.008,

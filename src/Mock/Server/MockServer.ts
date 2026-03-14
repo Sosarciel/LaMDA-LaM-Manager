@@ -3,7 +3,7 @@ import type { Server } from "http";
 import { createServer } from "http";
 import { parse } from 'url';
 
-import { match, SLogger } from "@zwa73/utils";
+import { ivk, match, SLogger } from "@zwa73/utils";
 
 import { procGemini } from "./GeminiRequester";
 import { procOpenAIChat, procOpenAIText } from "./OpenAIRequester";
@@ -26,39 +26,41 @@ export class LaMManagerMockServer{
                 SLogger.info('pathname',pathname);
                 SLogger.info('body',body);
                 const data = JSON.parse(body || "{}");
-                let result = {};
                 const path = pathname ?? '';
 
-                if (path.startsWith('/chat/')) {
-                    // 处理 chat 任务
-                    const chatPath = path.replace('/chat', '');
-                    // 检查是否是 Gemini API 路径 (例如: /v1beta/models/gemini-3-pro-preview:generateContent 或 /chat/v1beta/models/gemini-3-pro-preview:generateContent)
-                    const geminiMatch = chatPath.match(/\/v1beta\/models\/([^\/:]+)(?::generateContent)?/);
-                    if (geminiMatch) {
-                        const modelId = geminiMatch[1]; // 提取模型ID
-                        result = procGemini(modelId, data);
+                const result = await ivk(async ()=>{
+                    if (path.startsWith('/chat/')) {
+                        // 处理 chat 任务
+                        const chatPath = path.replace('/chat', '');
+                        // 检查是否是 Gemini API 路径 (例如: /v1beta/models/gemini-3-pro-preview:generateContent 或 /chat/v1beta/models/gemini-3-pro-preview:generateContent)
+                        const geminiMatch = chatPath.match(/\/v1beta\/models\/([^\/:]+)(?::generateContent)?/);
+                        if (geminiMatch) {
+                            const modelId = geminiMatch[1]; // 提取模型ID
+                            return procGemini(modelId, data);
+                        }
+                        return await match(chatPath,{
+                            '/v1/chat/completions':()=>procOpenAIChat(data),
+                            '/v1/completions':()=>procOpenAIChat(data),
+                        },()=>{
+                            SLogger.warn(`req 错误 不支持的pathname`);
+                            return {};
+                        });
                     }
-                    result = await match(chatPath,{
-                        '/v1/chat/completions':()=>procOpenAIChat(data),
-                        '/v1/completions':()=>procOpenAIChat(data),
-                    },()=>{
+                    else if (path.startsWith('/instruct/')) {
+                        // 处理 instruct 任务
+                        const instructPath = path.replace('/instruct', '');
+                        return await match(instructPath,{
+                            '/v1/chat/completions':()=>procOpenAIChat(data),
+                            '/v1/completions':()=>procOpenAIText(data),
+                        },()=>{
+                            SLogger.warn(`req 错误 不支持的pathname`);
+                            return {};
+                        });
+                    } else {
                         SLogger.warn(`req 错误 不支持的pathname`);
                         return {};
-                    });
-                } else if (path.startsWith('/instruct/')) {
-                    // 处理 instruct 任务
-                    const instructPath = path.replace('/instruct', '');
-                    result = await match(instructPath,{
-                        '/v1/chat/completions':()=>procOpenAIChat(data),
-                        '/v1/completions':()=>procOpenAIText(data),
-                    },()=>{
-                        SLogger.warn(`req 错误 不支持的pathname`);
-                        return {};
-                    });
-                } else {
-                    SLogger.warn(`req 错误 不支持的pathname`);
-                    result = {};
-                }
+                    }
+                });
                 res.writeHead(200);
                 res.end(JSON.stringify(result));
             });

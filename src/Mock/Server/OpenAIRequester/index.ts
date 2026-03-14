@@ -4,7 +4,8 @@ import { match, SLogger, UtilFunc } from "@zwa73/utils";
 import { procDeepseekChat } from "./DeepseekChat";
 import { procGPT35Chat } from "./GPT35Chat";
 import { procGPT35Text } from "./GPT35Text";
-import { procOpenAIInstruct } from "./OpenAIInstruct";
+import { InstructDeepseekText } from "./InstructDeepseekText";
+import { procInstructGPT35Text } from "./InstructGPT35Text";
 
 export const procOpenAIChat = (data: JObject) => {
     if (UtilFunc.checkSharpSchema(data, {
@@ -28,8 +29,8 @@ export const procOpenAIText = (data: JObject) => {
         model: "string",
     })) {
         return match(data.model, {
-            'gpt-3.5-turbo-instruct': () => procOpenAIInstruct(data),
-            'deepseek-chat': () => procOpenAIInstruct(data),
+            'gpt-3.5-turbo-instruct': () => procInstructGPT35Text(data),
+            'deepseek-chat': () => InstructDeepseekText(data),
         }, () => {
             SLogger.warn(`procOpenAIText 错误 不支持的模型 data:`, data);
             return {};
