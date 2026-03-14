@@ -19,14 +19,14 @@ import { instructTaskCtor } from "./InstructTask";
 /**适用于网络API的文本完成模型驱动器 */
 export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
     chatFormater:ChatTaskFormatter<any,any,any>;
-    instructFormater:InstructTaskFormatter<any,any>;
+    instructFormater?:InstructTaskFormatter<any,any>;
     interactor  :Interactor;
     chat = chatTaskCtor(this);
     instruct = instructTaskCtor(this);
     constructor(private data:HttpAPIModelData){
         super();
         this.chatFormater = ChatTaskFormaterTable[this.data.config.chat_formater];
-        this.instructFormater = InstructTaskFormaterTable[this.data.config.instruct_formater || "openai_instruct"];
+        this.instructFormater = this.data.config.instruct_formater ? InstructTaskFormaterTable[this.data.config.instruct_formater] : undefined;
         this.interactor   = InteractorTable[this.data.config.interactor];
     }
     isRuning(){return true;}

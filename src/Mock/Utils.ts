@@ -45,8 +45,9 @@ export namespace LaMManagerMockTool{
 
     export const MOCK_LAM_SERVICE_TABLE = {
         instance_table: {
-            GPT35Chat: {
-                name: "GPT35Chat",
+            // Chat 任务模型（添加 Chat_ 前缀）
+            Chat_GPT35Chat: {
+                name: "Chat_GPT35Chat",
                 type: "HttpAPIModel",
                 data: {
                     config: {
@@ -55,7 +56,7 @@ export namespace LaMManagerMockTool{
                         tokensizer: "cl100k_base",
                         interactor: "openai",
                         id: "gpt-3.5-turbo",
-                        alias: "GPT35Chat",
+                        alias: "Chat_GPT35Chat",
                         price: {
                             promptPrice: 0.0005,
                             completionPrice: 0.0015,
@@ -66,8 +67,8 @@ export namespace LaMManagerMockTool{
                     },
                 },
             },
-            GPT35Text: {
-                name: "GPT35Text",
+            Chat_GPT35Text: {
+                name: "Chat_GPT35Text",
                 type: "HttpAPIModel",
                 data: {
                     config: {
@@ -76,7 +77,7 @@ export namespace LaMManagerMockTool{
                         tokensizer: "cl100k_base",
                         interactor: "openai",
                         id: "gpt-3.5-turbo-instruct",
-                        alias: "GPT35Text",
+                        alias: "Chat_GPT35Text",
                         price: {
                             promptPrice: 0.0015,
                             completionPrice: 0.002,
@@ -88,8 +89,8 @@ export namespace LaMManagerMockTool{
                     },
                 },
             },
-            DeepseekChat: {
-                name: "DeepseekChat",
+            Chat_DeepseekChat: {
+                name: "Chat_DeepseekChat",
                 type: "HttpAPIModel",
                 data: {
                     config: {
@@ -98,7 +99,7 @@ export namespace LaMManagerMockTool{
                         chat_formater: "deepseek_chat",
                         endpoint: "/chat/v1/chat/completions",
                         id: "deepseek-chat",
-                        alias: "DeepseekChat",
+                        alias: "Chat_DeepseekChat",
                         price: {
                             cacheHitPromptPrice: 0.0005,
                             promptPrice: 0.002,
@@ -111,8 +112,8 @@ export namespace LaMManagerMockTool{
                     },
                 },
             },
-            Gemini3Pro: {
-                name: "Gemini3Pro",
+            Chat_Gemini3Pro: {
+                name: "Chat_Gemini3Pro",
                 type: "HttpAPIModel",
                 data: {
                     config: {
@@ -121,7 +122,7 @@ export namespace LaMManagerMockTool{
                         chat_formater: "google_chat",
                         endpoint: "/chat/v1beta/models",
                         id: "gemini-3-pro-preview",
-                        alias: "Gemini3Pro",
+                        alias: "Chat_Gemini3Pro",
                         price: {
                             promptPrice: 0.00125,
                             completionPrice: 0.01,
@@ -134,19 +135,19 @@ export namespace LaMManagerMockTool{
                     },
                 },
             },
-            // 指示模式测试模型
-            OpenAIInstruct: {
-                name: "OpenAIInstruct",
+            // 指示模式测试模型（添加 Instruct_ 前缀）
+            Instruct_GPT35Text: {
+                name: "Instruct_GPT35Text",
                 type: "HttpAPIModel",
                 data: {
                     config: {
                         endpoint: "/instruct/v1/completions",
                         chat_formater: "openai_text",
-                        instruct_formater: "openai_instruct",
+                        instruct_formater: "openai_text",
                         tokensizer: "cl100k_base",
                         interactor: "openai",
                         id: "gpt-3.5-turbo-instruct",
-                        alias: "OpenAIInstruct",
+                        alias: "Instruct_GPT35Text",
                         price: {
                             promptPrice: 0.0015,
                             completionPrice: 0.002,
@@ -158,18 +159,18 @@ export namespace LaMManagerMockTool{
                     },
                 },
             },
-            DeepseekFIM: {
-                name: "DeepseekFIM",
+            Instruct_DeepseekText: {
+                name: "Instruct_DeepseekText",
                 type: "HttpAPIModel",
                 data: {
                     config: {
                         endpoint: "/instruct/v1/completions",
                         chat_formater: "openai_text",
-                        instruct_formater: "deepseek_fim",
+                        instruct_formater: "deepseek_text",
                         tokensizer: "deepseek",
                         interactor: "openai",
                         id: "deepseek-chat",
-                        alias: "DeepseekFIM",
+                        alias: "Instruct_DeepseekText",
                         price: {
                             promptPrice: 0.002,
                             completionPrice: 0.008,
@@ -181,18 +182,18 @@ export namespace LaMManagerMockTool{
                     },
                 },
             },
-            DeepseekPrefixCompletion: {
-                name: "DeepseekPrefixCompletion",
+            Instruct_DeepseekPrefix: {
+                name: "Instruct_DeepseekPrefix",
                 type: "HttpAPIModel",
                 data: {
                     config: {
                         endpoint: "/instruct/v1/chat/completions",
                         chat_formater: "deepseek_chat",
-                        instruct_formater: "deepseek_prefix_completion",
+                        instruct_formater: "deepseek_prefix",
                         tokensizer: "deepseek",
                         interactor: "openai",
                         id: "deepseek-chat",
-                        alias: "DeepseekPrefixCompletion",
+                        alias: "Instruct_DeepseekPrefixCompletion",
                         price: {
                             promptPrice: 0.002,
                             completionPrice: 0.008,

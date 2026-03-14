@@ -1,4 +1,6 @@
-import type { TextCompletionResult } from "Task/DataInterface";
+import { SLogger } from "@zwa73/utils";
+
+import { DefChatLaMResult, type TextCompletionResult } from "Task/DataInterface";
 import type { InstructTaskInterface, InstructTaskOption } from "Task/Instruct";
 
 import type { HttpAPIModelDrive } from "./Drive";
@@ -14,6 +16,10 @@ export function instructTaskCtor(drive: HttpAPIModelDrive): InstructTaskInterfac
 
         /**执行指导式文本生成 */
         async execute(opt: InstructTaskOption): Promise<TextCompletionResult> {
+            if(drive.instructFormater==undefined){
+                SLogger.warn(`${drive.getData().config.alias} 不支持指导式文本生成`);
+                return DefChatLaMResult;
+            }
             return drive.commonTask(opt, drive.instructFormater);
         },
     };

@@ -11,7 +11,7 @@ import type { TextCompletionResult } from "Task/DataInterface";
 import type { InstructTaskFormatter } from "Task/Instruct/Adapter";
 import { tokenifyLogitBias } from "Task/Util";
 
-import { validateInstructOption } from "./Utils";
+import { buildFIMPrompt, validateInstructOption } from "./Utils";
 
 /**OpenAI Instruct 格式化器类型定义 */
 type OpenAIInstructTaskFormatterType = InstructTaskFormatter<OpenAITextRequest, OpenAITextResponse>;
@@ -63,7 +63,7 @@ export const OpenAIInstructBase = {
 } as const satisfies Partial<OpenAIInstructTaskFormatterType>;
 
 /**OpenAI Instruct 格式化器 */
-export const OpenAIInstruct: OpenAIInstructTaskFormatterType = {
+export const OpenAIText: OpenAIInstructTaskFormatterType = {
     ...OpenAIInstructBase,
 
     async formatOption({ option, modelId, tokensizerType }) {
@@ -74,7 +74,7 @@ export const OpenAIInstruct: OpenAIInstructTaskFormatterType = {
 
         return {
             model: modelId,
-            prompt: option.prompt,
+            prompt: buildFIMPrompt(option),
             suffix: option.suffix,
             max_tokens: option.max_tokens,
             temperature: option.temperature,

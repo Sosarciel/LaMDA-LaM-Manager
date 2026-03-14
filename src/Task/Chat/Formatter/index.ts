@@ -1,5 +1,5 @@
 export * from './Deepseek';
-export * from './DeepseekBeta';
+export * from './DeepseekPrefix';
 export * from './GeminiCompat';
 export * from './Gemini';
 export * from './OpenAIChat';

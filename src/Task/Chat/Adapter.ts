@@ -6,7 +6,7 @@ import type { TokensizerType } from "Tokensizer";
 
 import type { RespFormatter, TextCompletionTaskFormatter } from "Task/ToolInterface";
 
-import { DeepseekBetaChatTaskFormatter, DeepseekChatTaskFormatter, GeminiCompatChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter, GeminiChatTaskFormatter, DeepseekTextChatTaskFormatter } from "./Formatter";
+import { DeepseekPrefixChatTaskFormatter, DeepseekChatTaskFormatter, GeminiCompatChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter, GeminiChatTaskFormatter, DeepseekTextChatTaskFormatter } from "./Formatter";
 import type { ChatTaskOption, LaMChatMessages } from "./Interface";
 
 
@@ -34,7 +34,7 @@ RespFormatter<RES>&{
 
 export const ChatTaskFormaterTable = {
     deepseek_chat            : DeepseekChatTaskFormatter,
-    deepseek_chat_beta       : DeepseekBetaChatTaskFormatter,
+    deepseek_prefix          : DeepseekPrefixChatTaskFormatter,
     deepseek_text            : DeepseekTextChatTaskFormatter,
     openai_chat              : OpenAIConversationChatTaskFormatter,
     openai_text              : OpenAITextChatTaskFormatter,

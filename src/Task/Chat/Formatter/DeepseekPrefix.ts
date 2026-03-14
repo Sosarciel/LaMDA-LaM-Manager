@@ -23,7 +23,7 @@ function formatMessage(message?:string):string|undefined{
 }
 
 /**前缀续写模式的Formater */
-export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequest,DeepseekResponse> = {
+export const DeepseekPrefixChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequest,DeepseekResponse> = {
     formatOption({option,modelId}){
         //验证参数
         if(option.messages==null){
@@ -35,7 +35,7 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
             return;
         }
 
-        const messages = commonProcessMessageWithOpt({tool:DeepseekBetaChatTaskFormatter,option});
+        const messages = commonProcessMessageWithOpt({tool:DeepseekPrefixChatTaskFormatter,option});
 
         return {
             model             : modelId                     ,//模型id
@@ -51,8 +51,8 @@ export const DeepseekBetaChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
     },
-    formatResult:lazyFunction(()=>commonFormatResp(DeepseekBetaChatTaskFormatter)),
-    computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(DeepseekBetaChatTaskFormatter)),
+    formatResult:lazyFunction(()=>commonFormatResp(DeepseekPrefixChatTaskFormatter)),
+    computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(DeepseekPrefixChatTaskFormatter)),
     buildMessage({messages,target,hint}){
         const narr:DeepseekAPIEntry[] = [];
 

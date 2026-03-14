@@ -6,14 +6,14 @@ import type { OpenAITextResponse } from "ResponseFormat";
 import type { InstructTaskFormatter } from "Task/Instruct/Adapter";
 import { tokenifyLogitBias } from "Task/Util";
 
-import { OpenAIInstructBase } from "./OpenAIInstruct";
+import { OpenAIInstructBase } from "./OpenAIText";
 import { buildFIMPrompt, validateInstructOption } from "./Utils";
 
 /**DeepSeek FIM 格式化器类型定义 */
 type DeepseekFIMTaskFormatterType = InstructTaskFormatter<OpenAITextRequest, OpenAITextResponse>;
 
 /**DeepSeek FIM 格式化器 */
-export const DeepseekFIM: DeepseekFIMTaskFormatterType = {
+export const DeepseekText: DeepseekFIMTaskFormatterType = {
     ...OpenAIInstructBase,
 
     async formatOption({ option, modelId, tokensizerType }) {

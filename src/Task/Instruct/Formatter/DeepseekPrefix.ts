@@ -16,7 +16,7 @@ import { validateInstructOption } from "./Utils";
 type DeepseekPrefixCompletionTaskFormatterType = InstructTaskFormatter<DeepseekRequest, DeepseekResponse>;
 
 /**DeepSeek 前缀续写格式化器 */
-export const DeepseekPrefixCompletion: DeepseekPrefixCompletionTaskFormatterType = {
+export const DeepseekPrefix: DeepseekPrefixCompletionTaskFormatterType = {
     formatResp: (resp: DeepseekResponse) => {
         return {
             choices: resp.choices.map(choice => ({

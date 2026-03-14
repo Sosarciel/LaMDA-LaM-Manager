@@ -1,4 +1,4 @@
-export * from "./OpenAIInstruct";
-export * from "./DeepseekFIM";
-export * from "./DeepseekPrefixCompletion";
+export * from "./OpenAIText";
+export * from "./DeepseekText";
+export * from "./DeepseekPrefix";
 export * from "./Utils";
