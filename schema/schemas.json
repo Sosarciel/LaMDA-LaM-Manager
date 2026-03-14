@@ -587,6 +587,10 @@
 					"$ref": "#/definitions/ChatFormaterType",
 					"description": "此模型的聊天任务格式化工具"
 				},
+				"instruct_formater": {
+					"$ref": "#/definitions/InstructFormaterType",
+					"description": "此模型的指导式文本生成任务格式化工具"
+				},
 				"interactor": {
 					"$ref": "#/definitions/InteractorType",
 					"description": "此模型的交互器"
@@ -634,11 +638,20 @@
 		"ChatFormaterType": {
 			"enum": [
 				"deepseek_chat",
-				"deepseek_chat_beta",
+				"deepseek_prefix",
 				"deepseek_text",
 				"google_chat",
 				"google_chat_compat",
 				"openai_chat",
+				"openai_text"
+			],
+			"type": "string"
+		},
+		"InstructFormaterType": {
+			"description": "指导式文本生成任务格式化器类型",
+			"enum": [
+				"deepseek_prefix",
+				"deepseek_text",
 				"openai_text"
 			],
 			"type": "string"
