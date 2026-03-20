@@ -43,6 +43,27 @@ type VApiPromptBlock = {
         code: "prompt_blocked";
     };
 };
+/** gptge业务错误 提示词阻拦(Gemini PROHIBITED_CONTENT) */
+type VApiBizPromptBlock = {
+    error: {
+        message: `request blocked by Gemini API: PROHIBITED_CONTENT (request id: ${string})`;
+        type: "v_api_biz_error";
+        param: "";
+        code: "prompt_blocked";
+    };
+};
+//#endregion
+
+//#region Jeniya
+/** jeniya请求体被阻拦(Gemini PROHIBITED_CONTENT) */
+type NewApiRequestBodyBlocked = {
+    error: {
+        message: `request blocked by Google Gemini (PROHIBITED_CONTENT): content is prohibited under official usage policies. Refer to \`https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/configure-safety-filters\`  for more information (request id: ${string})`;
+        type: "new_api_error";
+        param: "";
+        code: "request_body_blocked";
+    };
+};
 //#endregion
 
 type UpstreamOverloaded = {
@@ -55,4 +76,4 @@ type UpstreamOverloaded = {
 };
 
 /**综合转发API错误 */
-export type AnyForwardErrorResponse = OneApiRequestFailed|NewApiOverloaded|NewApiQuota|VApiPromptBlock|UpstreamOverloaded;
+export type AnyForwardErrorResponse = OneApiRequestFailed|NewApiOverloaded|NewApiQuota|NewApiRequestBodyBlocked|VApiPromptBlock|VApiBizPromptBlock|UpstreamOverloaded;

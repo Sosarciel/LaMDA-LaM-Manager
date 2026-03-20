@@ -165,6 +165,9 @@ export const checkError = async (
                 ////直接设置为不可用
                 //await accountData.instance.setInavailable();
                 return Terminated;
+            } else if(error.code=='request_body_blocked'){
+                SLogger.warn("Jeniya请求体被阻拦(Gemini PROHIBITED_CONTENT)");
+                return Terminated;
             } else if (error.message.includes("当前分组上游负载已饱和，请稍后再试")) {
                 SLogger.warn("NewApi转发过载");
                 return Failed;
@@ -173,6 +176,12 @@ export const checkError = async (
         case "v_api_error":
             if(error.code=='prompt_blocked'){
                 SLogger.warn("VApi提示词被阻拦");
+                return Terminated;
+            } else SLogger.error("未定义的错误子类型");
+            return Terminated;
+        case "v_api_biz_error":
+            if(error.code=='prompt_blocked'){
+                SLogger.warn("VApi业务错误 提示词被阻拦(Gemini PROHIBITED_CONTENT)");
                 return Terminated;
             } else SLogger.error("未定义的错误子类型");
             return Terminated;
