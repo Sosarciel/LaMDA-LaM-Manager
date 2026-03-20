@@ -1,6 +1,6 @@
 import { ivk, None, SLogger, UtilFunc } from "@zwa73/utils";
 
-import { CredManager } from "CredService";
+import { CredManager, retry2PromiseRetries } from "CredService";
 import type { Interactor } from "Interactor";
 import { InteractorTable } from "Interactor";
 import type { ChatTaskFormatter, TextCompletionOption, TextCompletionTaskFormatter } from "Task";
@@ -87,7 +87,7 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
             accountData,
             postJson:fixedOption,
             modelData:this.data.config,
-            retryOption:accountData.instance.categoryData.retry,
+            retryOption:retry2PromiseRetries(accountData.instance.categoryData.retry),
         });
         return formatter.formatResult(resp);
     }

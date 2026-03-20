@@ -89,7 +89,7 @@ export type AccountCategoryData = {
     valid_model?:(string|{name:string,weight:number})[];
 }
 
-const retry2PromiseRetries = (retry:AccountCategoryData['retry']):PromiseRetries=>{
+export const retry2PromiseRetries = (retry:AccountCategoryData['retry']):PromiseRetries=>{
     return {
         count:retry?.count,
         tryInterval:retry?.try_interval,
