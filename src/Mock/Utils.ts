@@ -45,13 +45,12 @@ export namespace LaMManagerMockTool{
 
     export const MOCK_LAM_SERVICE_TABLE = {
         instance_table: {
-            // Chat 任务模型（添加 Chat_ 前缀）
             Chat_GPT35Chat: {
                 name: "Chat_GPT35Chat",
                 type: "HttpAPIModel",
                 data: {
                     config: {
-                        endpoint: "/chat/v1/chat/completions",
+                        endpoint: "/v1/chat/completions",
                         chat_formater: "openai_chat",
                         tokensizer: "cl100k_base",
                         interactor: "openai",
@@ -72,7 +71,7 @@ export namespace LaMManagerMockTool{
                 type: "HttpAPIModel",
                 data: {
                     config: {
-                        endpoint: "/chat/v1/completions",
+                        endpoint: "/v1/completions",
                         chat_formater: "openai_text",
                         tokensizer: "cl100k_base",
                         interactor: "openai",
@@ -97,7 +96,7 @@ export namespace LaMManagerMockTool{
                         tokensizer: "deepseek",
                         interactor: "openai",
                         chat_formater: "deepseek_chat",
-                        endpoint: "/chat/v1/chat/completions",
+                        endpoint: "/v1/chat/completions",
                         id: "deepseek-chat",
                         alias: "Chat_DeepseekChat",
                         price: {
@@ -120,7 +119,7 @@ export namespace LaMManagerMockTool{
                         tokensizer: "cl100k_base",
                         interactor: "gemini",
                         chat_formater: "google_chat",
-                        endpoint: "/chat/v1beta/models",
+                        endpoint: "/v1beta/models",
                         id: "gemini-3-pro-preview",
                         alias: "Chat_Gemini3Pro",
                         price: {
@@ -135,13 +134,12 @@ export namespace LaMManagerMockTool{
                     },
                 },
             },
-            // 指示模式测试模型（添加 Instruct_ 前缀）
             Instruct_GPT35Text: {
                 name: "Instruct_GPT35Text",
                 type: "HttpAPIModel",
                 data: {
                     config: {
-                        endpoint: "/instruct/v1/completions",
+                        endpoint: "/v1/completions",
                         chat_formater: "openai_text",
                         instruct_formater: "openai_text",
                         tokensizer: "cl100k_base",
@@ -164,7 +162,7 @@ export namespace LaMManagerMockTool{
                 type: "HttpAPIModel",
                 data: {
                     config: {
-                        endpoint: "/instruct/v1/completions",
+                        endpoint: "/v1/completions",
                         chat_formater: "openai_text",
                         instruct_formater: "deepseek_text",
                         tokensizer: "deepseek",
@@ -187,7 +185,7 @@ export namespace LaMManagerMockTool{
                 type: "HttpAPIModel",
                 data: {
                     config: {
-                        endpoint: "/instruct/v1/chat/completions",
+                        endpoint: "/v1/chat/completions",
                         chat_formater: "deepseek_chat",
                         instruct_formater: "deepseek_prefix",
                         tokensizer: "deepseek",
