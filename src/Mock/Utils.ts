@@ -3,6 +3,12 @@ import path from 'pathe';
 import { DATA_PATH } from 'Constant';
 import type { CredCategoryJsonTable, CredServiceJsonTable } from 'CredService';
 import type { LaMServiceJsonTable } from 'LaMService';
+import type { ChatTaskOption, InstructTaskOption } from 'Task';
+
+import {
+    DeepseekResponseExample, GeminiResponseExample, OpenAIChatResponseExample, OpenAITextResponseExample,
+    type DeepseekResponse, type GeminiResponse, type OpenAIChatResponse, type OpenAITextResponse
+} from '@/src/ResponseFormat';
 
 
 export namespace LaMManagerMockTool{
@@ -226,4 +232,93 @@ export namespace LaMManagerMockTool{
             temperature: options?.temperature || 0.7,
         };
     };
+}
+
+export namespace MockResponseFactory {
+
+    /**创建OpenAI Chat响应 */
+    export const createOpenAIChatResponse = (overrides: Partial<OpenAIChatResponse> = {}): OpenAIChatResponse => ({
+        ...OpenAIChatResponseExample,
+        ...overrides,
+    });
+
+    /**创建OpenAI Text响应 */
+    export const createOpenAITextResponse = (overrides: Partial<OpenAITextResponse> = {}): OpenAITextResponse => ({
+        ...OpenAITextResponseExample,
+        ...overrides,
+    });
+
+    /**创建Deepseek响应 */
+    export const createDeepseekResponse = (overrides: Partial<DeepseekResponse> = {}): DeepseekResponse => ({
+        ...DeepseekResponseExample,
+        ...overrides,
+    });
+
+    /**创建Gemini响应 */
+    export const createGeminiResponse = (overrides: Partial<GeminiResponse> = {}): GeminiResponse => ({
+        ...GeminiResponseExample,
+        ...overrides,
+    });
+
+    /**创建带思考的Gemini响应 */
+    export const createGeminiResponseWithThought = (thought: string, content: string, overrides: Partial<GeminiResponse> = {}): GeminiResponse => ({
+        ...GeminiResponseExample,
+        candidates: [{
+            content: {
+                parts: [
+                    { text: thought, thought: true },
+                    { text: content },
+                ],
+                role: "model",
+            },
+            finishReason: "STOP",
+            avgLogprobs: -0.1,
+        }],
+        modelVersion: "gemini-3-pro",
+        ...overrides,
+    });
+}
+
+export namespace MockOptionFactory {
+
+    /**创建聊天任务选项 */
+    export const createChatTaskOption = (overrides: Partial<ChatTaskOption> = {}):ChatTaskOption => ({
+        messages: overrides.messages ?? [
+            { type: 'desc' as const, content: '系统描述' },
+            { type: 'chat' as const, senderName: 'user', content: '你好' },
+            { type: 'chat' as const, senderName: 'assistant', content: '你好！' },
+        ],
+        target: overrides.target ?? 'assistant',
+        hint: overrides.hint,
+        max_tokens: overrides.max_tokens ?? 100,
+        temperature: overrides.temperature ?? 1,
+        top_p: overrides.top_p ?? 1,
+        presence_penalty: overrides.presence_penalty ?? 0,
+        frequency_penalty: overrides.frequency_penalty ?? 0,
+        n: overrides.n ?? 1,
+        stop: overrides.stop,
+        think_budget: overrides.think_budget,
+        logit_bias: null,
+        preferred_account: [],
+        log_level: "none" as const,
+    });
+
+    /**创建指示任务选项 */
+    export const createInstructTaskOption = (overrides: Partial<InstructTaskOption> = {}):InstructTaskOption => ({
+        prompt: overrides.prompt ?? '请续写以下内容：',
+        suffix: overrides.suffix,
+        prefix: overrides.prefix,
+        max_tokens: overrides.max_tokens ?? 100,
+        temperature: overrides.temperature ?? 0.7,
+        top_p: overrides.top_p ?? 1,
+        presence_penalty: 0,
+        frequency_penalty: 0,
+        n: 1,
+        stop: overrides.stop,
+        logprobs: overrides.logprobs,
+        echo: overrides.echo,
+        logit_bias: null,
+        preferred_account: [],
+        log_level: "none" as const,
+    });
 }

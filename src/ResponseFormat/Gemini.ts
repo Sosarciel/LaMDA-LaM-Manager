@@ -61,7 +61,7 @@ type UsageMetadata = {
             /** 模态 */
             modality: "TEXT",
             /** token 数量 */
-            tokenCount: 5,
+            tokenCount: number,
         },
     ],
     /** 候选 token 详情 */
@@ -70,7 +70,7 @@ type UsageMetadata = {
             /** 模态 */
             modality: "TEXT",
             /** token 数量 */
-            tokenCount: 41,
+            tokenCount: number,
         },
     ],
     /** 思考 token 数量 */
@@ -94,9 +94,7 @@ export const GeminiResponseExample = {
         {
             content: {
                 parts: [
-                    {
-                        text: '你好！ 你好吗？ (Nǐ hǎo! Nǐ hǎo ma?)  \n \nThis means "Hello! How are you?"  How can I help you today?\n',
-                    },
+                    { text: '你好！ 你好吗？ (Nǐ hǎo! Nǐ hǎo ma?)  \n \nThis means "Hello! How are you?"  How can I help you today?\n', },
                 ],
                 role: "model",
             },
