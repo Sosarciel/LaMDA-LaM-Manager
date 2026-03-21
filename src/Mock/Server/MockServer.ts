@@ -24,7 +24,7 @@ export class LaMManagerMockServer{
                 const path = pathname ?? '';
 
                 const modelId = this.extractModelId(path, data);
-                const result = this.buildResponse(modelId);
+                const result = this.buildResponse(path, modelId);
 
                 res.writeHead(200);
                 res.end(JSON.stringify(result));
@@ -47,15 +47,15 @@ export class LaMManagerMockServer{
     }
 
     /**从请求中提取modelId */
-    private extractModelId(path: string, data: any): string {
-        if (data.model) return data.model;
+    private extractModelId(path: string, data: Record<string, unknown>): string {
+        if (typeof data.model === 'string') return data.model;
         const geminiMatch = path.match(/\/v1beta\/models\/([^\/:]+)/);
         if (geminiMatch) return geminiMatch[1];
         return "unknown";
     }
 
     /**构建简单响应 */
-    private buildResponse(modelId: string): any {
+    private buildResponse(path: string, modelId: string): Record<string, unknown> {
         if (modelId.includes('gemini')) {
             return {
                 candidates: [{
@@ -68,6 +68,22 @@ export class LaMManagerMockServer{
                 usageMetadata: { promptTokenCount: 10, candidatesTokenCount: 5 }
             };
         }
+
+        if (path.includes('/v1/completions')) {
+            return {
+                id: `cmpl-${Date.now()}`,
+                object: "text_completion",
+                created: Math.floor(Date.now() / 1000),
+                model: modelId,
+                choices: [{
+                    index: 0,
+                    text: `对 ${modelId} 反馈`,
+                    finish_reason: "stop"
+                }],
+                usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 }
+            };
+        }
+
         return {
             id: `chatcmpl-${Date.now()}`,
             object: "chat.completion",
