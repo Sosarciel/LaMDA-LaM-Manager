@@ -212,9 +212,9 @@ export namespace LaMManagerMockTool{
         },
     } as const satisfies LaMServiceJsonTable;
 
-    /**构建一个响应 */
-    export const buildResp = (id:string,msg?:string)=>{
-        return `来自 ${id} 对 ${msg??"未定义消息"} 的响应`;
+    /**构建MockServer响应文本 */
+    export const buildMockResponseText = (modelId: string): string => {
+        return `对 ${modelId} 反馈`;
     };
 
     /**构建指示模式测试选项 */

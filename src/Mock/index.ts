@@ -1,2 +1,2 @@
-export * from './Server';
+export * from './MockServer';
 export * from './Utils';

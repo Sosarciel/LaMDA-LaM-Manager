@@ -4,6 +4,8 @@ import { parse } from 'url';
 
 import { SLogger } from "@zwa73/utils";
 
+import { LaMManagerMockTool } from "./Utils";
+
 export class LaMManagerMockServer{
     server:Server|undefined;
     constructor(private port:number){}
@@ -56,11 +58,13 @@ export class LaMManagerMockServer{
 
     /**构建简单响应 */
     private buildResponse(path: string, modelId: string): Record<string, unknown> {
+        const responseText = LaMManagerMockTool.buildMockResponseText(modelId);
+
         if (modelId.includes('gemini')) {
             return {
                 candidates: [{
                     content: {
-                        parts: [{ text: `对 ${modelId} 反馈` }],
+                        parts: [{ text: responseText }],
                         role: "model"
                     },
                     finishReason: "STOP"
@@ -77,7 +81,7 @@ export class LaMManagerMockServer{
                 model: modelId,
                 choices: [{
                     index: 0,
-                    text: `对 ${modelId} 反馈`,
+                    text: responseText,
                     finish_reason: "stop"
                 }],
                 usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 }
@@ -91,7 +95,7 @@ export class LaMManagerMockServer{
             model: modelId,
             choices: [{
                 index: 0,
-                message: { role: "assistant", content: `对 ${modelId} 反馈` },
+                message: { role: "assistant", content: responseText },
                 finish_reason: "stop"
             }],
             usage: { prompt_tokens: 10, completion_tokens: 5, total_tokens: 15 }
