@@ -1,13 +1,13 @@
 ---
-aliases: [LaM-Manager 实施计划索引]
+aliases: [LaM-Manager 计划索引]
 ---
-# LaM-Manager 实施计划索引
+# LaM-Manager 计划索引
 
-> 本文档索引 LaM-Manager 模块的所有实施计划
+> 本文档索引 LaM-Manager 模块的所有计划文档
 
 ---
 
-## 📋 进行中计划
+## 📋 计划列表
 ```base
 filters:
   and:
