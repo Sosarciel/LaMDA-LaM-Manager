@@ -11,9 +11,8 @@ aliases: [LaM-Manager 实施计划索引]
 ```base
 filters:
   and:
-    - file.path.startsWith("LaMDA-Module/Service-Manager/LaM-Manager/plan")
+    - file.folder == "LaMDA-Module/Service-Manager/LaM-Manager/plan"
     - file.name != "README"
-    - file.folder == "plan"
 views:
   - type: table
     name: 计划一览
