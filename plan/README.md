@@ -1,3 +1,6 @@
+---
+aliases: [LaM-Manager 实施计划索引]
+---
 # LaM-Manager 实施计划索引
 
 > 本文档索引 LaM-Manager 模块的所有实施计划
@@ -5,16 +8,27 @@
 ---
 
 ## 📋 计划列表
+```base
+filters:
+  and:
+    - file.path.startsWith("LaMDA-Module/Service-Manager/LaM-Manager/plan")
+    - file.name != "README"
+views:
+  - type: table
+    name: 计划一览
+    order:
+      - file.name
+      - aliases
+      - file.mtime
+    sort:
+      - property: file.mtime
+        direction: DESC
 
-### 🔄 当前进行中
-
-| 计划名称 | 描述 | 状态 | 创建时间 |
-|---------|------|------|----------|
-| [[instruct-task-implementation]] | Instruct Task 实施计划 | ⏳ 待开始 | 2026-03-07 |
+```
 
 ---
 
-## 📖 计划详情
+## 📖 计划简报
 
 ### Instruct Task 实施计划
 
@@ -34,20 +48,6 @@
 **预计总时长**: 7-10 个工作日
 
 **优先级**: 高
-
-**依赖项**:
-- 现有 Task 系统架构稳定
-- 无外部依赖
-
----
-
-## 🔗 相关文档
-
-### 项目文档
-- [[../README|LaM-Manager 主文档]]
-
-### 依赖模块
-- [[../references/README|API 参考文档]]
 
 ---
 
