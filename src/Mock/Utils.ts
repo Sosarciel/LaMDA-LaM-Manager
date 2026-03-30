@@ -16,22 +16,22 @@ export namespace LaMManagerMockTool{
     export const MOCK_PATH = path.join(DATA_PATH,'mock');
     export const MOCK_USER = "mock_user";
     export const MOCK_CHAR = "mock_char";
-    export const MOCK_PORT = 3000;
     export const MOCK_CRED_CATEGORY = "MockCredCategory";
     export const MOCK_CRED_APIKEY = "mock_api_key";
     export const MOCK_CRED_NAME = "MockCred";
 
-    export const MOCK_CRED_CATEGORY_TABLE = {
+    /** 获取 Mock 凭证类别表 */
+    export const getMockCredCategoryTable = (port: number) => ({
         category_table: {
             MockCredCategory: {
                 id: MOCK_CRED_CATEGORY,
                 hostname: "localhost",
-                port: 3000,
+                port: port,
                 protocol: "http",
                 valid_model:["*"],
             },
         },
-    } as const satisfies CredCategoryJsonTable;
+    } as const satisfies CredCategoryJsonTable);
 
     export const MOCK_CRED_SERVICE_TABLE = {
         instance_table: {
