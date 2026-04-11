@@ -64,8 +64,6 @@ type NewApiRequestBodyBlocked = {
         code: "request_body_blocked";
     };
 };
-//#endregion
-
 type UpstreamOverloaded = {
     error: {
         message: "当前分组上游负载已饱和，请稍后再试 (request id: 20260306000025282925491HVozszq5)";
@@ -92,6 +90,7 @@ type NewApiModelNotFound = {
         code: "model_not_found";
     };
 };
+//#endregion
 
 /**综合转发API错误 */
 export type AnyForwardErrorResponse = OneApiRequestFailed|NewApiOverloaded|NewApiQuota|NewApiRequestBodyBlocked|VApiPromptBlock|VApiBizPromptBlock|UpstreamOverloaded|EmptyTypeOverloaded|NewApiModelNotFound;
