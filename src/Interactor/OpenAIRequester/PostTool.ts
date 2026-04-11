@@ -39,7 +39,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${accountData.instance.getKey()}`,
                 },
-                agent: postOpt.proxy_url ? getProxy(protocol,postOpt.proxy_url) : undefined,
+                dispatcher: postOpt.proxy_url ? getProxy(postOpt.proxy_url) : undefined,
                 timeout:timeLimit,
             }).once({json:postJson});
 

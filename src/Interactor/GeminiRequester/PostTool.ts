@@ -40,7 +40,7 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                agent: postOpt.proxy_url ? getProxy(protocol,postOpt.proxy_url) : undefined,
+                dispatcher: postOpt.proxy_url ? getProxy(postOpt.proxy_url) : undefined,
                 timeout:timeLimit,
             }).once({json:postJson});
 
