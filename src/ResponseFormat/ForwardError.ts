@@ -84,5 +84,14 @@ type EmptyTypeOverloaded = {
     };
 };
 
+type NewApiModelNotFound = {
+    error: {
+        message: "Current group upstream load is saturated, please try again later (request id: 20260411181203162190867YyfekCy3)";
+        type: "new_api_error";
+        param: "";
+        code: "model_not_found";
+    };
+};
+
 /**综合转发API错误 */
-export type AnyForwardErrorResponse = OneApiRequestFailed|NewApiOverloaded|NewApiQuota|NewApiRequestBodyBlocked|VApiPromptBlock|VApiBizPromptBlock|UpstreamOverloaded|EmptyTypeOverloaded;
+export type AnyForwardErrorResponse = OneApiRequestFailed|NewApiOverloaded|NewApiQuota|NewApiRequestBodyBlocked|VApiPromptBlock|VApiBizPromptBlock|UpstreamOverloaded|EmptyTypeOverloaded|NewApiModelNotFound;
