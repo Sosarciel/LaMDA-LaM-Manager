@@ -49,7 +49,7 @@ export const verifyResp = async (
     const error = errorObj.error;
 
     SLogger.warn(`GeminiRequester.verifyResp 开始处理错误`);
-    if('type' in error){
+    if('type' in error && error.type!=""){
         switch (error.type){
             case "new_api_error":
                 if(error.code=='insufficient_user_quota'){
@@ -91,8 +91,12 @@ export const verifyResp = async (
                 return Terminated;
         }
     }
-    switch (error.code) {
-        case 429:
+    switch (String(error.code)) {
+        case "429":
+            if (error.message.includes("当前分组上游负载已饱和，请稍后再试")) {
+                SLogger.warn("转发分组过载");
+                return Failed;
+            }
             SLogger.warn("达到限额");
             return Terminated;
         default:

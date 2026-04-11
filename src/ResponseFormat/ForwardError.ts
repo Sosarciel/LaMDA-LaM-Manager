@@ -75,5 +75,14 @@ type UpstreamOverloaded = {
     };
 };
 
+type EmptyTypeOverloaded = {
+    error: {
+        message: "当前分组上游负载已饱和，请稍后再试 (request id: 20260411134432905195927FugVxMgG)";
+        type: "";
+        param: "";
+        code: "429";
+    };
+};
+
 /**综合转发API错误 */
-export type AnyForwardErrorResponse = OneApiRequestFailed|NewApiOverloaded|NewApiQuota|NewApiRequestBodyBlocked|VApiPromptBlock|VApiBizPromptBlock|UpstreamOverloaded;
+export type AnyForwardErrorResponse = OneApiRequestFailed|NewApiOverloaded|NewApiQuota|NewApiRequestBodyBlocked|VApiPromptBlock|VApiBizPromptBlock|UpstreamOverloaded|EmptyTypeOverloaded;
