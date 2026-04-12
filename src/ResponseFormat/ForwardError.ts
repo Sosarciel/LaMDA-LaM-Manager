@@ -52,6 +52,15 @@ type VApiBizPromptBlock = {
         code: "prompt_blocked";
     };
 };
+/** gptge业务错误 模型未找到(负载饱和) */
+type VApiBizModelNotFound = {
+    error: {
+        message: "当前分组 default 上游模型 gemini-2.5-pro 负载已饱和，请稍后再试 (request id: 202604121416159708342718659115)",
+        type: "v_api_biz_error";
+        param: "";
+        code: "model_not_found";
+    };
+};
 //#endregion
 
 //#region Jeniya
@@ -93,4 +102,4 @@ type NewApiModelNotFound = {
 //#endregion
 
 /**综合转发API错误 */
-export type AnyForwardErrorResponse = OneApiRequestFailed|NewApiOverloaded|NewApiQuota|NewApiRequestBodyBlocked|VApiPromptBlock|VApiBizPromptBlock|UpstreamOverloaded|EmptyTypeOverloaded|NewApiModelNotFound;
+export type AnyForwardErrorResponse = OneApiRequestFailed|NewApiOverloaded|NewApiQuota|NewApiRequestBodyBlocked|VApiPromptBlock|VApiBizPromptBlock|VApiBizModelNotFound|UpstreamOverloaded|EmptyTypeOverloaded|NewApiModelNotFound;

@@ -79,6 +79,12 @@ export const verifyResp = async (
                 if(error.code=='prompt_blocked'){
                     SLogger.warn("VApi业务错误 提示词被阻拦(Gemini PROHIBITED_CONTENT)");
                     return Terminated;
+                } else if(error.message.includes('负载已饱和')){
+                    SLogger.warn("VApi转发过载");
+                    return Failed;
+                }else if(error.code=='model_not_found'){
+                    SLogger.warn("VApi模型未找到");
+                    return Failed;
                 } else SLogger.error("未定义的错误子类型");
                 return Terminated;
             case "one_api_error":
