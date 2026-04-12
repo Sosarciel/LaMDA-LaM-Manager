@@ -168,7 +168,11 @@ export const checkError = async (
             } else if(error.code=='request_body_blocked'){
                 SLogger.warn("Jeniya请求体被阻拦(Gemini PROHIBITED_CONTENT)");
                 return Terminated;
-            } else if (error.message.includes("当前分组上游负载已饱和，请稍后再试")) {
+            } else if(error.code=='model_not_found'){
+                SLogger.warn("NewApi模型未找到(负载饱和)");
+                return Failed;
+            } else if (error.message.includes("当前分组上游负载已饱和") || 
+                       error.message.includes("upstream load is saturated")) {
                 SLogger.warn("NewApi转发过载");
                 return Failed;
             } else SLogger.error("未定义的错误子类型");
