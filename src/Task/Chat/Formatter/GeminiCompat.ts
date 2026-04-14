@@ -27,7 +27,7 @@ export const GeminiCompatChatTaskFormatter:ChatTaskFormatter<GeminiCompatAPIEntr
 
         let insertTip1 = false;
         if(option.hint?.includes('<tip1>')){
-            option.hint.replace('<tip1>','');
+            option.hint = option.hint.replace('<tip1>','');
             insertTip1 = true;
         }
 
