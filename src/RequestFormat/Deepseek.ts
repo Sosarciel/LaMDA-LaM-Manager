@@ -1,11 +1,11 @@
 import { OpenAIChatAPIRole } from "./OpenAIChat";
 
 
-
+//https://api-docs.deepseek.com/zh-cn/api/create-chat-completion
 /** Deepseek 模型请求格式 */
 export type DeepseekRequest=Partial<{
     /** 模型名称 */
-    model: string;
+    model: "deepseek-v4-flash"|"deepseek-v4-pro"|string;
     /** 消息列表 */
     messages: DeepseekAPIEntry[];
     /** 最大生成 token 数 */
@@ -20,6 +20,17 @@ export type DeepseekRequest=Partial<{
     presence_penalty: number;
     /** 频率惩罚 */
     frequency_penalty: number;
+    /** 思考控制 */
+    thinking?:{
+        /** 是否开启思考 默认 enbale */
+        type:"enable"|"disable";
+    },
+    /**控制模型的推理强度
+     * 对普通请求，默认为 high
+     * 对一些复杂 Agent 类请求（如 Claude Code、OpenCode），自动设置为 max
+     * 出于兼容考虑 low、medium 会映射为 high, xhigh 会映射为 max
+     */
+    reasoning_effort?:"high"|"max";
 }>;
 
 /** Deepseek API 消息条目 */
