@@ -23,7 +23,7 @@ export type DeepseekRequest=Partial<{
     /** 思考控制 */
     thinking?:{
         /** 是否开启思考 默认 enbale */
-        type:"enable"|"disable";
+        type:"enabled"|"disabled";
     },
     /**控制模型的推理强度
      * 对普通请求，默认为 high
