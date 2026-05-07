@@ -6,8 +6,8 @@ import type { LaMServiceJsonTable } from 'LaMService';
 import type { ChatTaskOption, InstructTaskOption } from 'Task';
 
 import {
-    DeepseekResponseExample, GeminiResponseExample, OpenAIChatResponseExample, OpenAITextResponseExample,
-    type DeepseekResponse, type GeminiResponse, type OpenAIChatResponse, type OpenAITextResponse
+    DeepseekResponseExample, GLMResponseExample, GeminiResponseExample, OpenAIChatResponseExample, OpenAITextResponseExample,
+    type DeepseekResponse, type GLMResponse, type GeminiResponse, type OpenAIChatResponse, type OpenAITextResponse
 } from '@/src/ResponseFormat';
 
 
@@ -251,6 +251,12 @@ export namespace MockResponseFactory {
     /**创建Deepseek响应 */
     export const createDeepseekResponse = (overrides: Partial<DeepseekResponse> = {}): DeepseekResponse => ({
         ...DeepseekResponseExample,
+        ...overrides,
+    });
+
+    /**创建GLM响应 */
+    export const createGLMResponse = (overrides: Partial<GLMResponse> = {}): GLMResponse => ({
+        ...GLMResponseExample,
         ...overrides,
     });
 
