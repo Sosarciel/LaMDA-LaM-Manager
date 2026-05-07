@@ -538,8 +538,12 @@
 					"$ref": "#/definitions/LogLevel",
 					"description": "log等级 忽略则不打印"
 				},
-				"max_hist": {
-					"description": "控制最大历史记录的额外参数",
+				"max_hist_length": {
+					"description": "控制最大历史记录token长度",
+					"type": "number"
+				},
+				"max_hist_count": {
+					"description": "控制最大历史消息条数",
 					"type": "number"
 				}
 			}
@@ -640,6 +644,7 @@
 				"deepseek_chat",
 				"deepseek_prefix",
 				"deepseek_text",
+				"glm_chat",
 				"google_chat",
 				"google_chat_compat",
 				"openai_chat",

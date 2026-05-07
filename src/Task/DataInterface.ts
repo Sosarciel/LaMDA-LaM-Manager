@@ -39,8 +39,10 @@ export type TextCompletionOption=Partial<{
     /**log等级 忽略则不打印 */
     log_level:LogLevel;
 
-    /**控制最大历史记录的额外参数 */
-    max_hist?:number;
+    /**控制最大历史记录token长度 */
+    max_hist_length?:number;
+    /**控制最大历史消息条数 */
+    max_hist_count?:number;
 }>;
 
 /**文本完成通用回复 */

@@ -68,7 +68,7 @@ export namespace LaMManagerMockTool{
                         },
                     },
                     default_option: {
-                        max_hist: 6000,
+                        max_hist_length: 6000,
                     },
                 },
             },
@@ -90,7 +90,7 @@ export namespace LaMManagerMockTool{
                     },
                     default_option: {
                         temperature: 0.9,
-                        max_hist: 3000,
+                        max_hist_length: 3000,
                     },
                 },
             },
@@ -113,7 +113,7 @@ export namespace LaMManagerMockTool{
                     },
                     default_option: {
                         temperature: 1.5,
-                        max_hist: 3000,
+                        max_hist_length: 3000,
                     },
                 },
             },
@@ -135,7 +135,7 @@ export namespace LaMManagerMockTool{
                     },
                     default_option: {
                         temperature: 1,
-                        max_hist: 4000,
+                        max_hist_length: 4000,
                         think_budget: "min",
                     },
                 },
