@@ -3,7 +3,7 @@ import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
 
 import type { APIPrice, APIPriceResp, CredsData } from "CredService";
 import { CredManager } from "CredService";
-import type { AnyOpenAIResponse, OpenAIErrorResponse } from "ResponseFormat";
+import type { AnyOpenAILikeErrorResponse, AnyOpenAIResponse } from "ResponseFormat";
 
 
 
@@ -46,7 +46,7 @@ export const recordPrice = async(
  * @returns 可用性
  */
 export const verifyResp = async(
-    rawResp: AnyOpenAIResponse | OpenAIErrorResponse | undefined,
+    rawResp: AnyOpenAIResponse | AnyOpenAILikeErrorResponse | undefined,
     accountData: CredsData
 ): Promise<PromiseStatus> => {
     if (rawResp == undefined) return Failed;
@@ -66,9 +66,14 @@ export const verifyResp = async(
  * @returns 可用性
  */
 export const checkError = async (
-    error: OpenAIErrorResponse['error'],
+    error: AnyOpenAILikeErrorResponse['error'],
     accountData: CredsData
 ): Promise<PromiseStatus> => {
+
+    if(error.message=="We were unable to start processing your request within the 900-second timeout limit. Please try again later."){
+        SLogger.warn("Deepseek请求处理超时");
+        return Failed;
+    }
 
     switch (error.type) {
         case "server_error":

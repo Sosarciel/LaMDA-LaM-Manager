@@ -3,7 +3,7 @@ import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
 
 import type { APIPrice, APIPriceResp, CredsData } from "CredService";
 import { CredManager } from "CredService";
-import type { AnyGeminiResponse, AnyGoogleErrorResponse } from "ResponseFormat";
+import type { AnyGeminiLikeErrorResponse, AnyGeminiResponse } from "ResponseFormat";
 
 
 /**记录用量
@@ -45,7 +45,7 @@ export const verifyResp = async (
     if(!("error" in respObj))
         return Success;
 
-    const errorObj = respObj as AnyGoogleErrorResponse;
+    const errorObj = respObj as AnyGeminiLikeErrorResponse;
     const error = errorObj.error;
 
     SLogger.warn(`GeminiRequester.verifyResp 开始处理错误`);

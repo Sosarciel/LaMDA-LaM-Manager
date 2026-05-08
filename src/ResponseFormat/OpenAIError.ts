@@ -1,4 +1,3 @@
-import type { AnyForwardErrorResponse } from "./ForwardError";
 
 /**模型过载 */
 type Overloaded1 = {
@@ -160,4 +159,4 @@ type BadCode = {
 /**所有错误格式的合集 */
 export type OpenAIErrorResponse = Overloaded1|Overloaded2|RateLimit1|Quota|
 InvalidKey|AuthSubrequest|OtherError1|OtherError2|AccessTerminated|
-AccountDeactivated|CFTokenError|RateLimit2|InvalidOutput|ContentFilter|AnyForwardErrorResponse|BadCode;
+AccountDeactivated|CFTokenError|RateLimit2|InvalidOutput|ContentFilter|BadCode;

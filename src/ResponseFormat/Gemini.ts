@@ -1,4 +1,3 @@
-import type { AnyForwardErrorResponse } from "./ForwardError";
 
 
 
@@ -21,7 +20,7 @@ type Quota = {
 };
 
 
-export type AnyGoogleErrorResponse = Quota|AnyForwardErrorResponse;
+export type GeminiErrorResponse = Quota;
 
 /** 文本内容 */
 type TextContent = {

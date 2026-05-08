@@ -102,4 +102,4 @@ type NewApiModelNotFound = {
 //#endregion
 
 /**综合转发API错误 */
-export type AnyForwardErrorResponse = OneApiRequestFailed|NewApiOverloaded|NewApiQuota|NewApiRequestBodyBlocked|VApiPromptBlock|VApiBizPromptBlock|VApiBizModelNotFound|UpstreamOverloaded|EmptyTypeOverloaded|NewApiModelNotFound;
+export type ForwardErrorResponse = OneApiRequestFailed|NewApiOverloaded|NewApiQuota|NewApiRequestBodyBlocked|VApiPromptBlock|VApiBizPromptBlock|VApiBizModelNotFound|UpstreamOverloaded|EmptyTypeOverloaded|NewApiModelNotFound;
