@@ -57,7 +57,7 @@ export namespace LaMManagerMockTool{
                 data: {
                     config: {
                         endpoint: "/v1/chat/completions",
-                        chat_formater: "openai_chat",
+                        chat_formatter: "openai_chat",
                         tokensizer: "cl100k_base",
                         interactor: "openai",
                         id: "gpt-3.5-turbo",
@@ -78,7 +78,7 @@ export namespace LaMManagerMockTool{
                 data: {
                     config: {
                         endpoint: "/v1/completions",
-                        chat_formater: "openai_text",
+                        chat_formatter: "openai_text",
                         tokensizer: "cl100k_base",
                         interactor: "openai",
                         id: "gpt-3.5-turbo-instruct",
@@ -101,7 +101,7 @@ export namespace LaMManagerMockTool{
                     config: {
                         tokensizer: "deepseek",
                         interactor: "openai",
-                        chat_formater: "deepseek_chat",
+                        chat_formatter: "deepseek_chat",
                         endpoint: "/v1/chat/completions",
                         id: "deepseek-chat",
                         alias: "Chat_DeepseekChat",
@@ -124,7 +124,7 @@ export namespace LaMManagerMockTool{
                     config: {
                         tokensizer: "cl100k_base",
                         interactor: "gemini",
-                        chat_formater: "google_chat",
+                        chat_formatter: "google_chat",
                         endpoint: "/v1beta/models",
                         id: "gemini-3-pro-preview",
                         alias: "Chat_Gemini3Pro",
@@ -146,8 +146,8 @@ export namespace LaMManagerMockTool{
                 data: {
                     config: {
                         endpoint: "/v1/completions",
-                        chat_formater: "openai_text",
-                        instruct_formater: "openai_text",
+                        chat_formatter: "openai_text",
+                        instruct_formatter: "openai_text",
                         tokensizer: "cl100k_base",
                         interactor: "openai",
                         id: "gpt-3.5-turbo-instruct",
@@ -169,8 +169,8 @@ export namespace LaMManagerMockTool{
                 data: {
                     config: {
                         endpoint: "/v1/completions",
-                        chat_formater: "openai_text",
-                        instruct_formater: "deepseek_text",
+                        chat_formatter: "openai_text",
+                        instruct_formatter: "deepseek_text",
                         tokensizer: "deepseek",
                         interactor: "openai",
                         id: "deepseek-chat",
@@ -192,8 +192,8 @@ export namespace LaMManagerMockTool{
                 data: {
                     config: {
                         endpoint: "/v1/chat/completions",
-                        chat_formater: "deepseek_chat",
-                        instruct_formater: "deepseek_prefix",
+                        chat_formatter: "deepseek_chat",
+                        instruct_formatter: "deepseek_prefix",
                         tokensizer: "deepseek",
                         interactor: "openai",
                         id: "deepseek-chat",

@@ -1,9 +1,9 @@
 import type { APIPrice } from "CredService";
 import type { InteractorType } from "Interactor";
-import type { ChatFormaterType, TextCompletionOption } from "Task";
+import type { ChatFormatterType, TextCompletionOption } from "Task";
 import type { TokensizerType } from "Tokensizer";
 
-import type { InstructFormaterType } from "Task/Instruct/Adapter";
+import type { InstructFormatterType } from "Task/Instruct/Adapter";
 
 
 
@@ -27,9 +27,9 @@ export type HttpApiModelCategory = {
     /**此模型的官方价格 */
     price:APIPrice;
     /**此模型的聊天任务格式化工具 */
-    chat_formater:ChatFormaterType;
+    chat_formatter:ChatFormatterType;
     /**此模型的指导式文本生成任务格式化工具 */
-    instruct_formater?: InstructFormaterType;
+    instruct_formatter?: InstructFormatterType;
     /**此模型的交互器 */
     interactor:InteractorType;
     /**此模型所用的分词器 */

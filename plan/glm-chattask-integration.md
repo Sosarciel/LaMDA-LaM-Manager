@@ -97,7 +97,7 @@ GLM 响应格式与 `OpenAIChatResponse` 结构高度相似，`choices[].message
 | `src/RequestFormat/index.ts` | 导出 GLM 请求类型，加入 `AnyTextCompletionRequest` 联合类型 |
 | `src/ResponseFormat/index.ts` | 导出 GLM 响应类型，加入 `AnyTextCompletionResponse` 联合类型 |
 | `src/Task/Chat/Formatter/index.ts` | 导出 GLM Formatter |
-| `src/Task/Chat/Adapter.ts` | 在 `ChatTaskFormaterTable` 中注册 `glm_chat` |
+| `src/Task/Chat/Adapter.ts` | 在 `ChatTaskFormatterTable` 中注册 `glm_chat` |
 
 ### 3.3 无需修改的文件
 
@@ -272,7 +272,7 @@ export const GLMChatTaskFormatter: ChatTaskFormatter<
 ```typescript
 import { GLMChatTaskFormatter } from "./Formatter";
 
-export const ChatTaskFormaterTable = {
+export const ChatTaskFormatterTable = {
     // ...existing entries
     glm_chat: GLMChatTaskFormatter,
 };
@@ -303,7 +303,7 @@ export type AnyTextCompletionResponse = ... | AnyGLMResponse;
     "id": "glm-4.7",
     "alias": ["glm-4.7"],
     "endpoint": "/api/paas/v4/chat/completions",
-    "chat_formater": "glm_chat",
+    "chat_formatter": "glm_chat",
     "interactor": "openai",
     "tokensizer": "cl100k_base"
 }

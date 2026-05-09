@@ -1,6 +1,6 @@
 {
 	"name": "@sosraciel-lamda/lam-manager",
-	"version": "1.0.152",
+	"version": "1.0.156",
 	"exports": {
 		".": {
 			"require": "./dist/index.js",

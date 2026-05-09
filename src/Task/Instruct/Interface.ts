@@ -1,4 +1,4 @@
-import type { TextCompletionOption, TextCompletionResult } from "../DataInterface";
+import type { TextCompletionOption, TextCompletionResult } from "Task/DataInterface";
 
 /**
  * 指导式文本生成任务选项

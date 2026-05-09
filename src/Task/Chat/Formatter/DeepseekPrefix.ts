@@ -23,7 +23,7 @@ function formatMessage(message?:string):string|undefined{
     return match ? match[1] : message;
 }
 
-/**前缀续写模式的Formater */
+/**前缀续写模式的Formatter */
 export const DeepseekPrefixChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequest,DeepseekResponse> = {
     formatOption({option,modelId}){
         //验证参数

@@ -16,11 +16,11 @@ export function instructTaskCtor(drive: HttpAPIModelDrive): InstructTaskInterfac
 
         /**执行指导式文本生成 */
         async execute(opt: InstructTaskOption): Promise<TextCompletionResult> {
-            if(drive.instructFormater==undefined){
+            if(drive.instructFormatter==undefined){
                 SLogger.warn(`${drive.getData().config.alias} 不支持指导式文本生成`);
                 return DefChatLaMResult;
             }
-            return drive.commonTask(opt, drive.instructFormater);
+            return drive.commonTask(opt, drive.instructFormatter);
         },
     };
 }

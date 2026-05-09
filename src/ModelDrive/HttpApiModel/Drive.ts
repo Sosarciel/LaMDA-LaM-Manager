@@ -4,29 +4,29 @@ import { CredManager, retry2PromiseRetries } from "CredService";
 import type { Interactor } from "Interactor";
 import { InteractorTable } from "Interactor";
 import type { ChatTaskFormatter, TextCompletionOption, TextCompletionTaskFormatter } from "Task";
-import { ChatTaskFormaterTable, DefChatLaMResult } from "Task";
+import { ChatTaskFormatterTable, DefChatLaMResult } from "Task";
 import { getTokensizer } from "Tokensizer";
 
 import { DefaultDrive } from "ModelDrive/DefaultDrive";
 import type { HttpAPIModelData } from "ModelDrive/HttpApiModel/Interface";
 import type { LaMDrive } from "ModelDrive/Interface";
 import type { InstructTaskFormatter } from "Task/Instruct/Adapter";
-import { InstructTaskFormaterTable } from "Task/Instruct/Adapter";
+import { InstructTaskFormatterTable } from "Task/Instruct/Adapter";
 
 import { chatTaskCtor } from "./ChatTask";
 import { instructTaskCtor } from "./InstructTask";
 
 /**适用于网络API的文本完成模型驱动器 */
 export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
-    chatFormater:ChatTaskFormatter<any,any,any>;
-    instructFormater?:InstructTaskFormatter<any,any>;
+    chatFormatter:ChatTaskFormatter<any,any,any>;
+    instructFormatter?:InstructTaskFormatter<any,any>;
     interactor  :Interactor;
     chat = chatTaskCtor(this);
     instruct = instructTaskCtor(this);
     constructor(private data:HttpAPIModelData){
         super();
-        this.chatFormater = ChatTaskFormaterTable[this.data.config.chat_formater];
-        this.instructFormater = this.data.config.instruct_formater ? InstructTaskFormaterTable[this.data.config.instruct_formater] : undefined;
+        this.chatFormatter = ChatTaskFormatterTable[this.data.config.chat_formatter];
+        this.instructFormatter = this.data.config.instruct_formatter ? InstructTaskFormatterTable[this.data.config.instruct_formatter] : undefined;
         this.interactor   = InteractorTable[this.data.config.interactor];
     }
     isRuning(){return true;}

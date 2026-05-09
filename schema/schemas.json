@@ -587,12 +587,12 @@
 					"$ref": "#/definitions/APIPrice",
 					"description": "此模型的官方价格"
 				},
-				"chat_formater": {
-					"$ref": "#/definitions/ChatFormaterType",
+				"chat_formatter": {
+					"$ref": "#/definitions/ChatFormatterType",
 					"description": "此模型的聊天任务格式化工具"
 				},
-				"instruct_formater": {
-					"$ref": "#/definitions/InstructFormaterType",
+				"instruct_formatter": {
+					"$ref": "#/definitions/InstructFormatterType",
 					"description": "此模型的指导式文本生成任务格式化工具"
 				},
 				"interactor": {
@@ -606,7 +606,7 @@
 			},
 			"required": [
 				"alias",
-				"chat_formater",
+				"chat_formatter",
 				"endpoint",
 				"id",
 				"interactor",
@@ -639,9 +639,10 @@
 		"APIPrice": {
 			"$ref": "#/definitions/__type_7"
 		},
-		"ChatFormaterType": {
+		"ChatFormatterType": {
 			"enum": [
 				"deepseek_chat",
+				"deepseek_chat_raw",
 				"deepseek_prefix",
 				"deepseek_text",
 				"glm_chat",
@@ -652,7 +653,7 @@
 			],
 			"type": "string"
 		},
-		"InstructFormaterType": {
+		"InstructFormatterType": {
 			"description": "指导式文本生成任务格式化器类型",
 			"enum": [
 				"deepseek_prefix",

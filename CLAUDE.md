@@ -323,7 +323,7 @@ npm run release
    - `formatMessage`: 消息格式化
    - `computeTokenCount`: Token 计算
    - `formatResp`: 响应包装
-3. 在 `src/Task/Chat/Adapter.ts` 的 `ChatTaskFormaterTable` 中注册新格式化器
+3. 在 `src/Task/Chat/Adapter.ts` 的 `ChatTaskFormatterTable` 中注册新格式化器
 4. 在 `src/Task/Chat/Formatter/index.ts` 中导出新格式化器
 5. 添加对应的请求器（`src/Interactor/`）和响应格式定义
 

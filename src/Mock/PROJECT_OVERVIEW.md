@@ -68,7 +68,7 @@ LaM-Manager/
         config: {
           tokensizer: "cl100k_base",
           interactor: "gemini",        // 关键：交互器类型
-          chat_formater: "google_chat", // 关键：格式器类型
+          chat_formatter: "google_chat", // 关键：格式器类型
           endpoint: "/v1beta/models",   // 关键：API 端点
           id: "gemini-3-pro-preview",   // 关键：模型 ID
           alias: "Gemini3Pro",
@@ -92,7 +92,7 @@ LaM-Manager/
 2. **端点 (endpoint)**:
    - `/v1/chat/completions` → OpenAI 格式路由
    - `/v1beta/models` → Gemini 格式路由
-3. **格式器 (chat_formater)**:
+3. **格式器 (chat_formatter)**:
    - `"openai_chat"` → OpenAI 聊天格式
    - `"google_chat"` → Google/Gemini 原生格式
    - `"google_chat_compat"` → Google OpenAI 兼容格式
@@ -171,7 +171,7 @@ expect(result.completed?.choices?.[0].content)
 **问题**: Mock 配置与真实配置不一致
 **解决**:
 - 对比 `src/Mock/Utils.ts` 和 `server/data/LaMService.json`
-- 确保关键字段一致：`interactor`, `endpoint`, `chat_formater`, `id`
+- 确保关键字段一致：`interactor`, `endpoint`, `chat_formatter`, `id`
 
 ### 3. 类型转换错误
 **问题**: TypeScript 类型断言错误

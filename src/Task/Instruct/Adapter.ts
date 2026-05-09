@@ -20,20 +20,20 @@ export type InstructTaskFormatter<
     };
 
 /**指导式文本生成任务格式化器表 */
-export const InstructTaskFormaterTable = {
+export const InstructTaskFormatterTable = {
     "openai_text": OpenAIText,
     "deepseek_text": DeepseekText,
     "deepseek_prefix": DeepseekPrefix,
 };
 
 /**指导式文本生成任务格式化器类型 */
-export type InstructFormaterType = keyof typeof InstructTaskFormaterTable;
+export type InstructFormatterType = keyof typeof InstructTaskFormatterTable;
 
 /**获取指导式文本生成任务格式化器 */
 export function getInstructTaskFormatter(
     type: string,
 ): InstructTaskFormatter<any, any> | undefined {
-    return InstructTaskFormaterTable[type as InstructFormaterType];
+    return InstructTaskFormatterTable[type as InstructFormatterType];
 }
 
 /**指导式文本生成任务适配器 */

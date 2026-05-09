@@ -1,6 +1,6 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import type { DeepseekAPIEntry, DeepseekRequest } from "RequestFormat";
+import { type OpenAIChatAPIEntry, type DeepseekAPIEntry, type DeepseekRequest, OpenAIChatAPIRole } from "RequestFormat";
 import type { DeepseekResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
@@ -24,7 +24,7 @@ export const DeepseekThinkMapHasNone = {
 } as const;
 
 
-/**传统OpenAI系统提示模式的Formater */
+/**传统OpenAI系统提示模式的Formatter */
 export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequest,DeepseekResponse> = {
     ...OpenAIChatCompleteBase,
     formatOption({option,modelId}){
@@ -59,4 +59,46 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
     },
     formatResult:lazyFunction(()=>commonFormatResp(DeepseekChatTaskFormatter)),
     computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(DeepseekChatTaskFormatter)),
+};
+
+/**传统OpenAI系统提示模式的Formatter 无角色标签版本 */
+export const DeepseekRawChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequest,DeepseekResponse> = {
+    ...DeepseekChatTaskFormatter,
+    buildMessage({target,messages,hint}){
+        const narr:OpenAIChatAPIEntry[] = [];
+
+        //处理主消息列表
+        for(const item of messages){
+            if(item.type=='desc'){
+                narr.push({
+                    role:OpenAIChatAPIRole.System,
+                    content:item.content
+                });
+            }else{
+                //与目标名相等时认为是 Assistant
+                if(item.senderName==target){
+                    narr.push({
+                        role:OpenAIChatAPIRole.Assistant,
+                        content:item.content
+                    });
+                }else{
+                    narr.push({
+                        role:OpenAIChatAPIRole.User,
+                        content:item.content
+                    });
+                }
+            }
+        }
+
+        //处理临时提示
+        if(hint!=null && hint.length>0)
+            narr[narr.length-1].content += hint;
+
+        return narr;
+    },
+    formatMessage({messages}){
+        return messages;
+    },
+    formatResult:lazyFunction(()=>commonFormatResp(DeepseekRawChatTaskFormatter)),
+    computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(DeepseekRawChatTaskFormatter)),
 };

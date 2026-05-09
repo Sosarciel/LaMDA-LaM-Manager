@@ -6,7 +6,7 @@ import type { TokensizerType } from "Tokensizer";
 
 import type { RespFormatter, TextCompletionTaskFormatter } from "Task/ToolInterface";
 
-import { DeepseekPrefixChatTaskFormatter, DeepseekChatTaskFormatter, GeminiCompatChatTaskFormatter, GLMChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter, GeminiChatTaskFormatter, DeepseekTextChatTaskFormatter } from "./Formatter";
+import { DeepseekPrefixChatTaskFormatter, DeepseekChatTaskFormatter, GeminiCompatChatTaskFormatter, GLMChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter, GeminiChatTaskFormatter, DeepseekTextChatTaskFormatter, DeepseekRawChatTaskFormatter } from "./Formatter";
 import type { ChatTaskOption, LaMChatMessages } from "./Interface";
 
 
@@ -32,8 +32,9 @@ RespFormatter<RES>&{
     formatMessage(param:{target:string,messages:MSG}):MSG;
 };
 
-export const ChatTaskFormaterTable = {
+export const ChatTaskFormatterTable = {
     deepseek_chat            : DeepseekChatTaskFormatter,
+    deepseek_chat_raw        : DeepseekRawChatTaskFormatter,
     deepseek_prefix          : DeepseekPrefixChatTaskFormatter,
     deepseek_text            : DeepseekTextChatTaskFormatter,
     openai_chat              : OpenAIConversationChatTaskFormatter,
@@ -42,5 +43,5 @@ export const ChatTaskFormaterTable = {
     google_chat_compat       : GeminiCompatChatTaskFormatter,
     glm_chat                 : GLMChatTaskFormatter,
 };
-export type ChatFormaterType = keyof typeof ChatTaskFormaterTable;
+export type ChatFormatterType = keyof typeof ChatTaskFormatterTable;
 

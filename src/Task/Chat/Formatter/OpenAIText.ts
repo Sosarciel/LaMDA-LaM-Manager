@@ -85,7 +85,7 @@ export const OpenAITextChatTaskFormatter:OpenAITextChatTaskFormatter={
 };
 
 //void (async ()=>{
-//    console.log(await OpenAITextChatFormater.computeToken(new LaMChatMessages({
+//    console.log(await OpenAITextChatFormatter.computeToken(new LaMChatMessages({
 //        type:MessageType.DESC,
 //        content:"你好，我的民资是"
 //    }),"deepseek"))
