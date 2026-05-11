@@ -59,12 +59,12 @@ export const DeepseekPrefixChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[
                 if(item.senderName==target){
                     narr.push({
                         role:DeepseekAPIRole.Assistant,
-                        content:item.senderName+":"+item.content
+                        content:`${item.senderName}:${item.content}`
                     });
                 }else{
                     narr.push({
                         role:DeepseekAPIRole.User,
-                        content:item.senderName+":"+item.content
+                        content:`${item.senderName}:${item.content}`
                     });
                 }
             }
@@ -81,7 +81,7 @@ export const DeepseekPrefixChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[
             ...messages,
             {
                 role:DeepseekAPIRole.Assistant,
-                content:target+":",
+                content:`${target}:`,
                 prefix:true
             }
         ];

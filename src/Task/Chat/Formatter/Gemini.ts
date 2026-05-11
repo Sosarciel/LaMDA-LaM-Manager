@@ -114,7 +114,7 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiReque
                 inDesc = false;
                 narr.push({
                     role:GeminiAPIRole.User,
-                    parts:[{text:item.senderName+":"}]
+                    parts:[{text:`${item.senderName}:`}]
                 });
                 if(item.senderName==target){
                     narr.push({
