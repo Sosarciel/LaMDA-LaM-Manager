@@ -19,8 +19,8 @@ import { commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "
 export const DeepseekThinkMapHasNone = {
     hig:'high',
     mid:'high',
-    low:'high',
-    min:'high',
+    low:'low',
+    min:'low',
     max:'max',
     non:undefined,
 } as const;

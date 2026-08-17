@@ -30,7 +30,7 @@ export type DeepseekRequest=Partial<{
      * 对一些复杂 Agent 类请求（如 Claude Code、OpenCode），自动设置为 max
      * 出于兼容考虑 low、medium 会映射为 high, xhigh 会映射为 max
      */
-    reasoning_effort?:"high"|"max";
+    reasoning_effort?:"high"|"max"|"low";
 }>;
 
 /** Deepseek API 消息条目 */
