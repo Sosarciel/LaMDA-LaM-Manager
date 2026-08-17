@@ -8,7 +8,11 @@ export class AccountManagerDrive implements AccountManager{
     keyIdx = 0;
     uid:string;
     /** 构造函数 */
-    constructor(categoryData:AccountCategoryData,accountTable:AccountData){
+    constructor(option:{
+        categoryData:AccountCategoryData,
+        accountTable:AccountData
+    }){
+        const {categoryData,accountTable} = option;
         this.categoryData = categoryData;
         this._accountTable = accountTable;
         this.uid = JSON.stringify(this._accountTable.api_key);

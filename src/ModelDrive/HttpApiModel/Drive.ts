@@ -57,7 +57,7 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
             SLogger.warn(`DeepseekChat.chat 错误 无有效账号`);
             return DefChatLaMResult;
         }
-        SLogger.info(`当前 account_category: ${accountData.instance.getData().cred_category} account_name: ${accountData.name}`);
+        SLogger.info(`当前 account_category: ${accountData.category} account_name: ${accountData.name}`);
 
         const chatOption = await formatter.formatOption({
             option:opt,
@@ -71,7 +71,7 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
             const out:unknown = {...chatOption};
             if(UtilFunc.checkSharpSchema(out,{model:"string"})){
                 //如果存在id映射则直接替换opt的model
-                const mapname = accountData.instance.categoryData.model_id_map?.[out.model];
+                const mapname = accountData.getCategoryData().model_id_map?.[out.model];
                 if(mapname!=null) out.model = mapname;
             }
             return out as any;
@@ -87,7 +87,7 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
             accountData,
             postJson:fixedOption,
             modelData:this.data.config,
-            retryOption:retry2PromiseRetries(accountData.instance.categoryData.retry),
+            retryOption:retry2PromiseRetries(accountData.getCategoryData().retry),
         });
         return formatter.formatResult(resp);
     }

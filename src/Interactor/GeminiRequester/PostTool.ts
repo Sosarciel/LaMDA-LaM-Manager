@@ -23,12 +23,12 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
     async postLaM(partialOpt:PresetOption<typeof PostLaMOptionPreset>){
         const opt = PostLaMOptionPreset.assign(partialOpt);
         const {accountData,modelData,timeLimit} = opt;
-        const postOpt = accountData.instance.categoryData;
+        const postOpt = accountData.getCategoryData();
         const postJson = opt.postJson;
 
         //gemini的model_id影响post请求路径, 必需由交互器处理
-        const fixModelId = accountData.instance.categoryData.model_id_map?.[modelData.id] ?? modelData.id;
-        const postPath = `${modelData.endpoint}/${fixModelId}:generateContent?key=${accountData.instance.getKey()}`;
+        const fixModelId = postOpt.model_id_map?.[modelData.id] ?? modelData.id;
+        const postPath = `${modelData.endpoint}/${fixModelId}:generateContent?key=${accountData.getKey()}`;
 
         const protocol = postOpt.protocol??'https';
         const respData = await UtilHttp.url(`${protocol}://${postOpt.hostname}`)

@@ -2,10 +2,11 @@ import type { PromiseRetries, PromiseRetryResult } from "@zwa73/js-utils";
 import type { PresetOption } from "@zwa73/utils";
 import { preset } from "@zwa73/utils";
 
-import type { CredsData } from "CredService";
-import type { HttpApiModelCategory } from "ModelDrive";
+import type { CredProvider } from "CredService";
+import type { HttpApiModelInfo } from "ModelDrive";
 import type { AnyTextCompletionRequest } from "RequestFormat";
 import type { AnyTextCompletionResponse } from "ResponseFormat";
+
 
 
 
@@ -35,9 +36,9 @@ export type PostLaMOption={
     /**传入的参数对象 */
     postJson:AnyTextCompletionRequest;
     /**账户数据 */
-    accountData:CredsData;
+    accountData:CredProvider;
     /**api价格 */
-    modelData:HttpApiModelCategory;
+    modelData:HttpApiModelInfo;
     /**单个超时时间/毫秒 最小为10000毫秒 -1为不存在 */
     timeLimit:number;
     /**重试选项 */

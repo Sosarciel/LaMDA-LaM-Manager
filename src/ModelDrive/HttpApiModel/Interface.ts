@@ -17,15 +17,9 @@ export type HttpAPIModelData = {
 }
 
 /**适用于网络API的文本完成模型类别配置 */
-export type HttpApiModelCategory = {
-    /**模型id */
-    id: string;
+export type HttpApiModelCategory = HttpApiModelInfo&{
     /**模型别名 */
     alias: string[]|string;
-    /**此模型api的标准路径 */
-    endpoint:string;
-    /**此模型的官方价格 */
-    price:APIPrice;
     /**此模型的聊天任务格式化工具 */
     chat_formatter:ChatFormatterType;
     /**此模型的指导式文本生成任务格式化工具 */
@@ -34,4 +28,14 @@ export type HttpApiModelCategory = {
     interactor:InteractorType;
     /**此模型所用的分词器 */
     tokensizer:TokensizerType;
+}
+
+/**适用于网络API的模型的基础配置 */
+export type HttpApiModelInfo = {
+    /**模型id */
+    id: string;
+    /**此模型api的标准路径 */
+    endpoint:string;
+    /**此模型的官方价格 */
+    price:APIPrice;
 }

@@ -25,7 +25,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
     async postLaM(partialOpt:PresetOption<typeof PostLaMOptionPreset>){
         const opt = PostLaMOptionPreset.assign(partialOpt);
         const {accountData,modelData,timeLimit} = opt;
-        const postOpt = accountData.instance.categoryData;
+        const postOpt = accountData.getCategoryData();
         const postJson = opt.postJson;
 
         const protocol = postOpt.protocol??'https';
@@ -37,7 +37,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
                 path: modelData.endpoint,//'/v1/chat/completions'
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accountData.instance.getKey()}`,
+                    'Authorization': `Bearer ${accountData.getKey()}`,
                 },
                 dispatcher: postOpt.proxy_url ? getProxy(postOpt.proxy_url) : undefined,
                 timeout:timeLimit,

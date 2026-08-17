@@ -1,9 +1,10 @@
 import type { PromiseStatus } from "@zwa73/utils";
 import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
 
-import type { APIPrice, APIPriceResp, CredsData } from "CredService";
-import { CredManager } from "CredService";
+import type { APIPrice, APIPriceResp } from "CredService";
 import type { AnyGeminiLikeErrorResponse, AnyGeminiResponse } from "ResponseFormat";
+
+import type { CredProvider } from "@/src/CredService/CredProvider";
 
 
 /**记录用量
@@ -13,7 +14,7 @@ import type { AnyGeminiLikeErrorResponse, AnyGeminiResponse } from "ResponseForm
 export const recordPrice = async(
     respObj: AnyGeminiResponse | undefined,
     price: APIPrice,
-    accountData: CredsData,
+    accountData: CredProvider,
 )=>{
     if (respObj == undefined) return;
     const usageObj = respObj.usageMetadata;
@@ -23,9 +24,9 @@ export const recordPrice = async(
             prompt_tokens    :usageObj.promptTokenCount??0,
         };
         //增加token数据
-        await CredManager.computePrice(accountData,price,usageResp);
+        await accountData.computePrice?.(price,usageResp);
         //打印理论的当前使用量
-        await CredManager.currUsedUSD(accountData);
+        await accountData.currUsage?.();
     }else SLogger.error(`GeminiPostTool.postLaM 警告 无法计费 未找到 usage, respObj:\n${respObj}`);
     return;
 };
@@ -38,7 +39,7 @@ export const recordPrice = async(
  */
 export const verifyResp = async (
     respObj: AnyGeminiResponse|undefined,
-    accountData: CredsData
+    accountData: CredProvider
 ): Promise<PromiseStatus> => {
     if (respObj == undefined) return Failed;
 

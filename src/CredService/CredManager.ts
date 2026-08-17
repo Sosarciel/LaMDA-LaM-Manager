@@ -3,8 +3,9 @@ import { ServiceManager } from "@zwa73/service-manager";
 import type { MPromise, NeedInit, ParseableDataStore, PresetOption } from "@zwa73/utils";
 import { AwaitInited, None, preset, SLogger, throwError, UtilFunc } from "@zwa73/utils";
 
+import { wrapperAccountManager } from "./CredProvider";
 import { AccountManagerDrive } from "./Drive";
-import type { APIPriceResp, APIPrice, AccountData } from "./Interface";
+import type { AccountData } from "./Interface";
 import type { CredCategoryJsonTable, CredServiceJsonTable } from "./Schema.schema";
 
 
@@ -14,7 +15,7 @@ const CtorTable = {
     Common        : async (table:AccountData)   => {
         const categoryData = await CredManager.getCategoryData(table.cred_category);
         if(categoryData==null) throwError(`CredManager.getAvailableAccount 缺少类别:${table.cred_category}`);
-        return new AccountManagerDrive(categoryData,table);
+        return new AccountManagerDrive({categoryData, accountTable:table});
     },
 };
 export type CredCtorTable = typeof CtorTable;
@@ -66,37 +67,12 @@ class _CredManager implements NeedInit{
                 sd=>sd.instance.getData().cred_category===t &&
                     sd.instance.getData().is_available===true
             )))).flat();
-        return ac.length>=1 ? ac[0] : None;
-    }
-    /**计费
-     * @param accountData     - 账户数据对象
-     * @param price           - API的调用价格
-     * @param promptCount     - 输入/prompt_tokens
-     * @param completionCount - 输出/completion_tokens
-     */
-    @AwaitInited
-    async computePrice(accountData:CredsData,price:APIPrice,usage:APIPriceResp){
-        const promptCount = usage.prompt_cache_miss_tokens ?? usage.prompt_tokens;
-        const cachedPromptCount = usage.prompt_cache_hit_tokens ?? 0;
-        const completionCount = usage.completion_tokens;
-        const totalPrice =
-            (promptCount*price.promptPrice)+
-            (completionCount*price.completionPrice)+
-            (cachedPromptCount*(price.cacheHitPromptPrice??0));
-        if(isNaN(totalPrice)){
-            SLogger.error(`CredManager.computePrice 错误 无法计算价格`);
-            SLogger.error(usage);
-            return;
-        }
-        await accountData.instance.addPrice(totalPrice);
-    }
-    /**打印已使用的USD数量
-     * @param accountData - 账户数据对象
-     */
-    @AwaitInited
-    async currUsedUSD(accountData:CredsData){
-        const credit = (accountData.instance.getData().used_credit??0)/1000;
-        SLogger.info(`${accountData.type}: ${accountData.name} 当前理论使用量: ${credit} USD`);
+        const availidCred = ac[0];
+        return ac.length>=1 ? wrapperAccountManager({
+            instance:availidCred.instance,
+            name:availidCred.name,
+            type:availidCred.type,
+        }) : None;
     }
     /**获取允许此模型的账号 */
     @AwaitInited

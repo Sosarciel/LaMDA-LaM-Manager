@@ -1,8 +1,7 @@
 import type { PromiseStatus } from "@zwa73/utils";
 import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
 
-import type { APIPrice, APIPriceResp, CredsData } from "CredService";
-import { CredManager } from "CredService";
+import type { APIPrice, APIPriceResp, CredProvider } from "CredService";
 import type { AnyOpenAILikeErrorResponse, AnyOpenAIResponse } from "ResponseFormat";
 
 
@@ -14,7 +13,7 @@ import type { AnyOpenAILikeErrorResponse, AnyOpenAIResponse } from "ResponseForm
 export const recordPrice = async(
     respObj: AnyOpenAIResponse | undefined,
     price: APIPrice,
-    accountData: CredsData,
+    accountData: CredProvider,
 )=>{
     if (respObj == undefined) return;
     const usageObj = respObj.usage;
@@ -33,9 +32,9 @@ export const recordPrice = async(
     usageResp.prompt_cache_miss_tokens = usageObj.prompt_cache_miss_tokens;
 
     //增加token数据
-    await CredManager.computePrice(accountData,price,usageResp);
+    await accountData.computePrice?.(price,usageResp);
     //打印理论的当前使用量
-    await CredManager.currUsedUSD(accountData);
+    await accountData.currUsage?.();
     return;
 };
 
@@ -47,7 +46,7 @@ export const recordPrice = async(
  */
 export const verifyResp = async(
     rawResp: AnyOpenAIResponse | AnyOpenAILikeErrorResponse | undefined,
-    accountData: CredsData
+    accountData: CredProvider
 ): Promise<PromiseStatus> => {
     if (rawResp == undefined) return Failed;
 
@@ -67,7 +66,7 @@ export const verifyResp = async(
  */
 export const checkError = async (
     error: AnyOpenAILikeErrorResponse['error'],
-    accountData: CredsData
+    accountData: CredProvider
 ): Promise<PromiseStatus> => {
 
     if(error.message=="We were unable to start processing your request within the 900-second timeout limit. Please try again later."){
@@ -104,7 +103,7 @@ export const checkError = async (
             if (error.message.includes("current quota")) {
                 SLogger.warn("用量达到限额");
                 //直接设置为不可用
-                await accountData.instance.setInavailable();
+                await accountData.setInavailable?.();
                 return Terminated;
             } else SLogger.error("未定义的错误子类型");
             return Terminated;
@@ -120,12 +119,12 @@ export const checkError = async (
             if (error.code == "invalid_api_key") {
                 //直接设置为不可用
                 SLogger.warn("无效的API_KEY");
-                await accountData.instance.setInavailable();
+                await accountData.setInavailable?.();
                 return Terminated;
             } else if (error.code == "account_deactivated") {
                 //直接设置为不可用
                 SLogger.fatal("账号被停用");
-                await accountData.instance.setInavailable();
+                await accountData.setInavailable?.();
                 return Terminated;
             } else if (error.message.includes("currently overloaded with other requests")) {
                 SLogger.warn("模型过载");
@@ -138,7 +137,7 @@ export const checkError = async (
                 //直接设置为不可用
                 SLogger.fatal("违反规则终止访问");
                 //直接设置为不可用
-                await accountData.instance.setInavailable();
+                await accountData.setInavailable?.();
                 return Terminated;
             } else SLogger.error("未定义的错误子类型");
             return Terminated;
