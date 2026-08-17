@@ -1,6 +1,6 @@
 import { ivk, None, SLogger, UtilFunc } from "@zwa73/utils";
 
-import { CredManager, retry2PromiseRetries } from "CredService";
+import { CredManager } from "CredService";
 import type { Interactor } from "Interactor";
 import { InteractorTable } from "Interactor";
 import type { ChatTaskFormatter, TextCompletionOption, TextCompletionTaskFormatter } from "Task";
@@ -57,7 +57,10 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
             SLogger.warn(`DeepseekChat.chat 错误 无有效账号`);
             return DefChatLaMResult;
         }
-        SLogger.info(`当前 account_category: ${accountData.category} account_name: ${accountData.name}`);
+        const {cred,source} = accountData;
+
+
+        SLogger.info(`当前 account_category: ${cred.category} account_name: ${cred.name}`);
 
         const chatOption = await formatter.formatOption({
             option:opt,
@@ -71,7 +74,7 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
             const out:unknown = {...chatOption};
             if(UtilFunc.checkSharpSchema(out,{model:"string"})){
                 //如果存在id映射则直接替换opt的model
-                const mapname = accountData.getCategoryData().model_id_map?.[out.model];
+                const mapname = source.model_id_map?.[out.model];
                 if(mapname!=null) out.model = mapname;
             }
             return out as any;
@@ -84,10 +87,10 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
 
         //重复请求
         const resp = await this.interactor.postLaMRepeat({
-            accountData,
+            cred,source,
             postJson:fixedOption,
             modelData:this.data.config,
-            retryOption:retry2PromiseRetries(accountData.getCategoryData().retry),
+            retryOption:UtilFunc.camelToSnake(source.retry),
         });
         return formatter.formatResult(resp);
     }

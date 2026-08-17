@@ -4,7 +4,9 @@ import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
 import type { APIPrice, APIPriceResp } from "CredService";
 import type { AnyGeminiLikeErrorResponse, AnyGeminiResponse } from "ResponseFormat";
 
-import type { CredProvider } from "@/src/CredService/CredProvider";
+import type { CredProvider } from "@/src/LaMChain/Interface";
+import { LaMChain } from "@/src/LaMChain/LaMChain";
+
 
 
 /**记录用量
@@ -24,7 +26,7 @@ export const recordPrice = async(
             prompt_tokens    :usageObj.promptTokenCount??0,
         };
         //增加token数据
-        await accountData.computePrice?.(price,usageResp);
+        await accountData.recordCost?.(LaMChain.computeCost(price,usageResp));
         //打印理论的当前使用量
         await accountData.currUsage?.();
     }else SLogger.error(`GeminiPostTool.postLaM 警告 无法计费 未找到 usage, respObj:\n${respObj}`);

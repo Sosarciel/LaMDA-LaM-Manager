@@ -22,25 +22,24 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
      */
     async postLaM(partialOpt:PresetOption<typeof PostLaMOptionPreset>){
         const opt = PostLaMOptionPreset.assign(partialOpt);
-        const {accountData,modelData,timeLimit} = opt;
-        const postOpt = accountData.getCategoryData();
+        const {cred,source,modelData,timeLimit} = opt;
         const postJson = opt.postJson;
 
         //gemini的model_id影响post请求路径, 必需由交互器处理
-        const fixModelId = postOpt.model_id_map?.[modelData.id] ?? modelData.id;
-        const postPath = `${modelData.endpoint}/${fixModelId}:generateContent?key=${accountData.getKey()}`;
+        const fixModelId = source.model_id_map?.[modelData.id] ?? modelData.id;
+        const postPath = `${modelData.endpoint}/${fixModelId}:generateContent?key=${cred.key}`;
 
-        const protocol = postOpt.protocol??'https';
-        const respData = await UtilHttp.url(`${protocol}://${postOpt.hostname}`)
+        const protocol = source.protocol??'https';
+        const respData = await UtilHttp.url(`${protocol}://${source.hostname}`)
             .postJson().option({
                 method: 'POST'  as const,
-                hostname: postOpt.hostname,
-                port: postOpt.port,
+                hostname: source.hostname,
+                port: source.port,
                 path: postPath,//'/v1/chat/completions'
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                dispatcher: postOpt.proxy_url ? getProxy(postOpt.proxy_url) : undefined,
+                dispatcher: source.proxyUrl ? getProxy(source.proxyUrl) : undefined,
                 timeout:timeLimit,
             }).once({json:postJson});
 
@@ -77,7 +76,7 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
         }
 
         //记录使用量
-        await recordPrice(respObj,modelData.price,accountData);
+        await recordPrice(respObj,modelData.price,cred);
 
         return respObj;
     }
@@ -95,7 +94,7 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
 
         return await UtilFunc.retryPromise(
             async ()=>this.postLaM(opt),
-            async obj=>await verifyResp(obj, opt.accountData),
+            async obj=>await verifyResp(obj, opt.cred),
             {...retryOption,logFlag:"GeminiPostTool.postLaMRepeat"}
         );
     }

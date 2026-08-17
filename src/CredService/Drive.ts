@@ -39,7 +39,7 @@ export class AccountManagerDrive implements AccountManager{
         return true;
     }
 
-    async addPrice(price:number){
+    async recordCost(price:number){
         //计费
         const preUsed = this._accountTable.used_credit ?? 0;
         const currUsed = preUsed + price;

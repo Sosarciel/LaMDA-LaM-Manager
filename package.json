@@ -32,10 +32,10 @@
 	],
 	"dependencies": {
 		"@anush008/tokenizers": "^0.0.0",
-		"@zwa73/js-utils": "^1.0.85",
+		"@zwa73/js-utils": "^1.0.88",
 		"@zwa73/modular-mixer": "^1.0.4",
 		"@zwa73/service-manager": "^1.0.31",
-		"@zwa73/utils": "^1.0.294",
+		"@zwa73/utils": "^1.0.301",
 		"tiktoken": "^1.0.7",
 		"undici": "^6.24.1"
 	},

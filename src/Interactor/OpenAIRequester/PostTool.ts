@@ -24,22 +24,21 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
      */
     async postLaM(partialOpt:PresetOption<typeof PostLaMOptionPreset>){
         const opt = PostLaMOptionPreset.assign(partialOpt);
-        const {accountData,modelData,timeLimit} = opt;
-        const postOpt = accountData.getCategoryData();
+        const {cred,source,modelData,timeLimit} = opt;
         const postJson = opt.postJson;
 
-        const protocol = postOpt.protocol??'https';
+        const protocol = source.protocol??'https';
 
-        const respData = await UtilHttp.url(`${protocol}://${postOpt.hostname}`)
+        const respData = await UtilHttp.url(`${protocol}://${source.hostname}`)
             .postJson().option({
-                hostname: postOpt.hostname,
-                port: postOpt.port,
+                hostname: source.hostname,
+                port: source.port,
                 path: modelData.endpoint,//'/v1/chat/completions'
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accountData.getKey()}`,
+                    'Authorization': `Bearer ${cred}`,
                 },
-                dispatcher: postOpt.proxy_url ? getProxy(postOpt.proxy_url) : undefined,
+                dispatcher: source.proxyUrl ? getProxy(source.proxyUrl) : undefined,
                 timeout:timeLimit,
             }).once({json:postJson});
 
@@ -60,7 +59,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
         }
 
         //记录使用量
-        await recordPrice(respObj,modelData.price,accountData);
+        await recordPrice(respObj,modelData.price,cred);
 
         return respObj;
     }
@@ -78,7 +77,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
 
         return await UtilFunc.retryPromise(
             async ()=>this.postLaM(opt),
-            async obj=>await verifyResp(obj, opt.accountData),
+            async obj=>await verifyResp(obj, opt.cred),
             {...retryOption,logFlag:"OpenApiPostTool.postLaMRepeat"}
         );
     }

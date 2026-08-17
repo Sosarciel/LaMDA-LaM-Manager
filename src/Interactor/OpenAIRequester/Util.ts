@@ -1,8 +1,11 @@
 import type { PromiseStatus } from "@zwa73/utils";
 import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
 
-import type { APIPrice, APIPriceResp, CredProvider } from "CredService";
+import type { APIPrice, APIPriceResp } from "CredService";
 import type { AnyOpenAILikeErrorResponse, AnyOpenAIResponse } from "ResponseFormat";
+
+import type { CredProvider } from "@/src/LaMChain/Interface";
+import { LaMChain } from "@/src/LaMChain/LaMChain";
 
 
 
@@ -32,7 +35,7 @@ export const recordPrice = async(
     usageResp.prompt_cache_miss_tokens = usageObj.prompt_cache_miss_tokens;
 
     //增加token数据
-    await accountData.computePrice?.(price,usageResp);
+    await accountData.recordCost?.(LaMChain.computeCost(price,usageResp));
     //打印理论的当前使用量
     await accountData.currUsage?.();
     return;
