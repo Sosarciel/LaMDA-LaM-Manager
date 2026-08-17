@@ -14,8 +14,6 @@ export type AccountManager = ServiceInterface<{
     checkAccount():Promise<boolean>
     /**设置某个账户为不可用 */
     setInavailable():Promise<void>
-    /**此类型账户请求时的参数 */
-    categoryData:AccountCategoryData;
     /**获取key */
     getKey():string;
 }>;

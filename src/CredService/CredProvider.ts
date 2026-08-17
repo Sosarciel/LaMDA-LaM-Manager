@@ -2,18 +2,19 @@ import { SLogger, UtilFunc } from "@zwa73/utils";
 
 import type { CredProvider, SourceProvider } from "@/src/LaMChain/Interface";
 
+import { CredManager } from "./CredManager";
 import type { AccountManager } from "./Interface";
 
 
 
 /**包装AccountManager实例为提供者, 避免外界与复杂服务对象交互 */
-export const wrapperAccountManager = (opt:{
+export const wrapperAccountManager = async (opt:{
     instance:AccountManager;
     type:string;
     name:string;
 }) => {
     const {instance,type,name} = opt;
-    const cateData = instance.categoryData;
+    const cateData = await CredManager.getCategoryData(instance.getData().cred_category);
     return {
         source:{
             name:cateData.id,

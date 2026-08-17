@@ -1,19 +1,16 @@
 import { SLogger } from "@zwa73/utils";
 
-import type { AccountData, AccountManager, AccountCategoryData } from "./Interface";
+import type { AccountData, AccountManager } from "./Interface";
 
 /**基本的账户管理器 */
 export class AccountManagerDrive implements AccountManager{
-    categoryData: AccountCategoryData;
     keyIdx = 0;
     uid:string;
     /** 构造函数 */
     constructor(option:{
-        categoryData:AccountCategoryData,
         accountTable:AccountData
     }){
-        const {categoryData,accountTable} = option;
-        this.categoryData = categoryData;
+        const {accountTable} = option;
         this._accountTable = accountTable;
         this.uid = JSON.stringify(this._accountTable.api_key);
     }

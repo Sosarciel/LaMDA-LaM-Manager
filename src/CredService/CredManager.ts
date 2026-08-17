@@ -15,7 +15,7 @@ const CtorTable = {
     Common        : async (table:AccountData)   => {
         const categoryData = await CredManager.getCategoryData(table.cred_category);
         if(categoryData==null) throwError(`CredManager.getAvailableAccount 缺少类别:${table.cred_category}`);
-        return new AccountManagerDrive({categoryData, accountTable:table});
+        return new AccountManagerDrive({accountTable:table});
     },
 };
 export type CredCtorTable = typeof CtorTable;
@@ -68,7 +68,7 @@ class _CredManager implements NeedInit{
                     sd.instance.getData().is_available===true
             )))).flat();
         const availidCred = ac[0];
-        return ac.length>=1 ? wrapperAccountManager({
+        return ac.length>=1 ? await wrapperAccountManager({
             instance:availidCred.instance,
             name:availidCred.name,
             type:availidCred.type,
