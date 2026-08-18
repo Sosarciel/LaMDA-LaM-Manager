@@ -72,9 +72,15 @@ export type ModelInfo = {
 }
 
 /**传输函数类型 */
-export type LaMPost<I,O> = (param:{
+export type LaMPostRequestFunc<I,O> = (param:{
+    /**凭据提供者 */
     cred:CredProvider;
+    /**源提供者 */
     source:SourceProvider;
+    /**模型信息 */
     model:ModelInfo;
+    /**请求体 */
     json:I;
+    /**重试设定 PromiseRetries */
+    retry?:PromiseRetries;
 })=>MPromise<PromiseRetryResult<O|undefined>>;

@@ -1,4 +1,5 @@
 import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
+import { LaMChain } from "LaMChain";
 
 import type { OpenAIChatAPIEntry, OpenAIChatRequest } from "RequestFormat";
 import { OpenAIChatAPIRole } from "RequestFormat";
@@ -6,7 +7,7 @@ import type { AnyOpenAIChatLikeResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from 'Task/Chat/Adapter';
 import type { ThingBudget } from "Task/DataInterface";
-import { commonFormatResp, tokenifyLogitBias } from "Task/Util";
+import { commonFormatResp } from "Task/Util";
 
 import { commonOpenAIChatTask, commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "./Utils";
 
@@ -162,7 +163,7 @@ export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskForma
             n                      : option.n                   ,//产生n条消息
             presence_penalty       : isReasoning ? undefined : option.presence_penalty   ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
             frequency_penalty      : isReasoning ? undefined : option.frequency_penalty  ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
-            logit_bias             : isReasoning ? undefined : await tokenifyLogitBias(option.logit_bias,tokensizerType),//调整某token出现的概率 {"tokenid":-100~100}
+            logit_bias             : isReasoning ? undefined : await LaMChain.tokenifyLogitBias({textLogitBias:option.logit_bias,tokensizerType}),//调整某token出现的概率 {"tokenid":-100~100}
             stop                   : isReasoning ? undefined : option.stop,//停止序列,遭遇时将会停止生成的最多4个字符串,不支持某些思考模型
         } satisfies OpenAIChatRequest;
 

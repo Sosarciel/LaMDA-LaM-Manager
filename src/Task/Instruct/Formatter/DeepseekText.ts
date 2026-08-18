@@ -1,10 +1,10 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
+import { LaMChain } from "LaMChain";
 
 import type { OpenAITextRequest } from "RequestFormat";
 import type { OpenAITextResponse } from "ResponseFormat";
 
 import type { InstructTaskFormatter } from "Task/Instruct/Adapter";
-import { tokenifyLogitBias } from "Task/Util";
 
 import { OpenAIInstructBase } from "./OpenAIText";
 import { buildFIMPrompt, validateInstructOption, commonOpenAIInstructTask } from "./Utils";
@@ -34,7 +34,7 @@ export const DeepseekText: DeepseekFIMTaskFormatterType = {
             echo: option.echo,
             presence_penalty: option.presence_penalty,
             frequency_penalty: option.frequency_penalty,
-            logit_bias: await tokenifyLogitBias(option.logit_bias, tokensizerType),
+            logit_bias: await LaMChain.tokenifyLogitBias({textLogitBias:option.logit_bias, tokensizerType}),
         } satisfies OpenAITextRequest;
     },
     execute:lazyFunction(()=>commonOpenAIInstructTask(DeepseekText)),

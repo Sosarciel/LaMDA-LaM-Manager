@@ -1,10 +1,11 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
+import { LaMChain } from "LaMChain";
 
 import type { OpenAITextRequest } from "RequestFormat";
 import type { OpenAITextResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
-import { commonFormatResp, tokenifyLogitBias } from "Task/Util";
+import { commonFormatResp } from "Task/Util";
 
 import { commonOpenAIChatTask, commonComputeTokenCountFactory, commonProcessMessageWithOpt } from "./Utils";
 
@@ -72,7 +73,7 @@ export const OpenAITextChatTaskFormatter:OpenAITextChatTaskFormatter={
             n                 : option.n                    ,//产生n条消息
             presence_penalty  : option.presence_penalty     ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
             frequency_penalty : option.frequency_penalty    ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
-            logit_bias        : await tokenifyLogitBias(option.logit_bias,tokensizerType) ,//调整某token出现的概率 {"tokenid":-100~100}
+            logit_bias        : await LaMChain.tokenifyLogitBias({textLogitBias:option.logit_bias,tokensizerType}) ,//调整某token出现的概率 {"tokenid":-100~100}
             //best_of         : best_of                  ,//产生n条候选消息，根据n返回n条最佳消息
             stop              : option.stop                 ,//遭遇时将会停止生成的最多4个字符串 "1234"
         } satisfies OpenAITextRequest;

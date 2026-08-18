@@ -1,5 +1,6 @@
 import type { PresetOption } from '@zwa73/utils';
 import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
+import { LaMChain } from 'LaMChain';
 
 import type { AnyGeminiResponse } from 'ResponseFormat';
 
@@ -26,7 +27,7 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
         const postJson = opt.postJson;
 
         //gemini的model_id影响post请求路径, 必需由交互器处理
-        const fixModelId = source.modelIdMap?.[modelData.id] ?? modelData.id;
+        const fixModelId = LaMChain.specializeModelId({ source, modelId:modelData.id});
         const postPath = `${modelData.endpoint}/${fixModelId}:generateContent?key=${cred.key}`;
 
         const protocol = source.protocol??'https';

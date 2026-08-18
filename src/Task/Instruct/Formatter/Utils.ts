@@ -1,6 +1,6 @@
 import type { LogLevel } from "@zwa73/utils";
 import { SLogger, UtilFunc } from "@zwa73/utils";
-import { type LaMPost, type CredProvider, type ModelInfo, type SourceProvider, LaMChain } from "LaMChain";
+import { type LaMPostRequestFunc, type CredProvider, type ModelInfo, type SourceProvider, LaMChain } from "LaMChain";
 
 import type { AnyTextCompletionRequest } from "RequestFormat";
 import type { TokensizerType } from "Tokensizer";
@@ -24,7 +24,7 @@ export function validateInstructOption(opt: InstructTaskOption): boolean {
 /**通用的指导式任务执行器 由formatter自管流程 */
 export const commonInstructTask = <
 REQ extends AnyTextCompletionRequest,
-P extends LaMPost<REQ,any>,
+P extends LaMPostRequestFunc<REQ,any>,
 >(param1:{
     tool:InstructTaskFormatter<REQ,any>;
     post: P;

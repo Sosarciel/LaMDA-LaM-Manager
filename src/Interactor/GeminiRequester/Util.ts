@@ -23,7 +23,9 @@ export const recordPrice = async(opt:{
         return void SLogger.error(`OpenAILaMClient.postLaM 警告 无法计费 未找到 usage, respObj:\n`,respObj);
 
     //增加token数据
-    await cred.recordCost?.(LaMChain.computeCost(price,LaMChain.computeGeminiUsage(respObj)));
+    await cred.recordCost?.(LaMChain.computeCost({
+        price, usage:LaMChain.computeGeminiUsage(respObj),
+    }));
     //打印理论的当前使用量
     await cred.currUsage?.();
 

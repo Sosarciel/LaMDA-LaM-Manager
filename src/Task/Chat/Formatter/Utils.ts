@@ -1,14 +1,13 @@
 
 import type { LogLevel } from "@zwa73/utils";
 import { SLogger, UtilFunc } from "@zwa73/utils";
-import { type LaMPost, type CredProvider, type ModelInfo, type SourceProvider, LaMChain } from "LaMChain";
+import { type LaMPostRequestFunc, type CredProvider, type ModelInfo, type SourceProvider, LaMChain } from "LaMChain";
 
 import type { AnyTextCompletionRequest } from "RequestFormat";
 import type { TokensizerType } from "Tokensizer";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import type { ChatTaskOption, LaMChatMessages } from "Task/Chat/Interface";
-import { commonComputeTokenCount } from "Task/Util";
 
 
 
@@ -17,14 +16,14 @@ import { commonComputeTokenCount } from "Task/Util";
 export const stringifyComputeTokenCountFactory = (tool:ChatTaskFormatter<any,any,any>)=>
     async (messages:LaMChatMessages,tokensizerType:TokensizerType):Promise<number>=>{
         const turboMessage = tool.buildMessage({target:'unknow',messages});
-        return await commonComputeTokenCount(JSON.stringify(turboMessage),tokensizerType);
+        return await LaMChain.computeTokenCount({text:JSON.stringify(turboMessage),tokensizerType});
     };
 
 /**标准的计算tokens的高阶函数 */
 export const commonComputeTokenCountFactory = (tool:ChatTaskFormatter<string,any,any>)=>
     async (messages:LaMChatMessages,tokensizerType:TokensizerType):Promise<number>=>{
         const turboMessage = tool.buildMessage({target:'unknow',messages});
-        return await commonComputeTokenCount(turboMessage,tokensizerType);
+        return await LaMChain.computeTokenCount({text:turboMessage,tokensizerType});
     };
 
 /**标准的请求文本转换工具 使用配置 */
@@ -51,7 +50,7 @@ export const commonProcessMessage = <T>(param:{
  */
 export const commonChatTask = <
 REQ extends AnyTextCompletionRequest,
-P extends LaMPost<REQ,any>,
+P extends LaMPostRequestFunc<REQ,any>,
 >(param1:{
     tool:ChatTaskFormatter<any,REQ,any>;
     post:P;
