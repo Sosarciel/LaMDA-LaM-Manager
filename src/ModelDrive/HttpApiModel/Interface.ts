@@ -1,4 +1,5 @@
-import type { APIPrice } from "CredService";
+import type { ModelInfo } from "LaMChain";
+
 import type { InteractorType } from "Interactor";
 import type { ChatFormatterType, TextCompletionOption } from "Task";
 import type { TokensizerType } from "Tokensizer";
@@ -17,7 +18,7 @@ export type HttpAPIModelData = {
 }
 
 /**适用于网络API的文本完成模型类别配置 */
-export type HttpApiModelCategory = HttpApiModelInfo&{
+export type HttpApiModelCategory = ModelInfo&{
     /**模型别名 */
     alias: string[]|string;
     /**此模型的聊天任务格式化工具 */
@@ -28,14 +29,4 @@ export type HttpApiModelCategory = HttpApiModelInfo&{
     interactor:InteractorType;
     /**此模型所用的分词器 */
     tokensizer:TokensizerType;
-}
-
-/**适用于网络API的模型的基础配置 */
-export type HttpApiModelInfo = {
-    /**模型id */
-    id: string;
-    /**此模型api的标准路径 */
-    endpoint:string;
-    /**此模型的官方价格 */
-    price:APIPrice;
 }

@@ -59,7 +59,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
         }
 
         //记录使用量
-        await recordPrice(respObj,modelData.price,cred);
+        await recordPrice({ respObj, price:modelData.price, cred});
 
         return respObj;
     }

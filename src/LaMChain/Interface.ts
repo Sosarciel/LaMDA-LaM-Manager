@@ -1,6 +1,26 @@
 import type { MPromise, PromiseRetries } from "@zwa73/js-utils";
 
-import type { APIPrice } from "CredService";
+/**价格 */
+export type ModelPrice=Partial<{
+    /**提示每 1 token 价格 单位: 1/1000 usd */
+    promptPrice:number;
+    /**完成每 1 token 价格 单位: 1/1000 usd */
+    completionPrice:number;
+    /**缓存命中提示每 1 token 价格 单位: 1/1000 usd */
+    cacheHitPromptPrice?:number;
+}>;
+
+/**消耗量 */
+export type ModelUsage = Partial<{
+    /**补全的token数量 */
+    completionTokens:number;
+    /**提示的token数量 */
+    promptTokens:number;
+    /**缓存命中的提示token数量 */
+    promptCacheHitTokens:number;
+    /**缓存未命中的补全token数量 */
+    promptCacheMissTokens:number;
+}>
 
 /**凭据提供者 */
 export type CredProvider = {
@@ -45,6 +65,8 @@ export type SourceProvider = {
 export type ModelInfo = {
     /**模型id */
     id:string;
+    /**此模型api的标准路径 */
+    endpoint:string;
     /**标准模型价格 */
-    price?:Partial<APIPrice>;
+    price?:ModelPrice;
 }

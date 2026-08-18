@@ -15,6 +15,7 @@
             "Task"                    : ["./src/Task"],
             "Task/*"                  : ["./src/Task/*"],
             "Tokensizer"              : ["./src/Tokensizer"],
+            "LaMChain"                : ["./src/LaMChain"],
             "LaMService"              : ["./src/LaMService"],
             "LaMService/*"            : ["./src/LaMService/*"],
 			"Interactor"              : ["./src/Interactor"],

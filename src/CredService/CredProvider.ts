@@ -1,6 +1,5 @@
 import { SLogger, UtilFunc } from "@zwa73/utils";
-
-import type { CredProvider, SourceProvider } from "@/src/LaMChain/Interface";
+import type { CredProvider, SourceProvider } from "LaMChain";
 
 import { CredManager } from "./CredManager";
 import type { AccountManager } from "./Interface";

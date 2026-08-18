@@ -18,32 +18,10 @@ export type AccountManager = ServiceInterface<{
     getKey():string;
 }>;
 
-/**价格 */
-export type APIPrice={
-    /**提示每 1 token 价格 单位: 1/1000 usd */
-    promptPrice:number;
-    /**完成每 1 token 价格 单位: 1/1000 usd */
-    completionPrice:number;
-    /**缓存命中提示每 1 token 价格 单位: 1/1000 usd */
-    cacheHitPromptPrice?:number;
-}
-
-/**计费反馈 */
-export type APIPriceResp = {
-    /**补全的token数量 */
-    completion_tokens:number;
-    /**提示的token数量 */
-    prompt_tokens:number;
-    /**缓存命中的提示token数量 */
-    prompt_cache_hit_tokens?:number;
-    /**缓存未命中的补全token数量 */
-    prompt_cache_miss_tokens?:number;
-}
-
 export type CredCategoryID = string;
 
 /**小蛇型标准的重试设定 */
-export type SnackRetry = Partial<{
+type SnackRetry = Partial<{
     /**重试次数 默认3*/
     count?: number;
     /**尝试间隔时间/毫秒 超过此事件会重新创建新的Promise

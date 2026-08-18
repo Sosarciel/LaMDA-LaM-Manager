@@ -1,17 +1,16 @@
 import type { MPromise, PromiseRetryResult } from "@zwa73/js-utils";
 import { SLogger, UtilFP } from "@zwa73/utils";
 
-import type { APIPrice, APIPriceResp } from "CredService";
-import type { HttpApiModelInfo } from "ModelDrive";
 import type { GeminiRequest } from "RequestFormat";
+import type { AnyGeminiResponse, AnyOpenAIResponse } from "ResponseFormat";
 
 import { GeminiPostTool } from "Interactor/GeminiRequester";
 
-import type { CredProvider, SourceProvider } from "./Interface";
+import type { CredProvider, ModelInfo, ModelPrice, ModelUsage, SourceProvider } from "./Interface";
 
 
 const postGeminiRequest = (cred:CredProvider,source:SourceProvider)=>async (params:{
-    model:HttpApiModelInfo;
+    model:ModelInfo;
     json:GeminiRequest;
 })=>{
     const {model,json} = params;
@@ -35,14 +34,22 @@ export namespace LaMChain{
 export const reduceRepeatResult =  async <T>(t:MPromise<PromiseRetryResult<T>>) => (await t)?.completed;
 
 /**计算价格 */
-export const computeCost = (price:APIPrice,usage:APIPriceResp)=>{
-    const promptCount = usage.prompt_cache_miss_tokens ?? usage.prompt_tokens;
-    const cachedPromptCount = usage.prompt_cache_hit_tokens ?? 0;
-    const completionCount = usage.completion_tokens;
+export const computeCost = (price:ModelPrice,usage:ModelUsage)=>{
+    const promptCount = usage.promptCacheMissTokens ?? usage.promptTokens ?? 0;
+    const cachedPromptCount = usage.promptCacheHitTokens ?? 0;
+    const completionCount = usage.completionTokens ?? 0;
+
+    const {
+        completionPrice = 0,
+        promptPrice = 0,
+    } = price;
+
+    const cacheHitPromptPrice = price.cacheHitPromptPrice??promptPrice;
+
     const totalPrice =
-        (promptCount*price.promptPrice)+
-        (completionCount*price.completionPrice)+
-        (cachedPromptCount*(price.cacheHitPromptPrice??0));
+        (promptCount * promptPrice)+
+        (completionCount * completionPrice)+
+        (cachedPromptCount* cacheHitPromptPrice);
     if(isNaN(totalPrice)){
         SLogger.error(`computeCost 错误 无法计算价格`);
         SLogger.error(usage);
@@ -50,4 +57,26 @@ export const computeCost = (price:APIPrice,usage:APIPriceResp)=>{
     }
     return totalPrice;
 };
+
+/**计算gemini使用量 */
+export const computeGeminiUsage = (resp:AnyGeminiResponse)=>{
+    const {usageMetadata} = resp;
+    return {
+        completionTokens :(usageMetadata.candidatesTokenCount??0) + (usageMetadata.thoughtsTokenCount??0),
+        promptTokens     :usageMetadata.promptTokenCount??0,
+    } satisfies ModelUsage;
+};
+
+/**计算openai使用量 */
+export const computeOpenAIUsage = (resp:AnyOpenAIResponse)=>{
+    const {usage} = resp;
+    return {
+        completionTokens      : usage.completion_tokens??0,
+        promptTokens          : usage.prompt_tokens??0,
+        promptCacheHitTokens  : 'prompt_cache_hit_tokens' in usage ? usage.prompt_cache_hit_tokens : undefined,
+        promptCacheMissTokens  : 'prompt_cache_miss_tokens' in usage ? usage.prompt_cache_miss_tokens : undefined,
+    } satisfies ModelUsage;
+};
+
+
 }

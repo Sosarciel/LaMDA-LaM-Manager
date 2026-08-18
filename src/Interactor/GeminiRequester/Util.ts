@@ -1,11 +1,10 @@
 import type { PromiseStatus } from "@zwa73/utils";
 import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
+import type { CredProvider, ModelPrice } from "LaMChain";
+import { LaMChain } from "LaMChain";
 
-import type { APIPrice, APIPriceResp } from "CredService";
 import type { AnyGeminiLikeErrorResponse, AnyGeminiResponse } from "ResponseFormat";
 
-import type { CredProvider } from "@/src/LaMChain/Interface";
-import { LaMChain } from "@/src/LaMChain/LaMChain";
 
 
 
@@ -13,23 +12,21 @@ import { LaMChain } from "@/src/LaMChain/LaMChain";
  * @param rawResp    - 未做处理的回复
  * @param apiKeyName - 本次回复的APIkey
  */
-export const recordPrice = async(
+export const recordPrice = async(opt:{
     respObj: AnyGeminiResponse | undefined,
-    price: APIPrice,
-    accountData: CredProvider,
-)=>{
-    if (respObj == undefined) return;
-    const usageObj = respObj.usageMetadata;
-    if(usageObj!=null){
-        const usageResp:APIPriceResp = {
-            completion_tokens:(usageObj.candidatesTokenCount??0) + (usageObj.thoughtsTokenCount??0),
-            prompt_tokens    :usageObj.promptTokenCount??0,
-        };
-        //增加token数据
-        await accountData.recordCost?.(LaMChain.computeCost(price,usageResp));
-        //打印理论的当前使用量
-        await accountData.currUsage?.();
-    }else SLogger.error(`GeminiPostTool.postLaM 警告 无法计费 未找到 usage, respObj:\n${respObj}`);
+    price?: ModelPrice,
+    cred: CredProvider,
+})=>{
+    const {respObj,price,cred} = opt;
+    if (respObj == undefined || price == undefined) return;
+    if(respObj.usageMetadata == undefined)
+        return void SLogger.error(`OpenAILaMClient.postLaM 警告 无法计费 未找到 usage, respObj:\n`,respObj);
+
+    //增加token数据
+    await cred.recordCost?.(LaMChain.computeCost(price,LaMChain.computeGeminiUsage(respObj)));
+    //打印理论的当前使用量
+    await cred.currUsage?.();
+
     return;
 };
 
