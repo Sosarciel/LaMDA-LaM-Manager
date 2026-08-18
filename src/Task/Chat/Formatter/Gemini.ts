@@ -9,7 +9,7 @@ import type { ChatTaskOption } from "Task/Chat/Interface";
 import type { ThingBudget } from "Task/DataInterface";
 import { commonFormatResp } from "Task/Util";
 
-import { commonProcessMessage, stringifyComputeTokenCountFactory } from "./Utils";
+import { commonChatTask, commonProcessMessage, stringifyComputeTokenCountFactory } from "./Utils";
 
 
 
@@ -156,5 +156,6 @@ export const GeminiChatTaskFormatter:ChatTaskFormatter<GeminiApiData,GeminiReque
             choices,
             vaild: choices.length > 0,
         };
-    }
+    },
+    execute:lazyFunction(()=>commonChatTask({tool:GeminiChatTaskFormatter})),
 };
