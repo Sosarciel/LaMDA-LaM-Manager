@@ -20,7 +20,20 @@ export function instructTaskCtor(drive: HttpAPIModelDrive): InstructTaskInterfac
                 SLogger.warn(`${drive.getData().config.alias} 不支持指导式文本生成`);
                 return DefChatLaMResult;
             }
-            return drive.commonTask(opt, drive.instructFormatter);
+            const account = await drive.selectAccount(opt);
+            if(account===undefined){
+                SLogger.warn(`HttpAPIModelDrive.instruct 错误 无有效账号`);
+                return DefChatLaMResult;
+            }
+            const result = await drive.instructFormatter.execute({
+                cred:account.cred,
+                source:account.source,
+                model:drive.getData().config,
+                option:opt,
+                tokensizerType:drive.getData().config.tokensizer,
+                logLevel:opt.log_level,
+            });
+            return result ?? DefChatLaMResult;
         },
     };
 }

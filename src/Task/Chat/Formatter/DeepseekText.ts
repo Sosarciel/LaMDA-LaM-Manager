@@ -7,7 +7,7 @@ import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";
 
 import { OpenAITextCompleteBase } from "./OpenAIText";
-import { commonChatTask, commonComputeTokenCountFactory, commonProcessMessageWithOpt } from "./Utils";
+import { commonOpenAIChatTask, commonComputeTokenCountFactory, commonProcessMessageWithOpt } from "./Utils";
 
 
 
@@ -43,7 +43,7 @@ export const DeepseekTextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextRe
     },
     formatResult:lazyFunction(()=>commonFormatResp(DeepseekTextChatTaskFormatter)),
     computeTokenCount:lazyFunction(()=>commonComputeTokenCountFactory(DeepseekTextChatTaskFormatter)),
-    execute:lazyFunction(()=>commonChatTask({tool:DeepseekTextChatTaskFormatter})),
+    execute:lazyFunction(()=>commonOpenAIChatTask(DeepseekTextChatTaskFormatter)),
 };
 
 //void (async ()=>{

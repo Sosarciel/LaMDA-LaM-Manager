@@ -1,4 +1,4 @@
-import type { MPromise, PromiseRetries } from "@zwa73/js-utils";
+import type { MPromise, PromiseRetries, PromiseRetryResult } from "@zwa73/js-utils";
 
 /**价格 */
 export type ModelPrice=Partial<{
@@ -70,3 +70,11 @@ export type ModelInfo = {
     /**标准模型价格 */
     price?:ModelPrice;
 }
+
+/**传输函数类型 */
+export type LaMPost<I,O> = (param:{
+    cred:CredProvider;
+    source:SourceProvider;
+    model:ModelInfo;
+    json:I;
+})=>MPromise<PromiseRetryResult<O|undefined>>;

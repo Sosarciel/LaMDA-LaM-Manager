@@ -59,7 +59,6 @@ export namespace LaMManagerMockTool{
                         endpoint: "/v1/chat/completions",
                         chat_formatter: "openai_chat",
                         tokensizer: "cl100k_base",
-                        interactor: "openai",
                         id: "gpt-3.5-turbo",
                         alias: "Chat_GPT35Chat",
                         price: {
@@ -80,7 +79,6 @@ export namespace LaMManagerMockTool{
                         endpoint: "/v1/completions",
                         chat_formatter: "openai_text",
                         tokensizer: "cl100k_base",
-                        interactor: "openai",
                         id: "gpt-3.5-turbo-instruct",
                         alias: "Chat_GPT35Text",
                         price: {
@@ -100,7 +98,6 @@ export namespace LaMManagerMockTool{
                 data: {
                     config: {
                         tokensizer: "deepseek",
-                        interactor: "openai",
                         chat_formatter: "deepseek_chat",
                         endpoint: "/v1/chat/completions",
                         id: "deepseek-chat",
@@ -123,7 +120,6 @@ export namespace LaMManagerMockTool{
                 data: {
                     config: {
                         tokensizer: "cl100k_base",
-                        interactor: "gemini",
                         chat_formatter: "google_chat",
                         endpoint: "/v1beta/models",
                         id: "gemini-3-pro-preview",
@@ -149,7 +145,6 @@ export namespace LaMManagerMockTool{
                         chat_formatter: "openai_text",
                         instruct_formatter: "openai_text",
                         tokensizer: "cl100k_base",
-                        interactor: "openai",
                         id: "gpt-3.5-turbo-instruct",
                         alias: "Instruct_GPT35Text",
                         price: {
@@ -172,7 +167,6 @@ export namespace LaMManagerMockTool{
                         chat_formatter: "openai_text",
                         instruct_formatter: "deepseek_text",
                         tokensizer: "deepseek",
-                        interactor: "openai",
                         id: "deepseek-chat",
                         alias: "Instruct_DeepseekText",
                         price: {
@@ -195,7 +189,6 @@ export namespace LaMManagerMockTool{
                         chat_formatter: "deepseek_chat",
                         instruct_formatter: "deepseek_prefix",
                         tokensizer: "deepseek",
-                        interactor: "openai",
                         id: "deepseek-chat",
                         alias: "Instruct_DeepseekPrefix",
                         price: {

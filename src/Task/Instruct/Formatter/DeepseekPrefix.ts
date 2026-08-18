@@ -1,5 +1,5 @@
 import type { PromiseRetryResult } from "@zwa73/js-utils";
-import { SLogger } from "@zwa73/utils";
+import { lazyFunction, SLogger } from "@zwa73/utils";
 
 import type { DeepseekRequest, DeepseekAPIEntry } from "RequestFormat";
 import { DeepseekAPIRole } from "RequestFormat";
@@ -10,7 +10,7 @@ import { getTokensizer } from "Tokensizer";
 import type { TextCompletionResult } from "Task/DataInterface";
 import type { InstructTaskFormatter } from "Task/Instruct/Adapter";
 
-import { validateInstructOption } from "./Utils";
+import { validateInstructOption, commonOpenAIInstructTask } from "./Utils";
 
 /**DeepSeek 前缀续写格式化器类型定义 */
 type DeepseekPrefixCompletionTaskFormatterType = InstructTaskFormatter<DeepseekRequest, DeepseekResponse>;
@@ -90,4 +90,5 @@ export const DeepseekPrefix: DeepseekPrefixCompletionTaskFormatterType = {
         const tokens = await tokensizer.encode(prompt);
         return tokens.length;
     },
+    execute:lazyFunction(()=>commonOpenAIInstructTask(DeepseekPrefix)),
 };

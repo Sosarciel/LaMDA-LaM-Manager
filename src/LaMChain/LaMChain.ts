@@ -3,14 +3,14 @@ import { SLogger, UtilFP, UtilFunc } from "@zwa73/utils";
 
 import { GeminiPostTool, OpenAiPostTool } from "Interactor";
 import type { AnyOpenAILikeRequest, GeminiRequest } from "RequestFormat";
-import type { AnyGeminiResponse, AnyOpenAIResponse } from "ResponseFormat";
+import type { AnyGeminiResponse, AnyOpenAIResponse, GeminiResponse } from "ResponseFormat";
 
 
-import type { CredProvider, ModelInfo, ModelPrice, ModelUsage, SourceProvider } from "./Interface";
+import type { CredProvider, LaMPost, ModelInfo, ModelPrice, ModelUsage, SourceProvider } from "./Interface";
 
 export namespace LaMChain{
 /**发送gemini 样式的请求 */
-export const postGeminiRequest = async (param:{
+export const postGeminiRequest = (async (param:{
     cred:CredProvider,
     source:SourceProvider
     model:ModelInfo;
@@ -22,10 +22,10 @@ export const postGeminiRequest = async (param:{
         postJson:json,
         modelData:model,
     });
-};
+}) satisfies LaMPost<GeminiRequest,GeminiResponse>;
 
 /**发送openai 样式的请求 */
-export const postOpenAIRequest = async (param:{
+export const postOpenAIRequest = (async (param:{
     cred:CredProvider,
     source:SourceProvider
     model:ModelInfo;
@@ -37,7 +37,7 @@ export const postOpenAIRequest = async (param:{
         postJson:json,
         modelData:model,
     });
-};
+}) satisfies LaMPost<AnyOpenAILikeRequest,AnyOpenAIResponse>;
 
 /**剔除重试结果 */
 export const reduceRepeatResult =  async <T>(t:MPromise<PromiseRetryResult<T>>) => (await t)?.completed;

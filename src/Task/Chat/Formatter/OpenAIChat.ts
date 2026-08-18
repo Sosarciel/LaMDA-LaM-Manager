@@ -8,7 +8,7 @@ import type { ChatTaskFormatter } from 'Task/Chat/Adapter';
 import type { ThingBudget } from "Task/DataInterface";
 import { commonFormatResp, tokenifyLogitBias } from "Task/Util";
 
-import { commonChatTask, commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "./Utils";
+import { commonOpenAIChatTask, commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "./Utils";
 
 
 /**OpenAI 推理预算映射表
@@ -171,6 +171,6 @@ export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskForma
     },
     formatResult:lazyFunction(()=>commonFormatResp(OpenAIConversationChatTaskFormatter)),
     computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(OpenAIConversationChatTaskFormatter)),
-    execute:lazyFunction(()=>commonChatTask({tool:OpenAIConversationChatTaskFormatter})),
+    execute:lazyFunction(()=>commonOpenAIChatTask(OpenAIConversationChatTaskFormatter)),
 };
 

@@ -1,4 +1,4 @@
-import { SLogger } from "@zwa73/utils";
+import { lazyFunction, SLogger } from "@zwa73/utils";
 
 import type { OpenAITextRequest } from "RequestFormat";
 import type { OpenAITextResponse } from "ResponseFormat";
@@ -7,7 +7,7 @@ import type { InstructTaskFormatter } from "Task/Instruct/Adapter";
 import { tokenifyLogitBias } from "Task/Util";
 
 import { OpenAIInstructBase } from "./OpenAIText";
-import { buildFIMPrompt, validateInstructOption } from "./Utils";
+import { buildFIMPrompt, validateInstructOption, commonOpenAIInstructTask } from "./Utils";
 
 /**DeepSeek FIM 格式化器类型定义 */
 type DeepseekFIMTaskFormatterType = InstructTaskFormatter<OpenAITextRequest, OpenAITextResponse>;
@@ -37,4 +37,5 @@ export const DeepseekText: DeepseekFIMTaskFormatterType = {
             logit_bias: await tokenifyLogitBias(option.logit_bias, tokensizerType),
         } satisfies OpenAITextRequest;
     },
+    execute:lazyFunction(()=>commonOpenAIInstructTask(DeepseekText)),
 };

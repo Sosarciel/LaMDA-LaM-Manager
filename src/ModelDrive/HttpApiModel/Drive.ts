@@ -1,10 +1,8 @@
-import { ivk, None, SLogger, UtilFunc } from "@zwa73/utils";
+import { None, SLogger } from "@zwa73/utils";
 
 import { CredManager } from "CredService";
-import type { Interactor } from "Interactor";
-import { InteractorTable } from "Interactor";
-import type { ChatTaskFormatter, TextCompletionOption, TextCompletionTaskFormatter } from "Task";
-import { ChatTaskFormatterTable, DefChatLaMResult } from "Task";
+import type { ChatTaskFormatter, TextCompletionOption } from "Task";
+import { ChatTaskFormatterTable } from "Task";
 import { getTokensizer } from "Tokensizer";
 
 import { DefaultDrive } from "ModelDrive/DefaultDrive";
@@ -20,14 +18,12 @@ import { instructTaskCtor } from "./InstructTask";
 export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
     chatFormatter:ChatTaskFormatter<any,any,any>;
     instructFormatter?:InstructTaskFormatter<any,any>;
-    interactor  :Interactor;
     chat = chatTaskCtor(this);
     instruct = instructTaskCtor(this);
     constructor(private data:HttpAPIModelData){
         super();
         this.chatFormatter = ChatTaskFormatterTable[this.data.config.chat_formatter];
         this.instructFormatter = this.data.config.instruct_formatter ? InstructTaskFormatterTable[this.data.config.instruct_formatter] : undefined;
-        this.interactor   = InteractorTable[this.data.config.interactor];
     }
     isRuning(){return true;}
     getData(){return this.data;}
@@ -44,53 +40,21 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
         return tokenizer.encode(str);
     }
 
-    /**task共用请求 */
-    async commonTask(opt:TextCompletionOption,formatter:TextCompletionTaskFormatter<any,any,any>){
+    /**选择有效凭证 (仅负责路由账户, 不执行请求)
+     * @param option - 用于偏好账户的选项
+     */
+    async selectAccount(option:TextCompletionOption){
         //路由api key 获取有效keyname
         const vaildAccount = await CredManager.getVaildModelAccount(this.data.config.alias);
         const accountData = await CredManager.getAvailableAccount(
-            ...(opt.preferred_account??[]).filter(v=>vaildAccount.includes(v)),
+            ...(option.preferred_account??[]).filter(v=>vaildAccount.includes(v)),
             ...vaildAccount
         );
-
         if(accountData==None){
-            SLogger.warn(`HttpAPIModelDrive.commonTask 错误 无有效账号`);
-            return DefChatLaMResult;
+            SLogger.warn(`HttpAPIModelDrive.selectAccount 错误 无有效账号`);
+            return undefined;
         }
-        const {cred,source} = accountData;
-
-        SLogger.info(`当前 account_category: ${cred.category} account_name: ${cred.name}`);
-
-        const chatOption = await formatter.formatOption({
-            option:opt,
-            modelId:this.data.config.id,
-            tokensizerType:this.data.config.tokensizer
-        });
-        if(chatOption===undefined) return DefChatLaMResult;
-
-        //预处理option
-        const fixedOption = ivk(()=>{
-            const out:unknown = {...chatOption};
-            if(UtilFunc.checkSharpSchema(out,{model:"string"})){
-                //如果存在id映射则直接替换opt的model
-                const mapname = source.modelIdMap?.[out.model];
-                if(mapname!=null) out.model = mapname;
-            }
-            return out as any;
-        });
-        if(fixedOption===undefined) return DefChatLaMResult;
-
-        if(opt.log_level!='none'){
-            SLogger.log(opt.log_level??'none',`参数: ${UtilFunc.stringifyJToken(fixedOption,{compress:true,space:2})}`);
-        }
-
-        //重复请求
-        const resp = await this.interactor.postLaMRepeat({
-            cred,source,
-            postJson:fixedOption,
-            modelData:this.data.config,
-            retryOption:UtilFunc.camelToSnake(source.retry),
-        });
-        return formatter.formatResult(resp);
+        SLogger.info(`当前 account_category: ${accountData.cred.category} account_name: ${accountData.cred.name}`);
+        return accountData;
     }
 }

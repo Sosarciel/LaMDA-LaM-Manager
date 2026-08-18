@@ -1,3 +1,7 @@
+import type { MPromise } from "@zwa73/js-utils";
+import type { LogLevel } from "@zwa73/utils";
+import type { CredProvider, ModelInfo, SourceProvider } from "LaMChain";
+
 import type { AnyTextCompletionRequest } from "RequestFormat";
 import type { AnyTextCompletionResponse } from "ResponseFormat";
 import type { TokensizerType } from "Tokensizer";
@@ -17,6 +21,15 @@ export type InstructTaskFormatter<
     RespFormatter<RES> & {
         /**计算Token数量 */
         computeTokenCount(prompt: string, tokensizerType: TokensizerType): Promise<number>;
+        /**执行请求 */
+        execute(param:{
+            cred:CredProvider;
+            source:SourceProvider;
+            model:ModelInfo;
+            option:InstructTaskOption;
+            tokensizerType:TokensizerType;
+            logLevel?:LogLevel;
+        }):MPromise<TextCompletionResult|undefined>;
     };
 
 /**指导式文本生成任务格式化器表 */

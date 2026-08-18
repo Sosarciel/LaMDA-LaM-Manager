@@ -6,7 +6,7 @@ import type { OpenAITextResponse } from "ResponseFormat";
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp, tokenifyLogitBias } from "Task/Util";
 
-import { commonChatTask, commonComputeTokenCountFactory, commonProcessMessageWithOpt } from "./Utils";
+import { commonOpenAIChatTask, commonComputeTokenCountFactory, commonProcessMessageWithOpt } from "./Utils";
 
 
 
@@ -82,7 +82,7 @@ export const OpenAITextChatTaskFormatter:OpenAITextChatTaskFormatter={
     },
     formatResult:lazyFunction(()=>commonFormatResp(OpenAITextChatTaskFormatter)),
     computeTokenCount:lazyFunction(()=>commonComputeTokenCountFactory(OpenAITextChatTaskFormatter)),
-    execute:lazyFunction(()=>commonChatTask({tool:OpenAITextChatTaskFormatter})),
+    execute:lazyFunction(()=>commonOpenAIChatTask(OpenAITextChatTaskFormatter)),
 };
 
 //void (async ()=>{

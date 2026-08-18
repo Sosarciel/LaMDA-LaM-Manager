@@ -45,7 +45,7 @@ RespFormatter<RES>&{
         /** tokenizer类型 */
         tokensizerType:TokensizerType;
         /** 日志等级 */
-        logLevel:LogLevel;
+        logLevel?:LogLevel;
     }):MPromise<TextCompletionResult|undefined>;
 };
 

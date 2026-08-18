@@ -1,6 +1,5 @@
 import type { ModelInfo } from "LaMChain";
 
-import type { InteractorType } from "Interactor";
 import type { ChatFormatterType, TextCompletionOption } from "Task";
 import type { TokensizerType } from "Tokensizer";
 
@@ -25,8 +24,6 @@ export type HttpApiModelCategory = ModelInfo&{
     chat_formatter:ChatFormatterType;
     /**此模型的指导式文本生成任务格式化工具 */
     instruct_formatter?: InstructFormatterType;
-    /**此模型的交互器 */
-    interactor:InteractorType;
     /**此模型所用的分词器 */
     tokensizer:TokensizerType;
 }

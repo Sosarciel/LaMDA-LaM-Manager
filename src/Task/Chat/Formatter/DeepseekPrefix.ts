@@ -9,7 +9,7 @@ import { commonFormatResp } from "Task/Util";
 
 import { buildDeepseekRequest } from "./Deepseek";
 import { OpenAIChatCompleteBase } from "./OpenAIChat";
-import { commonChatTask, commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "./Utils";
+import { commonOpenAIChatTask, commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "./Utils";
 
 
 
@@ -88,5 +88,5 @@ export const DeepseekPrefixChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[
         return out;
     },
     formatResp:OpenAIChatCompleteBase.formatResp,
-    execute:lazyFunction(()=>commonChatTask({tool:DeepseekPrefixChatTaskFormatter})),
+    execute:lazyFunction(()=>commonOpenAIChatTask(DeepseekPrefixChatTaskFormatter)),
 };

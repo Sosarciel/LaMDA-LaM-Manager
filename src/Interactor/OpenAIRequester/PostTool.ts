@@ -41,7 +41,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
                 path: modelData.endpoint,//'/v1/chat/completions'
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${cred}`,
+                    'Authorization': `Bearer ${cred.key}`,
                 },
                 dispatcher: source.proxyUrl ? getProxy(source.proxyUrl) : undefined,
                 timeout:timeLimit,

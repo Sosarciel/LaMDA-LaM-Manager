@@ -1,8 +1,9 @@
 
 import type { LogLevel } from "@zwa73/utils";
 import { SLogger, UtilFunc } from "@zwa73/utils";
-import { LaMChain, type CredProvider, type ModelInfo, type SourceProvider } from "LaMChain";
+import { type LaMPost, type CredProvider, type ModelInfo, type SourceProvider, LaMChain } from "LaMChain";
 
+import type { AnyTextCompletionRequest } from "RequestFormat";
 import type { TokensizerType } from "Tokensizer";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
@@ -45,8 +46,15 @@ export const commonProcessMessage = <T>(param:{
     return tool.formatMessage({target,messages:buildMsg});
 };
 
-export const commonChatTask = (param1:{
-    tool:ChatTaskFormatter<any,any,any>,
+/**通用的聊天任务执行器 由formatter自管流程
+ * @param param1 - 工具与传输函数
+ */
+export const commonChatTask = <
+REQ extends AnyTextCompletionRequest,
+P extends LaMPost<REQ,any>,
+>(param1:{
+    tool:ChatTaskFormatter<any,REQ,any>;
+    post:P;
 })=>async (param2:{
     cred:CredProvider;
     source:SourceProvider;
@@ -57,7 +65,7 @@ export const commonChatTask = (param1:{
 })=>{
     const {tool} = param1;
     const {cred,source,model,option,tokensizerType,logLevel} = param2;
-    const json = tool.formatOption({
+    const json = await tool.formatOption({
         option,
         tokensizerType,
         modelId:model.id,
@@ -67,11 +75,19 @@ export const commonChatTask = (param1:{
     if(logLevel!='none')
         SLogger.log(logLevel??'none',`参数: ${UtilFunc.stringifyJToken(json,{compress:true,space:2})}`);
 
-    const resp = await LaMChain.postOpenAIRequest({
+    const resp = await param1.post({
         cred,source,model,json,
     });
 
     return tool.formatResult(resp);
 };
+
+/**OpenAI 样式的聊天任务执行器 */
+export const commonOpenAIChatTask = (tool:ChatTaskFormatter<any,any,any>)=>
+    commonChatTask({tool,post:LaMChain.postOpenAIRequest});
+
+/**Gemini 样式的聊天任务执行器 */
+export const commonGeminiChatTask = (tool:ChatTaskFormatter<any,any,any>)=>
+    commonChatTask({tool,post:LaMChain.postGeminiRequest});
 
 

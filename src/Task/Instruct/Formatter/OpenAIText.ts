@@ -1,5 +1,5 @@
 import type { PromiseRetryResult } from "@zwa73/js-utils";
-import { SLogger, UtilFunc } from "@zwa73/utils";
+import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
 
 
 import type { OpenAITextRequest } from "RequestFormat";
@@ -11,7 +11,7 @@ import type { TextCompletionResult } from "Task/DataInterface";
 import type { InstructTaskFormatter } from "Task/Instruct/Adapter";
 import { tokenifyLogitBias } from "Task/Util";
 
-import { buildFIMPrompt, validateInstructOption } from "./Utils";
+import { buildFIMPrompt, validateInstructOption, commonOpenAIInstructTask } from "./Utils";
 
 /**OpenAI Instruct 格式化器类型定义 */
 type OpenAIInstructTaskFormatterType = InstructTaskFormatter<OpenAITextRequest, OpenAITextResponse>;
@@ -88,4 +88,5 @@ export const OpenAIText: OpenAIInstructTaskFormatterType = {
             logit_bias: await tokenifyLogitBias(option.logit_bias, tokensizerType),
         } satisfies OpenAITextRequest;
     },
+    execute:lazyFunction(()=>commonOpenAIInstructTask(OpenAIText)),
 };
