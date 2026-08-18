@@ -24,7 +24,6 @@ export const chatTaskCtor = (drive:HttpAPIModelDrive) => {
                 model:drive.getData().config,
                 option:fopt,
                 tokensizerType:drive.getData().config.tokensizer,
-                logLevel:fopt.log_level,
             });
             return result ?? DefChatLaMResult;
         }

@@ -32,17 +32,13 @@ export type TextCompletionOption=Partial<{
     /**产生回复的数量 */
     n: number;
     /**思考token预算 模型将尽量保证思考链长度为此值 */
-    //think_budget: number|null;
     think_budget: ThingBudget|null;
+
+    //扩展
     /**首选账户 需要填入 CredCategoryJsonTable 定义的 CredCategory */
     preferred_account:CredCategoryID[];
     /**log等级 忽略则不打印 */
     log_level:LogLevel;
-
-    /**控制最大历史记录token长度 */
-    max_hist_length?:number;
-    /**控制最大历史消息条数 */
-    max_hist_count?:number;
 }>;
 
 /**文本完成通用回复 */

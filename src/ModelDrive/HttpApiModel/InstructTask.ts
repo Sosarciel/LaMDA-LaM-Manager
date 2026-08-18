@@ -31,7 +31,6 @@ export function instructTaskCtor(drive: HttpAPIModelDrive): InstructTaskInterfac
                 model:drive.getData().config,
                 option:opt,
                 tokensizerType:drive.getData().config.tokensizer,
-                logLevel:opt.log_level,
             });
             return result ?? DefChatLaMResult;
         },

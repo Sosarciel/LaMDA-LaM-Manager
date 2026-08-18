@@ -1,4 +1,4 @@
-import type { LogLevel, MPromise } from "@zwa73/utils";
+import type { MPromise } from "@zwa73/utils";
 import type { CredProvider, ModelInfo, SourceProvider } from "LaMChain";
 
 import type { AnyTextCompletionRequest } from "RequestFormat";
@@ -44,8 +44,6 @@ RespFormatter<RES>&{
         option:ChatTaskOption;
         /** tokenizer类型 */
         tokensizerType:TokensizerType;
-        /** 日志等级 */
-        logLevel?:LogLevel;
     }):MPromise<TextCompletionResult|undefined>;
 };
 

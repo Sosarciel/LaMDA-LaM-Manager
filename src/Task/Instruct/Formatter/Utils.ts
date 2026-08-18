@@ -1,4 +1,3 @@
-import type { LogLevel } from "@zwa73/utils";
 import { SLogger, UtilFunc } from "@zwa73/utils";
 import { type LaMPostRequestFunc, type CredProvider, type ModelInfo, type SourceProvider, LaMChain } from "LaMChain";
 
@@ -34,10 +33,9 @@ P extends LaMPostRequestFunc<REQ,any>,
     model:ModelInfo;
     option:InstructTaskOption;
     tokensizerType:TokensizerType;
-    logLevel:LogLevel;
 })=>{
     const {tool} = param1;
-    const {cred,source,model,option,tokensizerType,logLevel} = param2;
+    const {cred,source,model,option,tokensizerType} = param2;
     const json = await tool.formatOption({
         option,
         modelId:model.id,
@@ -45,8 +43,8 @@ P extends LaMPostRequestFunc<REQ,any>,
     });
     if(json===undefined) return undefined;
 
-    if(logLevel!='none')
-        SLogger.log(logLevel??'none',`参数: ${UtilFunc.stringifyJToken(json,{compress:true,space:2})}`);
+    if(option.log_level!='none')
+        SLogger.log(option.log_level??'none',`参数: ${UtilFunc.stringifyJToken(json,{compress:true,space:2})}`);
 
     const resp = await param1.post({
         cred,source,model,json,

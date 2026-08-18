@@ -122,7 +122,7 @@
 								"type": "string"
 							},
 							"retry": {
-								"$ref": "#/definitions/Partial",
+								"$ref": "#/definitions/SnackRetry",
 								"description": "重试设定 PromiseRetries"
 							},
 							"model_id_map": {
@@ -255,8 +255,9 @@
 		"CredCategoryID": {
 			"type": "string"
 		},
-		"Partial": {
-			"$ref": "#/definitions/Partial_1"
+		"SnackRetry": {
+			"description": "小蛇型标准的重试设定",
+			"$ref": "#/definitions/Partial"
 		},
 		"__type_1": {
 			"type": "object",
@@ -281,13 +282,17 @@
 					"description": "指数回退上限值 默认无限",
 					"type": "number"
 				},
-				"logFlag": {
+				"log_flag": {
 					"description": "此重试任务的标志",
 					"type": "string"
 				},
-				"logLevel": {
+				"log_level": {
 					"$ref": "#/definitions/LogLevel",
 					"description": "是否打印重试步骤 默认true"
+				},
+				"warn_level": {
+					"$ref": "#/definitions/LogLevel",
+					"description": "打印警告级尝试流程的log等级 默认warn"
 				}
 			}
 		},
@@ -306,7 +311,7 @@
 			],
 			"type": "string"
 		},
-		"Partial_1": {
+		"Partial": {
 			"$ref": "#/definitions/__type_1"
 		},
 		"Record": {
@@ -435,8 +440,26 @@
 			"type": "object",
 			"properties": {
 				"default_option": {
-					"$ref": "#/definitions/TextCompletionOption",
-					"description": "默认请求选项"
+					"description": "默认请求选项",
+					"allOf": [
+						{
+							"$ref": "#/definitions/Partial%3C%7Bmax_tokens%3Anumber%3Btemperature%3Anumber%3Btop_p%3Anumber%3Bstop%3Astring%5B%5D%7Cnull%3Bpresence_penalty%3Anumber%3Bfrequency_penalty%3Anumber%3Blogit_bias%3ARecord%3Cstring%2Cnumber%3E%7CRecord%3Cstring%2Cnumber%3E%5B%5D%7Cnull%3Bn%3Anumber%3Bthink_budget%3AThingBudget%7Cnull%3Bpreferred_account%3Astring%5B%5D%3Blog_level%3ALogLevel%3B%7D%3E"
+						},
+						{
+							"description": "用于扩展schema数据的选项",
+							"type": "object",
+							"properties": {
+								"max_hist_length": {
+									"description": "控制最大历史记录token长度",
+									"type": "number"
+								},
+								"max_hist_count": {
+									"description": "控制最大历史消息条数",
+									"type": "number"
+								}
+							}
+						}
+					]
 				},
 				"config": {
 					"$ref": "#/definitions/HttpApiModelCategory"
@@ -446,11 +469,7 @@
 				"config"
 			]
 		},
-		"TextCompletionOption": {
-			"description": "文本完成模型通用配置",
-			"$ref": "#/definitions/Partial_2"
-		},
-		"__type_4": {
+		"Partial<{max_tokens:number;temperature:number;top_p:number;stop:string[]|null;presence_penalty:number;frequency_penalty:number;logit_bias:Record<string,number>|Record<string,number>[]|null;n:number;think_budget:ThingBudget|null;preferred_account:string[];log_level:LogLevel;}>": {
 			"type": "object",
 			"properties": {
 				"max_tokens": {
@@ -496,7 +515,7 @@
 						{
 							"type": "array",
 							"items": {
-								"$ref": "#/definitions/__type_5"
+								"$ref": "#/definitions/__type_4"
 							}
 						},
 						{
@@ -537,85 +556,83 @@
 				"log_level": {
 					"$ref": "#/definitions/LogLevel",
 					"description": "log等级 忽略则不打印"
-				},
-				"max_hist_length": {
-					"description": "控制最大历史记录token长度",
-					"type": "number"
-				},
-				"max_hist_count": {
-					"description": "控制最大历史消息条数",
-					"type": "number"
 				}
 			}
 		},
-		"__type_5": {
+		"__type_4": {
 			"type": "object"
 		},
 		"Record_2": {
-			"$ref": "#/definitions/__type_5"
-		},
-		"Partial_2": {
 			"$ref": "#/definitions/__type_4"
 		},
-		"__type_6": {
+		"HttpApiModelCategory": {
 			"description": "适用于网络API的文本完成模型类别配置",
-			"type": "object",
-			"properties": {
-				"id": {
-					"description": "模型id",
-					"type": "string"
-				},
-				"alias": {
-					"description": "模型别名",
-					"anyOf": [
-						{
-							"type": "array",
-							"items": {
-								"type": "string"
-							}
-						},
-						{
+			"allOf": [
+				{
+					"description": "模型信息",
+					"type": "object",
+					"properties": {
+						"id": {
+							"description": "模型id",
 							"type": "string"
+						},
+						"endpoint": {
+							"description": "此模型api的标准路径",
+							"type": "string"
+						},
+						"price": {
+							"$ref": "#/definitions/ModelPrice",
+							"description": "标准模型价格"
 						}
+					},
+					"required": [
+						"endpoint",
+						"id"
 					]
 				},
-				"endpoint": {
-					"description": "此模型api的标准路径",
-					"type": "string"
-				},
-				"price": {
-					"$ref": "#/definitions/APIPrice",
-					"description": "此模型的官方价格"
-				},
-				"chat_formatter": {
-					"$ref": "#/definitions/ChatFormatterType",
-					"description": "此模型的聊天任务格式化工具"
-				},
-				"instruct_formatter": {
-					"$ref": "#/definitions/InstructFormatterType",
-					"description": "此模型的指导式文本生成任务格式化工具"
-				},
-				"interactor": {
-					"$ref": "#/definitions/InteractorType",
-					"description": "此模型的交互器"
-				},
-				"tokensizer": {
-					"$ref": "#/definitions/TokensizerType",
-					"description": "此模型所用的分词器"
+				{
+					"type": "object",
+					"properties": {
+						"alias": {
+							"description": "模型别名",
+							"anyOf": [
+								{
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								{
+									"type": "string"
+								}
+							]
+						},
+						"chat_formatter": {
+							"$ref": "#/definitions/ChatFormatterType",
+							"description": "此模型的聊天任务格式化工具"
+						},
+						"instruct_formatter": {
+							"$ref": "#/definitions/InstructFormatterType",
+							"description": "此模型的指导式文本生成任务格式化工具"
+						},
+						"tokensizer": {
+							"$ref": "#/definitions/TokensizerType",
+							"description": "此模型所用的分词器"
+						}
+					},
+					"required": [
+						"alias",
+						"chat_formatter",
+						"tokensizer"
+					]
 				}
-			},
-			"required": [
-				"alias",
-				"chat_formatter",
-				"endpoint",
-				"id",
-				"interactor",
-				"price",
-				"tokensizer"
 			]
 		},
-		"__type_7": {
+		"ModelPrice": {
 			"description": "价格",
+			"$ref": "#/definitions/Partial_1"
+		},
+		"__type_5": {
 			"type": "object",
 			"properties": {
 				"promptPrice": {
@@ -630,14 +647,10 @@
 					"description": "缓存命中提示每 1 token 价格 单位: 1/1000 usd",
 					"type": "number"
 				}
-			},
-			"required": [
-				"completionPrice",
-				"promptPrice"
-			]
+			}
 		},
-		"APIPrice": {
-			"$ref": "#/definitions/__type_7"
+		"Partial_1": {
+			"$ref": "#/definitions/__type_5"
 		},
 		"ChatFormatterType": {
 			"enum": [
@@ -662,13 +675,6 @@
 			],
 			"type": "string"
 		},
-		"InteractorType": {
-			"enum": [
-				"gemini",
-				"openai"
-			],
-			"type": "string"
-		},
 		"TokensizerType": {
 			"enum": [
 				"cl100k_base",
@@ -676,9 +682,6 @@
 				"p50k_base"
 			],
 			"type": "string"
-		},
-		"HttpApiModelCategory": {
-			"$ref": "#/definitions/__type_6"
 		},
 		"Opt_1": {
 			"$ref": "#/definitions/__type_3"

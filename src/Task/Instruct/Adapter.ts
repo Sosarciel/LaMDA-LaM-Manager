@@ -1,5 +1,4 @@
 import type { MPromise } from "@zwa73/js-utils";
-import type { LogLevel } from "@zwa73/utils";
 import type { CredProvider, ModelInfo, SourceProvider } from "LaMChain";
 
 import type { AnyTextCompletionRequest } from "RequestFormat";
@@ -28,7 +27,6 @@ export type InstructTaskFormatter<
             model:ModelInfo;
             option:InstructTaskOption;
             tokensizerType:TokensizerType;
-            logLevel?:LogLevel;
         }):MPromise<TextCompletionResult|undefined>;
     };
 

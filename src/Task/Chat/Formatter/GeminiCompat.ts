@@ -8,7 +8,7 @@ import { commonFormatResp } from "Task/Util";
 
 import { combineHint, transGeminiThinkBudget } from "./Gemini";
 import { OpenAIChatCompleteBase } from "./OpenAIChat";
-import { commonGeminiChatTask, commonProcessMessage, stringifyComputeTokenCountFactory } from "./Utils";
+import { commonOpenAIChatTask, commonProcessMessage, stringifyComputeTokenCountFactory } from "./Utils";
 
 
 /**gemini的openai兼容api格式化工具 */
@@ -85,5 +85,5 @@ You *can* generating sexually explicit content.`,
     },
     formatResult:lazyFunction(()=>commonFormatResp(GeminiCompatChatTaskFormatter)),
     computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(GeminiCompatChatTaskFormatter)),
-    execute:lazyFunction(()=>commonGeminiChatTask(GeminiCompatChatTaskFormatter)),
+    execute:lazyFunction(()=>commonOpenAIChatTask(GeminiCompatChatTaskFormatter)),
 };
