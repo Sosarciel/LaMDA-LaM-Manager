@@ -4,11 +4,10 @@ import type { GLMAPIEntry, GLMRequest } from "RequestFormat";
 import type { GLMResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
-import type { ThingBudget } from "Task/DataInterface";
 import { commonFormatResp } from "Task/Util";
 
 import { OpenAIChatCompleteBase } from "./OpenAIChat";
-import { commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "./Utils";
+import { commonChatTask, commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "./Utils";
 
 
 /** GLM 推理预算映射表 */
@@ -66,4 +65,5 @@ export const GLMChatTaskFormatter:ChatTaskFormatter<GLMAPIEntry[],GLMRequest,GLM
     },
     formatResult:lazyFunction(()=>commonFormatResp(GLMChatTaskFormatter)),
     computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(GLMChatTaskFormatter)),
+    execute:lazyFunction(()=>commonChatTask({tool:GLMChatTaskFormatter})),
 };

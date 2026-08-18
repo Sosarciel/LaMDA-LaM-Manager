@@ -9,7 +9,7 @@ import type { ThingBudget } from "Task/DataInterface";
 import { commonFormatResp } from "Task/Util";
 
 import { OpenAIChatCompleteBase } from "./OpenAIChat";
-import { commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "./Utils";
+import { commonChatTask, commonProcessMessageWithOpt, stringifyComputeTokenCountFactory } from "./Utils";
 
 
 
@@ -70,6 +70,7 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
     },
     formatResult:lazyFunction(()=>commonFormatResp(DeepseekChatTaskFormatter)),
     computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(DeepseekChatTaskFormatter)),
+    execute:lazyFunction(()=>commonChatTask({tool:DeepseekChatTaskFormatter})),
 };
 
 /**传统OpenAI系统提示模式的Formatter 无角色标签版本 */
@@ -130,4 +131,5 @@ export const DeepseekRawChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],D
     },
     formatResult:lazyFunction(()=>commonFormatResp(DeepseekRawChatTaskFormatter)),
     computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(DeepseekRawChatTaskFormatter)),
+    execute:lazyFunction(()=>commonChatTask({tool:DeepseekRawChatTaskFormatter})),
 };

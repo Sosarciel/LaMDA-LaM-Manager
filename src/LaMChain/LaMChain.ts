@@ -1,35 +1,44 @@
 import type { MPromise, PromiseRetryResult } from "@zwa73/js-utils";
-import { SLogger, UtilFP } from "@zwa73/utils";
+import { SLogger, UtilFP, UtilFunc } from "@zwa73/utils";
 
-import type { GeminiRequest } from "RequestFormat";
+import { GeminiPostTool, OpenAiPostTool } from "Interactor";
+import type { AnyOpenAILikeRequest, GeminiRequest } from "RequestFormat";
 import type { AnyGeminiResponse, AnyOpenAIResponse } from "ResponseFormat";
 
-import { GeminiPostTool } from "Interactor/GeminiRequester";
 
 import type { CredProvider, ModelInfo, ModelPrice, ModelUsage, SourceProvider } from "./Interface";
 
-
-const postGeminiRequest = (cred:CredProvider,source:SourceProvider)=>async (params:{
+export namespace LaMChain{
+/**发送gemini 样式的请求 */
+export const postGeminiRequest = async (param:{
+    cred:CredProvider,
+    source:SourceProvider
     model:ModelInfo;
     json:GeminiRequest;
 })=>{
-    const {model,json} = params;
+    const {model,json,cred,source} = param;
     return GeminiPostTool.postLaMRepeat({
+        cred, source,
         postJson:json,
-        cred,
-        source,
         modelData:model,
     });
 };
 
-
-async ()=>{
-    const v = UtilFP.flow(
-        postGeminiRequest(null as any, null as any),
-        async res => LaMChain.reduceRepeatResult(res),
-    );
+/**发送openai 样式的请求 */
+export const postOpenAIRequest = async (param:{
+    cred:CredProvider,
+    source:SourceProvider
+    model:ModelInfo;
+    json:AnyOpenAILikeRequest;
+})=>{
+    const {model,json,cred,source} = param;
+    return OpenAiPostTool.postLaMRepeat({
+        cred, source,
+        postJson:json,
+        modelData:model,
+    });
 };
-export namespace LaMChain{
+
 /**剔除重试结果 */
 export const reduceRepeatResult =  async <T>(t:MPromise<PromiseRetryResult<T>>) => (await t)?.completed;
 
@@ -78,5 +87,27 @@ export const computeOpenAIUsage = (resp:AnyOpenAIResponse)=>{
     } satisfies ModelUsage;
 };
 
+/**依照source将option转为对应source的异构格式, 例硅基流动 */
+export const specializeOpenAILikeRequest = <T extends {}>(param:{
+    json:AnyOpenAILikeRequest;
+    source:SourceProvider;
+})=>{
+    const {json,source} = param;
+    const out = {...json};
+    if(UtilFunc.checkSharpSchema(out,{model:"string"})){
+        //如果存在id映射则直接替换opt的model
+        const mapname = source.modelIdMap?.[out.model];
+        if(mapname!=null) out.model = mapname;
+    }
+    return out;
+};
 
 }
+
+
+async ()=>{
+    const v = UtilFP.flow(
+        LaMChain.postGeminiRequest,
+        async res => LaMChain.reduceRepeatResult(res),
+    );
+};

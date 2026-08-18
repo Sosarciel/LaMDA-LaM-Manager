@@ -58,7 +58,7 @@ export type SourceProvider = {
     /**modelid 映射  
      * 用于处理类似SiliconFlow的模型id不一致问题
      */
-    model_id_map?:Record<string,string>;
+    modelIdMap?:Record<string,string>;
 }
 
 /**模型信息 */

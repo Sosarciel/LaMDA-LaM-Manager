@@ -54,11 +54,10 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
         );
 
         if(accountData==None){
-            SLogger.warn(`DeepseekChat.chat 错误 无有效账号`);
+            SLogger.warn(`HttpAPIModelDrive.commonTask 错误 无有效账号`);
             return DefChatLaMResult;
         }
         const {cred,source} = accountData;
-
 
         SLogger.info(`当前 account_category: ${cred.category} account_name: ${cred.name}`);
 
@@ -74,7 +73,7 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
             const out:unknown = {...chatOption};
             if(UtilFunc.checkSharpSchema(out,{model:"string"})){
                 //如果存在id映射则直接替换opt的model
-                const mapname = source.model_id_map?.[out.model];
+                const mapname = source.modelIdMap?.[out.model];
                 if(mapname!=null) out.model = mapname;
             }
             return out as any;

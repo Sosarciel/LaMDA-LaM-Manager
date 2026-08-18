@@ -1,9 +1,11 @@
-import type { MPromise } from "@zwa73/utils";
+import type { LogLevel, MPromise } from "@zwa73/utils";
+import type { CredProvider, ModelInfo, SourceProvider } from "LaMChain";
 
 import type { AnyTextCompletionRequest } from "RequestFormat";
 import type { AnyTextCompletionResponse } from "ResponseFormat";
 import type { TokensizerType } from "Tokensizer";
 
+import type { TextCompletionResult } from "Task/DataInterface";
 import type { RespFormatter, TextCompletionTaskFormatter } from "Task/ToolInterface";
 
 import { DeepseekPrefixChatTaskFormatter, DeepseekChatTaskFormatter, GeminiCompatChatTaskFormatter, GLMChatTaskFormatter, OpenAIConversationChatTaskFormatter, OpenAITextChatTaskFormatter, GeminiChatTaskFormatter, DeepseekTextChatTaskFormatter, DeepseekRawChatTaskFormatter } from "./Formatter";
@@ -30,6 +32,21 @@ RespFormatter<RES>&{
      * @returns 完成格式化 可以进行post的聊天信息
      */
     formatMessage(param:{target:string,messages:MSG}):MSG;
+    /**执行请求 */
+    execute(param:{
+        /** 凭证 */
+        cred:CredProvider;
+        /** 来源 */
+        source:SourceProvider;
+        /** 模型 */
+        model:ModelInfo;
+        /** 请求体 */
+        option:ChatTaskOption;
+        /** tokenizer类型 */
+        tokensizerType:TokensizerType;
+        /** 日志等级 */
+        logLevel:LogLevel;
+    }):MPromise<TextCompletionResult|undefined>;
 };
 
 export const ChatTaskFormatterTable = {

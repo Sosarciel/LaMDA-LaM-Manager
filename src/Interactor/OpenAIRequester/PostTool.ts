@@ -1,6 +1,8 @@
 import type { PresetOption } from '@zwa73/utils';
 import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
+import { LaMChain } from 'LaMChain';
 
+import type { AnyOpenAILikeRequest } from 'RequestFormat';
 import type { AnyOpenAIResponse } from 'ResponseFormat';
 
 
@@ -25,7 +27,10 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
     async postLaM(partialOpt:PresetOption<typeof PostLaMOptionPreset>){
         const opt = PostLaMOptionPreset.assign(partialOpt);
         const {cred,source,modelData,timeLimit} = opt;
-        const postJson = opt.postJson;
+        const postJson = LaMChain.specializeOpenAILikeRequest({
+            json:opt.postJson as AnyOpenAILikeRequest,
+            source,
+        });
 
         const protocol = source.protocol??'https';
 

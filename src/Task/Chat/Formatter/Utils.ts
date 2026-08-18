@@ -1,4 +1,8 @@
 
+import type { LogLevel } from "@zwa73/utils";
+import { SLogger, UtilFunc } from "@zwa73/utils";
+import { LaMChain, type CredProvider, type ModelInfo, type SourceProvider } from "LaMChain";
+
 import type { TokensizerType } from "Tokensizer";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
@@ -39,6 +43,35 @@ export const commonProcessMessage = <T>(param:{
     const {tool,target} = param;
     const buildMsg = tool.buildMessage(param);
     return tool.formatMessage({target,messages:buildMsg});
+};
+
+export const commonChatTask = (param1:{
+    tool:ChatTaskFormatter<any,any,any>,
+})=>async (param2:{
+    cred:CredProvider;
+    source:SourceProvider;
+    model:ModelInfo;
+    option:ChatTaskOption;
+    tokensizerType:TokensizerType;
+    logLevel:LogLevel;
+})=>{
+    const {tool} = param1;
+    const {cred,source,model,option,tokensizerType,logLevel} = param2;
+    const json = tool.formatOption({
+        option,
+        tokensizerType,
+        modelId:model.id,
+    });
+    if(json===undefined) return undefined;
+
+    if(logLevel!='none')
+        SLogger.log(logLevel??'none',`参数: ${UtilFunc.stringifyJToken(json,{compress:true,space:2})}`);
+
+    const resp = await LaMChain.postOpenAIRequest({
+        cred,source,model,json,
+    });
+
+    return tool.formatResult(resp);
 };
 
 

@@ -21,7 +21,7 @@ export const wrapperAccountManager = async (opt:{
             protocol:cateData.protocol,
             port:cateData.port,
             proxyUrl:cateData.proxy_url,
-            model_id_map:cateData.model_id_map,
+            modelIdMap:cateData.model_id_map,
             retry:UtilFunc.snakeToCamel(cateData.retry),
         } satisfies SourceProvider,
         cred:{
