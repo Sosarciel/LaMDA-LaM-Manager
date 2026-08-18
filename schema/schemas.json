@@ -581,8 +581,8 @@
 							"type": "string"
 						},
 						"price": {
-							"$ref": "#/definitions/ModelPrice",
-							"description": "标准模型价格"
+							"description": "标准模型价格",
+							"$ref": "#/definitions/Partial_1"
 						}
 					},
 					"required": [
@@ -608,16 +608,37 @@
 							]
 						},
 						"chat_formatter": {
-							"$ref": "#/definitions/ChatFormatterType",
-							"description": "此模型的聊天任务格式化工具"
+							"description": "此模型的聊天任务格式化工具",
+							"enum": [
+								"deepseek_chat",
+								"deepseek_chat_raw",
+								"deepseek_prefix",
+								"deepseek_text",
+								"glm_chat",
+								"google_chat",
+								"google_chat_compat",
+								"openai_chat",
+								"openai_text"
+							],
+							"type": "string"
 						},
 						"instruct_formatter": {
-							"$ref": "#/definitions/InstructFormatterType",
-							"description": "此模型的指导式文本生成任务格式化工具"
+							"description": "此模型的指导式文本生成任务格式化工具",
+							"enum": [
+								"deepseek_prefix",
+								"deepseek_text",
+								"openai_text"
+							],
+							"type": "string"
 						},
 						"tokensizer": {
-							"$ref": "#/definitions/TokensizerType",
-							"description": "此模型所用的分词器"
+							"description": "此模型所用的分词器",
+							"enum": [
+								"cl100k_base",
+								"deepseek",
+								"p50k_base"
+							],
+							"type": "string"
 						}
 					},
 					"required": [
@@ -627,10 +648,6 @@
 					]
 				}
 			]
-		},
-		"ModelPrice": {
-			"description": "价格",
-			"$ref": "#/definitions/Partial_1"
 		},
 		"__type_5": {
 			"type": "object",
@@ -651,37 +668,6 @@
 		},
 		"Partial_1": {
 			"$ref": "#/definitions/__type_5"
-		},
-		"ChatFormatterType": {
-			"enum": [
-				"deepseek_chat",
-				"deepseek_chat_raw",
-				"deepseek_prefix",
-				"deepseek_text",
-				"glm_chat",
-				"google_chat",
-				"google_chat_compat",
-				"openai_chat",
-				"openai_text"
-			],
-			"type": "string"
-		},
-		"InstructFormatterType": {
-			"description": "指导式文本生成任务格式化器类型",
-			"enum": [
-				"deepseek_prefix",
-				"deepseek_text",
-				"openai_text"
-			],
-			"type": "string"
-		},
-		"TokensizerType": {
-			"enum": [
-				"cl100k_base",
-				"deepseek",
-				"p50k_base"
-			],
-			"type": "string"
 		},
 		"Opt_1": {
 			"$ref": "#/definitions/__type_3"

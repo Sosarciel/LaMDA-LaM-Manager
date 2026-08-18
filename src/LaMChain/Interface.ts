@@ -68,7 +68,7 @@ export type ModelInfo = {
     /**此模型api的标准路径 */
     endpoint:string;
     /**标准模型价格 */
-    price?:ModelPrice;
+    price?:(ModelPrice);
 }
 
 /**传输函数类型 */

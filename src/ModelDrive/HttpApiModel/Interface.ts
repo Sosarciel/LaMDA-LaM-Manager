@@ -29,9 +29,9 @@ export type HttpApiModelCategory = ModelInfo&{
     /**模型别名 */
     alias: string[]|string;
     /**此模型的聊天任务格式化工具 */
-    chat_formatter:ChatFormatterType;
+    chat_formatter:(ChatFormatterType);
     /**此模型的指导式文本生成任务格式化工具 */
-    instruct_formatter?: InstructFormatterType;
+    instruct_formatter?: (InstructFormatterType);
     /**此模型所用的分词器 */
-    tokensizer:TokensizerType;
+    tokensizer:(TokensizerType);
 }
