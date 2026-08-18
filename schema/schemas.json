@@ -441,25 +441,7 @@
 			"properties": {
 				"default_option": {
 					"description": "默认请求选项",
-					"allOf": [
-						{
-							"$ref": "#/definitions/Partial%3C%7Bmax_tokens%3Anumber%3Btemperature%3Anumber%3Btop_p%3Anumber%3Bstop%3Astring%5B%5D%7Cnull%3Bpresence_penalty%3Anumber%3Bfrequency_penalty%3Anumber%3Blogit_bias%3ARecord%3Cstring%2Cnumber%3E%7CRecord%3Cstring%2Cnumber%3E%5B%5D%7Cnull%3Bn%3Anumber%3Bthink_budget%3AThingBudget%7Cnull%3Bpreferred_account%3Astring%5B%5D%3Blog_level%3ALogLevel%3B%7D%3E"
-						},
-						{
-							"description": "用于扩展schema数据的选项",
-							"type": "object",
-							"properties": {
-								"max_hist_length": {
-									"description": "控制最大历史记录token长度",
-									"type": "number"
-								},
-								"max_hist_count": {
-									"description": "控制最大历史消息条数",
-									"type": "number"
-								}
-							}
-						}
-					]
+					"$ref": "#/definitions/LaMDriveDefaultOption"
 				},
 				"config": {
 					"$ref": "#/definitions/HttpApiModelCategory"
@@ -467,6 +449,27 @@
 			},
 			"required": [
 				"config"
+			]
+		},
+		"LaMDriveDefaultOption": {
+			"allOf": [
+				{
+					"$ref": "#/definitions/Partial%3C%7Bmax_tokens%3Anumber%3Btemperature%3Anumber%3Btop_p%3Anumber%3Bstop%3Astring%5B%5D%7Cnull%3Bpresence_penalty%3Anumber%3Bfrequency_penalty%3Anumber%3Blogit_bias%3ARecord%3Cstring%2Cnumber%3E%7CRecord%3Cstring%2Cnumber%3E%5B%5D%7Cnull%3Bn%3Anumber%3Bthink_budget%3AThingBudget%7Cnull%3Bpreferred_account%3Astring%5B%5D%3Blog_level%3ALogLevel%3B%7D%3E"
+				},
+				{
+					"description": "用于扩展schema数据的选项",
+					"type": "object",
+					"properties": {
+						"max_hist_length": {
+							"description": "控制最大历史记录token长度",
+							"type": "number"
+						},
+						"max_hist_count": {
+							"description": "控制最大历史消息条数",
+							"type": "number"
+						}
+					}
+				}
 			]
 		},
 		"Partial<{max_tokens:number;temperature:number;top_p:number;stop:string[]|null;presence_penalty:number;frequency_penalty:number;logit_bias:Record<string,number>|Record<string,number>[]|null;n:number;think_budget:ThingBudget|null;preferred_account:string[];log_level:LogLevel;}>": {

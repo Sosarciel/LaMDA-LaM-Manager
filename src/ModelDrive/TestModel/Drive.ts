@@ -1,8 +1,7 @@
-import type { TextCompletionOption } from "Task";
 import { getTokensizer } from "Tokensizer";
 
 import { DefaultDrive } from "ModelDrive/DefaultDrive";
-import type { LaMDrive } from "ModelDrive/Interface";
+import type { LaMDrive, LaMDriveDefaultOption } from "ModelDrive/Interface";
 
 
 import { chatTaskCtor } from "./ChatTask";
@@ -14,7 +13,7 @@ export class TestModel extends DefaultDrive implements LaMDrive{
 
     async isRuning(){return true;}
     async getData(){return {};}
-    getDefaultOption(): TextCompletionOption {
+    getDefaultOption(): LaMDriveDefaultOption {
         return {};
     }
 

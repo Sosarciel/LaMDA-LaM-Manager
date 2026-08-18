@@ -5,7 +5,9 @@ import { None, SLogger, UtilFunc } from "@zwa73/utils";
 
 import type { HttpAPIModelData } from "ModelDrive";
 import { HttpAPIModelDrive, TestModel } from "ModelDrive";
-import type { TextCompletionOption, TaskType, TaskInterface } from "Task";
+import type { TaskType, TaskInterface } from "Task";
+
+import type { LaMDriveDefaultOption } from "ModelDrive/Interface";
 
 import { DefaultDrive } from "@/src/ModelDrive/DefaultDrive";
 
@@ -36,7 +38,7 @@ class _LaMManager{
         });
     }
     /**获取指定实例的默认选项 */
-    async getDefaultOption(instanceName:string):Promise<TextCompletionOption|undefined>{
+    async getDefaultOption(instanceName:string):Promise<LaMDriveDefaultOption|undefined>{
         const res = await this.sm.invoke(instanceName,'getDefaultOption');
         if(res===None){
             SLogger.warn(`LaMManager.getDefaultOption 错误 instanceName:${instanceName} 不存在`);

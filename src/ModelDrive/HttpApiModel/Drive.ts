@@ -7,7 +7,7 @@ import { getTokensizer } from "Tokensizer";
 
 import { DefaultDrive } from "ModelDrive/DefaultDrive";
 import type { HttpAPIModelData } from "ModelDrive/HttpApiModel/Interface";
-import type { LaMDrive } from "ModelDrive/Interface";
+import type { LaMDrive, LaMDriveDefaultOption } from "ModelDrive/Interface";
 import type { InstructTaskFormatter } from "Task/Instruct/Adapter";
 import { InstructTaskFormatterTable } from "Task/Instruct/Adapter";
 
@@ -27,7 +27,7 @@ export class HttpAPIModelDrive extends DefaultDrive implements LaMDrive{
     }
     isRuning(){return true;}
     getData(){return this.data;}
-    getDefaultOption():TextCompletionOption{
+    getDefaultOption():LaMDriveDefaultOption{
         return this.data.default_option??{};
     }
 
