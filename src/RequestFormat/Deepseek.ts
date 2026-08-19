@@ -1,3 +1,4 @@
+import type { OpenAIChatAPIEntry, OpenAITool, OpenAIToolChoice } from "./OpenAIChat";
 import { OpenAIChatAPIRole } from "./OpenAIChat";
 
 
@@ -31,6 +32,10 @@ export type DeepseekRequest=Partial<{
      * 出于兼容考虑 low、medium 会映射为 high, xhigh 会映射为 max
      */
     reasoning_effort?:"high"|"max"|"low";
+    /** 可供模型调用的工具列表 */
+    tools: OpenAITool[];
+    /** 工具调用控制 */
+    tool_choice: OpenAIToolChoice;
 }>;
 
 /** Deepseek API 消息条目 */
@@ -41,7 +46,7 @@ export type DeepseekAPIEntry={
     content:string;
     /** 指定为前缀补全模式 */
     prefix?:boolean;
-}
+}|OpenAIChatAPIEntry;
 
 export const DeepseekAPIRole = OpenAIChatAPIRole;
 export type DeepseekAPIRole = OpenAIChatAPIRole;

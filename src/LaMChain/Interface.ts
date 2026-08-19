@@ -1,4 +1,4 @@
-import type { MPromise, PromiseRetries, PromiseRetryResult } from "@zwa73/js-utils";
+import type { JObject, JToken, MPromise, PromiseRetries, PromiseRetryResult } from "@zwa73/js-utils";
 
 /**价格 */
 export type ModelPrice=Partial<{
@@ -87,3 +87,22 @@ export type LaMPostRequestFunc<I,O> = (param:{
 
 /**用量计算函数类型 */
 export type LaMComputeUsageFunc<T> = (resp:T)=>ModelUsage;
+
+/** 工具定义 */
+export type ToolDefinition<TArgs = JToken, TResult = JToken> = {
+    /** 工具名称 */
+    name: string;
+    /** 工具描述 */
+    description?: string;
+    /** 工具参数 JSON Schema */
+    parameters: JObject;
+    /** 是否严格模式 */
+    strict?: boolean;
+    /** 工具处理函数 */
+    handler: (args: TArgs) => Promise<TResult> | TResult;
+};
+
+/** 工具提供者 */
+export type ToolProvider = {
+    tools: ToolDefinition[];
+};

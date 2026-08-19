@@ -3,12 +3,12 @@ import { memoize, SLogger, UtilFP, UtilFunc } from "@zwa73/utils";
 
 import type { Interactor } from "Interactor";
 import { GeminiPostTool, OpenAiPostTool } from "Interactor";
-import type { AnyOpenAILikeRequest, AnyTextCompletionRequest, GeminiRequest } from "RequestFormat";
-import type { AnyGeminiResponse, AnyOpenAIResponse, AnyTextCompletionResponse, GeminiResponse } from "ResponseFormat";
+import type { AnyOpenAIChatLikeRequest, AnyOpenAILikeRequest, AnyTextCompletionRequest, GeminiRequest, OpenAITool } from "RequestFormat";
+import type { AnyGeminiResponse, AnyOpenAIChatLikeResponse, AnyOpenAIResponse, AnyTextCompletionResponse, GeminiResponse } from "ResponseFormat";
 import type { TokensizerType } from "Tokensizer";
 import { getTokensizer } from "Tokensizer";
 
-import type { CredProvider, LaMComputeUsageFunc, LaMPostRequestFunc, ModelInfo, ModelPrice, ModelUsage, SourceProvider } from "./Interface";
+import type { CredProvider, LaMComputeUsageFunc, LaMPostRequestFunc, ModelInfo, ModelPrice, ModelUsage, SourceProvider, ToolProvider } from "./Interface";
 
 
 /**单次对象参数偏应用（Partial Application）
@@ -142,6 +142,7 @@ export const recordOpenAICost = partialize(recordCost<AnyOpenAIResponse>,{comput
 //#endregion
 
 
+//#region source标准化
 /**依照source将option转为对应source的异构格式, 例硅基流动 */
 export const specializeOpenAILikeRequest = <T extends AnyOpenAILikeRequest>(param:{
     json:AnyOpenAILikeRequest;
@@ -165,7 +166,9 @@ export const specializeModelId = (param:{
     const {modelId,source} = param;
     return source.modelIdMap?.[modelId] ?? modelId;
 };
+//#endregion
 
+//#region token计算
 /**token计算函数 */
 export const computeTokenCount = memoize(async (param:{
     text:string,tokensizerType:TokensizerType
@@ -212,6 +215,107 @@ export const tokenifyLogitBias = memoize(async (param:{
                 .map(async ([k,v])=>mergeObj(k,v))));
     return out;
 },60_000);
+//#endregion
+
+//#region 工具调用
+/** 从 Provider 提取 OpenAI tools 请求参数 */
+export const toOpenAITools = (provider: ToolProvider) => {
+    return provider.tools.map(t => ({
+        type: "function" as const,
+        function: {
+            name: t.name,
+            description: t.description,
+            parameters: t.parameters,
+            strict: t.strict,
+        },
+    }) satisfies OpenAITool);
+};
+/** 尝试/处理 OpenAI Tool Call 循环 */
+export const processOpenAIChatToolLoop = async <
+REQ extends AnyOpenAIChatLikeRequest,
+RES extends AnyOpenAIChatLikeResponse
+>(param: {
+    resp: RES;
+    provider: ToolProvider;
+    cred: CredProvider;
+    source: SourceProvider;
+    model: ModelInfo;
+    json: REQ;
+    retry?: PromiseRetries;
+    patch?: (param: { resp: RES; body: REQ }) => MPromise<REQ>;
+    maxLoops?: number;
+}) => {
+    const { provider, cred, source, model, retry, patch, maxLoops = 10 } = param;
+
+    let currentResult = param.resp;
+    let currentBody:REQ = {
+        ...param.json,
+        messages: [...(param.json.messages ?? [])],
+        tools: param.json.tools ?? LaMChain.toOpenAITools(provider),
+    };
+
+    const toolMap = Object.fromEntries(provider.tools.map(t => [t.name, t]));
+
+    for (let loop = 0; loop < maxLoops; loop++) {
+        const completedResp = currentResult;
+        const choice = completedResp?.choices?.[0];
+
+        const msg = choice?.message ?? {};
+        const toolCalls = ('tool_calls' in (msg))
+            ? msg.tool_calls : undefined;
+
+        // 尝试提取：如果没有 tool_calls 则直接原样返回最终结果
+        if (!toolCalls || toolCalls.length === 0)
+            return currentResult;
+
+        // 1. 执行本地 tools
+        const toolResponses = await Promise.all(
+            toolCalls.map(async call => {
+                const targetTool = toolMap[call.function.name];
+                let content: string;
+                if (targetTool) {
+                    try {
+                        const parsedArgs = call.function.arguments ? JSON.parse(call.function.arguments) : {};
+                        const res = await targetTool.handler(parsedArgs);
+                        content = typeof res === "string" ? res : JSON.stringify(res);
+                    } catch (err: any) {
+                        content = JSON.stringify({ error: err?.message ?? String(err) });
+                    }
+                } else content = JSON.stringify({ error: `Tool ${call.function.name} not found` });
+
+                return {
+                    role: "tool" as const,
+                    tool_call_id: call.id,
+                    content,
+                };
+            })
+        );
+
+        // 2. 组装 messages
+        currentBody = {
+            ...currentBody,
+            messages: [
+                ...currentBody.messages ?? [],
+                choice.message,
+                ...toolResponses,
+            ],
+        } satisfies REQ;
+
+        // 3. 用户 patch 钩子（可在此捕获中间态、打日志或修改即将下发的 body）
+        if (patch) currentBody = await patch({ resp: completedResp, body: currentBody });
+
+        // 4. 发起下一轮请求
+        const result = await LaMChain.reduceRepeatResult(LaMChain.postOpenAIRequest({
+            cred, source, model, retry,
+            json: currentBody,
+        })) as RES;
+        if(result==undefined) return undefined;
+        currentResult = result;
+    }
+
+    return currentResult;
+};
+//#endregion
 }
 
 

@@ -1,3 +1,4 @@
+import type { OpenAIChatAPIEntry, OpenAITool, OpenAIToolChoice } from "./OpenAIChat";
 import { OpenAIChatAPIRole } from "./OpenAIChat";
 
 
@@ -23,15 +24,14 @@ export type GLMRequest=Partial<{
         /** 是否开启思维链 */
         type:"enabled"|"disabled";
     };
+    /** 可供模型调用的工具列表 */
+    tools: OpenAITool[];
+    /** 工具调用控制 */
+    tool_choice: OpenAIToolChoice;
 }>;
 
 /** GLM API 消息条目 */
-export type GLMAPIEntry={
-    /** 角色 */
-    role: OpenAIChatAPIRole;
-    /** 消息内容 */
-    content:string;
-}
+export type GLMAPIEntry=OpenAIChatAPIEntry;
 
 export const GLMAPIRole = OpenAIChatAPIRole;
 export type GLMAPIRole = OpenAIChatAPIRole;

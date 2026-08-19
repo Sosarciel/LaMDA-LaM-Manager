@@ -12,18 +12,21 @@ export * from './OpenAIText';
 export * from './Gemini';
 export * from './GeminiCompat';
 
+
 /**任何Deepseek厂商的格式 */
 export type AnyDeepseekRequest = DeepseekRequest;
 /**任何GLM厂商的格式 */
 export type AnyGLMRequest = GLMRequest;
 /**任何Openai厂商的格式 */
 export type AnyOpenAIRequest = OpenAIChatRequest|OpenAITextRequest;
-
 /**任何Gemini厂商的格式 */
 export type AnyGeminiRequest = GeminiRequest;
 
-/**任何遵从OpenaiChatApi 及其扩展fim等子项的 请求的格式 */
+/**任何遵从OpenAI Api 鉴权方式 的请求的格式 */
 export type AnyOpenAILikeRequest = AnyOpenAIRequest|AnyDeepseekRequest|AnyGLMRequest;
+
+/**任何遵从OpenAI Api Chat格式 的请求的格式 */
+export type AnyOpenAIChatLikeRequest = OpenAIChatRequest|AnyDeepseekRequest|AnyGLMRequest;
 
 /**任何文本完成模型的配置 */
 export type AnyTextCompletionRequest = AnyDeepseekRequest|AnyOpenAIRequest|AnyGeminiRequest|AnyGLMRequest;

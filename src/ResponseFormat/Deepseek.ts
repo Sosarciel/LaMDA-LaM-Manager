@@ -7,7 +7,7 @@ export type DeepseekResponse = {
     /** 创建时间戳 */
     created: number;
     /** 模型名称 */
-    model: "deepseek-chat";
+    model: "deepseek-chat"|string;
     /** 对象类型 */
     object: "chat.completion";
     /** 用量统计 */
