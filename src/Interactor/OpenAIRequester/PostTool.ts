@@ -64,8 +64,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
         }
 
         //记录使用量
-        await LaMChain.recordCost({resp,price:modelData.price,cred,logUsage:true,
-            computeUsage:LaMChain.computeOpenAIUsage});
+        await LaMChain.recordOpenAICost({resp,price:modelData.price,cred,logUsage:true});
 
         return resp;
     }

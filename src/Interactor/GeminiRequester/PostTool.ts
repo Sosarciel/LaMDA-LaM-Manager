@@ -77,8 +77,7 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
         }
 
         //记录使用量
-        await LaMChain.recordCost({price:modelData.price, cred, resp, logUsage:true,
-            computeUsage:LaMChain.computeGeminiUsage});
+        await LaMChain.recordGeminiCost({price:modelData.price, cred, resp, logUsage:true});
 
         return resp;
     }
