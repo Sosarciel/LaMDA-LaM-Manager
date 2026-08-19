@@ -1,5 +1,5 @@
 import type { JToken, MPromise, PromiseRetries, PromiseRetryResult } from "@zwa73/js-utils";
-import { memoize, SLogger, UtilFunc } from "@zwa73/utils";
+import { lazyFunction, memoize, SLogger, UtilFP, UtilFunc } from "@zwa73/utils";
 
 import type { Interactor } from "Interactor";
 import { GeminiPostTool, OpenAiPostTool } from "Interactor";
@@ -22,6 +22,16 @@ function partialize<T extends object, P extends Partial<T>, R>(
 }
 
 export namespace LaMChain{
+
+//#reginon 快捷包装
+/**简易发送OpenAI Chat API 请求 */
+export const simpleOpenAIChatRequest = lazyFunction(()=>UtilFP.flow(
+    LaMChain.postOpenAIChatRequest,
+    async res => LaMChain.reduceRepeatResult(res),
+    LaMChain.extractOpenAIChatResponseSingle,
+    v=>v ?? undefined,
+));
+//#endregion
 
 //#region 发送请求
 /**发送请求 */
