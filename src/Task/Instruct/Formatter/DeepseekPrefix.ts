@@ -19,9 +19,9 @@ type DeepseekPrefixCompletionTaskFormatterType = InstructTaskFormatter<DeepseekR
 export const DeepseekPrefix: DeepseekPrefixCompletionTaskFormatterType = {
     formatResp: (resp: DeepseekResponse) => {
         return {
-            choices: resp.choices.map(choice => ({
-                content: choice.message.content,
-            })),
+            choices: resp.choices
+                .filter(choice => choice.message.content != null)
+                .map(choice => ({ content: choice.message.content! })),
             vaild: true,
         };
     },

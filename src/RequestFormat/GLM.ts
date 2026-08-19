@@ -2,11 +2,13 @@ import type { OpenAIChatAPIEntry, OpenAITool, OpenAIToolChoice } from "./OpenAIC
 import { OpenAIChatAPIRole } from "./OpenAIChat";
 
 
+/** GLM 模型 ID */
+export type GLMModelID = "glm-5.1"|"glm-5-turbo"|"glm-5"|"glm-4.7"|"glm-4.6"|
+    "glm-4.5-air"|"glm-4.5-airx"|"glm-4.5-flash";
 /** GLM 模型请求格式 */
 export type GLMRequest=Partial<{
     /** 模型名称 */
-    model: "glm-5.1"|"glm-5-turbo"|"glm-5"|"glm-4.7"|"glm-4.6"|
-        "glm-4.5-air"|"glm-4.5-airx"|"glm-4.5-flash"|string;
+    model: GLMModelID|string;
     /** 消息列表 */
     messages: GLMAPIEntry[];
     /** 最大生成 token 数 */

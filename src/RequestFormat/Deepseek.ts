@@ -3,10 +3,12 @@ import { OpenAIChatAPIRole } from "./OpenAIChat";
 
 
 //https://api-docs.deepseek.com/zh-cn/api/create-chat-completion
+/** Deepseek 模型 ID */
+export type DeepseekModelID = "deepseek-v4-flash"|"deepseek-v4-pro";
 /** Deepseek 模型请求格式 */
 export type DeepseekRequest=Partial<{
     /** 模型名称 */
-    model: "deepseek-v4-flash"|"deepseek-v4-pro"|string;
+    model: DeepseekModelID|string;
     /** 消息列表 */
     messages: DeepseekAPIEntry[];
     /** 最大生成 token 数 */

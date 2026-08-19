@@ -275,7 +275,11 @@ RES extends AnyOpenAIChatLikeResponse
                 let content: string;
                 if (targetTool) {
                     try {
-                        const parsedArgs = call.function.arguments ? JSON.parse(call.function.arguments) : {};
+                        const rawArgs = call.function.arguments;
+                        // GLM 等厂商可能直接返回 object 参数, 此时跳过 JSON.parse
+                        const parsedArgs = (typeof rawArgs === "object" && rawArgs !== null)
+                            ? rawArgs
+                            : rawArgs ? JSON.parse(rawArgs) : {};
                         const res = await targetTool.handler(parsedArgs);
                         content = typeof res === "string" ? res : JSON.stringify(res);
                     } catch (err: any) {

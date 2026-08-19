@@ -1,3 +1,6 @@
+import type { GLMModelID } from "RequestFormat";
+
+
 /** GLM 响应格式 */
 export type GLMResponse = {
     /** 响应 ID */
@@ -7,7 +10,7 @@ export type GLMResponse = {
     /** 创建时间戳 */
     created: number;
     /** 模型名称 */
-    model: string;
+    model: GLMModelID|string;
     /** 选项列表 */
     choices: GLMChatChoice[];
     /** 用量统计 */
@@ -26,14 +29,32 @@ type GLMChatChoice = {
         /** 角色 */
         role: "assistant";
         /** 内容 */
-        content?: string;
+        content?: string|null;
         /** 推理内容 */
         reasoning_content?: string;
+        /** 工具调用列表 */
+        tool_calls?: GLMToolCall[];
     };
     /** 完成原因 */
-    finish_reason: "stop"|"length"|"content_filter";
+    finish_reason: "stop"|"tool_calls"|"length"|"sensitive"|"model_context_window_exceeded"|"network_error";
     /** 索引 */
     index: number;
+};
+/** GLM 工具调用项 */
+type GLMToolCall = {
+    /** 工具调用 ID */
+    id: string;
+    /** 工具类型 */
+    type: "function";
+    /** 函数调用信息 */
+    function: {
+        /** 函数名称 */
+        name: string;
+        /** 函数调用参数
+         * zhipu openapi 定义为 object, 兼容 string 形式
+         */
+        arguments: string|object;
+    };
 };
 
 export const GLMResponseExample = {
