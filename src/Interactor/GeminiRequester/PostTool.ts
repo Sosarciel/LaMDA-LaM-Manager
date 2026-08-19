@@ -10,7 +10,7 @@ import { PostLaMOptionPreset } from 'Interactor/Interface';
 import { getProxy } from 'Interactor/ProxyPool';
 
 
-import { recordPrice, verifyResp } from './Util';
+import { verifyResp } from './Util';
 
 /**适用与 openai 鉴权方式的post工具 */
 class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
@@ -44,7 +44,7 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
                 timeout:timeLimit,
             }).once({json:postJson});
 
-        const respObj = respData?.data as AnyGeminiResponse|undefined;
+        const resp = respData?.data as AnyGeminiResponse|undefined;
 
         //const err = (res:string)=>outcome(Terminated,res);
         //return await pipe(respObj,
@@ -62,14 +62,14 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
         //);
 
         //post错误
-        if(respObj==undefined){
+        if(resp==undefined){
             SLogger.warn(`GeminiPostTool.postLaM 错误 未能接收resp`);
             return undefined;
         }
 
         //错误检测
-        if("error" in respObj)
-            return respObj;
+        if("error" in resp)
+            return resp;
 
         if(checkRespCode(respData)===false){
             SLogger.warn(`GeminiPostTool.postLaM 错误 不成功的状态码`);
@@ -77,9 +77,10 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
         }
 
         //记录使用量
-        await recordPrice({respObj,price:modelData.price,cred});
+        await LaMChain.recordCost({price:modelData.price, cred, resp, logUsage:true,
+            computeUsage:LaMChain.computeGeminiUsage});
 
-        return respObj;
+        return resp;
     }
     /**向 openai模型 重复请求发送POST请求并接受数据
      * @async

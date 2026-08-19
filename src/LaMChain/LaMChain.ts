@@ -7,14 +7,14 @@ import type { AnyGeminiResponse, AnyOpenAIResponse, GeminiResponse } from "Respo
 import type { TokensizerType } from "Tokensizer";
 import { getTokensizer } from "Tokensizer";
 
-import type { CredProvider, LaMPostRequestFunc, ModelInfo, ModelPrice, ModelUsage, SourceProvider } from "./Interface";
+import type { CredProvider, LaMComputeUsageFunc, LaMPostRequestFunc, ModelInfo, ModelPrice, ModelUsage, SourceProvider } from "./Interface";
 
 
 
 
 export namespace LaMChain{
 /**发送gemini 样式的请求 */
-export const postGeminiRequest:LaMPostRequestFunc<GeminiRequest,GeminiResponse> = async (param:{
+export const postGeminiRequest = (async (param:{
     cred:CredProvider,
     source:SourceProvider
     model:ModelInfo;
@@ -28,10 +28,10 @@ export const postGeminiRequest:LaMPostRequestFunc<GeminiRequest,GeminiResponse> 
         modelData:model,
         retryOption: retry ?? source.retry,
     });
-};
+}) satisfies LaMPostRequestFunc<GeminiRequest,GeminiResponse>;
 
 /**发送openai 样式的请求 */
-export const postOpenAIRequest:LaMPostRequestFunc<AnyOpenAILikeRequest,AnyOpenAIResponse> = async (param:{
+export const postOpenAIRequest = (async (param:{
     cred:CredProvider,
     source:SourceProvider
     model:ModelInfo;
@@ -45,7 +45,7 @@ export const postOpenAIRequest:LaMPostRequestFunc<AnyOpenAILikeRequest,AnyOpenAI
         modelData:model,
         retryOption: retry ?? source.retry,
     });
-};
+}) satisfies LaMPostRequestFunc<AnyOpenAILikeRequest,AnyOpenAIResponse>;
 
 /**剔除重试结果 */
 export const reduceRepeatResult =  async <T>(t:MPromise<PromiseRetryResult<T>>) => (await t)?.completed;
@@ -79,23 +79,49 @@ export const computeCost = (param:{
 };
 
 /**计算gemini使用量 */
-export const computeGeminiUsage = (resp:AnyGeminiResponse)=>{
+export const computeGeminiUsage = ((resp:AnyGeminiResponse)=>{
     const {usageMetadata} = resp;
+    if(usageMetadata==null){
+        void SLogger.error(`computeGeminiUsage 错误 未找到 usageMetadata, resp:\n`,resp);
+        return {} as ModelUsage;
+    }
+
     return {
         completionTokens :(usageMetadata.candidatesTokenCount??0) + (usageMetadata.thoughtsTokenCount??0),
         promptTokens     :usageMetadata.promptTokenCount??0,
     } satisfies ModelUsage;
-};
+}) satisfies LaMComputeUsageFunc<AnyGeminiResponse>;;
 
 /**计算openai使用量 */
-export const computeOpenAIUsage = (resp:AnyOpenAIResponse)=>{
+export const computeOpenAIUsage = ((resp:AnyOpenAIResponse)=>{
     const {usage} = resp;
+    if(usage==null){
+        void SLogger.error(`computeOpenAIUsage 错误 未找到 usage, resp:\n`,resp);
+        return {} as ModelUsage;
+    }
+
     return {
         completionTokens      : usage.completion_tokens??0,
         promptTokens          : usage.prompt_tokens??0,
         promptCacheHitTokens  : 'prompt_cache_hit_tokens' in usage ? usage.prompt_cache_hit_tokens : undefined,
         promptCacheMissTokens  : 'prompt_cache_miss_tokens' in usage ? usage.prompt_cache_miss_tokens : undefined,
     } satisfies ModelUsage;
+}) satisfies LaMComputeUsageFunc<AnyOpenAIResponse>;
+
+/**计费 */
+export const recordCost = async <T>(param:{
+    cred:CredProvider;
+    price?:ModelPrice;
+    resp?:T;
+    computeUsage:LaMComputeUsageFunc<T>;
+    logUsage?:boolean;
+})=>{
+    const {cred,price,resp,computeUsage,logUsage} = param;
+    if (resp == undefined || price == undefined || cred.recordCost == undefined)
+        return;
+    await cred.recordCost?.(computeCost({price,usage:computeUsage(resp)}));
+    //打印理论的当前使用量
+    if(logUsage) await cred.currUsage?.();
 };
 
 /**依照source将option转为对应source的异构格式, 例硅基流动 */

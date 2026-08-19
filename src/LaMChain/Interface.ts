@@ -84,3 +84,6 @@ export type LaMPostRequestFunc<I,O> = (param:{
     /**重试设定 PromiseRetries */
     retry?:PromiseRetries;
 })=>MPromise<PromiseRetryResult<O|undefined>>;
+
+/**用量计算函数类型 */
+export type LaMComputeUsageFunc<T> = (resp:T)=>ModelUsage;

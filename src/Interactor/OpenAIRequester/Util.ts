@@ -1,35 +1,10 @@
 import type { PromiseStatus } from "@zwa73/utils";
 import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
-import type { CredProvider, ModelPrice } from "LaMChain";
-import { LaMChain } from "LaMChain";
+import type { CredProvider } from "LaMChain";
 
 import type { AnyOpenAILikeErrorResponse, AnyOpenAIResponse } from "ResponseFormat";
 
 
-
-
-/**记录用量
- * @param rawResp    - 未做处理的回复
- * @param apiKeyName - 本次回复的APIkey
- */
-export const recordPrice = async(opt:{
-    respObj: AnyOpenAIResponse | undefined,
-    price?: ModelPrice,
-    cred: CredProvider,
-})=>{
-    const {respObj,price,cred} = opt;
-    if (respObj == undefined || price == undefined) return;
-    if(respObj.usage == undefined)
-        return void SLogger.error(`OpenAILaMClient.postLaM 警告 无法计费 未找到 usage, respObj:\n`,respObj);
-
-    //增加token数据
-    await cred.recordCost?.(LaMChain.computeCost({
-        price, usage:LaMChain.computeOpenAIUsage(respObj),
-    }));
-    //打印理论的当前使用量
-    await cred.currUsage?.();
-    return;
-};
 
 /**验证回复可用性并处理错误
  * @async
