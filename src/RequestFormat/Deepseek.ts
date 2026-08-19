@@ -6,23 +6,23 @@ import { OpenAIChatAPIRole } from "./OpenAIChat";
 /** Deepseek 模型 ID */
 export type DeepseekModelID = "deepseek-v4-flash"|"deepseek-v4-pro";
 /** Deepseek 模型请求格式 */
-export type DeepseekRequest=Partial<{
+export type DeepseekRequest={
     /** 模型名称 */
     model: DeepseekModelID|string;
     /** 消息列表 */
     messages: DeepseekAPIEntry[];
     /** 最大生成 token 数 */
-    max_tokens: number;
+    max_tokens?: number;
     /** 温度参数 */
-    temperature: number;
+    temperature?: number;
     /** Top-P 采样参数 */
-    top_p: number;
+    top_p?: number;
     /** 停止序列 */
-    stop: string[]|null;
+    stop?: string[]|null;
     /** 存在惩罚 */
-    presence_penalty: number;
+    presence_penalty?: number;
     /** 频率惩罚 */
-    frequency_penalty: number;
+    frequency_penalty?: number;
     /** 思考控制 */
     thinking?:{
         /** 是否开启思考 默认 enbale */
@@ -35,10 +35,10 @@ export type DeepseekRequest=Partial<{
      */
     reasoning_effort?:"high"|"max"|"low";
     /** 可供模型调用的工具列表 */
-    tools: OpenAITool[];
+    tools?: OpenAITool[];
     /** 工具调用控制 */
-    tool_choice: OpenAIToolChoice;
-}>;
+    tool_choice?: OpenAIToolChoice;
+};
 
 /** Deepseek API 消息条目 */
 export type DeepseekAPIEntry={

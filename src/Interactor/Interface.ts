@@ -1,8 +1,8 @@
 import type { PromiseRetries, PromiseRetryResult } from "@zwa73/js-utils";
 import type { PresetOption } from "@zwa73/utils";
 import { preset } from "@zwa73/utils";
-import type { CredProvider, ModelInfo, SourceProvider } from "LaMChain";
 
+import type { CredProvider, ModelInfo, SourceProvider } from "LaMChain";
 import type { AnyTextCompletionRequest } from "RequestFormat";
 import type { AnyTextCompletionResponse } from "ResponseFormat";
 

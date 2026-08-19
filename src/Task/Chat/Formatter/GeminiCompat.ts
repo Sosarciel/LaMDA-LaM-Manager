@@ -1,6 +1,6 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import { LaMChain } from "LaMChain";
 
+import { LaMChain } from "LaMChain";
 import { OpenAIChatAPIRole, type GeminiCompatAPIEntry, type GeminiCompatRequest } from "RequestFormat";
 import type { OpenAIChatResponse } from "ResponseFormat";
 

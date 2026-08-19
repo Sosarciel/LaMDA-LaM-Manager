@@ -1,6 +1,6 @@
 import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
-import { LaMChain } from "LaMChain";
 
+import { LaMChain } from "LaMChain";
 import type { OpenAIChatAPIEntry, OpenAIChatRequest } from "RequestFormat";
 import { OpenAIChatAPIRole } from "RequestFormat";
 import type { AnyOpenAIChatLikeResponse } from "ResponseFormat";

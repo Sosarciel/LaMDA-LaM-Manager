@@ -19,36 +19,36 @@ export type OpenAIModelID = AnyString
 /** OpenAI 推理努力程度 */
 export type OpenAIReasoningEffort = 'none'|'minimal'|'low'|'medium'|'high'|'xhigh';
 /** OpenAI 对话请求格式 */
-export type OpenAIChatRequest=Partial<{
+export type OpenAIChatRequest={
     /** 模型名称 */
     model: string;
     /** 消息列表 */
     messages: OpenAIChatAPIEntry[];
     /** 最大生成令牌数(已弃用，请使用 max_completion_tokens) */
-    max_tokens: number;
+    max_tokens?: number;
     /** 最大完成令牌数 */
-    max_completion_tokens: number;
+    max_completion_tokens?: number;
     /** 推理努力程度 */
-    reasoning_effort: OpenAIReasoningEffort;
+    reasoning_effort?: OpenAIReasoningEffort;
     /** 温度参数 */
-    temperature: number;
+    temperature?: number;
     /** Top-P 采样参数 */
-    top_p: number;
+    top_p?: number;
     /** 停止序列 */
-    stop: string[]|null;
+    stop?: string[]|null;
     /** 存在惩罚 */
-    presence_penalty: number;
+    presence_penalty?: number;
     /** 频率惩罚 */
-    frequency_penalty: number;
+    frequency_penalty?: number;
     /** Logit 偏置 */
-    logit_bias: Record<string, number>|null;
+    logit_bias?: Record<string, number>|null;
     /** 生成数量 */
-    n: number;
+    n?: number;
     /** 可供模型调用的工具列表 */
-    tools: OpenAITool[];
+    tools?: OpenAITool[];
     /** 工具调用控制 */
-    tool_choice: OpenAIToolChoice;
-}>;
+    tool_choice?: OpenAIToolChoice;
+};
 
 /** OpenAI 工具选择配置 */
 export type OpenAIToolChoice =

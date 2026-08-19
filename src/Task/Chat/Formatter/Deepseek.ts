@@ -1,6 +1,6 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import { LaMChain } from "LaMChain";
 
+import { LaMChain } from "LaMChain";
 import { type OpenAIChatAPIEntry, type DeepseekAPIEntry, type DeepseekRequest, OpenAIChatAPIRole } from "RequestFormat";
 import type { DeepseekResponse } from "ResponseFormat";
 
@@ -30,7 +30,7 @@ export const DeepseekThinkMapHasNone = {
 export const buildDeepseekRequest = ({option,modelId,messages}:{
     option: ChatTaskOption;
     modelId: string;
-    messages: DeepseekAPIEntry[] | undefined;
+    messages: DeepseekAPIEntry[];
     think_budget: ThingBudget | null | undefined;
 })=>{
     const effort = DeepseekThinkMapHasNone[option.think_budget??"non"];
