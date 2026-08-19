@@ -1,4 +1,4 @@
-import type { AnyString } from "@zwa73/utils";
+import type { AnyString, JObject } from "@zwa73/utils";
 
 
 
@@ -145,7 +145,7 @@ export type OpenAITool = {
         /** 函数描述 */
         description?: string;
         /** JSON Schema 参数描述 */
-        parameters?: Record<string, any>;
+        parameters?: JObject;
         /** 是否启用严格 Schema 校验 */
         strict?: boolean | null;
     };
