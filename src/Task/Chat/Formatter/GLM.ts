@@ -1,4 +1,5 @@
 import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
+import { LaMChain } from "LaMChain";
 
 import type { GLMAPIEntry, GLMRequest } from "RequestFormat";
 import type { GLMResponse } from "ResponseFormat";
@@ -36,7 +37,7 @@ export const GLMChatTaskFormatter:ChatTaskFormatter<GLMAPIEntry[],GLMRequest,GLM
         const messages = commonProcessMessageWithOpt({tool:GLMChatTaskFormatter,option});
         const thinkType = GLMThinkMap[option.think_budget??"non"];
 
-        return {
+        return LaMChain.stripUndefined({
             model             : modelId                        ,
             messages          : messages                       ,
             max_tokens        : option.max_tokens              ,
@@ -45,7 +46,7 @@ export const GLMChatTaskFormatter:ChatTaskFormatter<GLMAPIEntry[],GLMRequest,GLM
             stop              : option.stop                    ,
             do_sample         : true                           ,
             thinking          : {type:thinkType}               ,
-        } satisfies GLMRequest;
+        } satisfies GLMRequest);
     },
     formatResp(resp){
         if(!UtilFunc.checkSharpSchema(resp,{

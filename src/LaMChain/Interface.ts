@@ -48,7 +48,7 @@ export type SourceProvider = {
     /**hostname */
     hostname:string;
     /**port */
-    port:number;
+    port?:number;
     /**是否使用代理 */
     proxyUrl?:string;
     /**所用协议 默认https */

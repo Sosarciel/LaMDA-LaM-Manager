@@ -22,7 +22,7 @@ export const DeepseekText: DeepseekFIMTaskFormatterType = {
             return;
         }
 
-        return {
+        return LaMChain.stripUndefined({
             model: modelId,
             prompt: buildFIMPrompt(option),
             suffix: option.suffix,
@@ -35,7 +35,7 @@ export const DeepseekText: DeepseekFIMTaskFormatterType = {
             presence_penalty: option.presence_penalty,
             frequency_penalty: option.frequency_penalty,
             logit_bias: await LaMChain.tokenifyLogitBias({textLogitBias:option.logit_bias, tokensizerType}),
-        } satisfies OpenAITextRequest;
+        } satisfies OpenAITextRequest);
     },
     execute:lazyFunction(()=>commonOpenAIInstructTask(DeepseekText)),
 };

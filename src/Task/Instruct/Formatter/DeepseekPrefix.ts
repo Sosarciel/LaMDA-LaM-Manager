@@ -1,5 +1,6 @@
 import type { PromiseRetryResult } from "@zwa73/js-utils";
 import { lazyFunction, SLogger } from "@zwa73/utils";
+import { LaMChain } from "LaMChain";
 
 import type { DeepseekRequest, DeepseekAPIEntry } from "RequestFormat";
 import { DeepseekAPIRole } from "RequestFormat";
@@ -51,7 +52,7 @@ export const DeepseekPrefix: DeepseekPrefixCompletionTaskFormatterType = {
             prefix: true,
         });
 
-        return {
+        return LaMChain.stripUndefined({
             model: modelId,
             messages: messages,
             max_tokens: option.max_tokens,
@@ -60,7 +61,7 @@ export const DeepseekPrefix: DeepseekPrefixCompletionTaskFormatterType = {
             stop: option.stop,
             presence_penalty: option.presence_penalty,
             frequency_penalty: option.frequency_penalty,
-        } satisfies DeepseekRequest;
+        } satisfies DeepseekRequest);
     },
 
     async formatResult(resp: PromiseRetryResult<DeepseekResponse | undefined> | undefined): Promise<TextCompletionResult> {

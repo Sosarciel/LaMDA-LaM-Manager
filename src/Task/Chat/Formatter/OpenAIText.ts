@@ -64,7 +64,7 @@ export const OpenAITextChatTaskFormatter:OpenAITextChatTaskFormatter={
         //转换文本
         const messages = commonProcessMessageWithOpt({tool:OpenAITextChatTaskFormatter,option});
 
-        return {
+        return LaMChain.stripUndefined({
             model             : modelId                  ,//模型id
             prompt            : messages                 ,//提示
             max_tokens        : option.max_tokens           ,//最大生成令牌数
@@ -76,7 +76,7 @@ export const OpenAITextChatTaskFormatter:OpenAITextChatTaskFormatter={
             logit_bias        : await LaMChain.tokenifyLogitBias({textLogitBias:option.logit_bias,tokensizerType}) ,//调整某token出现的概率 {"tokenid":-100~100}
             //best_of         : best_of                  ,//产生n条候选消息，根据n返回n条最佳消息
             stop              : option.stop                 ,//遭遇时将会停止生成的最多4个字符串 "1234"
-        } satisfies OpenAITextRequest;
+        } satisfies OpenAITextRequest);
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence

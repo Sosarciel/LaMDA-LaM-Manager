@@ -1,10 +1,10 @@
-import type { MPromise, PromiseRetries, PromiseRetryResult } from "@zwa73/js-utils";
-import { memoize, SLogger, UtilFP, UtilFunc } from "@zwa73/utils";
+import type { JToken, MPromise, PromiseRetries, PromiseRetryResult } from "@zwa73/js-utils";
+import { memoize, SLogger, UtilFunc } from "@zwa73/utils";
 
 import type { Interactor } from "Interactor";
 import { GeminiPostTool, OpenAiPostTool } from "Interactor";
-import type { AnyOpenAIChatLikeRequest, AnyOpenAILikeRequest, AnyTextCompletionRequest, GeminiRequest, OpenAITool } from "RequestFormat";
-import type { AnyGeminiResponse, AnyOpenAIChatLikeResponse, AnyOpenAIResponse, AnyTextCompletionResponse, GeminiResponse } from "ResponseFormat";
+import type { AnyOpenAIChatLikeRequest, AnyOpenAILikeRequest, AnyTextCompletionRequest, GeminiRequest, OpenAITextRequest, OpenAITool } from "RequestFormat";
+import type { AnyGeminiResponse, AnyOpenAIChatLikeResponse, AnyOpenAIResponse, AnyTextCompletionResponse, GeminiResponse, OpenAITextResponse } from "ResponseFormat";
 import type { TokensizerType } from "Tokensizer";
 import { getTokensizer } from "Tokensizer";
 
@@ -48,14 +48,25 @@ R extends AnyTextCompletionResponse,
 export const postGeminiRequest = (partialize(postRequest<GeminiRequest,GeminiResponse>,{
     interactor:GeminiPostTool
 })) satisfies LaMPostRequestFunc<GeminiRequest,GeminiResponse>;
-/**发送OpenAI Chat API 请求 */
+/**发送OpenAI API 请求 */
 export const postOpenAIRequest = (partialize(postRequest<AnyOpenAILikeRequest,AnyOpenAIResponse>,{
     interactor:OpenAiPostTool
 })) satisfies LaMPostRequestFunc<AnyOpenAILikeRequest,AnyOpenAIResponse>;
+/**发送OpenAI Chat API 请求 */
+export const postOpenAIChatRequest = (partialize(postRequest<AnyOpenAIChatLikeRequest,AnyOpenAIChatLikeResponse>,{
+    interactor:OpenAiPostTool as Interactor<AnyOpenAIChatLikeResponse>
+})) satisfies LaMPostRequestFunc<AnyOpenAIChatLikeRequest,AnyOpenAIChatLikeResponse>;
+/**发送OpenAI Text API 请求 */
+export const postOpenAITextRequest = (partialize(postRequest<OpenAITextRequest,OpenAITextResponse>,{
+    interactor:OpenAiPostTool as Interactor<OpenAITextResponse>
+})) satisfies LaMPostRequestFunc<OpenAITextRequest,OpenAITextResponse>;
 //#endregion
 
 /**剔除重试结果 */
 export const reduceRepeatResult = async <T>(t:MPromise<PromiseRetryResult<T>>) => (await t)?.completed;
+/**提取OpenAI Chat API 返回值 */
+export const extractOpenAIChatResponseSingle = async (t:MPromise<undefined | AnyOpenAIChatLikeResponse>) =>
+    (await t)?.choices?.[0]?.message?.content;
 
 /**计算价格 */
 export const computeCost = (param:{
@@ -217,6 +228,23 @@ export const tokenifyLogitBias = memoize(async (param:{
 },60_000);
 //#endregion
 
+//#region 工具函数
+/**递归剔除对象中所有值为 undefined 的属性
+ * 用于清理 formatOption 等构建的请求对象, 避免携带无意义字段
+ */
+export const stripUndefined = <T extends JToken>(value: T): T => {
+    if (Array.isArray(value))
+        return value.map(stripUndefined) as T;
+    if (value !== null && typeof value === "object")
+        return Object.fromEntries(
+            Object.entries(value as Record<string, JToken>)
+                .filter(([, v]) => v !== undefined)
+                .map(([k, v]) => [k, stripUndefined(v)])
+        ) as T;
+    return value;
+};
+//#endregion
+
 //#region 工具调用
 /** 从 Provider 提取 OpenAI tools 请求参数 */
 export const toOpenAITools = (provider: ToolProvider) => {
@@ -321,11 +349,3 @@ RES extends AnyOpenAIChatLikeResponse
 };
 //#endregion
 }
-
-
-async ()=>{
-    const v = UtilFP.flow(
-        LaMChain.postGeminiRequest,
-        async res => LaMChain.reduceRepeatResult(res),
-    );
-};

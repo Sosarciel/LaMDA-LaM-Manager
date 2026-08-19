@@ -153,7 +153,7 @@ export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskForma
         const messages = commonProcessMessageWithOpt({tool:OpenAIConversationChatTaskFormatter,option});
 
         const isReasoning = hasReasoning(modelId);
-        return {
+        return LaMChain.stripUndefined({
             model                  : modelId                 ,//模型id
             messages               : messages                ,//提示
             max_completion_tokens  : option.max_tokens          ,//最大生成令牌数
@@ -165,7 +165,7 @@ export const OpenAIConversationChatTaskFormatter:OpenAIConversationChatTaskForma
             frequency_penalty      : isReasoning ? undefined : option.frequency_penalty  ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
             logit_bias             : isReasoning ? undefined : await LaMChain.tokenifyLogitBias({textLogitBias:option.logit_bias,tokensizerType}),//调整某token出现的概率 {"tokenid":-100~100}
             stop                   : isReasoning ? undefined : option.stop,//停止序列,遭遇时将会停止生成的最多4个字符串,不支持某些思考模型
-        } satisfies OpenAIChatRequest;
+        } satisfies OpenAIChatRequest);
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence

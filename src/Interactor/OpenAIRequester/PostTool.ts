@@ -1,7 +1,7 @@
 import type { PresetOption } from '@zwa73/utils';
 import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
-import { LaMChain } from 'LaMChain';
 
+import { LaMChain } from 'LaMChain';
 import type { AnyOpenAILikeRequest } from 'RequestFormat';
 import type { AnyOpenAIResponse } from 'ResponseFormat';
 
@@ -33,11 +33,12 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
         });
 
         const protocol = source.protocol??'https';
+        const port = source.port??(protocol==='https'?443:80);
 
         const respData = await UtilHttp.url(`${protocol}://${source.hostname}`)
             .postJson().option({
                 hostname: source.hostname,
-                port: source.port,
+                port,
                 path: modelData.endpoint,//'/v1/chat/completions'
                 headers: {
                     'Content-Type': 'application/json',

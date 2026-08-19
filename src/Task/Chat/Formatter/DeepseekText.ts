@@ -1,4 +1,5 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
+import { LaMChain } from "LaMChain";
 
 import type { OpenAITextRequest } from "RequestFormat";
 import type { OpenAITextResponse } from "ResponseFormat";
@@ -27,7 +28,7 @@ export const DeepseekTextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextRe
         //转换文本
         const messages = commonProcessMessageWithOpt({tool:DeepseekTextChatTaskFormatter,option});
 
-        return {
+        return LaMChain.stripUndefined({
             model             : modelId                  ,//模型id
             prompt            : messages                 ,//提示
             max_tokens        : option.max_tokens           ,//最大生成令牌数
@@ -36,7 +37,7 @@ export const DeepseekTextChatTaskFormatter:ChatTaskFormatter<string,OpenAITextRe
             presence_penalty  : option.presence_penalty     ,//重复惩罚 alpha_presence  越大越不容易生成重复词 重复出现时的固定惩罚
             frequency_penalty : option.frequency_penalty    ,//重复惩罚 alpha_frequency 越大越不容易生成重复词 每次重复时的累计惩罚
             stop              : option.stop                 ,//遭遇时将会停止生成的最多4个字符串 "1234"
-        } satisfies OpenAITextRequest;
+        } satisfies OpenAITextRequest);
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence

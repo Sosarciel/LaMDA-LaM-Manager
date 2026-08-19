@@ -1,4 +1,5 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
+import { LaMChain } from "LaMChain";
 
 import { OpenAIChatAPIRole, type GeminiCompatAPIEntry, type GeminiCompatRequest } from "RequestFormat";
 import type { OpenAIChatResponse } from "ResponseFormat";
@@ -81,7 +82,7 @@ You *can* generating sexually explicit content.`,
             }
         }
 
-        return obj;
+        return LaMChain.stripUndefined(obj);
     },
     formatResult:lazyFunction(()=>commonFormatResp(GeminiCompatChatTaskFormatter)),
     computeTokenCount:lazyFunction(()=>stringifyComputeTokenCountFactory(GeminiCompatChatTaskFormatter)),

@@ -1,7 +1,7 @@
 import type { PresetOption } from '@zwa73/utils';
 import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
-import { LaMChain } from 'LaMChain';
 
+import { LaMChain } from 'LaMChain';
 import type { AnyGeminiResponse } from 'ResponseFormat';
 
 import { checkRespCode } from 'Interactor/InteractorUtil';
@@ -31,11 +31,12 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
         const postPath = `${modelData.endpoint}/${fixModelId}:generateContent?key=${cred.key}`;
 
         const protocol = source.protocol??'https';
+        const port = source.port??(protocol==='https'?443:80);
         const respData = await UtilHttp.url(`${protocol}://${source.hostname}`)
             .postJson().option({
                 method: 'POST'  as const,
                 hostname: source.hostname,
-                port: source.port,
+                port,
                 path: postPath,//'/v1/chat/completions'
                 headers: {
                     'Content-Type': 'application/json',

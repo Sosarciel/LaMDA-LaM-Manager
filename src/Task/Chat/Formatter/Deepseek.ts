@@ -1,4 +1,5 @@
 import { lazyFunction, SLogger } from "@zwa73/utils";
+import { LaMChain } from "LaMChain";
 
 import { type OpenAIChatAPIEntry, type DeepseekAPIEntry, type DeepseekRequest, OpenAIChatAPIRole } from "RequestFormat";
 import type { DeepseekResponse } from "ResponseFormat";
@@ -33,7 +34,7 @@ export const buildDeepseekRequest = ({option,modelId,messages}:{
     think_budget: ThingBudget | null | undefined;
 })=>{
     const effort = DeepseekThinkMapHasNone[option.think_budget??"non"];
-    return {
+    return LaMChain.stripUndefined({
         model             : modelId                        ,//模型id
         messages          : messages                       ,//提示
         max_tokens        : option.max_tokens              ,//最大生成令牌数
@@ -44,7 +45,7 @@ export const buildDeepseekRequest = ({option,modelId,messages}:{
         stop              : option.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
         thinking          :{type:effort==undefined ? "disabled" : "enabled"},
         ...(effort ==undefined ? { } : {reasoning_effort:effort})
-    } satisfies DeepseekRequest;
+    } satisfies DeepseekRequest);
 };
 
 /**传统OpenAI系统提示模式的Formatter */
