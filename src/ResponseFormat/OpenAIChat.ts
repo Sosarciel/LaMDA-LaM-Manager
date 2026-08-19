@@ -42,17 +42,34 @@ export type OpenAIChatResponse = {
 };
 /** 聊天 API 选项格式 */
 type ChatChoice = {
+    /** 完成原因 */
+    finish_reason: "stop" | "length" | "content_filter" | "tool_calls";
+    /** 索引 */
+    index: number;
     /** 消息 */
     message: {
         /** 角色 */
         role: "assistant";
         /** 内容 */
-        content?: string;
+        content?: string|null;
+        /** 工具调用列表 */
+        tool_calls?: ChatToolCall[];
     };
-    /** 完成原因 */
-    finish_reason: "stop" | "length" | "content_filter";
-    /** 索引 */
-    index: number;
+};
+
+/** OpenAI 工具调用项 */
+type ChatToolCall = {
+    /** 工具调用 ID */
+    id: string;
+    /** 工具类型 */
+    type: "function";
+    /** 函数调用信息 */
+    function: {
+        /** 函数名称 */
+        name: string;
+        /** 序列化的 JSON 参数字符串 */
+        arguments: string;
+    };
 };
 
 export const OpenAIChatResponseExample = {
@@ -72,6 +89,41 @@ export const OpenAIChatResponseExample = {
             message: { role: "assistant", content: "您好，有什么需要帮助的吗？" },
             finish_reason: "stop",
             index: 1,
+        },
+    ],
+} satisfies OpenAIChatResponse;
+
+/** Tool Call（函数调用）回复样例 */
+export const OpenAIChatToolCallResponseExample = {
+    id: "chatcmpl-Bn8KfoYnmT2WpgSRREQyp8tilpYRd",
+    system_fingerprint: "fp_5154047bf2",
+    object: "chat.completion",
+    created: 1677723300,
+    model: "gpt-4o",
+    usage: {
+        prompt_tokens: 58,
+        completion_tokens: 22,
+        total_tokens: 80,
+        prompt_tokens_details: { cached_tokens: 0 },
+    },
+    choices: [
+        {
+            message: {
+                role: "assistant",
+                content: null,
+                tool_calls: [
+                    {
+                        id: "call_98xAbc123weather",
+                        type: "function",
+                        function: {
+                            name: "get_weather",
+                            arguments: "{\"city\":\"上海\"}",
+                        },
+                    },
+                ],
+            },
+            finish_reason: "tool_calls",
+            index: 0,
         },
     ],
 } satisfies OpenAIChatResponse;
