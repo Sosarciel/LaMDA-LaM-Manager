@@ -4,7 +4,6 @@ import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
 import { LaMChain } from 'LaMChain';
 import type { AnyGeminiResponse, GeminiResponse } from 'ResponseFormat';
 
-import { checkRespCode } from 'Interactor/InteractorUtil';
 import type { Interactor } from 'Interactor/Interface';
 import { PostLaMOptionPreset } from 'Interactor/Interface';
 import { getProxy } from 'Interactor/ProxyPool';
@@ -70,7 +69,7 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
         if("error" in resp)
             return resp;
 
-        if(checkRespCode(respData)===false){
+        if(LaMChain.checkRespCode(respData)===false){
             SLogger.warn(`GeminiPostTool.postLaM 错误 不成功的状态码`);
             return undefined;
         }

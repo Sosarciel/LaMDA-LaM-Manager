@@ -6,7 +6,6 @@ import type { AnyOpenAILikeRequest } from 'RequestFormat';
 import type { AnyOpenAIResponse } from 'ResponseFormat';
 
 
-import { checkRespCode } from 'Interactor/InteractorUtil';
 import type { Interactor } from 'Interactor/Interface';
 import { PostLaMOptionPreset } from 'Interactor/Interface';
 import { getProxy } from 'Interactor/ProxyPool';
@@ -57,7 +56,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
         if ("error" in resp)
             return resp;
 
-        if(checkRespCode(respData)===false){
+        if(LaMChain.checkRespCode(respData)===false){
             SLogger.warn(`OpenApiPostTool.postLaM 错误 不成功的状态码`);
             return undefined;
         }

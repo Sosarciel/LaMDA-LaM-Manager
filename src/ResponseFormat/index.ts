@@ -9,6 +9,7 @@ import type { OpenAITextResponse } from './OpenAIText';
 
 
 export * from './Deepseek';
+export * from './ForwardError';
 export * from './GLM';
 export * from './Gemini';
 export * from './OpenAIChat';
@@ -31,3 +32,4 @@ export type AnyTextCompletionResponse = AnyOpenAIResponse|AnyGeminiResponse;
 /**任何 OpenAI对话风格 API 接口的错误格式 */
 export type AnyOpenAILikeErrorResponse = OpenAIErrorResponse|DeepseekErrorResponse|ForwardErrorResponse;
 export type AnyGeminiLikeErrorResponse = ForwardErrorResponse|GeminiErrorResponse;
+export type AnyErrorResponse = AnyOpenAILikeErrorResponse|AnyGeminiLikeErrorResponse;

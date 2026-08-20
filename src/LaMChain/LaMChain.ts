@@ -1,12 +1,12 @@
 import { LaMChainCompose } from "./LaMChainCompose";
 import { LaMChainFunc } from "./LaMChainFunc";
 import { LaMChainInteractor } from "./LaMChainInteractor";
-import { LaMChainVerify } from "./LaMChainVerify";
+import { LaMChainResponseVerify } from "./LaMChainResponseVerify";
 
 export const LaMChain = {
     ...LaMChainFunc,
     ...LaMChainCompose,
-    ...LaMChainVerify,
+    ...LaMChainResponseVerify,
     ...LaMChainInteractor,
 };
 
