@@ -150,11 +150,16 @@ export const computeOpenAIUsage = ((resp:AnyOpenAIResponse)=>{
         return {} as ModelUsage;
     }
 
+    const hitTokens = ('prompt_cache_hit_tokens' in usage ? usage.prompt_cache_hit_tokens : undefined) ??
+        ('prompt_tokens_details' in usage ? usage.prompt_tokens_details?.cached_tokens : undefined);
+
+    const missTokens = ('prompt_cache_miss_tokens' in usage ? usage.prompt_cache_miss_tokens : undefined);
+
     return {
-        completionTokens      : usage.completion_tokens??0,
-        promptTokens          : usage.prompt_tokens??0,
-        promptCacheHitTokens  : 'prompt_cache_hit_tokens' in usage ? usage.prompt_cache_hit_tokens : undefined,
-        promptCacheMissTokens  : 'prompt_cache_miss_tokens' in usage ? usage.prompt_cache_miss_tokens : undefined,
+        completionTokens       : usage.completion_tokens??0,
+        promptTokens           : usage.prompt_tokens??0,
+        promptCacheHitTokens   : hitTokens,
+        promptCacheMissTokens  : missTokens,
     } satisfies ModelUsage;
 }) satisfies LaMComputeUsageFunc<AnyOpenAIResponse>;
 //#endregion
@@ -191,7 +196,7 @@ export const recordOpenAICost = partialize(recordCost<AnyOpenAIResponse>,{comput
 /**依照source将option转为对应source的异构格式, 例硅基流动 */
 export const specializeOpenAILikeRequest = <T extends AnyOpenAILikeRequest>(param:{
     /**请求体 */
-    json:AnyOpenAILikeRequest;
+    json:T;
     /**来源提供者 */
     source:SourceProvider;
 })=>{
@@ -258,10 +263,8 @@ export const tokenifyLogitBias = memoize(async (param:{
         }
     };
 
-    await Promise.all(textLogitBias
-        .flatMap(async biasMap=>
-            Object.entries(biasMap)
-                .map(async ([k,v])=>mergeObj(k,v))));
+    await Promise.all(textLogitBias.flatMap(biasMap=>
+            Object.entries(biasMap).map(async ([k,v])=>mergeObj(k,v))));
     return out;
 },60_000);
 //#endregion
@@ -273,20 +276,21 @@ export const tokenifyLogitBias = memoize(async (param:{
 export const stripUndefined = <T extends JToken>(value: T): T => {
     if (Array.isArray(value))
         return value.map(stripUndefined) as T;
-    if (value !== null && typeof value === "object")
-        return Object.fromEntries(
-            Object.entries(value as Record<string, JToken>)
-                .filter(([, v]) => v !== undefined)
-                .map(([k, v]) => [k, stripUndefined(v)])
-        ) as T;
+    if (value !== null && typeof value === "object") {
+        const out: Record<string, JToken> = {};
+        for (const [k, v] of Object.entries(value as Record<string, JToken>)) {
+            if (v !== undefined) out[k] = stripUndefined(v);
+        }
+        return out as T;
+    }
     return value;
 };
 //#endregion
 
 //#region 工具调用
 /** 从 Provider 提取 OpenAI tools 请求参数 */
-export const toOpenAITools = (provider: ToolProvider) => {
-    return provider.tools.map(t => ({
+export const toOpenAITools = (tool: ToolProvider) => {
+    return tool.tools.map(t => ({
         type: "function" as const,
         function: {
             name: t.name,
@@ -316,7 +320,12 @@ RES extends AnyOpenAIChatLikeResponse
     /** 重试参数 */
     retry?: PromiseRetries;
     /** 请求修改器 */
-    patch?: (param: { resp: RES; body: REQ }) => MPromise<REQ>;
+    patch?: (param: {
+        /** 上次响应 */
+        resp: RES;
+        /** 完成工具拼接的当前请求 */
+        body: REQ
+    }) => MPromise<REQ>;
     /** 最大循环次数 */
     maxLoops?: number;
 }) => {
