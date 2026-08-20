@@ -49,12 +49,18 @@ export const postRequest = async <
 T extends AnyTextCompletionRequest,
 R extends AnyTextCompletionResponse,
 >(param:{
-    cred:CredProvider,
-    source:SourceProvider
+    /**凭据提供者 */
+    cred:CredProvider;
+    /**来源提供者 */
+    source:SourceProvider;
+    /**模型信息 */
     model:ModelInfo;
+    /**请求体 */
     json:T;
+    /**重试参数 */
     retry?:PromiseRetries;
-    interactor:Interactor<R>
+    /**交互器 */
+    interactor:Interactor<R>;
 })=>{
     const {model,json,cred,source,retry,interactor} = param;
     return interactor.postLaMRepeat({
@@ -90,7 +96,10 @@ export const extractOpenAIChatResponseSingle = async (t:MPromise<undefined | Any
 
 /**计算价格 */
 export const computeCost = (param:{
-    price:ModelPrice,usage:ModelUsage
+    /**模型价格 */
+    price:ModelPrice;
+    /**模型使用量 */
+    usage:ModelUsage;
 })=>{
     const {price,usage} = param;
     //如果没有miss则认为全是hit
@@ -153,10 +162,15 @@ export const computeOpenAIUsage = ((resp:AnyOpenAIResponse)=>{
 //#region 计费
 /**计费 */
 export const recordCost = async <T>(param:{
+    /**凭据提供者 */
     cred:CredProvider;
+    /**模型价格 */
     price?:ModelPrice;
+    /**响应 */
     resp?:T;
+    /**计算函数 */
     computeUsage:LaMComputeUsageFunc<T>;
+    /**是否打印使用量 */
     logUsage?:boolean;
 })=>{
     const {cred,price,resp,computeUsage,logUsage} = param;
@@ -176,7 +190,9 @@ export const recordOpenAICost = partialize(recordCost<AnyOpenAIResponse>,{comput
 //#region source标准化
 /**依照source将option转为对应source的异构格式, 例硅基流动 */
 export const specializeOpenAILikeRequest = <T extends AnyOpenAILikeRequest>(param:{
+    /**请求体 */
     json:AnyOpenAILikeRequest;
+    /**来源提供者 */
     source:SourceProvider;
 })=>{
     const {json,source} = param;
@@ -191,7 +207,9 @@ export const specializeOpenAILikeRequest = <T extends AnyOpenAILikeRequest>(para
 
 /**依照source将modid转为对应source的异构格式, 例硅基流动 */
 export const specializeModelId = (param:{
+    /**模型id */
     modelId:string;
+    /**来源提供者 */
     source:SourceProvider;
 })=>{
     const {modelId,source} = param;
@@ -283,14 +301,23 @@ export const processOpenAIChatToolLoop = async <
 REQ extends AnyOpenAIChatLikeRequest,
 RES extends AnyOpenAIChatLikeResponse
 >(param: {
+    /** 原始响应 */
     resp: RES|undefined;
+    /** 工具提供者 */
     tool: ToolProvider;
+    /** 凭据提供者 */
     cred: CredProvider;
+    /** 来源提供者 */
     source: SourceProvider;
+    /** 模型信息 */
     model: ModelInfo;
+    /** 原始请求 */
     json: REQ;
+    /** 重试参数 */
     retry?: PromiseRetries;
+    /** 请求修改器 */
     patch?: (param: { resp: RES; body: REQ }) => MPromise<REQ>;
+    /** 最大循环次数 */
     maxLoops?: number;
 }) => {
     if(param.resp==undefined) return undefined;
