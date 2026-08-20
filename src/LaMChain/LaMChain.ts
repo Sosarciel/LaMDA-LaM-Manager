@@ -33,9 +33,8 @@ export const simpleOpenAIChatRequest = lazyFunction(()=>UtilFP.flow(
 ));
 /**简易发送OpenAI Chat API 请求, 带有工具*/
 export const simpleOpenAIChatToolCallRequest = lazyFunction(()=>UtilFP.flow(
-    (v: Parameters<typeof LaMChain.postOpenAIChatRequest>[0]&
-        Pick<Parameters<typeof LaMChain.processOpenAIChatToolLoop>[0],'tool'|'patch'>
-    )=>({ ...v,json:{...v.json,tools:LaMChain.toOpenAITools(v.tool)} }),
+    (v: Omit<Parameters<typeof LaMChain.processOpenAIChatToolLoop>[0],'resp'>)=>
+        ({ ...v,json:{...v.json,tools:LaMChain.toOpenAITools(v.tool)} }),
     UtilFP.bind('retryResp',async v=>LaMChain.postOpenAIChatRequest(v)),
     UtilFP.bind('resp',async v=>LaMChain.reduceRepeatResult(v.retryResp)),
     LaMChain.processOpenAIChatToolLoop,
