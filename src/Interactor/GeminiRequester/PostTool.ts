@@ -1,16 +1,14 @@
-import type { PresetOption } from '@zwa73/utils';
+import type { PresetOption, PromiseRetryResult } from '@zwa73/utils';
 import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
 
 import { LaMChain } from 'LaMChain';
-import type { AnyGeminiResponse } from 'ResponseFormat';
+import type { AnyGeminiResponse, GeminiResponse } from 'ResponseFormat';
 
 import { checkRespCode } from 'Interactor/InteractorUtil';
 import type { Interactor } from 'Interactor/Interface';
 import { PostLaMOptionPreset } from 'Interactor/Interface';
 import { getProxy } from 'Interactor/ProxyPool';
 
-
-import { verifyResp } from './Util';
 
 /**适用与 openai 鉴权方式的post工具 */
 class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
@@ -87,7 +85,7 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
      * @param partialOpt - 可选的参数
      * @returns 结果 undefined 为未能成功接收
      */
-    async postLaMRepeat(partialOpt:PresetOption<typeof PostLaMOptionPreset>){
+    async postLaMRepeat(partialOpt:PresetOption<typeof PostLaMOptionPreset>):Promise<PromiseRetryResult<GeminiResponse | undefined>>{
         //解构参数
         const opt = PostLaMOptionPreset.assign(partialOpt);
         const retryOption = UtilFunc.assignOption({},
@@ -96,7 +94,7 @@ class _GeminiPostTool implements Interactor<AnyGeminiResponse> {
 
         return await UtilFunc.retryPromise(
             async ()=>this.postLaM(opt),
-            async obj=>await verifyResp(obj, opt.cred),
+            async obj=>await LaMChain.verifyGeminiResp(obj, opt.cred),
             {...retryOption,logFlag:"GeminiPostTool.postLaMRepeat"}
         );
     }

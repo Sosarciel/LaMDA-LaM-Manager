@@ -1,40 +1,43 @@
 import type { PromiseStatus } from "@zwa73/utils";
 import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
 
-import type { CredProvider } from "LaMChain";
-import type { AnyOpenAILikeErrorResponse, AnyOpenAIResponse } from "ResponseFormat";
+import type { AnyGeminiLikeErrorResponse, AnyGeminiResponse, AnyOpenAILikeErrorResponse, AnyOpenAIResponse } from "ResponseFormat";
 
+import type { CredProvider } from "./Interface";
 
+/**标准错误处理 (OpenAI / Deepseek / Gemini) */
+export namespace LaMChainVerify{
 
-/**验证回复可用性并处理错误
+/**验证 OpenAI 风格回复可用性并处理错误
+ * 适用于 OpenAI / Deepseek 等采用 OpenAI 鉴权与错误体结构的厂商
  * @async
  * @param rawResp    - 未做处理的回复
- * @param apiKeyName - 本次回复的APIkey
+ * @param accountData - 本次回复的API key
  * @returns 可用性
  */
-export const verifyResp = async(
+export const verifyOpenAIResp = async(
     rawResp: AnyOpenAIResponse | AnyOpenAILikeErrorResponse | undefined,
-    accountData: CredProvider
+    accountData: CredProvider,
 ): Promise<PromiseStatus> => {
     if (rawResp == undefined) return Failed;
 
     if('error' in rawResp){
         SLogger.warn(`verifyResp 开始处理错误:\n${JSON.stringify(rawResp)}`);
-        return checkError(rawResp.error, accountData);
+        return checkOpenAIError(rawResp.error, accountData);
     }
     return Success;
 
 };
 
-/**验证回复可用性并处理错误
+/**验证 OpenAI 风格错误并处理
  * @async
- * @param rawResp      - 未做处理的回复
- * @param apiKeyName - 本次回复的APIkey
+ * @param error       - 未做处理的错误体
+ * @param accountData - 本次回复的API key
  * @returns 可用性
  */
-export const checkError = async (
+export const checkOpenAIError = async (
     error: AnyOpenAILikeErrorResponse['error'],
-    accountData: CredProvider
+    accountData: CredProvider,
 ): Promise<PromiseStatus> => {
 
     if(error.message=="We were unable to start processing your request within the 900-second timeout limit. Please try again later."){
@@ -178,3 +181,90 @@ export const checkError = async (
             return Terminated;
     }
 };
+
+/**验证 Gemini 风格回复可用性并处理错误
+ * @async
+ * @param respObj     - 未做处理的回复
+ * @param accountData - 本次回复的API key
+ * @returns 可用性
+ */
+export const verifyGeminiResp = async (
+    respObj: AnyGeminiResponse|undefined,
+    accountData: CredProvider,
+): Promise<PromiseStatus> => {
+    if (respObj == undefined) return Failed;
+
+    if(!("error" in respObj))
+        return Success;
+
+    const errorObj = respObj as AnyGeminiLikeErrorResponse;
+    const error = errorObj.error;
+
+    SLogger.warn(`GeminiRequester.verifyResp 开始处理错误`);
+    if('type' in error && error.type!=""){
+        switch (error.type){
+            case "new_api_error":
+                if(error.code=='insufficient_user_quota'){
+                    SLogger.warn("NewApi限额");
+                    ////直接设置为不可用
+                    //await accountData.instance.setInavailable();
+                    return Terminated;
+                } else if(error.code=='request_body_blocked'){
+                    SLogger.warn("Jeniya请求体被阻拦(Gemini PROHIBITED_CONTENT)");
+                    return Terminated;
+                } else if ( error.message.includes("当前分组上游负载已饱和") ||
+                            error.message.includes("Current group upstream load is saturated")) {
+                    SLogger.warn("NewApi转发过载");
+                    return Failed;
+                } else if(error.code=='model_not_found'){
+                    SLogger.warn("NewApi模型未找到");
+                    return Terminated;
+                } else SLogger.error("未定义的错误子类型");
+                return Terminated;
+            case "v_api_error":
+                if(error.code=='prompt_blocked'){
+                    SLogger.warn("VApi提示词被阻拦");
+                    return Terminated;
+                } else SLogger.error("未定义的错误子类型");
+                return Terminated;
+            case "v_api_biz_error":
+                if(error.code=='prompt_blocked'){
+                    SLogger.warn("VApi业务错误 提示词被阻拦(Gemini PROHIBITED_CONTENT)");
+                    return Terminated;
+                } else if(error.message.includes('负载已饱和')){
+                    SLogger.warn("VApi转发过载");
+                    return Failed;
+                }else if(error.code=='model_not_found'){
+                    SLogger.warn("VApi模型未找到");
+                    return Failed;
+                } else SLogger.error("未定义的错误子类型");
+                return Terminated;
+            case "one_api_error":
+                if(error.code=='do_request_failed'){
+                    SLogger.warn("OneApi转发请求错误");
+                    return Failed;
+                } else SLogger.error("未定义的错误子类型");
+                return Terminated;
+            case "upstream_error":
+                if (error.message.includes("当前分组上游负载已饱和，请稍后再试")) {
+                    SLogger.warn("转发分组过载");
+                    return Failed;
+                } else SLogger.error("未定义的错误子类型");
+                return Terminated;
+        }
+    }
+    switch (String(error.code)) {
+        case "429":
+            if (error.message.includes("当前分组上游负载已饱和，请稍后再试")) {
+                SLogger.warn("转发分组过载");
+                return Failed;
+            }
+            SLogger.warn("达到限额");
+            return Terminated;
+        default:
+            SLogger.error("未定义的错误类型");
+            return Terminated;
+    }
+};
+
+}

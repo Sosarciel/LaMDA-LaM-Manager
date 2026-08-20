@@ -1,4 +1,4 @@
-import type { PresetOption } from '@zwa73/utils';
+import type { PresetOption, PromiseRetryResult } from '@zwa73/utils';
 import { SLogger, UtilFunc, UtilHttp } from '@zwa73/utils';
 
 import { LaMChain } from 'LaMChain';
@@ -10,8 +10,6 @@ import { checkRespCode } from 'Interactor/InteractorUtil';
 import type { Interactor } from 'Interactor/Interface';
 import { PostLaMOptionPreset } from 'Interactor/Interface';
 import { getProxy } from 'Interactor/ProxyPool';
-
-import { verifyResp } from './Util';
 
 
 
@@ -74,7 +72,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
      * @param partialOpt - 可选的参数
      * @returns 结果 undefined 为未能成功接收
      */
-    async postLaMRepeat(partialOpt:PresetOption<typeof PostLaMOptionPreset>){
+    async postLaMRepeat(partialOpt:PresetOption<typeof PostLaMOptionPreset>):Promise<PromiseRetryResult<AnyOpenAIResponse | undefined>>{
         //解构参数
         const opt = PostLaMOptionPreset.assign(partialOpt);
         const retryOption = UtilFunc.assignOption({},
@@ -83,7 +81,7 @@ class _OpenAiPostTool implements Interactor<AnyOpenAIResponse> {
 
         return await UtilFunc.retryPromise(
             async ()=>this.postLaM(opt),
-            async obj=>await verifyResp(obj, opt.cred),
+            async obj=>await LaMChain.verifyOpenAIResp(obj, opt.cred),
             {...retryOption,logFlag:"OpenApiPostTool.postLaMRepeat"}
         );
     }
