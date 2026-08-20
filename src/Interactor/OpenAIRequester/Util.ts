@@ -1,7 +1,7 @@
 import type { PromiseStatus } from "@zwa73/utils";
 import { Failed, SLogger, Success, Terminated } from "@zwa73/utils";
-import type { CredProvider } from "LaMChain";
 
+import type { CredProvider } from "LaMChain";
 import type { AnyOpenAILikeErrorResponse, AnyOpenAIResponse } from "ResponseFormat";
 
 
