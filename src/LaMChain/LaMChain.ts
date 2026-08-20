@@ -31,6 +31,17 @@ export const simpleOpenAIChatRequest = lazyFunction(()=>UtilFP.flow(
     LaMChain.extractOpenAIChatResponseSingle,
     v=>v ?? undefined,
 ));
+/**简易发送OpenAI Chat API 请求, 带有工具*/
+export const simpleOpenAIChatToolCallRequest = lazyFunction(()=>UtilFP.flow(
+    (v: Parameters<typeof LaMChain.postOpenAIChatRequest>[0]&
+        Pick<Parameters<typeof LaMChain.processOpenAIChatToolLoop>[0],'tool'|'patch'>
+    )=>({ ...v,json:{...v.json,tools:LaMChain.toOpenAITools(v.tool)} }),
+    UtilFP.bind('retryResp',async v=>LaMChain.postOpenAIChatRequest(v)),
+    UtilFP.bind('resp',async v=>LaMChain.reduceRepeatResult(v.retryResp)),
+    LaMChain.processOpenAIChatToolLoop,
+    LaMChain.extractOpenAIChatResponseSingle,
+    v=>v ?? undefined,
+));
 //#endregion
 
 //#region 发送请求
@@ -273,8 +284,8 @@ export const processOpenAIChatToolLoop = async <
 REQ extends AnyOpenAIChatLikeRequest,
 RES extends AnyOpenAIChatLikeResponse
 >(param: {
-    resp: RES;
-    provider: ToolProvider;
+    resp: RES|undefined;
+    tool: ToolProvider;
     cred: CredProvider;
     source: SourceProvider;
     model: ModelInfo;
@@ -283,16 +294,17 @@ RES extends AnyOpenAIChatLikeResponse
     patch?: (param: { resp: RES; body: REQ }) => MPromise<REQ>;
     maxLoops?: number;
 }) => {
-    const { provider, cred, source, model, retry, patch, maxLoops = 10 } = param;
+    if(param.resp==undefined) return undefined;
+    const { tool, cred, source, model, retry, patch, maxLoops = 10 } = param;
 
     let currentResult = param.resp;
     let currentBody:REQ = {
         ...param.json,
         messages: [...(param.json.messages ?? [])],
-        tools: param.json.tools ?? LaMChain.toOpenAITools(provider),
+        tools: param.json.tools ?? LaMChain.toOpenAITools(tool),
     };
 
-    const toolMap = Object.fromEntries(provider.tools.map(t => [t.name, t]));
+    const toolMap = Object.fromEntries(tool.tools.map(t => [t.name, t]));
 
     for (let loop = 0; loop < maxLoops; loop++) {
         const completedResp = currentResult;
