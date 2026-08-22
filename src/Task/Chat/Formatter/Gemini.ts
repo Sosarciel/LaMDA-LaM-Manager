@@ -1,8 +1,7 @@
-import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import type { GeminiRequest, GeminiApiData, GeminiAPIEntry } from "RequestFormat";
-import { GeminiAPIRole, GeminiHarmCategoryList } from "RequestFormat";
-import type { GeminiResponse } from "ResponseFormat";
+import { GeminiAPIRole, GeminiHarmCategoryList } from "@sosraciel-lamda/lam-chain";
+import type { GeminiRequest, GeminiApiData, GeminiAPIEntry, GeminiResponse } from "@sosraciel-lamda/lam-chain";
+import { lazyFunction, SLogger } from "@zwa73/utils";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import type { ChatTaskOption } from "Task/Chat/Interface";

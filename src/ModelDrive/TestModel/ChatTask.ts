@@ -1,7 +1,7 @@
+import type { OpenAITextResponse } from "@sosraciel-lamda/lam-chain";
 import type { PresetOption } from "@zwa73/utils";
 import { SLogger, UtilFunc } from "@zwa73/utils";
 
-import type { OpenAITextResponse } from "ResponseFormat";
 import type { ChatTaskInterface, LaMChatMessages } from "Task";
 import { ChatTaskOptionPreset, OpenAITextChatTaskFormatter } from "Task";
 

@@ -1,11 +1,8 @@
+
+import type { OpenAITextRequest, OpenAITextResponse, TokensizerType } from "@sosraciel-lamda/lam-chain";
+import { LaMChain, getTokensizer } from "@sosraciel-lamda/lam-chain";
 import type { PromiseRetryResult } from "@zwa73/js-utils";
 import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
-import { LaMChain } from "LaMChain";
-
-import type { OpenAITextRequest } from "RequestFormat";
-import type { OpenAITextResponse } from "ResponseFormat";
-import type { TokensizerType } from "Tokensizer";
-import { getTokensizer } from "Tokensizer";
 
 import type { TextCompletionResult } from "Task/DataInterface";
 import type { InstructTaskFormatter } from "Task/Instruct/Adapter";

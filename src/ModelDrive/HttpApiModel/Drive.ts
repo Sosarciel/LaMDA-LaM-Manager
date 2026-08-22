@@ -1,9 +1,9 @@
+import { getTokensizer } from "@sosraciel-lamda/lam-chain";
 import { None, SLogger } from "@zwa73/utils";
 
 import { CredManager } from "CredService";
 import type { ChatTaskFormatter, TextCompletionOption } from "Task";
 import { ChatTaskFormatterTable } from "Task";
-import { getTokensizer } from "Tokensizer";
 
 import { DefaultDrive } from "ModelDrive/DefaultDrive";
 import type { HttpAPIModelData } from "ModelDrive/HttpApiModel/Interface";

@@ -1,8 +1,7 @@
-import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import { LaMChain } from "LaMChain";
-import { type OpenAIChatAPIEntry, type DeepseekAPIEntry, type DeepseekRequest, OpenAIChatAPIRole } from "RequestFormat";
-import type { DeepseekResponse } from "ResponseFormat";
+import { LaMChain, OpenAIChatAPIRole } from "@sosraciel-lamda/lam-chain";
+import type { OpenAIChatAPIEntry, DeepseekAPIEntry, DeepseekRequest, DeepseekResponse } from "@sosraciel-lamda/lam-chain";
+import { lazyFunction, SLogger } from "@zwa73/utils";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import type { ChatTaskOption } from "Task/Chat/Interface";

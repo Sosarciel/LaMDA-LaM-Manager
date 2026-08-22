@@ -1,9 +1,7 @@
 
+import type { LaMPostRequestFunc, CredProvider, ModelInfo, SourceProvider, AnyTextCompletionRequest, TokensizerType } from "@sosraciel-lamda/lam-chain";
+import { LaMChain } from "@sosraciel-lamda/lam-chain";
 import { SLogger, UtilFunc } from "@zwa73/utils";
-import { type LaMPostRequestFunc, type CredProvider, type ModelInfo, type SourceProvider, LaMChain } from "LaMChain";
-
-import type { AnyTextCompletionRequest } from "RequestFormat";
-import type { TokensizerType } from "Tokensizer";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import type { ChatTaskOption, LaMChatMessages } from "Task/Chat/Interface";

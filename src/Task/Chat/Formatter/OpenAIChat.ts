@@ -1,9 +1,7 @@
-import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
 
-import { LaMChain } from "LaMChain";
-import type { OpenAIChatAPIEntry, OpenAIChatRequest } from "RequestFormat";
-import { OpenAIChatAPIRole } from "RequestFormat";
-import type { AnyOpenAIChatLikeResponse } from "ResponseFormat";
+import { LaMChain, OpenAIChatAPIRole } from "@sosraciel-lamda/lam-chain";
+import type { OpenAIChatAPIEntry, OpenAIChatRequest, AnyOpenAIChatLikeResponse } from "@sosraciel-lamda/lam-chain";
+import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
 
 import type { ChatTaskFormatter } from 'Task/Chat/Adapter';
 import type { ThingBudget } from "Task/DataInterface";

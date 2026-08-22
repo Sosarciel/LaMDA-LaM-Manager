@@ -1,12 +1,8 @@
-import type { PromiseRetryResult } from "@zwa73/js-utils";
-import { lazyFunction, SLogger } from "@zwa73/utils";
-import { LaMChain } from "LaMChain";
 
-import type { DeepseekRequest, DeepseekAPIEntry } from "RequestFormat";
-import { DeepseekAPIRole } from "RequestFormat";
-import type { DeepseekResponse } from "ResponseFormat";
-import type { TokensizerType } from "Tokensizer";
-import { getTokensizer } from "Tokensizer";
+import type { DeepseekRequest, DeepseekAPIEntry, DeepseekResponse, TokensizerType } from "@sosraciel-lamda/lam-chain";
+import { DeepseekAPIRole, LaMChain, getTokensizer } from "@sosraciel-lamda/lam-chain";
+import { lazyFunction, SLogger } from "@zwa73/utils";
+import type { PromiseRetryResult } from "@zwa73/utils";
 
 import type { TextCompletionResult } from "Task/DataInterface";
 import type { InstructTaskFormatter } from "Task/Instruct/Adapter";

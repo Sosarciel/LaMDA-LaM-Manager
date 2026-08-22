@@ -1,8 +1,6 @@
+import { LaMChain } from "@sosraciel-lamda/lam-chain";
+import type { OpenAITextRequest, OpenAITextResponse } from "@sosraciel-lamda/lam-chain";
 import { lazyFunction, SLogger } from "@zwa73/utils";
-import { LaMChain } from "LaMChain";
-
-import type { OpenAITextRequest } from "RequestFormat";
-import type { OpenAITextResponse } from "ResponseFormat";
 
 import type { InstructTaskFormatter } from "Task/Instruct/Adapter";
 

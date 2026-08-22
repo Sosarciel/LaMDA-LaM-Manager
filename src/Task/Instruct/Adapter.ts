@@ -1,9 +1,5 @@
-import type { MPromise } from "@zwa73/js-utils";
-import type { CredProvider, ModelInfo, SourceProvider } from "LaMChain";
-
-import type { AnyTextCompletionRequest } from "RequestFormat";
-import type { AnyTextCompletionResponse } from "ResponseFormat";
-import type { TokensizerType } from "Tokensizer";
+import type { CredProvider, ModelInfo, SourceProvider, AnyTextCompletionRequest, AnyTextCompletionResponse, TokensizerType } from "@sosraciel-lamda/lam-chain";
+import type { MPromise } from "@zwa73/utils";
 
 import type { TextCompletionResult } from "Task/DataInterface";
 import type { TextCompletionTaskFormatter, RespFormatter } from "Task/ToolInterface";

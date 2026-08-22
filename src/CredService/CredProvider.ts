@@ -1,5 +1,5 @@
+import type { CredProvider, SourceProvider } from "@sosraciel-lamda/lam-chain";
 import { SLogger, UtilFunc } from "@zwa73/utils";
-import type { CredProvider, SourceProvider } from "LaMChain";
 
 import { CredManager } from "./CredManager";
 import type { AccountManager } from "./Interface";

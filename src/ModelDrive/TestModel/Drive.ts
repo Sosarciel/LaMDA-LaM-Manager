@@ -1,4 +1,4 @@
-import { getTokensizer } from "Tokensizer";
+import { getTokensizer } from "@sosraciel-lamda/lam-chain";
 
 import { DefaultDrive } from "ModelDrive/DefaultDrive";
 import type { LaMDrive, LaMDriveDefaultOption } from "ModelDrive/Interface";

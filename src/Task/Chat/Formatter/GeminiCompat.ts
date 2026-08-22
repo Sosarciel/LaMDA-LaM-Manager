@@ -1,8 +1,7 @@
-import { lazyFunction, SLogger } from "@zwa73/utils";
 
-import { LaMChain } from "LaMChain";
-import { OpenAIChatAPIRole, type GeminiCompatAPIEntry, type GeminiCompatRequest } from "RequestFormat";
-import type { OpenAIChatResponse } from "ResponseFormat";
+import { LaMChain, OpenAIChatAPIRole } from "@sosraciel-lamda/lam-chain";
+import type { GeminiCompatAPIEntry, GeminiCompatRequest, OpenAIChatResponse } from "@sosraciel-lamda/lam-chain";
+import { lazyFunction, SLogger } from "@zwa73/utils";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";

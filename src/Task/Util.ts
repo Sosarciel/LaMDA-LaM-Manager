@@ -1,6 +1,6 @@
-import type { PromiseRetryResult } from "@zwa73/js-utils";
+import type { AnyTextCompletionResponse } from "@sosraciel-lamda/lam-chain";
+import type { PromiseRetryResult } from "@zwa73/utils";
 
-import type { AnyTextCompletionResponse } from "ResponseFormat";
 
 import type { TextCompletionResult } from "Task/DataInterface";
 import { DefChatLaMResult } from "Task/DataInterface";

@@ -1,7 +1,6 @@
-import type { ModelInfo } from "LaMChain";
+import type { ModelInfo, TokensizerType } from "@sosraciel-lamda/lam-chain";
 
 import type { ChatFormatterType } from "Task";
-import type { TokensizerType } from "Tokensizer";
 
 import type { LaMDriveDefaultOption } from "ModelDrive/Interface";
 import type { InstructFormatterType } from "Task/Instruct/Adapter";

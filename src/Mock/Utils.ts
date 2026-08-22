@@ -1,3 +1,7 @@
+import {
+    DeepseekResponseExample, GLMResponseExample, GeminiResponseExample, OpenAIChatResponseExample, OpenAITextResponseExample,
+} from '@sosraciel-lamda/lam-chain';
+import type { DeepseekResponse, GLMResponse, GeminiResponse, OpenAIChatResponse, OpenAITextResponse } from '@sosraciel-lamda/lam-chain';
 import path from 'pathe';
 
 import { DATA_PATH } from 'Constant';
@@ -5,10 +9,6 @@ import type { CredCategoryJsonTable, CredServiceJsonTable } from 'CredService';
 import type { LaMServiceJsonTable } from 'LaMService';
 import type { ChatTaskOption, InstructTaskOption } from 'Task';
 
-import {
-    DeepseekResponseExample, GLMResponseExample, GeminiResponseExample, OpenAIChatResponseExample, OpenAITextResponseExample,
-    type DeepseekResponse, type GLMResponse, type GeminiResponse, type OpenAIChatResponse, type OpenAITextResponse
-} from '@/src/ResponseFormat';
 
 
 export namespace LaMManagerMockTool{

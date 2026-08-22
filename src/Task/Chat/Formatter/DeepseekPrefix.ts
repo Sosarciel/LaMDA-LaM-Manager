@@ -1,8 +1,7 @@
-import { SLogger, lazyFunction } from "@zwa73/utils";
 
-import type { DeepseekAPIEntry, DeepseekRequest } from "RequestFormat";
-import { DeepseekAPIRole } from "RequestFormat";
-import type { DeepseekResponse } from "ResponseFormat";
+import { DeepseekAPIRole } from "@sosraciel-lamda/lam-chain";
+import type { DeepseekAPIEntry, DeepseekRequest, DeepseekResponse } from "@sosraciel-lamda/lam-chain";
+import { SLogger, lazyFunction } from "@zwa73/utils";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";

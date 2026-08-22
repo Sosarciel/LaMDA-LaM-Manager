@@ -1,8 +1,6 @@
-import type { MPromise, PromiseRetryResult } from "@zwa73/js-utils";
 
-import type { AnyTextCompletionRequest } from "RequestFormat";
-import type { AnyTextCompletionResponse } from "ResponseFormat";
-import type { TokensizerType } from "Tokensizer";
+import type { AnyTextCompletionRequest, AnyTextCompletionResponse, TokensizerType } from "@sosraciel-lamda/lam-chain";
+import type { MPromise, PromiseRetryResult } from "@zwa73/utils";
 
 import type { TextCompletionOption, TextCompletionResp, TextCompletionResult } from "./DataInterface";
 

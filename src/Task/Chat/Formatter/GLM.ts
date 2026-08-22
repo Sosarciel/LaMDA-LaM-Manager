@@ -1,8 +1,6 @@
+import { LaMChain } from "@sosraciel-lamda/lam-chain";
+import type { GLMAPIEntry, GLMRequest, GLMResponse } from "@sosraciel-lamda/lam-chain";
 import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
-import { LaMChain } from "LaMChain";
-
-import type { GLMAPIEntry, GLMRequest } from "RequestFormat";
-import type { GLMResponse } from "ResponseFormat";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
 import { commonFormatResp } from "Task/Util";
