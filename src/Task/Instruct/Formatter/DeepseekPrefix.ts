@@ -1,5 +1,5 @@
 
-import type { DeepseekRequest, DeepseekAPIEntry, DeepseekResponse, TokensizerType } from "@sosraciel-lamda/lam-chain";
+import type { DeepseekAPIEntry, TokensizerType, DeepseekChatRequest, DeepseekChatResponse } from "@sosraciel-lamda/lam-chain";
 import { DeepseekAPIRole, LaMChain, getTokensizer } from "@sosraciel-lamda/lam-chain";
 import { lazyFunction, SLogger } from "@zwa73/utils";
 import type { PromiseRetryResult } from "@zwa73/utils";
@@ -10,11 +10,11 @@ import type { InstructTaskFormatter } from "Task/Instruct/Adapter";
 import { validateInstructOption, commonOpenAIInstructTask } from "./Utils";
 
 /**DeepSeek 前缀续写格式化器类型定义 */
-type DeepseekPrefixCompletionTaskFormatterType = InstructTaskFormatter<DeepseekRequest, DeepseekResponse>;
+type DeepseekPrefixCompletionTaskFormatterType = InstructTaskFormatter<DeepseekChatRequest, DeepseekChatResponse>;
 
 /**DeepSeek 前缀续写格式化器 */
 export const DeepseekPrefix: DeepseekPrefixCompletionTaskFormatterType = {
-    formatResp: (resp: DeepseekResponse) => {
+    formatResp: (resp: DeepseekChatResponse) => {
         return {
             choices: resp.choices
                 .filter(choice => choice.message.content != null)
@@ -57,17 +57,17 @@ export const DeepseekPrefix: DeepseekPrefixCompletionTaskFormatterType = {
             stop: option.stop,
             presence_penalty: option.presence_penalty,
             frequency_penalty: option.frequency_penalty,
-        } satisfies DeepseekRequest);
+        } satisfies DeepseekChatRequest);
     },
 
-    async formatResult(resp: PromiseRetryResult<DeepseekResponse | undefined> | undefined): Promise<TextCompletionResult> {
+    async formatResult(resp: PromiseRetryResult<DeepseekChatResponse | undefined> | undefined): Promise<TextCompletionResult> {
         if (!resp) {
             return { completed: undefined, pending: [] };
         }
         if (resp.completed) {
             return {
                 completed: this.formatResp(resp.completed),
-                pending: resp.pending.map(async (p: Promise<DeepseekResponse | undefined>) => {
+                pending: resp.pending.map(async (p: Promise<DeepseekChatResponse | undefined>) => {
                     const result = await p;
                     return result ? this.formatResp(result) : undefined;
                 }),
@@ -75,7 +75,7 @@ export const DeepseekPrefix: DeepseekPrefixCompletionTaskFormatterType = {
         }
         return {
             completed: resp.completed ? this.formatResp(resp.completed) : undefined,
-            pending: resp.pending.map(async (p: Promise<DeepseekResponse | undefined>) => {
+            pending: resp.pending.map(async (p: Promise<DeepseekChatResponse | undefined>) => {
                 const result = await p;
                 return result ? this.formatResp(result) : undefined;
             }),

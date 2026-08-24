@@ -1,6 +1,6 @@
 
 import { LaMChain, OpenAIChatAPIRole } from "@sosraciel-lamda/lam-chain";
-import type { OpenAIChatAPIEntry, DeepseekAPIEntry, DeepseekRequest, DeepseekResponse } from "@sosraciel-lamda/lam-chain";
+import type { OpenAIChatAPIEntry, DeepseekAPIEntry, DeepseekChatRequest, DeepseekChatResponse } from "@sosraciel-lamda/lam-chain";
 import { lazyFunction, SLogger } from "@zwa73/utils";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
@@ -26,7 +26,7 @@ export const DeepseekThinkMapHasNone = {
 } as const;
 
 
-export const buildDeepseekRequest = ({option,modelId,messages}:{
+export const buildDeepseekChatRequest = ({option,modelId,messages}:{
     option: ChatTaskOption;
     modelId: string;
     messages: DeepseekAPIEntry[];
@@ -44,11 +44,11 @@ export const buildDeepseekRequest = ({option,modelId,messages}:{
         stop              : option.stop                    ,//调整某token出现的概率 {"tokenid":-100~100}
         thinking          :{type:effort==undefined ? "disabled" : "enabled"},
         ...(effort ==undefined ? { } : {reasoning_effort:effort})
-    } satisfies DeepseekRequest);
+    } satisfies DeepseekChatRequest);
 };
 
 /**传统OpenAI系统提示模式的Formatter */
-export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequest,DeepseekResponse> = {
+export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekChatRequest,DeepseekChatResponse> = {
     ...OpenAIChatCompleteBase,
     formatOption({option,modelId}){
         //验证参数
@@ -63,7 +63,7 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
 
         const messages = commonProcessMessageWithOpt({tool:DeepseekChatTaskFormatter,option});
 
-        return buildDeepseekRequest({messages,modelId,option,think_budget:option.think_budget});
+        return buildDeepseekChatRequest({messages,modelId,option,think_budget:option.think_budget});
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence
@@ -74,7 +74,7 @@ export const DeepseekChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],Deep
 };
 
 /**传统OpenAI系统提示模式的Formatter 无角色标签版本 */
-export const DeepseekRawChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekRequest,DeepseekResponse> = {
+export const DeepseekRawChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],DeepseekChatRequest,DeepseekChatResponse> = {
     ...OpenAIChatCompleteBase,
     formatOption({option,modelId}){
         //验证参数
@@ -89,7 +89,7 @@ export const DeepseekRawChatTaskFormatter:ChatTaskFormatter<DeepseekAPIEntry[],D
 
         const messages = commonProcessMessageWithOpt({tool:DeepseekRawChatTaskFormatter,option});
 
-        return buildDeepseekRequest({messages,modelId,option,think_budget:option.think_budget});
+        return buildDeepseekChatRequest({messages,modelId,option,think_budget:option.think_budget});
 
         //频率惩罚计算函数
         //mu[j] -> mu[j] - c[j] * alpha_frequency - float(c[j] > 0) * alpha_presence

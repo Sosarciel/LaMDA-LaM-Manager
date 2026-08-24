@@ -1,7 +1,7 @@
 import {
-    DeepseekResponseExample, GLMResponseExample, GeminiResponseExample, OpenAIChatResponseExample, OpenAITextResponseExample,
+    DeepseekChatResponseExample, GLMChatResponseExample, GeminiResponseExample, OpenAIChatResponseExample, OpenAITextResponseExample,
 } from '@sosraciel-lamda/lam-chain';
-import type { DeepseekResponse, GLMResponse, GeminiResponse, OpenAIChatResponse, OpenAITextResponse } from '@sosraciel-lamda/lam-chain';
+import type { DeepseekChatResponse, GLMChatResponse, GeminiResponse, OpenAIChatResponse, OpenAITextResponse } from '@sosraciel-lamda/lam-chain';
 import path from 'pathe';
 
 import { DATA_PATH } from 'Constant';
@@ -242,14 +242,14 @@ export namespace MockResponseFactory {
     });
 
     /**创建Deepseek响应 */
-    export const createDeepseekResponse = (overrides: Partial<DeepseekResponse> = {}): DeepseekResponse => ({
-        ...DeepseekResponseExample,
+    export const createDeepseekChatResponse = (overrides: Partial<DeepseekChatResponse> = {}): DeepseekChatResponse => ({
+        ...DeepseekChatResponseExample,
         ...overrides,
     });
 
     /**创建GLM响应 */
-    export const createGLMResponse = (overrides: Partial<GLMResponse> = {}): GLMResponse => ({
-        ...GLMResponseExample,
+    export const createGLMChatResponse = (overrides: Partial<GLMChatResponse> = {}): GLMChatResponse => ({
+        ...GLMChatResponseExample,
         ...overrides,
     });
 

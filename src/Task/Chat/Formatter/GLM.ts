@@ -1,5 +1,5 @@
 import { LaMChain } from "@sosraciel-lamda/lam-chain";
-import type { GLMAPIEntry, GLMRequest, GLMResponse } from "@sosraciel-lamda/lam-chain";
+import type { GLMAPIEntry, GLMChatRequest, GLMChatResponse } from "@sosraciel-lamda/lam-chain";
 import { lazyFunction, SLogger, UtilFunc } from "@zwa73/utils";
 
 import type { ChatTaskFormatter } from "Task/Chat/Adapter";
@@ -20,7 +20,7 @@ export const GLMThinkMap = {
 } as const;
 
 /** GLM ChatTask Formatter */
-export const GLMChatTaskFormatter:ChatTaskFormatter<GLMAPIEntry[],GLMRequest,GLMResponse> = {
+export const GLMChatTaskFormatter:ChatTaskFormatter<GLMAPIEntry[],GLMChatRequest,GLMChatResponse> = {
     ...OpenAIChatCompleteBase,
     async formatOption({option,modelId}){
         if(option.messages==null){
@@ -44,7 +44,7 @@ export const GLMChatTaskFormatter:ChatTaskFormatter<GLMAPIEntry[],GLMRequest,GLM
             stop              : option.stop                    ,
             do_sample         : true                           ,
             thinking          : {type:thinkType}               ,
-        } satisfies GLMRequest);
+        } satisfies GLMChatRequest);
     },
     formatResp(resp){
         if(!UtilFunc.checkSharpSchema(resp,{
