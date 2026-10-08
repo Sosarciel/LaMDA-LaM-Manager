@@ -101,24 +101,12 @@
 								"$ref": "#/definitions/CredCategoryID",
 								"description": "此账户类型的id"
 							},
-							"hostname": {
-								"description": "此类型账户的hostname",
-								"type": "string"
-							},
-							"port": {
-								"description": "此类型账户的port",
-								"type": "number"
+							"url": {
+								"$ref": "#/definitions/ServiceUrl",
+								"description": "此类型账户的服务地址\n仅含 origin (scheme://host[:port]) 不含路径, 路径由模型实例的 endpoint 提供"
 							},
 							"proxy_url": {
 								"description": "是否使用代理",
-								"type": "string"
-							},
-							"protocol": {
-								"description": "所用协议 默认https",
-								"enum": [
-									"http",
-									"https"
-								],
 								"type": "string"
 							},
 							"retry": {
@@ -157,9 +145,8 @@
 							}
 						},
 						"required": [
-							"hostname",
 							"id",
-							"port"
+							"url"
 						]
 					}
 				}
@@ -254,6 +241,19 @@
 		},
 		"CredCategoryID": {
 			"type": "string"
+		},
+		"ServiceUrl": {
+			"description": "服务地址 仅含 origin (scheme://host[:port]) 不含路径\n与 UtilHttp.url 的入参签名对齐, 保证可直接传入而不需断言",
+			"anyOf": [
+				{
+					"type": "string",
+					"pattern": "^http://.*$"
+				},
+				{
+					"type": "string",
+					"pattern": "^https://.*$"
+				}
+			]
 		},
 		"SnackRetry": {
 			"description": "小蛇型标准的重试设定",

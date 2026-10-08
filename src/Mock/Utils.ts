@@ -25,9 +25,7 @@ export namespace LaMManagerMockTool{
         category_table: {
             MockCredCategory: {
                 id: MOCK_CRED_CATEGORY,
-                hostname: "localhost",
-                port: port,
-                protocol: "http",
+                url: `http://localhost:${port}`,
                 valid_model:["*"],
             },
         },

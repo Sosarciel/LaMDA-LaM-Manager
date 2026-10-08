@@ -17,9 +17,7 @@ export const wrapperAccountManager = async (opt:{
     return {
         source:{
             name:cateData.id,
-            hostname:cateData.hostname,
-            protocol:cateData.protocol,
-            port:cateData.port,
+            url:cateData.url,
             proxyUrl:cateData.proxy_url,
             modelIdMap:cateData.model_id_map,
             retry:UtilFunc.snakeToCamel(cateData.retry),

@@ -1,3 +1,4 @@
+import type { ServiceUrl } from "@sosraciel-lamda/lam-chain";
 import type { LogLevel } from "@zwa73/js-utils";
 import type { ServiceInterface } from "@zwa73/service-manager";
 
@@ -49,14 +50,12 @@ type SnackRetry = Partial<{
 export type AccountCategoryData = {
     /**此账户类型的id */
     id:CredCategoryID;
-    /**此类型账户的hostname */
-    hostname:string;
-    /**此类型账户的port */
-    port:number;
+    /**此类型账户的服务地址
+     * 仅含 origin (scheme://host[:port]) 不含路径, 路径由模型实例的 endpoint 提供
+     */
+    url:ServiceUrl;
     /**是否使用代理 */
     proxy_url?:string;
-    /**所用协议 默认https */
-    protocol?:'http' | 'https';
     /**重试设定 PromiseRetries */
     retry?:SnackRetry;
     /**modelid 映射  
