@@ -1,6 +1,7 @@
 import type { ServiceInsPack } from "@zwa73/service-manager";
 import { ServiceManager } from "@zwa73/service-manager";
-import type { MPromise, NeedInit, ParseableDataStore, PresetOption } from "@zwa73/utils";
+import type { DataStore } from "@zwa73/js-utils";
+import type { NeedInit, ParseableDataStore, PresetOption } from "@zwa73/utils";
 import { AwaitInited, None, preset, SLogger, throwError, UtilFunc } from "@zwa73/utils";
 
 import { wrapperAccountManager } from "./CredProvider";
@@ -37,12 +38,16 @@ const CredsManagerOption = preset<{
 /**credentials_manager 凭证管理器 需先调用init */
 class _CredManager implements NeedInit{
     readonly sm;
-    readonly _categoryTable;
+    /**类别表数据源
+     * 持有 DataStore 自身而非其 getData 的 Promise —— 后者是一次性快照,
+     * 会让类别表的变更永远无法被感知(热重载失效)
+     */
+    readonly categoryStore:DataStore<CredCategoryJsonTable>;
     inited;
     //#region 构造函数
     constructor(opt:PresetOption<typeof CredsManagerOption>){
         const {serviceTable,categoryTable,saveInterval} = CredsManagerOption.assign(opt);
-        this._categoryTable = UtilFunc.resolveDataStore(categoryTable).getData() as MPromise<CredCategoryJsonTable>;
+        this.categoryStore = UtilFunc.resolveDataStore(categoryTable) as DataStore<CredCategoryJsonTable>;
         this.sm = ServiceManager.from({
             configTable:serviceTable,
             ctorTable  :CtorTable
@@ -55,7 +60,7 @@ class _CredManager implements NeedInit{
     private _autoSaveTimer:undefined|NodeJS.Timeout;
     //#endregion
     async getCategoryData(category:string){
-        return (await this._categoryTable).category_table[category];
+        return (await this.categoryStore.getData()).category_table[category];
     }
     /**按照优先级获取第一个有效账户
      * @param accountType - 账户类型 按优先级排列
@@ -78,7 +83,8 @@ class _CredManager implements NeedInit{
     @AwaitInited
     async getVaildModelAccount(alias:string|string[]){
         const fixedalias = typeof alias == 'string' ? [alias] : alias;
-        return Object.entries((await this._categoryTable).category_table)
+        const categoryTable = (await this.categoryStore.getData()).category_table;
+        return Object.entries(categoryTable)
             .map(([k,v])=>{
                 const match = (v.valid_model??[]).find(opt=>{
                     const fixed = typeof opt == 'string' ? opt : opt.name;
