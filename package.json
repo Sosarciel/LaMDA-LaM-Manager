@@ -35,8 +35,8 @@
 		"@sosraciel-lamda/lam-chain": "^1.0.0",
 		"@zwa73/js-utils": "^1.0.94",
 		"@zwa73/modular-mixer": "^1.0.4",
-		"@zwa73/service-manager": "^1.0.34",
-		"@zwa73/utils": "^1.0.305",
+		"@zwa73/service-manager": "^1.0.36",
+		"@zwa73/utils": "^1.0.306",
 		"tiktoken": "^1.0.7",
 		"undici": "^6.24.1"
 	},
